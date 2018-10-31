@@ -71,6 +71,7 @@ everyone but the suite owner.
 ## Authorization
 
 - Suite owners can authorize different levels of read-only “public” access
+  - from suite identity only, to full read-only 
   - this uses the same authentication system, but with a built-in “anon”
     username and passphrase
 - But fine-grained authorization of different control functions for different
