@@ -1,4 +1,4 @@
-
+Cylc-7 System Architecture
 
 ## Distributed (No Central Server)
 
