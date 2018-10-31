@@ -2,11 +2,11 @@
 
 (Updated 1 Nov 2018)
 
-## Distributed (No Central Server)
+## Distributed client/server Architecture (No Central Server)
 
 Cylc is a distributed system in the sense that:
-- Each suite is managed by its own ad-hoc **suite server program** (aka **suite
-  daemon**), which
+- Each suite is managed by its own ad-hoc __suite server program__ (aka __suite
+  daemon__), which
   - starts up on-demand (`cylc run SUITE`)
   - shuts down down automatically when/if the suite runs to completion
   - and runs and submits jobs *as the user*
@@ -14,6 +14,14 @@ Cylc is a distributed system in the sense that:
   - by polling other-suite databases
     - formerly, by polling tasks in the workflow
     - from cylc-7.8.0, by external triggers
+
+Cylc __client programs__ connect to suite daemons for monitoring and control:
+- clients include:
+  - user CLI commands (`cylc --help`)
+  - user GUIs (`cylc gui` and `cylc gscan`)
+  - CLI commands executed by running task jobs
+    - particularly job status messaging (`cylc message`)
+    - but other commands too (jobs can manipulate their parent suite daemon if necessary)
 
 In contrast to monolithic central-server systems, Cylc:
 - Scales easily sideways - just add more VMs.
@@ -37,7 +45,7 @@ To manage multiple suites, we must be able discover running suite daemons,
 - i.e. which suites are listening on which ports, on which hosts
 
 The multi-suite monitoring clients `cylc scan` (CLI) and `cylc gscan` (GUI):
-- Scan your local suite run directory for **suite contact files**
+- Scan your local suite run directory for __suite contact files__
   (which store the host and port number, etc.) of running suite daemons
   - (by default, for your own suites)
 - Scan ports on configured hosts, to find listening suite suite daemons
@@ -50,7 +58,7 @@ Because Cylc has no central server to manage suites for all users, and
 everything (suite daemons and jobs) run as the user, there is no absolute
 requirement for multi-user authentication and authorization.
 
-The current authentication model is therefore designed to **automatically**
+The current authentication model is therefore designed to __automatically__
 (with no need to manually enter credentials at any point) reject, by default,
 everyone but the suite owner.
 - At start up, suite daemons generate a random passphrase
