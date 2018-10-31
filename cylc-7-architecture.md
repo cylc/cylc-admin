@@ -1,4 +1,6 @@
-Cylc-7 System Architecture
+# Cylc-7 System Architecture
+
+(Updated 1 Nov 2018)
 
 ## Distributed (No Central Server)
 
