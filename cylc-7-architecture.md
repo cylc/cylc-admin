@@ -1,6 +1,8 @@
 # Cylc-7 System Architecture
 
-(Updated 1 Nov 2018)
+(Last updated 1 Nov 2018)
+
+A description of the cylc-7 architecture, and implications for cylc-8.
 
 ## Distributed client/server Architecture (No Central Server)
 
