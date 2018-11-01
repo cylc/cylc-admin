@@ -37,7 +37,7 @@ Read and understand (as far as possible at this stage):
   - [Future Cylc Authorisation/GUI Architecture](https://github.com/cylc/cylc/issues/2729 )
 - [Jupyter Hub Architecture](https://jupyterhub.readthedocs.io/en/stable/) - we
   think we need something very like this (with _notebook_ = _suite daemon_)
-- Consider what you might like to work on, and much effort you will be able to
+- Consider what you might like to work on, and how much effort you can
   contribute in the next year or so.
 
 And for the new people:
