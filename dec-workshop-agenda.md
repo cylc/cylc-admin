@@ -35,6 +35,8 @@ Read and understand (as far as possible at this stage):
   - [New GUI: scalable navigable view using quilts](https://github.com/cylc/cylc/issues/2753)
   - [suite http(s) server improvements](https://github.com/cylc/cylc/issues/2563) 
   - [Future Cylc Authorisation/GUI Architecture](https://github.com/cylc/cylc/issues/2729 )
+- [Jupyter Hub Architecture](https://jupyterhub.readthedocs.io/en/stable/) - we
+  think we need something very like this (with _notebook_ = _suite daemon_)
 - Consider what you might like to work on, and much effort you will be able to
   contribute in the next year or so.
 
@@ -92,11 +94,12 @@ can start by talking the rest of us through it.
   - What runs where, privileged or as the user?
   - Server-side framework(s)
     - Flask (+gevent?) or Tornado?
-  - How do the components communicate?
+  - Inter-component communication?
     - WebSocket and GraphQL seem advantageous (compared with HTTPS and a REST
-      API) but do the need to go all the way from the GUI to the suite daemons?
+      API) but do they need to go all the way from the GUI to the suite
+      daemons? If not, what are the implications?
     - what about other alternatives at the back end? ZeroMQ, Protocol Buffers (& gRPC?)?
-  - How closely can we follow and/or steal from Jupyter Hub?
+  - How closely can we follow and and even steal from Jupyter Hub?
   - Suite server data structures, API, and network protocol 
     - REST or GraphQL?
     - HTTPS, or WebSocket, or ZeroMQ, or Protocol Buffers (& gRPC?)?
