@@ -16,8 +16,7 @@ __Bureau of Meteorology, Melbourne, Australia__
 ## Context
 Over the next 12 months we need to migrate Cylc to Python 3, and replace the
 aging PyGTK GUIs and simple client/server architecture with a more complex
-architecture and a web GUI. See [Workshop
-Prerequisites](#prerequisites) for why this is challenging!
+architecture and a web GUI. This is a challenging task!!!
 
 ## Format
 Mainly discussion sessions, with some demoing and coding (to the extent
