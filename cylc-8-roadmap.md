@@ -4,6 +4,8 @@
 
 __Target completion date: late 2019__ (Python 2 end of life)
 
+_WARNING - this document is slightly out of date in places, since recent team
+meetings, but not in a way that will hurt you._
 
 ## System Components, Communications, etc.
 
