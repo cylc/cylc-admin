@@ -62,7 +62,7 @@ By the end of the week we need to understand:
   work concurrently with GUI development? - see [Possible Cylc
   Futures](https://github.com/cylc/cylc/wiki/Possible-Cylc-Futures) and
   [Vision for Cylc beyond 2018/2019
-  Priorities](https://github.com/cylc/cylc/wiki/Vision-for-Cylc-beyond-2018-2019-Priorities)a)
+  Priorities](https://github.com/cylc/cylc/wiki/Vision-for-Cylc-beyond-2018-2019-Priorities))
 
 # AGENDA
 Items listed below are to guide the discussion, but we can be flexible if
@@ -154,3 +154,8 @@ can start by talking the rest of us through it.
 Thanks to BoM, Altair, the UM Partnership, and ESiWACE for sponsoring this
 workshop, by providing a venue, and/or travel funding, and/or development
 resourcing! 
+
+![ESiWACE - Cylc - Altair Logos](gfx/esiwace-cylc-altair-logos.png)
+![UMC Logos](gfx/umc.png)
+
+
