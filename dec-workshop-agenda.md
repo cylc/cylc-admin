@@ -11,6 +11,7 @@ __Bureau of Meteorology, Melbourne, Australia__
 - [Format](#format)
 - [Preparation](#preparation)
 - [AGENDA](#agenda)
+- [Participants](#participants)
 - [Acknowledgements](#acknowledgements)
 
 ## Context
@@ -67,8 +68,9 @@ By the end of the week we need to understand:
 
 # AGENDA
 Items listed below are to guide the discussion, but we can be flexible if
-needed. Several of us are relatively expert on selected topics already - they
-can start by talking the rest of us through it.
+needed. Several of us are relatively expert on selected topics already and
+can start by walking the rest of us through it. Tentative decisions have
+already been made in a few areas (e.g. to use Vue.js for the GUI).
 
 ### Monday
 - __Morning__
@@ -150,6 +152,19 @@ can start by talking the rest of us through it.
   - Review of risks
   - Delivery timeline
   - Who can work on what?
+
+# Participants
+
+- Hilary Oliver - NIWA (Wellington, New Zealand) - <hilary.oliver@niwa.co.nz>
+- Bruno Kinoshita - NIWA, (Auckland, New Zealand - <bruno.kinoshita@niwa.co.nz>
+- David Sutherland - NIWA, (Wellington, New Zealand) - <david.sutherland@niwa.co.nz>
+- Raghavendra (Raghu) S. Mupparthy - NCMRWF (Noida, India) - <raghav@ncmrwf.gov.in> 
+- Dave Matthews - ESiWACE, Met Office (Exeter, UK) - <david.matthews@metoffice.gov.uk> 
+- Sadie Bartholomew - Met Office (Exeter, UK) - <sadie.bartholomew@metoffice.gov.uk>
+- Matt Shin - Met Office (Exeter, UK) - <matthew.shin@metoffice.gov.uk>
+- Oliver Sanders - Met Office (Exeter, UK) - <oliver.sanders@metoffice.gov.uk>
+- Martin Ryan - BoM (Melbourne, Australia) - <martin.ryan@metoffice.gov.uk>
+- Sujata Patnaik - Altair (Bangalore, India) - <sujata.patnaik@altair.com>
 
 # Acknowledgements
 
