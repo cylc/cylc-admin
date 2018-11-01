@@ -10,6 +10,8 @@ __Bureau of Meteorology, Melbourne, Australia__
 - [Context](#context)
 - [Format](#format)
 - [Preparation](#preparation)
+- [What to bring](#what-to-bring)
+- [Goals](#goals)
 - [AGENDA](#agenda)
 - [Participants](#participants)
 - [Acknowledgements](#acknowledgements)
@@ -17,7 +19,8 @@ __Bureau of Meteorology, Melbourne, Australia__
 ## Context
 Over the next 12 months we need to migrate Cylc to Python 3, and replace the
 aging PyGTK GUIs and simple client/server architecture with a more complex
-architecture and a web GUI. This is a challenging task!!!
+architecture and a web GUI. And the new system has to be performant "out of the
+box" for existing critical production use. This is a challenging task!!!
 
 ## Format
 Mainly discussion sessions, with some demoing and coding (to the extent
@@ -29,8 +32,8 @@ Read and understand (as far as possible at this stage):
 - [Cylc-7 Architecture](cylc-7-architecture.md)
 - [GUI Replacement Options](gui-replacement-options.md)
 - [Cylc-8 Architecture and Web GUI Roadmap](cylc-8-roadmap.md)
-  - those of us who have researched particular aspects of this in depth, should
-    be prepared to walk the rest of us through it
+  - those of us who have researched particular aspects in depth should
+    be prepared to talk about it
 - A few Cylc Issues that are relevant:
   - [One GUI using technology for web applications](https://github.com/cylc/cylc/issues/1873)
   - [New GUI: scalable navigable view using quilts](https://github.com/cylc/cylc/issues/2753)
@@ -49,6 +52,10 @@ And for the new people:
   Cylc tutorial in the newly-rewritten [Rose User
   Guide](https://metomi.github.io/rose/doc/html/index.html) 
  
+## What to bring
+- Your development laptop, with a Cylc repository clone on board and tested
+- Working demos or other material to present, if you have any
+
 ## Goals
 By the end of the week we need to understand:
 - How we will work together to develop the new system
@@ -57,7 +64,7 @@ By the end of the week we need to understand:
 - Who will do what?
 - Where technological or architectural choices have to be made,
   - which way will we go?
-  - or how will we decide very quickly which way to go?
+  - or (at the least) how to decide very quickly which way to go?
 - How can we test the separate parts of the new system, given their interdependence? 
 - When can intermediate milestones be achieved along the way?
 - (Is the team big enough now that we can start on some important "future Cylc"
@@ -70,7 +77,8 @@ By the end of the week we need to understand:
 Items listed below are to guide the discussion, but we can be flexible if
 needed. Several of us are relatively expert on selected topics already and
 can start by walking the rest of us through it. Tentative decisions have
-already been made in a few areas (e.g. to use Vue.js for the GUI).
+already been made in a few areas (e.g. to use Vue.js for the GUI). We can
+consider coding and demo opportunities on any day, if time allows..
 
 ### Monday
 - __Morning__
@@ -78,34 +86,32 @@ already been made in a few areas (e.g. to use Vue.js for the GUI).
   - Introductions, with interpretive dance
   - Overview and showcase of work and plans on the BoM/Altair/Cylc project
     (Control Panel, Apache Kafka, reporting DB, authentication etc.)
-  - (then: start afternoon topics early if possible)
+  - Then: begin afternoon topics early, if possible
 
 - __Afternoon__:
   - (Cylc Development and working practices)
   - (as we have a bunch of new team members!)
   - git, GitHub, GitHub Flow, testing, Travis CI, Codacy, Riot.im or Slack?, etc.
-  - Then: begin the Architecture discussion (see Tuesday)
+  - the development roadmap: what's been discussed and decided so far?
+  - Then: begin Tuesday's Architecture discussion early, if possible
 
 ### Tuesday
 - __All day__:
   - (Architecture)
   - System components:
-    - GUI front end, "hub", reverse proxy, sub-services for suite discovery and
-      start-up, etc.
+    - GUI, "hub", reverse proxy, sub-services for suite discovery and start-up, etc.
     - other? GUI server, "suite state server", ...?
-  - What runs where, privileged or as the user?
-  - Server-side framework(s)
+  - How closely can we follow (and even borrow code from) Jupyter Hub?
+  - What runs where? Privileged, or as the user?
+  - Server-side Python framework(s)
     - Flask (+gevent?) or Tornado?
-  - Inter-component communication?
+  - Inter-component communication - network protocols and API(s)
     - WebSocket and GraphQL seem advantageous (compared with HTTPS and a REST
       API) but do they need to go all the way from the GUI to the suite
       daemons? If not, what are the implications?
-    - what about other alternatives at the back end? ZeroMQ, Protocol Buffers (& gRPC?)?
-  - How closely can we follow and and even steal from Jupyter Hub?
-  - Suite server data structures, API, and network protocol 
-    - REST or GraphQL?
-    - HTTPS, or WebSocket, or ZeroMQ, or Protocol Buffers (& gRPC?)?
-    - (note this overlaps with the architecture discussion, Tuesday)
+    - alternatives at the back end? ZeroMQ, Protocol Buffers (& gRPC?)?
+  - Suite server data structures
+    - are lists of nodes and edges sufficient for all views? 
   - Do we need a simplified architecture for individual use?
     - or just run all components as the user?
 
@@ -114,12 +120,14 @@ already been made in a few areas (e.g. to use Vue.js for the GUI).
   - (Combined session with the BoM/Altair Control Panel Stream)
   - software testing, packaging and distribution
   - "scheduler prediction tool"
+  - `setup.py` for Cylc
   - (Begin afernoon topics, if possible)
 
 - __Afternoon__
   - (Cylc user feedback and discussion)
-  - perceived deficiencies (of GUI or otherwise), feature requests?
-  - A presentation or two, if needed (e.g. revist our Brussels Worklfow Workshop talk?)
+  - deficiencies, feature requests, problem solving
+  - A presentation or two, if called for
+    - e.g. revisit the Brussels Worklfow Workshop Cylc and Rose keynote?
 
 ### Thursday
 - __All day__
@@ -130,8 +138,7 @@ already been made in a few areas (e.g. to use Vue.js for the GUI).
   - if authentication is done by the Hub, how do suite daemons trust the Hub?
     - SSL client certificate?
     - what if not using HTTPS?
-  - authorization - how to do it
-  - if any time left: coding and demos?
+  - authorization - how to do it?
 
 ### Friday
 - __Morning__
