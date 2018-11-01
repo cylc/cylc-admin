@@ -9,7 +9,7 @@ __Bureau of Meteorology, Melbourne, Australia__
 ## Table of Contents
 - [Context](#context)
 - [Format](#format)
-- [Prerequisites](#prerequisites)
+- [Preparation](#preparation)
 - [AGENDA](#agenda)
 - [Acknowledgements](#acknowledgements)
 
@@ -23,13 +23,13 @@ Mainly discussion sessions, with some demoing and coding (to the extent
 possible at this the early stage of development, and with our varying levels of
 experience)- not formal presentations (except perhaps Wednesday afternoon).
 
-## Prerequisites
+## Preparation
 Read and understand (as far as possible at this stage):
 - [Cylc-7 Architecture](cylc-7-architecture.md)
 - [GUI Replacement Options](gui-replacement-options.md)
 - [Cylc-8 Architecture and Web GUI Roadmap](cylc-8-roadmap.md)
-  - those of us with more experience should research particular issues in
-    depth, if possible, and be prepared to talk about it
+  - those of us who have researched particular aspects of this in depth, should
+    be prepared to walk the rest of us through it
 - A few Cylc Issues that are relevant:
   - [One GUI using technology for web applications](https://github.com/cylc/cylc/issues/1873)
   - [New GUI: scalable navigable view using quilts](https://github.com/cylc/cylc/issues/2753)
