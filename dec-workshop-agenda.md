@@ -19,8 +19,9 @@ __Bureau of Meteorology, Melbourne, Australia__
 ## Context
 Over the next 12 months we need to migrate Cylc to Python 3, and replace the
 aging PyGTK GUIs and simple client/server architecture with a more complex
-architecture and a web GUI. And the new system has to be performant "out of the
-box" for existing critical production use. This is a challenging task!!!
+(but more powerful) architecture and a web GUI. And the new system has to be
+performant "out of the box" for existing critical production use. This is a
+challenging task!!!
 
 ## Format
 Mainly discussion sessions, with some demoing and coding (to the extent
@@ -92,7 +93,7 @@ consider coding and demo opportunities on any day, if time allows..
   - (Cylc Development and working practices)
   - (as we have a bunch of new team members!)
   - git, GitHub, GitHub Flow, testing, Travis CI, Codacy, Riot.im or Slack?, etc.
-  - The development roadmap: what's been discussed and decided so far?
+  - Development roadmap: what's been discussed and decided so far?
   - Then: begin Tuesday's Architecture discussion early, if possible
 
 ### Tuesday
@@ -113,35 +114,33 @@ consider coding and demo opportunities on any day, if time allows..
   - Suite server data structures
     - are lists of nodes and edges sufficient for all views? 
     - exposed via GraphQL? (by the suite server, or a GUI server?)
-  - Which component serves the actual HTML pages (as opposed to just data)?
-    - suite daemon, or GUI server?
   - Do we need a simplified architecture for individual use?
     - or just run all components as the user?
 
 ### Wednesday
 - __Morning__
   - (Combined session with the BoM/Altair Control Panel Stream)
-  - software testing, packaging and distribution
-  - "scheduler prediction tool"
-  - `setup.py` for Cylc
+  - Software testing, packaging and distribution
+  - Scheduler prediction tool
+  - Cylc `setup.py`
   - (Begin afernoon topics, if possible)
 
 - __Afternoon__
   - (Cylc user feedback and discussion)
-  - deficiencies, feature requests, problem solving
+  - Deficiencies, feature requests, problem solving
   - A presentation or two, if called for
-    - e.g. revisit the Brussels Worklfow Workshop Cylc and Rose keynote?
+    - e.g. the Brussels Worklfow Workshop Cylc and Rose keynote presentation?
 
 ### Thursday
 - __Morning__
   - (Authentication and authorization)
-  - user authentication: site integration, session management
-  - session management for CLI commands?
-  - automatic job authentication: one-time tokens?
-  - if authentication is done by the Hub, how do suite daemons trust the Hub?
+  - User authentication: site integration (plugins?), session management
+  - Session management for CLI commands?
+  - Automatic job authentication: one-time tokens?
+  - If authentication is done by the Hub, how do suite daemons trust the Hub?
     - SSL client certificate?
     - what if not using HTTPS?
-  - authorization - how to do it?
+  - Authorization - how to do it?
 - __Afternoon__
   - Begin the Web GUI discussion if time allows (see Friday morning)
 
@@ -149,14 +148,17 @@ consider coding and demo opportunities on any day, if time allows..
 - __Morning__
   - (Web GUI)
   - Which Javascript framework: Vue.js (or React.js, or...)?
-  - unify gscan and gcylc?
+  - Unify gscan and gcylc?
   - UI design ideas
+    - Do we need (/can we get?) professional UI design advice?
   - How to display very large suites effectively and efficiently
   - Interaction with other components:
     - To suites (via proxy) or to a UI server?
     - Incremental update of suite state data?
     - WebSocket? - no polling by GUI!
     - GraphQL?
+  - Who serves the actual HTML pages (as opposed to just data)?
+    - suite daemon, or GUI server?
 
 - __Afternoon__
   - (Tie it up and nail it down, with reference to the Workshop [Goals](#goals))
@@ -167,16 +169,16 @@ consider coding and demo opportunities on any day, if time allows..
 
 # Participants
 
-- Hilary Oliver - NIWA (Wellington, New Zealand) - <hilary.oliver@niwa.co.nz>
-- Bruno Kinoshita - NIWA, (Auckland, New Zealand - <bruno.kinoshita@niwa.co.nz>
-- David Sutherland - NIWA, (Wellington, New Zealand) - <david.sutherland@niwa.co.nz>
-- Raghavendra (Raghu) S. Mupparthy - NCMRWF (Noida, India) - <raghav@ncmrwf.gov.in> 
-- Dave Matthews - ESiWACE, Met Office (Exeter, UK) - <david.matthews@metoffice.gov.uk> 
-- Sadie Bartholomew - Met Office (Exeter, UK) - <sadie.bartholomew@metoffice.gov.uk>
-- Matt Shin - Met Office (Exeter, UK) - <matthew.shin@metoffice.gov.uk>
-- Oliver Sanders - Met Office (Exeter, UK) - <oliver.sanders@metoffice.gov.uk>
-- Martin Ryan - BoM (Melbourne, Australia) - <martin.ryan@metoffice.gov.uk>
-- Sujata Patnaik - Altair (Bangalore, India) - <sujata.patnaik@altair.com>
+- Hilary Oliver - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <hilary.oliver@niwa.co.nz>
+- Bruno Kinoshita - [NIWA](https://www.niwa.co.nz), (Auckland, New Zealand - <bruno.kinoshita@niwa.co.nz>
+- David Sutherland - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <david.sutherland@niwa.co.nz>
+- Raghavendra (Raghu) S. Mupparthy - [NCMRWF](http://www.ncmrwf.gov.in), (Noida, India) - <raghav@ncmrwf.gov.in> 
+- Dave Matthews - [ESiWACE](https://www.esiwace.eu), [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <david.matthews@metoffice.gov.uk> 
+- Sadie Bartholomew - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <sadie.bartholomew@metoffice.gov.uk>
+- Matt Shin - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <matthew.shin@metoffice.gov.uk>
+- Oliver Sanders - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <oliver.sanders@metoffice.gov.uk>
+- Martin Ryan - [BoM](https://www.bom.gov.au), (Melbourne, Australia) - <martin.ryan@bom.gov.au>
+- Sujata Patnaik - [Altair](https://www.altair.com), (Bangalore, India) - <sujata.patnaik@altair.com>
 
 # Acknowledgements
 
