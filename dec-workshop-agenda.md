@@ -53,12 +53,12 @@ By the end of the week we need to understand:
 - How we will work together to develop the new system
   - in principle we have more effort than ever before and should be able to
     make great progress
+- Who will do what?
 - Where technological or architectural choices have to be made,
   - which way will we go?
   - or how will we decide very quickly which way to go?
 - How can we test the separate parts of the new system, given their interdependence? 
-- What intermediate milestones can we achieve (and when) along the way?
-- Who will do what?
+- When can intermediate milestones be achieved along the way?
 - (Is the team big enough now that we can start on some important "future Cylc"
   work concurrently with GUI development? - see [Possible Cylc
   Futures](https://github.com/cylc/cylc/wiki/Possible-Cylc-Futures) and
