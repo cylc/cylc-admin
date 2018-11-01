@@ -92,7 +92,7 @@ consider coding and demo opportunities on any day, if time allows..
   - (Cylc Development and working practices)
   - (as we have a bunch of new team members!)
   - git, GitHub, GitHub Flow, testing, Travis CI, Codacy, Riot.im or Slack?, etc.
-  - the development roadmap: what's been discussed and decided so far?
+  - The development roadmap: what's been discussed and decided so far?
   - Then: begin Tuesday's Architecture discussion early, if possible
 
 ### Tuesday
@@ -112,6 +112,9 @@ consider coding and demo opportunities on any day, if time allows..
     - alternatives at the back end? ZeroMQ, Protocol Buffers (& gRPC?)?
   - Suite server data structures
     - are lists of nodes and edges sufficient for all views? 
+    - exposed via GraphQL? (by the suite server, or a GUI server?)
+  - Which component serves the actual HTML pages (as opposed to just data)?
+    - suite daemon, or GUI server?
   - Do we need a simplified architecture for individual use?
     - or just run all components as the user?
 
@@ -130,7 +133,7 @@ consider coding and demo opportunities on any day, if time allows..
     - e.g. revisit the Brussels Worklfow Workshop Cylc and Rose keynote?
 
 ### Thursday
-- __All day__
+- __Morning__
   - (Authentication and authorization)
   - user authentication: site integration, session management
   - session management for CLI commands?
@@ -139,6 +142,8 @@ consider coding and demo opportunities on any day, if time allows..
     - SSL client certificate?
     - what if not using HTTPS?
   - authorization - how to do it?
+- __Afternoon__
+  - Begin the Web GUI discussion if time allows (see Friday morning)
 
 ### Friday
 - __Morning__
