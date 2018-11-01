@@ -59,7 +59,7 @@ not work for an in-browser web GUI.
 
 - __In-browser web GUI__
   - __pros__
-    - the ultimate in remote monitoring and control
+    - proper remote monitoring and control
     - platform agnostic (portable)
     - no cylc installation needed at the GUI end (the GUI is "served" up)
     - easy integration with site authentication systems
@@ -70,5 +70,5 @@ not work for an in-browser web GUI.
       an in-browser GUI can't interact with the system to discover suites, and
       start them, etc.
       
-__DECISION: in-browser GUI__ (it's what we ultimately need)
+__DECISION: in-browser GUI__ - it's more difficult, but ultimately what we need
 

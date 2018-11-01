@@ -2,52 +2,7 @@
 
 (Latest update: 1 Nov 2018)
 
-## Motivation
-- Python 2 end of life 2020
-- PyGTK GUIs obsolete and not Python 3 compatible
-- everyone wants modern web GUIs
-  - modern web browsers are the most sophisticated display engines
-  - remote suite monitoring and control
-  - platform agnostic (portable)
-  - easy integration with site authentication
-
-__Target completion date: late 2019__
-
-## Options for Replacing our Python 2 PyGTK GUIs
-
-- __PyGObject desktop GUIs__
-  - PyGobject is the successor to PyGTK
-  - __pros__
-    - a relatively easy (?) port of the old desktop GUIs
-    - doesn't bring other major advantages of an in-browser GUI
-  - __cons__
-    - PyGObject is not well-used (everyone wants web apps now)
-    - doesn't bring other major advantages of an in-browser GUI
-
-- __Electron native desktop web apps__
-  - chromium browser display engine with node.js wrapper
-  - __pros__
-    - architecturally, a straightfoward replacement for current GUIs
-    - the node.js wrapper could still read the filesystem and scan ports
-    - is "web technology"
-  - __cons__
-    - not really a short-cut to an in-browser GUI (major architectural differences)
-    - doesn't bring other major advantages of an in-browser GUI
-
-- __In-browser web GUI__
-  - __pros__
-    - the ultimate in remote monitoring and control
-    - platform agnostic (portable)
-    - no cylc installation needed at the GUI end (the GUI is "served" up)
-    - easy integration with site authentication systems
-    - new system components required (see below) but these bring other
-      advantages, e.g. single point of access for users
-  - __cons__
-    - requires massive architectural change (new system components) because
-      an in-browser GUI can't interact with the system to discover suites, and
-      start them, etc.
-      
-__DECISION: in-browser GUI__ (it's what we ultimately need)
+__Target completion date: late 2019__ (Python 2 end of life)
 
 
 ## System Components, Communications, etc.

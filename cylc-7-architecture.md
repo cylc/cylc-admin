@@ -2,8 +2,6 @@
 
 (Last updated 1 Nov 2018)
 
-A description of the cylc-7 architecture, and implications for cylc-8.
-
 ## Distributed client/server Architecture (No Central Server)
 
 Cylc is a distributed system in the sense that:
@@ -90,27 +88,3 @@ everyone but the suite owner.
   users cannot be supported by the simple shared passphrase model
 
 
-# cylc-8 Web GUI - Architectural Challenges
-
-Some aspects of the architecture described above are not well-suited to web
-technologies:
-- Web apps running in browsers cannot interact with the host system:
-  - To read suite contact files (to discover suite locations host:port)
-  - To scan ports (to discover suite locations host:port)
-  - To read suite passphrases off disk, for automatic authentication
-- Besides, the browser will likely not even be running on the suite host system
-- The web services (suite daemons) vary in number and location as suites shut
-  down and (re)start as described above
-- Server SSL certificates allow clients to trust the identity of web servers.
-  In our context self-signed certificates do not necessarily constitute a risk,
-  but they do make life difficult for browsers as an exception must be granted
-  manually whenever a new one is encountered
-- Client commands executed by task jobs will probably have to be treated
-  differently from those executed by users (CLI or GUI) once a more
-  sophisticated and site-integrated authentication model is adopted
-- It is recognized that production suites running under role/service accounts
-  would be easier to manage with fine-grained multi-user authentication and
-  authorization, and integration with site identity management
-
-In short, the ways that Cylc clients currently discover suite servers and
-authenticate with them, will not work for the future "web Cylc".
