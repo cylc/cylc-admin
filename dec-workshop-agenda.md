@@ -36,16 +36,16 @@ Read and understand (as far as possible at this stage):
   - [New GUI: scalable navigable view using quilts](https://github.com/cylc/cylc/issues/2753)
   - [suite http(s) server improvements](https://github.com/cylc/cylc/issues/2563) 
   - [Future Cylc Authorisation/GUI Architecture](https://github.com/cylc/cylc/issues/2729 )
+- Consider what you might like to work on, and much effort you will be able to
+  contribute in the next year or so.
 
-And for the new people, try to understand (at the least!):
-- Define basic Cylc workflows, non-cycling and cycling
-  - and understand how cycling "infinite workflows" work in Cylc
-- run and interact with simple suites, and find their job logs 
+And for the new people:
+- Understand how to define, run, and interact with basic Cylc workflows,
+  non-cycling and cycling
 - Work through the basic tutorial in the [Cylc User
   Guide](https://cylc.github.io/cylc/documentation.html) and the better
   Cylc tutorial in the newly-rewritten [Rose User
   Guide](https://metomi.github.io/rose/doc/html/index.html) 
-- Ask your manager how much effort you can contribute to Cylc in 2019
  
 ## Goals
 By the end of the week we need to understand:
