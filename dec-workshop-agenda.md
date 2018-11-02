@@ -65,8 +65,8 @@ By the end of the week we need to understand:
 - Who will do what?
 - Where technological or architectural choices have to be made,
   - which way will we go?
-  - or (at the least) how to decide very quickly which way to go?
-- How can we test the separate parts of the new system, given their interdependence? 
+  - or (at the least) how to decide very quickly which way to go
+- How to develop and test the different components separately, given their interdependence
 - When can intermediate milestones be achieved along the way?
 - (Is the team big enough now that we can start on some important "future Cylc"
   work concurrently with GUI development? - see [Possible Cylc
