@@ -25,7 +25,7 @@ challenging task!!!
 
 ## Format
 Mainly discussion sessions, with some demoing and coding (to the extent
-possible at this the early stage of development, and with our varying levels of
+possible at this early stage of development, and with our varying levels of
 experience)- not formal presentations (except perhaps Wednesday afternoon).
 
 ## Preparation
@@ -41,7 +41,7 @@ Read and understand (as far as possible at this stage):
   - [suite http(s) server improvements](https://github.com/cylc/cylc/issues/2563) 
   - [Future Cylc Authorisation/GUI Architecture](https://github.com/cylc/cylc/issues/2729 )
 - [Jupyter Hub Architecture](https://jupyterhub.readthedocs.io/en/stable/) - we
-  think we need something very like this (with _notebook_ = _suite daemon_)
+  think we need something very much like this (with _notebook_ = _suite daemon_)
 - Consider what you might like to work on, and how much effort you can
   contribute in the next year or so.
 
@@ -60,8 +60,8 @@ And for the new people:
 ## Goals
 By the end of the week we need to understand:
 - How we will work together to develop the new system
-  - in principle we have more effort than ever before and should be able to
-    make great progress
+  - in principle we have a bigger team than ever before, and we should be able
+    to make great progress
 - Who will do what?
 - Where technological or architectural choices have to be made,
   - which way will we go?
