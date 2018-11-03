@@ -17,7 +17,8 @@ __Bureau of Meteorology, Melbourne, Australia__
 - [Acknowledgements](#acknowledgements)
 
 ## Context
-Over the next 12 months we need to migrate Cylc to Python 3, and replace the
+Over the next 12 months we need to migrate [Cylc](https://cylc.github.io/cylc)
+to Python 3, and replace the
 aging PyGTK GUIs and simple client/server architecture with a more complex
 (but more powerful) architecture and a web GUI. And the new system has to be
 performant "out of the box" for existing critical production use. This is a
