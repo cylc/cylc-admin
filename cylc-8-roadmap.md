@@ -9,6 +9,16 @@ meetings, but not in a way that will hurt you._
 
 ## System Components, Communications, etc.
 
+
+We need something very much like the [Jupyter
+Hub](https://jupyterhub.readthedocs.io/en/stable/) Architecture: a privileged
+hub that spawns a reverse proxy server and sub-services for suite discovery etc.,
+and spawns suite daemons (c.f. Jupyter notebooks) as the user.
+
+Note below "reverse proxy server" may encompass the "hub" and web proxy
+functionality (but these should be separate components, like in Jupyter Hub).
+
+
 1. __Reverse Proxy Server__ (gateway between clients and suites)
     1. Single point of access, to:
         1. Discover and present suites, and route client requests to them
@@ -137,16 +147,10 @@ enough team. But we should prioritize the highest risks where possible.
    frameworks would do) but it is a big unknown, and we may have to spend
    considerable time learning the technologies
 
-   - Angular.js?
-        - been around a while
-        - relatively heavy-weight
-   - React.js? (by Facebook)
-        - most popular
-   - Vue.js?
-        - rising popularity
-        - reputed to be simpler and more "template"-like than React
-   - D3.js?
-        - focused on "data driven" display of charts etc.
+   - Angular.js? (been around a while, but relatively heavy-weight)
+   - React.js? (by Facebook, most popular)
+   - Vue.js? (increasingly popular, lighter than React, more "template"-like)
+   - D3.js? (focused on "data driven" display of charts etc.)
 
    - __DECISION: Vue.js__
         - we'll start with Vue, unless we run into problems that suggest we
