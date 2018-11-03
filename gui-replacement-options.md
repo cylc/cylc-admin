@@ -42,7 +42,6 @@ not work for an in-browser web GUI.
   - PyGobject is the successor to PyGTK
   - __pros__
     - a relatively easy (?) port of the old desktop GUIs
-    - doesn't bring other major advantages of an in-browser GUI
   - __cons__
     - PyGObject is not well-used (everyone wants web apps now)
     - doesn't bring other major advantages of an in-browser GUI
