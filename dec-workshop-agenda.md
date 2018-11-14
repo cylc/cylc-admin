@@ -160,6 +160,7 @@ consider coding and demo opportunities on any day, if time allows..
     - GraphQL?
   - Who serves the actual HTML pages (as opposed to just data)?
     - suite daemon, or GUI server?
+  - Framework to automate UI testing.
 
 - __Afternoon__
   - (Tie it up and nail it down, with reference to the Workshop [Goals](#goals))
