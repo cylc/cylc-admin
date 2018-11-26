@@ -132,6 +132,7 @@ consider coding and demo opportunities on any day, if time allows..
   - Deficiencies, feature requests, problem solving
   - A presentation or two, if called for
     - e.g. the Brussels Worklfow Workshop Cylc and Rose keynote presentation?
+  - Testing Cylc with Docker
 
 ### Thursday
 - __Morning__
