@@ -118,22 +118,22 @@ functionality (but these should be separate components, like in Jupyter Hub).
    - __DECISION: Agreed we need this__
 
 
-![cylc-7 architecture](../etc/img/foo-0.png "cylc-7 architecture")
+![cylc-7 architecture](img/foo-0.png "cylc-7 architecture")
 
 __Figure 1__: Current (cylc-7) architecture: simple: all clients are equal (CLI,
 GUI, Jobs), automatic owner authentication; but suite discovery and
 authentication require clients to see the file system (also port scanning for
 discovery) – an in-browser GUI cannot do this. 
 
-![Possible new architecture](../etc/img/foo1.png "Possible new architecture")
+![Possible new architecture](img/foo1.png "Possible new architecture")
 
 __Figure 2__: Proposed new architecture
 
-![Possible client-suite interaction](../etc/img/foo-2.png "Possible new client-suite interaction")
+![Possible client-suite interaction](img/foo-2.png "Possible new client-suite interaction")
 
 __Figure 3__: possible client-suite interaction, in the new architecture
 
-![Possible job-suite interaction](../etc/img/foo-3.png "Possible new job-suite interaction")
+![Possible job-suite interaction](img/foo-3.png "Possible new job-suite interaction")
 
 __Figure 4__: possible job-suite interaction, in the new architecture
 

@@ -1,5 +1,5 @@
-![UMC Logos](../etc/img/umc.png)
-![ESiWACE - Cylc - Altair Logos](../etc/img/esiwace-cylc-altair-logos.png)
+![UMC Logos](img/umc.png)
+![ESiWACE - Cylc - Altair Logos](img/esiwace-cylc-altair-logos.png)
 
 # Cylc Development Workshop 
 __Bureau of Meteorology, Melbourne, Australia__ 
@@ -80,7 +80,7 @@ Items listed below are to guide the discussion, but we can be flexible if
 needed. Several of us are relatively expert on selected topics already and
 can start by walking the rest of us through it. Tentative decisions have
 already been made in a few areas (e.g. to use Vue.js for the GUI). We can
-consider coding and demo opportunities on any day, if time allows..
+consider coding and demo opportunities on any day, if time allows.
 
 ### Monday
 - __Morning__
@@ -190,7 +190,7 @@ Thanks to BoM, Altair, the UM Partnership, and ESiWACE for sponsoring this
 workshop, by providing a venue, and/or travel funding, and/or development
 resourcing! 
 
-![ESiWACE - Cylc - Altair Logos](../etc/img/esiwace-cylc-altair-logos.png)
-![UMC Logos](../etc/img/umc.png)
+![ESiWACE - Cylc - Altair Logos](img/esiwace-cylc-altair-logos.png)
+![UMC Logos](img/umc.png)
 
 
