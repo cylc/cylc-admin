@@ -1,5 +1,5 @@
-![UMC Logos](gfx/umc.png)
-![ESiWACE - Cylc - Altair Logos](gfx/esiwace-cylc-altair-logos.png)
+![UMC Logos](../etc/img/umc.png)
+![ESiWACE - Cylc - Altair Logos](../etc/img/esiwace-cylc-altair-logos.png)
 
 # Cylc Development Workshop 
 __Bureau of Meteorology, Melbourne, Australia__ 
@@ -190,7 +190,7 @@ Thanks to BoM, Altair, the UM Partnership, and ESiWACE for sponsoring this
 workshop, by providing a venue, and/or travel funding, and/or development
 resourcing! 
 
-![ESiWACE - Cylc - Altair Logos](gfx/esiwace-cylc-altair-logos.png)
-![UMC Logos](gfx/umc.png)
+![ESiWACE - Cylc - Altair Logos](../etc/img/esiwace-cylc-altair-logos.png)
+![UMC Logos](../etc/img/umc.png)
 
 
