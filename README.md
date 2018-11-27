@@ -5,4 +5,5 @@ documents that don't belong with the source code (such as meeting agendas) or
 or which inhabit a grey zone between initial planning/discussion and inclusion
 in the official project documentation.
 
-Markdown documents in `docs/` are automatically published to GitHub Pages.
+Markdown documents in `docs/` are automatically published to GitHub Pages (see
+the URL in the repository description).
