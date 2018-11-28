@@ -93,7 +93,9 @@ consider coding and demo opportunities on any day, if time allows.
 - __Afternoon__:
   - (Cylc Development and working practices)
   - (as we have a bunch of new team members!)
-  - git, GitHub, GitHub Flow, testing, Travis CI, Codacy, Riot.im or Slack?, etc.
+  - git, GitHub, GitHub Flow, testing, Travis CI, Codacy
+  - 2FA about to be enforced on cylc repository
+  - Riot.im? (UK team now has access); or Slack?
   - Define Python code style guidelines (add to CONTRIBUTING.md)?
   - Development roadmap: what's been discussed and decided so far?
   - Then: begin Tuesday's Architecture discussion early, if possible
