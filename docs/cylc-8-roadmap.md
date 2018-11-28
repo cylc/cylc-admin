@@ -13,7 +13,8 @@ meetings, but not in a way that will hurt you._
 We need something very much like the [Jupyter
 Hub](https://jupyterhub.readthedocs.io/en/stable/) Architecture: a privileged
 hub that spawns a reverse proxy server and sub-services for suite discovery etc.,
-and spawns suite daemons (c.f. Jupyter notebooks) as the user.
+and spawns UI servers (c.f. Jupyter notebooks) and potentially suite daemons as
+the user.
 
 ### Core Principles & Motivation For The New Architecture
 
