@@ -13,7 +13,23 @@ meetings, but not in a way that will hurt you._
 We need something very much like the [Jupyter
 Hub](https://jupyterhub.readthedocs.io/en/stable/) Architecture: a privileged
 hub that spawns a reverse proxy server and sub-services for suite discovery etc.,
-and spawns suite daemons (c.f. Jupyter notebooks) as the user.
+and spawns UI servers (c.f. Jupyter notebooks) and potentially suite daemons as
+the user.
+
+### Core Principles & Motivation For The New Architecture
+
+1. Enable users to run suites via the browser from any platform without
+   requiring a Cylc installation on that platform.
+2. Enable users to view and interact with suites on remote platforms without
+   requiring shared filesystem or SSH access.
+3. Remove the requirement for port scanning.
+4. Retire the self-signed SSL certificate.
+5. Provide a single point of access to Cylc suites running on a server,
+   group of servers or trust zone.
+6. Replace the on-disk plain-text passphrase authentication between the client
+   and the web UI.
+
+### Overview
 
 Note below "reverse proxy server" may encompass the "hub" and web proxy
 functionality (but these should be separate components, like in Jupyter Hub).
