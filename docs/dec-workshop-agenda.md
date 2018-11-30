@@ -130,7 +130,7 @@ consider coding and demo opportunities on any day, if time allows.
   - (Begin afernoon topics, if possible)
 
 - __Afternoon__
-  - (Cylc user feedback and discussion)
+  - (BoM Cylc user feedback and discussion - if needed)
   - Deficiencies, feature requests, problem solving
   - A presentation or two, if called for
     - e.g. the Brussels Worklfow Workshop Cylc and Rose keynote presentation?

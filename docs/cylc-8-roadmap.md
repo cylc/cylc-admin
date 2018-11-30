@@ -31,13 +31,15 @@ the user.
 
 ### Overview
 
-Note below "reverse proxy server" may encompass the "hub" and web proxy
-functionality (but these should be separate components, like in Jupyter Hub).
+Note below, the term "reverse proxy server" may encompass full "hub" (and
+sub-service) functionality as well as begin a web proxy (but these should be
+separate components, like in Jupyter Hub).
 
 
 1. __Reverse Proxy Server__ (gateway between clients and suites)
     1. Single point of access, to:
         1. Discover and present suites, and route client requests to them
+        1. (this could include for task job clients - status messaging etc.)
     2. Uses several sub-services:
         1. Suite discovery (running and stopped suites)
         1. Suite start-up (stopped suites)
