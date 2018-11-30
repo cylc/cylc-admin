@@ -91,9 +91,8 @@ consider coding and demo opportunities on any day, if time allows.
   - Then: begin afternoon topics early, if possible
 
 - __Afternoon__:
-  - (Cylc Development and working practices)
+  - (development working practices - we have a bunch of new team members!)
   - [Sadie's write-up](practices-prompts)
-  - (as we have a bunch of new team members!)
   - git, GitHub, GitHub Flow, testing, Travis CI, Codacy
   - 2FA about to be enforced on cylc repository
   - Riot.im? (UK team now has access); or Slack?
