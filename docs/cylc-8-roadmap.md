@@ -69,6 +69,10 @@ separate components, like in Jupyter Hub).
         1. (probably can't use a nested tree structure based on runtime
            inheritance - it would be useful for collapsible familiy views,
            but the dependency graph can't be encoded in this form).  
+    1. [Oliver's thought's on data structure and GraphQL schema](
+    https://github.com/cylc/cylc/issues/2563#issuecomment-411345934).
+    1. [Relay: pagination with GraphQL](
+    https://www.howtographql.com/react-relay/8-pagination/).
 
 1. __Suite Server API__ (server “endpoint” functions presented to clients, incl. the GUI)
     1. Currently a REST API: multiple fixed and inflexible endpoints
@@ -79,7 +83,8 @@ separate components, like in Jupyter Hub).
     1. Distinguish between the "suite status API" (for the GUI - WebSocket and
        GraphQL an advantage here?) and the "suite control API" (for commands
        like `cylc stop` and `cylc trigger` - WebSocket and GraphQL less of a
-       win, but could use for overall consistency?)
+       win, but could use for overall consistency, and get real response back
+       from commands without polling)
 
 1. __GUI Server?__ (collate status data from multiple suites and serve the GUI)
     1. Pros:
