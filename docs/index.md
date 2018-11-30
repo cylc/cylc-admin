@@ -1,6 +1,7 @@
 # Contents
 
 - [Workshop Agenda (3-7 Dec 2018)](dec-workshop-agenda)
+  - [Working Practices](practices-prompts)
 
 - [Cylc-7 Architecture](cylc-7-architecture)
 - [GUI Replacement Options](gui-replacement-options)

@@ -92,6 +92,7 @@ consider coding and demo opportunities on any day, if time allows.
 
 - __Afternoon__:
   - (Cylc Development and working practices)
+  - [Sadie's write-up](practices-prompts)
   - (as we have a bunch of new team members!)
   - git, GitHub, GitHub Flow, testing, Travis CI, Codacy
   - 2FA about to be enforced on cylc repository
