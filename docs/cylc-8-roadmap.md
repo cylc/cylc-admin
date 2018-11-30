@@ -39,7 +39,9 @@ separate components, like in Jupyter Hub).
 1. __Reverse Proxy Server__ (gateway between clients and suites)
     1. Single point of access, to:
         1. Discover and present suites, and route client requests to them
-        1. (this could include for task job clients - status messaging etc.)
+        1. (this could include for task job clients - status messaging etc.
+           especially for jobs running on remote platforms with locked-down
+           ports)
     2. Uses several sub-services:
         1. Suite discovery (running and stopped suites)
         1. Suite start-up (stopped suites)
@@ -50,13 +52,6 @@ separate components, like in Jupyter Hub).
     4. Implementation:
         1. Python web framework: Tornado, Flask?
         1. Ad-hoc server or WSGI service? (under Apache, NGINX, gevent?)
-
-1. __Suite Server API__ (server “endpoint” functions presented to clients, incl. the GUI)
-    1. Currently a REST API: multiple fixed and inflexible endpoints
-    2. We may want a GraphQL server instead: one simple, flexible endpoint?
-    3. Do we expose the API to clients, or translate at the Reverse Proxy?
-    4. Implementation: Python web framework: Tornado, Flask? (Currently Cherrypy)
-        a. Ad-hoc server or WSGI service? (under Apache or NGINX or gevent?)
 
 1. __Suite Status Data Structure(s)__ (information presented to GUI clients etc.)
     1. Underlies the following displays:
@@ -70,6 +65,34 @@ separate components, like in Jupyter Hub).
         1. Avoid sending redundant or unneeded information to the GUI
         1. Clients to select just what they need: suggests GraphQL endpoint?
         1. Incremental updates – can we send only what’s changed?
+    1. Lists of nodes and edges (or just edges, with full nodes at each end?)?
+        1. (probably can't use a nested tree structure based on runtime
+           inheritance - it would be useful for collapsible familiy views,
+           but the dependency graph can't be encoded in this form).  
+
+1. __Suite Server API__ (server “endpoint” functions presented to clients, incl. the GUI)
+    1. Currently a REST API: multiple fixed and inflexible endpoints
+    1. We may want a GraphQL server instead: one simple, flexible endpoint?
+    1. Do we expose the API to clients, or translate at the Reverse Proxy?
+    1. Implementation: Python web framework: Tornado, Flask? (Currently Cherrypy)
+        a. Ad-hoc server or WSGI service? (under Apache or NGINX or gevent?)
+    1. Distinguish between the "suite status API" (for the GUI - WebSocket and
+       GraphQL an advantage here?) and the "suite control API" (for commands
+       like `cylc stop` and `cylc trigger` - WebSocket and GraphQL less of a
+       win, but could use for overall consistency?)
+
+1. __GUI Server?__ (collate status data from multiple suites and serve the GUI)
+    1. Pros:
+        1. take (almost) all comms load off the suite server programs by scraping
+           the suite databases instead of network API
+           1. disk latency? (e.g. if on NFS)
+        1. present information about currently-stopped suites in uniform way
+    1. Cons:
+        1. Complexity? - another component
+        1. suite status information is less "distributed" - would a GUI server
+           be a memory hog (for a lot of large suites)?
+    1. should run as the user (one per user)?
+    1. spawned by the "hub"?
 
 1. __Suite Server Communication Protocol__ (currently HTTPS)
     1. The reverse proxy means suite servers don't necessarily have to talk HTTPS 
