@@ -78,7 +78,10 @@ Items listed below are to guide the discussion, but we can be flexible if
 needed. Several of us are relatively expert on selected topics already and
 can start by walking the rest of us through it. Tentative decisions have
 already been made in a few areas (e.g. to use Vue.js for the GUI). We can
-consider coding and demo opportunities on any day, if time allows.
+consider coding and demoing at any point if time allows.
+
+Main discussion points are noted below; see [Cylc 8 Roadmap](cylc-8-roadmap)
+for more detail.
 
 ### Monday
 - __Morning__
