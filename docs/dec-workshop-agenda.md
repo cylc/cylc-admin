@@ -92,20 +92,20 @@ consider coding and demo opportunities on any day, if time allows.
 
 - __Afternoon__:
   - (development working practices - we have a bunch of new team members!)
-  - [Sadie's write-up](practices-prompts)
+    - [Sadie's write-up](practices-prompts)
   - git, GitHub, GitHub Flow, testing, Travis CI, Codacy
   - 2FA about to be enforced on cylc repository
-  - Riot.im? (UK team now has access); or Slack?
+  - Riot.im? (UK team now has access); or Slack?; or Discourse?
   - Define Python code style guidelines (add to CONTRIBUTING.md)?
   - Development roadmap: what's been discussed and decided so far?
-  - Then: begin Tuesday's Architecture discussion early, if possible
+  - Then: __begin Architecture discussion__, if possible
 
 ### Tuesday
 - __All day__:
   - ([Architecture](cylc-8-roadmap))
   - components: GUI, "hub", proxy, sub-services for suite discovery and
     suite start-up etc., GUI server, "state server", ...?
-  - How closely can we follow/stea from Jupyter Hub?
+  - How closely can we follow/steal from Jupyter Hub?
   - What runs where? Privileged, or as the user?
   - [Server-side framework and API](cylc-8-roadmap#suite_server_api): flask, tornado, other?
   - Inter-component communication - network protocols and API(s)

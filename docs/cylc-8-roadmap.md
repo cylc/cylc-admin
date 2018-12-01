@@ -16,6 +16,10 @@ hub that spawns a reverse proxy server and sub-services for suite discovery etc.
 and spawns UI servers (c.f. Jupyter notebooks) and potentially suite daemons as
 the user.
 
+__Note__ below the term "reverse proxy server" may encompass full "hub" (and
+sub-service) functionality as well as a web proxy (but these should be
+separate components).
+
 ### Core Principles & Motivation For The New Architecture
 
 1. Enable users to run suites via the browser from any platform without
@@ -29,14 +33,9 @@ the user.
 6. Replace the on-disk plain-text passphrase authentication between the client
    and the web UI.
 
-### Overview
 
-Note below, the term "reverse proxy server" may encompass full "hub" (and
-sub-service) functionality as well as begin a web proxy (but these should be
-separate components, like in Jupyter Hub).
+### Reverse Proxy Server
 
-
-#### __Reverse Proxy Server__ (gateway between clients and suites)
     1. Single point of access, to:
         1. Discover and present suites, and route client requests to them
         1. (this could include for task job clients - status messaging etc.
@@ -54,7 +53,8 @@ separate components, like in Jupyter Hub).
         1. Python web framework: Tornado, Flask?
         1. Ad-hoc server or WSGI service? (under Apache, NGINX, gevent?)
 
-#### __Suite Status Data__ (information presented to GUI clients etc.)
+### Suite Status Data
+
     1. Underlies the following displays:
         1. Detailed suite status views: dependency graph, text tree, “dot”
         1. Multi-suite summary status
@@ -75,7 +75,10 @@ separate components, like in Jupyter Hub).
     1. [Relay: pagination with GraphQL](
     https://www.howtographql.com/react-relay/8-pagination/).
 
-#### __Suite Server API__ (server “endpoint” functions presented to clients, incl. the GUI)
+### Suite Server API
+
+
+    1. server “endpoint” functions presented to clients
     1. Currently a REST API: multiple fixed and inflexible endpoints
     1. We may want a GraphQL server instead: one simple, flexible endpoint?
     1. Do we expose the API to clients, or translate at the Reverse Proxy (or GUI Server?)?
@@ -94,7 +97,10 @@ separate components, like in Jupyter Hub).
        win, but could use for overall consistency, and get real response back
        from commands without polling)
 
-#### __GUI Server?__ (collate status data from multiple suites and serve the GUI)
+### GUI Server?
+
+    1. (collates status data from multiple suites and serve the GUI)
+    1. Do we need this?
     1. Pros:
         1. take (almost) all comms load off the suite server programs by scraping
            the suite databases instead of network API
@@ -107,15 +113,19 @@ separate components, like in Jupyter Hub).
     1. should run as the user (one per user)?
     1. spawned by the "hub"?
 
-#### __Suite Server Communication Protocol__ (currently HTTPS)
-    1. The reverse proxy means suite servers don't necessarily have to talk HTTPS 
-    2. The WebSocket protocol may be ideal:
+### Suite Server Communication Protocol
+
+    1. The WebSocket protocol may be ideal:
         1. Very efficient, persistent full-duplex (and therefore server push)
         1. No need for polling by the GUI?!
         1. Proper quick feedback in response to client commands?
-    3.  (protocol buffers over HTTPS also suggested, but unlikely)
+    1. The reverse proxy means suite servers don't necessarily have to talk
+       HTTPS (or WebSocket)
+    1.  (protocol buffers over HTTPS also suggested, but unlikely)
 
-#### __User Authentication__
+
+### Authentication
+
     1. For the GUI, and for client CLI commands executed by users
     2. Current method (automatic owner passphrase on disk) won’t work for web GUI
     3. How to plug in to site identity management? (LDAP, AD, RedHat IPA)
@@ -124,35 +134,43 @@ separate components, like in Jupyter Hub).
     6. Authenticate at the Reverse Proxy, not at suites?
         1. Require suites to automatically trust the reverse proxy – SSL Client Certs?
 
-#### __User Authorization__ (which users can do what to a suite?)
-    1. Authenticated user information passed to suites from reverse proxy?
-    2. Simplest: text file read by suite and/or reverse proxy, mapping users to privileges
-    3. At suite server program: is user authorized for the requested action?
-    4. Reverse proxy: can user spin up a suite or service, or connect to an existing one?
+### Authorization
 
-#### __Job-to-Suite Communications__ (“job authentication” for status messages etc.)
+    1. (which users can do what?)
+    1. Authenticated user information passed to suites from reverse proxy?
+    1. Simplest: text file read by suite and/or reverse proxy, mapping users to privileges
+    1. At suite server program: is user authorized for the requested action?
+    1. Reverse proxy: can user spin up a suite or service, or connect to an existing one?
+    1. (authentication by job clients - see next section)
+
+### Job-to-Suite Communications
+
+    1. (“job authentication” required for status messaging and other client commands)
     1. Currently jobs authenticate automatically as the user - won’t work for web GUI
-    2. Secure one-time token provided by the suite program?
-    3. Jobs connect directly to suites, OR go via the Reverse Proxy like user clients?
+    1. Secure one-time token provided by the suite program?
+    1. Jobs connect directly to suites, OR go via the Reverse Proxy like user clients?
         1. Jobs don’t need “suite discovery” (the suite can tell its jobs its location)
         1. But going via reverse proxy may still be convenient for other reasons
 
-#### __Web GUI__ (front end)
-    1. Which JavaScript framework? (React, Vue, D3, …?)
+### GUI
+
+    1. Which front-end JavaScript framework? (Angular, React, Vue, D3, …?)
         1. Must look good, and be efficient and responsive for very large suites
         1. May/June demos suggest development won’t be as difficult as the old
-           GUIs (but instead we have many architectural issues to contend
-           with).
+           GUIs (but instead we have many architectural issues to contend with).
         1. Should pages be served by the suites, or a “GUI server” under the reverse proxy?
         1. From suite server endpoints, or suite DBs?  Is latency a problem in the DB case?
-    2. “Serve Everything” (GUI has no access to the filesystem)
+    1. “Serve Everything” (GUI has no access to the filesystem)
         1. Current GUI gets some information from the filesystem:
             1. Static suite visualization and validation (parses suite config file)
-            1. Edit run (generate new job file and present it in the user’s editor)
+            (low priority?)
             1. Live access to job logs (uses “cylc cat-log” which reads files off disk)
-        1. (Low priority, except for edit run)
+            (low priority?)
+            1. Edit run (generate new job file and present it in the user’s editor)
+            (higher priority)
 
-#### __Backward Compatibility / Transition Period__
+### Transition Period
+
   1. Users must continue to use the old GUI while we developg the new one 
     1. Evolve the old GUI along with the new suite API?
     1. Or support the old API as-is concurrently with the new?
@@ -162,14 +180,14 @@ separate components, like in Jupyter Hub).
     - the new system is too different to develop "in place"
     - early migration to Python 3 also demands this
 
-#### __Packaging__ - proper `setup.py`-based installation
-   - enables automatic installation by `pip` etc.
-   - can ditch our bundled libraries (Jinja2)
-   - enables different installation groups, e.g. "single user" and "full"
-     (the works)
-   - Bruno has had an initial crack at this
+### Packaging
 
-   - __DECISION: Agreed we need this__
+   - proper `setup.py`-based installation for pip and conda
+   - ditch bundled libraries (Jinja2 etc.)
+   - allow different installation groups, e.g. "single user" and "full" (the works)
+   - Bruno has made a good start on this already
+
+   - __DECISION: definitely needed__
 
 
 ![cylc-7 architecture](img/foo-0.png "cylc-7 architecture")
