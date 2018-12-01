@@ -80,8 +80,8 @@ can start by walking the rest of us through it. Tentative decisions have
 already been made in a few areas (e.g. to use Vue.js for the GUI). We can
 consider coding and demoing at any point if time allows.
 
-Main discussion points are noted below; see [Cylc 8 Roadmap](cylc-8-roadmap)
-for more detail.
+Main discussion points are noted below. For the technical topics see [Cylc 8
+Roadmap](cylc-8-roadmap) - and the other references above - for more detail.
 
 ### Monday
 - __Morning__
