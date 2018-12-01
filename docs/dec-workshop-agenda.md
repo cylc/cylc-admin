@@ -106,17 +106,12 @@ consider coding and demo opportunities on any day, if time allows.
   - components: GUI, "hub", proxy, sub-services for suite discovery and
     suite start-up etc., GUI server, "state server", ...?
   - How closely can we follow/steal from Jupyter Hub?
-  - What runs where? Privileged, or as the user?
-  - [Server-side framework and API](cylc-8-roadmap#suite_server_api): flask, tornado, other?
-  - Inter-component communication - network protocols and API(s)
-    - WebSocket and GraphQL seem advantageous (c.f. HTTPS and a REST API) but
-      do they need to go all the way from the GUI to the suite daemons? If not,
-      what are the implications?
-    - alternatives at the back end? ZeroMQ, Protocol Buffers (& gRPC?)?
-      - can we ignore these options at the start and go full websocket for
-        simplicity, and swap out the protocol in future only if necessary?
-  - GraphQL demo with cylc-7 (David) 
-  - Do we need a simplified architecture for individual use?
+  - What runs privileged, and as the user?
+  - [Server-side framework and API](cylc-8-roadmap#suite-server-api): flask, tornado, other?
+  - [Inter-component communication](cylc-8-roadmap#communications-protocols)
+    - WebSocket and GraphQL API, rather than HTTPS and REST API?
+  - Demo: GraphQL with cylc-7 (David) 
+  - Simplified architecture for individual use?
     - or just run all components as the user?
 
 ### Wednesday
@@ -124,7 +119,7 @@ consider coding and demo opportunities on any day, if time allows.
   - (Combined session with the BoM/Altair Control Panel Stream)
   - Software testing, packaging and distribution
   - Scheduler prediction tool
-  - Cylc `setup.py`
+  - Cylc packaging via `setup.py`
   - (Begin afernoon topics, if possible)
 
 - __Afternoon__
@@ -132,41 +127,30 @@ consider coding and demo opportunities on any day, if time allows.
   - Deficiencies, feature requests, problem solving
   - A presentation or two, if called for
     - e.g. the Brussels Worklfow Workshop Cylc and Rose keynote presentation?
-  - Testing Cylc with Docker
+  - Demo: Cylc with Docker (Bruno)
 
 ### Thursday
 - __Morning__
-  - (Authentication and authorization)
-  - User authentication: site integration (plugins?), session management
-  - Session management for CLI commands?
+  - ([Authentication](cylc-8-roadmap#authentication) and
+    [authorization](cylc-8-roadmap#authorization))
+  - Follow JupyterHub?
+  - Site integration (plugins?)
+  - Session management (and for CLI commands?)
   - Automatic job authentication: one-time tokens?
-  - If authentication is done by the Hub, how do suite daemons trust the Hub?
-    - SSL client certificate?
-    - what if not using HTTPS?
+  - Authentication by the Hub or Proxy, then how do suite daemons trust the Hub?
+    - SSL client certificate? (if not using HTTPS?)
   - Authorization - how to do it?
 - __Afternoon__
   - __Begin the Web GUI discussion__ (see Friday morning)
 
 ### Friday
 - __Morning__
-  - (Web GUI)
-  - Which Javascript framework: Vue.js (or React.js, or...)?
-    - [A recent comparison](https://belitsoft.com/front-end-development-services/react-vs-angular)
-  - Typescript? [Maybe not](https://medium.com/javascript-scene/the-shocking-secret-about-static-types-514d39bf30a3)
-  - What to display - suite server data structures
-    - lists of nodes and edges - sufficient for all views? 
-    - via GraphQL? (by suite server programs or a GUI server?)
-    - display "ghost nodes" in all views - i.e. hide the "task pool" from users
-  - Oliver's UI design ideas
-    : [one](https://github.com/cylc/cylc/issues/1873#issuecomment-405373915)
-    : [two](https://github.com/cylc/cylc/issues/1873#issuecomment-417481655)
-    : [three](https://github.com/cylc/cylc/issues/1873#issuecomment-419742930)
-    : [four](https://github.com/cylc/cylc/issues/1873#issuecomment-420084752)
-    : [graph view](https://github.com/cylc/cylc/issues/1873#issuecomment-423555699)
-  - [Sadie's mind maps!](https://github.com/cylc/cylc/issues/1873#issuecomment-421856260)
+  - ([Web GUI](cylc-8-roadmap#gui))
+  - Framework: Vue, or React, or Angular? 
   - Provide a small number of built-in themes? or give users control over the look?
   - Accessibility
-  - Do we need (/can we get?) professional UI design advice?
+  - [UI Design](cylc-8-roadmap#gui)
+    - Do we need (/can we get?) professional UI design advice?
   - How to display very large suites effectively and efficiently
   - Interaction with other components:
     - To suites (via proxy) or to a UI server?

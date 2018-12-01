@@ -4,8 +4,7 @@
 
 __Target completion date: late 2019__ (Python 2 end of life)
 
-_WARNING - this document is slightly out of date in places, since recent team
-meetings, but not in a way that will hurt you._
+_WARNING_ - bits of this document may slightly outdated.
 
 ## System Components, Communications, etc.
 
@@ -53,33 +52,11 @@ separate components).
     1. Python web framework: Tornado, Flask?
     1. Ad-hoc server or WSGI service? (under Apache, NGINX, gevent?)
 
-### Suite Status Data
-
-1. Underlies the following displays:
-    1. Detailed suite status views: dependency graph, text tree, “dot”
-    1. Multi-suite summary status
-    1. Task inheritance tree (to expand/collapse task families in all views)
-2. The new GUI needs to be more integrated and dynamic than the old:
-    1. Multi-suite summary (and stopped suites) and suite views, all at once
-    1. Show only selected parts of a large suite (esp. for the graph view)
-3. For efficiency, we need to rethink how suites present this data
-    1. Avoid sending redundant or unneeded information to the GUI
-    1. Clients to select just what they need: suggests GraphQL endpoint?
-    1. Incremental updates – can we send only what’s changed?
-1. Lists of nodes and edges (or just edges, with full nodes at each end?)?
-    1. (probably can't use a nested tree structure based on runtime
-       inheritance - it would be useful for collapsible familiy views,
-       but the dependency graph can't be encoded in this form).  
-1. [Oliver's thought's on data structure and GraphQL schema](
-https://github.com/cylc/cylc/issues/2563#issuecomment-411345934).
-1. [Relay: pagination with GraphQL](
-https://www.howtographql.com/react-relay/8-pagination/).
-
 ### Suite Server API
 
-1. server “endpoint” functions presented to clients
+1. (Server “endpoint” functions called by clients)
 1. Currently a REST API: multiple fixed and inflexible endpoints
-1. We may want a GraphQL server instead: one simple, flexible endpoint?
+1. GraphQL instead? one simple, flexible endpoint?
 1. Do we expose the API to clients, or translate at the Reverse Proxy (or GUI Server?)?
 1. Implementation: [Python web framework](
 https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/):
@@ -112,16 +89,19 @@ https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/):
 1. should run as the user (one per user)?
 1. spawned by the "hub"?
 
-### Suite Server Communication Protocol
+### Communication Protocols
 
 1. The WebSocket protocol may be ideal:
     1. Very efficient, persistent full-duplex (and therefore server push)
     1. No need for polling by the GUI?!
     1. Proper quick feedback in response to client commands?
+    1. all the way from GUI to suite daemons? (If not, what are the implications?)
 1. The reverse proxy means suite servers don't necessarily have to talk
-   HTTPS (or WebSocket)
-1.  (protocol buffers over HTTPS also suggested, but unlikely)
-
+   HTTPS (or WebSocket), e.g.
+   1. Protocol Buffers and gRPC
+   1. ZeroMQ
+   1. can we ignore these options initially,  and refactor later within the
+      new architecture, only if necessary?
 
 ### Authentication
 
@@ -151,6 +131,30 @@ https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/):
     1. Jobs don’t need “suite discovery” (the suite can tell its jobs its location)
     1. But going via reverse proxy may still be convenient for other reasons
 
+### Suite Status Data
+
+1. Underlies the following displays:
+    1. Detailed suite status views: dependency graph, text tree, “dot”
+    1. Multi-suite summary status
+    1. Task inheritance tree (to expand/collapse task families in all views)
+1. The new GUI needs to be more integrated and dynamic than the old:
+    1. Multi-suite summary (and stopped suites) and suite views, all at once
+    1. Show only selected parts of a large suite (esp. for the graph view)
+1. For efficiency, we need to rethink how suites present this data
+    1. Avoid sending redundant or unneeded information to the GUI
+    1. Clients to select just what they need: suggests GraphQL endpoint?
+    1. Incremental updates – can we send only what’s changed?
+1. Lists of nodes and edges (or just edges, with full nodes at each end?)?
+    1. (probably can't use a nested tree structure based on runtime
+       inheritance - it would be useful for collapsible familiy views,
+       but the dependency graph can't be encoded in this form).  
+    1. display "ghost nodes" in all views - i.e. hide the "task pool" from users
+
+1. [Oliver's thought's on data structure and GraphQL schema](
+https://github.com/cylc/cylc/issues/2563#issuecomment-411345934).
+1. [Relay: pagination with GraphQL](
+https://www.howtographql.com/react-relay/8-pagination/).
+
 ### GUI
 
 1. Which front-end JavaScript framework? (Angular, React, Vue, D3, …?)
@@ -159,6 +163,17 @@ https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/):
        GUIs (but instead we have many architectural issues to contend with).
     1. Should pages be served by the suites, or a “GUI server” under the reverse proxy?
     1. From suite server endpoints, or suite DBs?  Is latency a problem in the DB case?
+    1. [Recent comparison](https://belitsoft.com/front-end-development-services/react-vs-angular)
+    1. Typescript? [Maybe not](https://medium.com/javascript-scene/the-shocking-secret-about-static-types-514d39bf30a3)
+    1. Automated testing?
+1. UI Design
+  1. Oliver's UI design ideas
+    - [one](https://github.com/cylc/cylc/issues/1873#issuecomment-405373915)
+    - [two](https://github.com/cylc/cylc/issues/1873#issuecomment-417481655)
+    - [three](https://github.com/cylc/cylc/issues/1873#issuecomment-419742930)
+    - [four](https://github.com/cylc/cylc/issues/1873#issuecomment-420084752)
+    - [graph view](https://github.com/cylc/cylc/issues/1873#issuecomment-423555699)
+  1. [Sadie's mind maps!](https://github.com/cylc/cylc/issues/1873#issuecomment-421856260)
 1. “Serve Everything” (GUI has no access to the filesystem)
     1. Current GUI gets some information from the filesystem:
         1. Static suite visualization and validation (parses suite config file)
