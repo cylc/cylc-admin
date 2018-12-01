@@ -163,13 +163,12 @@ https://trends.google.com/trends/explore?date=today%205-y&q=python%20aiohttp,pyt
   - Which Javascript framework: Vue.js (or React.js, or...)?
     - [A recent comparison](https://belitsoft.com/front-end-development-services/react-vs-angular)
   - Typescript? [Maybe not](https://medium.com/javascript-scene/the-shocking-secret-about-static-types-514d39bf30a3)
-  - Oliver's UI design ideas:
-    - [one](
-    https://github.com/cylc/cylc/issues/1873#issuecomment-405373915) : [two](
-    https://github.com/cylc/cylc/issues/1873#issuecomment-417481655) : [three](
-    https://github.com/cylc/cylc/issues/1873#issuecomment-419742930) : [four](
-    https://github.com/cylc/cylc/issues/1873#issuecomment-420084752) : [graph view](
-    https://github.com/cylc/cylc/issues/1873#issuecomment-423555699)
+  - Oliver's UI design ideas
+    : [one](https://github.com/cylc/cylc/issues/1873#issuecomment-405373915)
+    : [two](https://github.com/cylc/cylc/issues/1873#issuecomment-417481655)
+    : [three](https://github.com/cylc/cylc/issues/1873#issuecomment-419742930)
+    : [four](https://github.com/cylc/cylc/issues/1873#issuecomment-420084752)
+    : [graph view](https://github.com/cylc/cylc/issues/1873#issuecomment-423555699)
   - [Sadie's mind maps!](https://github.com/cylc/cylc/issues/1873#issuecomment-421856260)
   - Provide a small number of built-in themes? or give users control over the look?
   - Accessibility
