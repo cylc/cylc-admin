@@ -2,9 +2,7 @@
 ![ESiWACE - Cylc - Altair Logos](img/esiwace-cylc-altair-logos.png)
 
 # Cylc Development Workshop 
-__Bureau of Meteorology, Melbourne, Australia__ 
-
-3-7 December 2018
+__Bureau of Meteorology, Melbourne, Australia__, 3-7 December 2018
 
 ## Table of Contents
 - [Context](#context)
@@ -152,14 +150,10 @@ consider coding and demo opportunities on any day, if time allows.
   - [UI Design](cylc-8-roadmap#gui)
     - Do we need (/can we get?) professional UI design advice?
   - How to display very large suites effectively and efficiently
-  - Interaction with other components:
-    - To suites (via proxy) or to a UI server?
-    - Incremental update of suite state data?
-    - WebSocket? - no polling by GUI!
-    - GraphQL?
+  - Interaction with other components, incremental update, WebSocket (no polling), GraphQL
   - Who serves the actual HTML pages (as opposed to just data)?
     - suite daemon, or GUI server? (covered in "Architecture" above)
-  - Automated UI testing?
+  - Automated UI testing
 
 - __Afternoon__
   - (Tie it up and nail it down, with reference to the Workshop [Goals](#goals))
@@ -189,5 +183,3 @@ resourcing!
 
 ![ESiWACE - Cylc - Altair Logos](img/esiwace-cylc-altair-logos.png)
 ![UMC Logos](img/umc.png)
-
-

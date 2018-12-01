@@ -12,12 +12,12 @@ _WARNING_ - bits of this document may slightly outdated.
 We need something very much like the [Jupyter
 Hub](https://jupyterhub.readthedocs.io/en/stable/) Architecture: a privileged
 hub that spawns a reverse proxy server and sub-services for suite discovery etc.,
-and spawns UI servers (c.f. Jupyter notebooks) and potentially suite daemons as
-the user.
+and spawns UI servers (c.f. Jupyter notebooks) and potentially suite daemons,
+as the user.
 
 __Note__ below the term "reverse proxy server" may encompass full "hub" (and
 sub-service) functionality as well as a web proxy (but these should be
-separate components).
+separate components); and "suite daemon" == "suite server program".
 
 ### Core Principles & Motivation For The New Architecture
 
@@ -31,7 +31,6 @@ separate components).
    group of servers or trust zone.
 6. Replace the on-disk plain-text passphrase authentication between the client
    and the web UI.
-
 
 ### Reverse Proxy Server
 
