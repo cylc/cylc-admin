@@ -110,17 +110,15 @@ consider coding and demo opportunities on any day, if time allows.
       https://github.com/cylc/cylc/issues/1873#issuecomment-416000070)  
   - How closely can we follow (and even borrow code from) Jupyter Hub?
   - What runs where? Privileged, or as the user?
-  - Server-side [Python frameworks](https://steelkiwi.com/blog/best-python-web-frameworks-to-learn/) (server side)
-    -[Candidates](
-https://trends.google.com/trends/explore?date=today%205-y&q=python%20aiohttp,python%20tornado,python%20geven://trends.google.com/trends/explore?date=today%205-y&q=python%20aiohttp,python%20tornado,python%20gevent,python%20flask)
-      - [Flask](http://flask.pocoo.org/) (+gevent?) -
-        [Tornado](https://www.tornadoweb.org/en/stable/) - asynchronous -
-        "ideal for websocket or long polling" -
-        [AIOHTTP](https://aiohttp.readthedocs.io/en/stable/) - asyncio
+  - Server-side [Python web frameworks](https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/)
+    - [Flask](http://flask.pocoo.org/) (+gevent?)
+    - [Tornado](https://www.tornadoweb.org/en/stable/) (async even at Python 2; "ideal for websocket or long polling")
+    - ([popularity](https://python.libhunt.com/compare-tornado-vs-flask?rel=cmp-cmp))
+    - Other? Django; [Sanic](https://github.com/huge-success/sanic) (flask-like async); [AIOHTTP](https://aiohttp.readthedocs.io/en/stable/)
   - Inter-component communication - network protocols and API(s)
-    - WebSocket and GraphQL seem advantageous (compared with HTTPS and a REST
-      API) but do they need to go all the way from the GUI to the suite
-      daemons? If not, what are the implications?
+    - WebSocket and GraphQL seem advantageous (c.f. HTTPS and a REST API) but
+      do they need to go all the way from the GUI to the suite daemons? If not,
+      what are the implications?
     - alternatives at the back end? ZeroMQ, Protocol Buffers (& gRPC?)?
   - Suite server data structures
     - are lists of nodes and edges sufficient for all views? 
