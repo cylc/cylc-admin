@@ -106,6 +106,8 @@ consider coding and demo opportunities on any day, if time allows.
   - System components:
     - GUI, "hub", reverse proxy, sub-services for suite discovery and start-up, etc.
     - other? GUI server, "suite state server", ...?
+    - [suite discovery not needed?](
+      https://github.com/cylc/cylc/issues/1873#issuecomment-416000070)  
   - How closely can we follow (and even borrow code from) Jupyter Hub?
   - What runs where? Privileged, or as the user?
   - Server-side Python framework(s)
@@ -118,6 +120,7 @@ consider coding and demo opportunities on any day, if time allows.
   - Suite server data structures
     - are lists of nodes and edges sufficient for all views? 
     - exposed via GraphQL? (by the suite server, or a GUI server?)
+  - GraphQL demo with cylc-7 (David) 
   - Do we need a simplified architecture for individual use?
     - or just run all components as the user?
 
@@ -147,15 +150,24 @@ consider coding and demo opportunities on any day, if time allows.
     - what if not using HTTPS?
   - Authorization - how to do it?
 - __Afternoon__
-  - Begin the Web GUI discussion if time allows (see Friday morning)
+  - __Begin the Web GUI discussion__ (see Friday morning)
 
 ### Friday
 - __Morning__
   - (Web GUI)
   - Which Javascript framework: Vue.js (or React.js, or...)?
-  - Unify gscan and gcylc?
-  - UI design ideas
-    - Do we need (/can we get?) professional UI design advice?
+  - Oliver's UI design ideas:
+    - [one](
+    https://github.com/cylc/cylc/issues/1873#issuecomment-405373915)
+    - [two](
+    https://github.com/cylc/cylc/issues/1873#issuecomment-417481655)
+    - [three](https://github.com/cylc/cylc/issues/1873#issuecomment-419742930)
+    - [four](https://github.com/cylc/cylc/issues/1873#issuecomment-420084752)
+    - [graph view](https://github.com/cylc/cylc/issues/1873#issuecomment-423555699)
+  - [Sadie's mind maps!](https://github.com/cylc/cylc/issues/1873#issuecomment-421856260)
+  - Provide a small number of built-in themes? or give users control over the look?
+  - Accessibility
+  - Do we need (/can we get?) professional UI design advice?
   - How to display very large suites effectively and efficiently
   - Interaction with other components:
     - To suites (via proxy) or to a UI server?
@@ -163,8 +175,8 @@ consider coding and demo opportunities on any day, if time allows.
     - WebSocket? - no polling by GUI!
     - GraphQL?
   - Who serves the actual HTML pages (as opposed to just data)?
-    - suite daemon, or GUI server?
-  - Framework to automate UI testing.
+    - suite daemon, or GUI server? (covered in "Architecture" above)
+  - Automated UI testing?
 
 - __Afternoon__
   - (Tie it up and nail it down, with reference to the Workshop [Goals](#goals))
