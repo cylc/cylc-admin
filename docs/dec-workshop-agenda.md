@@ -88,7 +88,7 @@ consider coding and demo opportunities on any day, if time allows.
   - Introductions, with interpretive dance
   - Overview and showcase of work and plans on the BoM/Altair/Cylc project
     (Control Panel, Apache Kafka, reporting DB, authentication etc.)
-  - Then: begin afternoon topics early, if possible
+  - Then: __begin afternoon topics__, if possible
 
 - __Afternoon__:
   - (development working practices - we have a bunch of new team members!)
@@ -102,24 +102,19 @@ consider coding and demo opportunities on any day, if time allows.
 
 ### Tuesday
 - __All day__:
-  - (Architecture)
-  - System components:
-    - GUI, "hub", reverse proxy, sub-services for suite discovery and start-up, etc.
-    - other? GUI server, "suite state server", ...?
-    - [suite discovery not needed?](
-      https://github.com/cylc/cylc/issues/1873#issuecomment-416000070)  
-  - How closely can we follow (and even borrow code from) Jupyter Hub?
+  - ([Architecture](cylc-8-roadmap))
+  - components: GUI, "hub", proxy, sub-services for suite discovery and
+    suite start-up etc., GUI server, "state server", ...?
+  - How closely can we follow/stea from Jupyter Hub?
   - What runs where? Privileged, or as the user?
-  - Server-side [Python web frameworks](https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/)
-    - [Flask](http://flask.pocoo.org/) (+gevent?)
-    - [Tornado](https://www.tornadoweb.org/en/stable/) (async even at Python 2; "ideal for websocket or long polling")
-    - ([popularity](https://python.libhunt.com/compare-tornado-vs-flask?rel=cmp-cmp))
-    - Other? Django; [Sanic](https://github.com/huge-success/sanic) (flask-like async); [AIOHTTP](https://aiohttp.readthedocs.io/en/stable/)
+  - [Server-side framework and API](cylc-8-roadmap#suite_server_api): flask, tornado, other?
   - Inter-component communication - network protocols and API(s)
     - WebSocket and GraphQL seem advantageous (c.f. HTTPS and a REST API) but
       do they need to go all the way from the GUI to the suite daemons? If not,
       what are the implications?
     - alternatives at the back end? ZeroMQ, Protocol Buffers (& gRPC?)?
+      - can we ignore these options at the start and go full websocket for
+        simplicity, and swap out the protocol in future only if necessary?
   - GraphQL demo with cylc-7 (David) 
   - Do we need a simplified architecture for individual use?
     - or just run all components as the user?
