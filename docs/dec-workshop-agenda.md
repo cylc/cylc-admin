@@ -120,9 +120,6 @@ consider coding and demo opportunities on any day, if time allows.
       do they need to go all the way from the GUI to the suite daemons? If not,
       what are the implications?
     - alternatives at the back end? ZeroMQ, Protocol Buffers (& gRPC?)?
-  - Suite server data structures
-    - are lists of nodes and edges sufficient for all views? 
-    - exposed via GraphQL? (by the suite server, or a GUI server?)
   - GraphQL demo with cylc-7 (David) 
   - Do we need a simplified architecture for individual use?
     - or just run all components as the user?
@@ -161,6 +158,10 @@ consider coding and demo opportunities on any day, if time allows.
   - Which Javascript framework: Vue.js (or React.js, or...)?
     - [A recent comparison](https://belitsoft.com/front-end-development-services/react-vs-angular)
   - Typescript? [Maybe not](https://medium.com/javascript-scene/the-shocking-secret-about-static-types-514d39bf30a3)
+  - What to display - suite server data structures
+    - lists of nodes and edges - sufficient for all views? 
+    - via GraphQL? (by suite server programs or a GUI server?)
+    - display "ghost nodes" in all views - i.e. hide the "task pool" from users
   - Oliver's UI design ideas
     : [one](https://github.com/cylc/cylc/issues/1873#issuecomment-405373915)
     : [two](https://github.com/cylc/cylc/issues/1873#issuecomment-417481655)
