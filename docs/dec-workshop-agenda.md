@@ -110,8 +110,11 @@ consider coding and demo opportunities on any day, if time allows.
       https://github.com/cylc/cylc/issues/1873#issuecomment-416000070)  
   - How closely can we follow (and even borrow code from) Jupyter Hub?
   - What runs where? Privileged, or as the user?
-  - Server-side Python framework(s)
-    - [Flask](http://flask.pocoo.org/) (+gevent?) or [Tornado](https://www.tornadoweb.org/en/stable/) or [AIOHTTP](https://aiohttp.readthedocs.io/en/stable/)?
+  - Server-side Python framework(s) [Google
+    Trends](https://trends.google.com/trends/explore?date=today%205-y&q=python%20aiohttp,python%20tornado,python%20gevent)
+    - [Flask](http://flask.pocoo.org/) (+gevent?)
+    - [Tornado](https://www.tornadoweb.org/en/stable/)
+    - [AIOHTTP](https://aiohttp.readthedocs.io/en/stable/)?
   - Inter-component communication - network protocols and API(s)
     - WebSocket and GraphQL seem advantageous (compared with HTTPS and a REST
       API) but do they need to go all the way from the GUI to the suite
