@@ -110,11 +110,12 @@ consider coding and demo opportunities on any day, if time allows.
       https://github.com/cylc/cylc/issues/1873#issuecomment-416000070)  
   - How closely can we follow (and even borrow code from) Jupyter Hub?
   - What runs where? Privileged, or as the user?
-  - Server-side Python framework(s) [Google
-    Trends](https://trends.google.com/trends/explore?date=today%205-y&q=python%20aiohttp,python%20tornado,python%20gevent)
+  - Server-side [Python frameworks](https://steelkiwi.com/blog/best-python-web-frameworks-to-learn/)
+  -[Candidates](
+    https://trends.google.com/trends/explore?date=today%205-y&q=python%20aiohttp,python%20tornado,python%20gevent)
     - [Flask](http://flask.pocoo.org/) (+gevent?)
-    - [Tornado](https://www.tornadoweb.org/en/stable/)
-    - [AIOHTTP](https://aiohttp.readthedocs.io/en/stable/)?
+    - [Tornado](https://www.tornadoweb.org/en/stable/) - asynchronous - "ideal for websocket or long polling"
+    - [AIOHTTP](https://aiohttp.readthedocs.io/en/stable/) - asyncio
   - Inter-component communication - network protocols and API(s)
     - WebSocket and GraphQL seem advantageous (compared with HTTPS and a REST
       API) but do they need to go all the way from the GUI to the suite
@@ -159,6 +160,8 @@ consider coding and demo opportunities on any day, if time allows.
 - __Morning__
   - (Web GUI)
   - Which Javascript framework: Vue.js (or React.js, or...)?
+    - [A recent comparison](https://belitsoft.com/front-end-development-services/react-vs-angular)
+  - Typescript? [Maybe not](https://medium.com/javascript-scene/the-shocking-secret-about-static-types-514d39bf30a3)
   - Oliver's UI design ideas:
     - [one](
     https://github.com/cylc/cylc/issues/1873#issuecomment-405373915)
