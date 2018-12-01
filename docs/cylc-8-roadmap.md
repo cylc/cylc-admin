@@ -167,13 +167,13 @@ https://www.howtographql.com/react-relay/8-pagination/).
     1. Typescript? [Maybe not](https://medium.com/javascript-scene/the-shocking-secret-about-static-types-514d39bf30a3)
     1. Automated testing?
 1. UI Design
-  1. Oliver's UI design ideas
-    - [one](https://github.com/cylc/cylc/issues/1873#issuecomment-405373915)
-    - [two](https://github.com/cylc/cylc/issues/1873#issuecomment-417481655)
-    - [three](https://github.com/cylc/cylc/issues/1873#issuecomment-419742930)
-    - [four](https://github.com/cylc/cylc/issues/1873#issuecomment-420084752)
-    - [graph view](https://github.com/cylc/cylc/issues/1873#issuecomment-423555699)
-  1. [Sadie's mind maps!](https://github.com/cylc/cylc/issues/1873#issuecomment-421856260)
+    1. Oliver's UI design ideas
+      - [one](https://github.com/cylc/cylc/issues/1873#issuecomment-405373915)
+      - [two](https://github.com/cylc/cylc/issues/1873#issuecomment-417481655)
+      - [three](https://github.com/cylc/cylc/issues/1873#issuecomment-419742930)
+      - [four](https://github.com/cylc/cylc/issues/1873#issuecomment-420084752)
+      - [graph view](https://github.com/cylc/cylc/issues/1873#issuecomment-423555699)
+    1. [Sadie's mind maps!](https://github.com/cylc/cylc/issues/1873#issuecomment-421856260)
 1. “Serve Everything” (GUI has no access to the filesystem)
     1. Current GUI gets some information from the filesystem:
         1. Static suite visualization and validation (parses suite config file)
