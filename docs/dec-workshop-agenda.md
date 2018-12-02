@@ -96,8 +96,12 @@ Roadmap](cylc-8-roadmap) - and the other references above - for more detail.
     - [Sadie's write-up](practices-prompts)
   - git, GitHub, GitHub Flow, testing, Travis CI, Codacy
   - 2FA about to be enforced on cylc repository
-  - Riot.im? (UK team now has access); or Slack?; or Discourse?
-  - Define Python code style guidelines (add to CONTRIBUTING.md)?
+  - Riot.im? (UK team now has access); or Slack?; and/or Discourse?
+  - Regular video conferences, e.g. monthly?
+  - project governance
+    - how (and by whom) decisions will be made
+    - how much time can newcomers donate, and what determines what they work on?
+  - Python code style guidelines (add to CONTRIBUTING.md)?
   - Development roadmap: what's been discussed and decided so far?
   - Then: __begin Architecture discussion__, if possible
 
