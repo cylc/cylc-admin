@@ -51,7 +51,8 @@ separate components); and "suite daemon" == "suite server program".
     1. Ad-hoc server or WSGI service? (under Apache, NGINX, gevent?)
     1. JupyterHub
        1. similar architecture
-       1. good [technical documentation](https://jupyterhub.readthedocs.io/en/stable/reference/index.html)
+       1. very good [technical
+          documentation](https://jupyterhub.readthedocs.io/en/stable/reference/index.html)
        1. solves web proxy, spawn-as-user, authentication (and discovery?) out of the box?!
        1. [configurable-http-proxy](https://www.npmjs.com/package/configurable-http-proxy)
           supports websocket
