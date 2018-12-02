@@ -52,7 +52,7 @@ separate components); and "suite daemon" == "suite server program".
     1. JupyterHub
        1. similar architecture
        1. good [technical documentation](https://jupyterhub.readthedocs.io/en/stable/reference/index.html)
-       1. solves web proxy, spawn-as-user, and authentication already?!
+       1. solves web proxy, spawn-as-user, authentication (and discovery?) out of the box?!
        1. [configurable-http-proxy](https://www.npmjs.com/package/configurable-http-proxy)
           supports websocket
        1. (running the hub as root, or as a less-privileged user with sudo:
