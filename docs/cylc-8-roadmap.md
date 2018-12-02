@@ -56,6 +56,7 @@ separate components); and "suite daemon" == "suite server program".
           (supports websocket) out of the box?
         1. (running the hub as root, or as a less-privileged user with sudo:
            [here](https://github.com/jupyterhub/jupyterhub/wiki/Using-sudo-to-run-JupyterHub-without-root-privileges))
+        1. good [technical documentation](https://jupyterhub.readthedocs.io/en/stable/reference/index.html)
 
 ### Suite Server API
 
