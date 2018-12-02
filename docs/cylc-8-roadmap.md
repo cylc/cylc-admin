@@ -50,13 +50,13 @@ separate components); and "suite daemon" == "suite server program".
     1. Python web framework: Tornado, Flask?
     1. Ad-hoc server or WSGI service? (under Apache, NGINX, gevent?)
     1. JupyterHub
-       1. general architecture
-       1. can we just use node.js
-          [configurable-http-proxy](https://www.npmjs.com/package/configurable-http-proxy)
-          (supports websocket) out of the box?
-        1. (running the hub as root, or as a less-privileged user with sudo:
-           [here](https://github.com/jupyterhub/jupyterhub/wiki/Using-sudo-to-run-JupyterHub-without-root-privileges))
-        1. good [technical documentation](https://jupyterhub.readthedocs.io/en/stable/reference/index.html)
+       1. similar architecture
+       1. good [technical documentation](https://jupyterhub.readthedocs.io/en/stable/reference/index.html)
+       1. solves web proxy, spawn-as-user, and authentication already?!
+       1. [configurable-http-proxy](https://www.npmjs.com/package/configurable-http-proxy)
+          supports websocket
+       1. (running the hub as root, or as a less-privileged user with sudo:
+          [here](https://github.com/jupyterhub/jupyterhub/wiki/Using-sudo-to-run-JupyterHub-without-root-privileges))
 
 ### Suite Server API
 
