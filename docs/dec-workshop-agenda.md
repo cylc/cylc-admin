@@ -102,6 +102,8 @@ Roadmap](cylc-8-roadmap) - and the other references above - for more detail.
     - how (and by whom) decisions will be made
     - how much time can newcomers donate, and what determines what they work on?
   - Python code style guidelines (add to CONTRIBUTING.md)?
+  - Contributing guidelines: non-trivial features (and implementation) should
+    be discussed and agreed in advance!
   - Development roadmap: what's been discussed and decided so far?
   - Then: __begin Architecture discussion__, if possible
 
