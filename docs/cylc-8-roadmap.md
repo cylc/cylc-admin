@@ -54,7 +54,7 @@ separate components); and "suite daemon" == "suite server program".
        1. can we just use node.js
           [configurable-http-proxy](https://www.npmjs.com/package/configurable-http-proxy)
           (supports websocket) out of the box?
-        1. (running the hub as root or non-privileged with sudo:
+        1. (running the hub as root, or as a less-privileged user with sudo:
            [here](https://github.com/jupyterhub/jupyterhub/wiki/Using-sudo-to-run-JupyterHub-without-root-privileges))
 
 ### Suite Server API
