@@ -103,10 +103,10 @@ Roadmap](cylc-8-roadmap) - and the other references above - for more detail.
 
 ### Tuesday
 - __All day__:
-  - ([Architecture](cylc-8-roadmap))
+  - (Architecture) - [see Cylc 8 Roadmap](cylc-8-roadmap)
   - components: GUI, "hub", proxy, sub-services for suite discovery and
     suite start-up etc., GUI server, "state server", ...?
-  - How closely can we follow/steal from Jupyter Hub?
+  - How closely can we follow/steal from Jupyter Hub? [see](cylc-8-roadmap#reverse-proxy-and-hub)
   - What runs privileged, and as the user?
   - [Server-side framework and API](cylc-8-roadmap#suite-server-api): flask, tornado, other?
   - [Inter-component communication](cylc-8-roadmap#communications-protocols)

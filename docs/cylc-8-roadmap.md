@@ -6,8 +6,7 @@ __Target completion date: late 2019__ (Python 2 end of life)
 
 _WARNING_ - bits of this document may slightly outdated.
 
-## System Components, Communications, etc.
-
+## Architecture
 
 We need something very much like the [Jupyter
 Hub](https://jupyterhub.readthedocs.io/en/stable/) Architecture: a privileged
@@ -32,7 +31,7 @@ separate components); and "suite daemon" == "suite server program".
 6. Replace the on-disk plain-text passphrase authentication between the client
    and the web UI.
 
-### Reverse Proxy Server
+### Reverse Proxy and Hub
 
 1. Single point of access, to:
     1. Discover and present suites, and route client requests to them
@@ -50,6 +49,11 @@ separate components); and "suite daemon" == "suite server program".
 4. Implementation:
     1. Python web framework: Tornado, Flask?
     1. Ad-hoc server or WSGI service? (under Apache, NGINX, gevent?)
+    1. JupyterHub
+       1. general architecture
+       1. can we just use node.js
+          [configurable-http-proxy](https://www.npmjs.com/package/configurable-http-proxy)
+          (supports websocket) out of the box?
 
 ### Suite Server API
 
