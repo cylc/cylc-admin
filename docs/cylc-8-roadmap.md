@@ -82,19 +82,19 @@ https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/):
 
 ### GUI Server?
 
-1. (collates status data from multiple suites and serve the GUI)
-1. Do we need this?
-1. Pros:
-    1. take (almost) all comms load off the suite server programs by scraping
-       the suite databases instead of network API
-       1. but what about disk latency? (e.g. if on NFS)
-    1. present information about currently-stopped suites in uniform way
-1. Cons:
-    1. Complexity? - another component
-    1. suite status information is less "distributed" - would a GUI server
-       be a memory hog (for a lot of large suites)?
-1. should run as the user (one per user)?
+1. (collates status data from multiple suites and serve the GUI) - do we need this?
+1. run as the user
 1. spawned by the "hub"?
+1. Pros:
+    1. present information about stopped suites in uniform way
+    1. no HTML templating in the suite server program
+    1. take much of the comms load off suite server programs?
+       1. server program push on changes?
+       1. scrape suite databases? (removes all comms load from the suites, but
+          what about disk latency, e.g. if on NFS?)
+1. Cons:
+    1. Complexity? - yet another component
+    1. suite status information less "distributed" - memory hog, for many large suites?
 
 ### Communication Protocols
 
