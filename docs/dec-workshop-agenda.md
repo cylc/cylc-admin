@@ -116,7 +116,7 @@ Roadmap](cylc-8-roadmap) - and the other references above - for more detail.
   - How closely can we follow/steal from Jupyter Hub? [see](cylc-8-roadmap#reverse-proxy-and-hub)
   - What runs privileged, and as the user?
   - [Server-side framework and API](cylc-8-roadmap#suite-server-api): flask, tornado, other?
-  - [Inter-component communication](cylc-8-roadmap#communications-protocols)
+  - [Inter-component communication](cylc-8-roadmap#communication-protocols)
     - WebSocket and GraphQL API, rather than HTTPS and REST API?
   - Demo: GraphQL with cylc-7 (David) 
   - Simplified architecture for individual use?
