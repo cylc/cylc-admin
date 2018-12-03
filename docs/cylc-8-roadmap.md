@@ -89,9 +89,9 @@ https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/):
     1. present information about stopped suites in uniform way
     1. no HTML templating in the suite server program
     1. take much of the comms load off suite server programs?
-       1. server program push on changes?
-       1. scrape suite databases? (removes all comms load from the suites, but
-          what about disk latency, e.g. if on NFS?)
+       1. server program push changes?
+       1. or scrape suite databases? (removes all comms load from the suites,
+          but what about disk latency, e.g. if on NFS?)
 1. Cons:
     1. Complexity? - yet another component
     1. suite status information less "distributed" - memory hog, for many large suites?
@@ -155,7 +155,7 @@ https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/):
     1. (probably can't use a nested tree structure based on runtime
        inheritance - it would be useful for collapsible familiy views,
        but the dependency graph can't be encoded in this form).  
-    1. display "ghost nodes" in all views - i.e. hide the "task pool" from users
+1. display "ghost nodes" in all views - i.e. hide the "task pool" from users
 
 1. [Oliver's thought's on data structure and GraphQL schema](
 https://github.com/cylc/cylc/issues/2563#issuecomment-411345934).
