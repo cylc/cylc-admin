@@ -4,7 +4,7 @@
 
 __Target completion date: late 2019__ (Python 2 end of life)
 
-_WARNING_ - bits of this document may slightly outdated.
+_WARNING_ - THIS PRE-DATES THE DEC 2018 WORKSHOP - and is somewhat out of date 
 
 ## Architecture
 
