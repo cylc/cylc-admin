@@ -1,4 +1,4 @@
-# Cylc Web GUI & Architecture – Tentative Roadmap
+# Cylc Web GUI & Architecture: Tentative Roadmap
 
 (Latest update: 1 Nov 2018)
 
