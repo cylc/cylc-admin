@@ -15,10 +15,11 @@ that we intend to implement them in.
 - [Motivation](#motivation)
 - [Diagram](#diagram)
 - [Description](#description)
-  - [Cylc Hub](#cylc-hub)
+  - [Hub](#cylc-hub)
     - [Hub Functionality Overview](#hub-functionality-overview)
     - [Hub Technologies and Sub-Services](#hub-technologies-and-subservices)
-  - [Cylc UI Servers](#cylc-ui-server)
+  - [UI Servers](#cylc-ui-server)
+  - [Workflow Servics](#cylc-ui-server)
   - [User-to-UI-Server Communication](#user-to-ui-server-communication)
     - [WebSocket](#web-socket)
     - [GraphQL](#graphql)
@@ -173,6 +174,12 @@ Overview](https://jupyterhub.readthedocs.io/en/stable/reference/technical-overvi
     - Suite analytics.
     - `rose edit`.
     - etc.
+
+## Workflow Services
+
+Largely unchanged from cylc-7 "suite server programs", except:
+- Python 3
+- ZeroMQ, for communication with the UI Server
 
 ## User-to-UI-Server Communication
 
