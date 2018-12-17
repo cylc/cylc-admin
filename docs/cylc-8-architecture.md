@@ -24,7 +24,7 @@ that we intend to implement them in.
     - [WebSocket](#web-socket)
     - [GraphQL](#graphql)
     - [Session Management](#session-management)
-  - [UI-Server-to-Workflow-Service Communication](#ui-server-to-workflow-servicecommunication)
+  - [UI-Server-to-Workflow-Service Communication](#ui-server-to-workflow-service-communication)
 
   - [Job-to-Workflow-Service Communication](#job-to-workflow-service-communication)
   - [Authorization](#authorization)
