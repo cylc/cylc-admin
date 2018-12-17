@@ -19,7 +19,7 @@ that we intend to implement them in.
     - [Hub Functionality Overview](#hub-functionality-overview)
     - [Hub Technologies and Sub-Services](#hub-technologies-and-subservices)
   - [UI Servers](#cylc-ui-server)
-  - [Workflow Servics](#cylc-ui-server)
+  - [Workflow Services](#cylc-workflow-services)
   - [User-to-UI-Server Communication](#user-to-ui-server-communication)
     - [WebSocket](#web-socket)
     - [GraphQL](#graphql)
@@ -175,7 +175,7 @@ Overview](https://jupyterhub.readthedocs.io/en/stable/reference/technical-overvi
     - `rose edit`.
     - etc.
 
-## Workflow Services
+## Cylc Workflow Services
 
 Largely unchanged from cylc-7 "suite server programs", except:
 - Python 3
