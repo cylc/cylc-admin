@@ -21,12 +21,13 @@ _suite daemon_  (old) -> _suite server program_ (recent) -> __workflow service__
 - Video Conferencing – report back: who can use what?
   - ~~Riot.im video conferencing and screen sharing?~~ - DONE (should be able to use Riot.im)
 
-## Documentation:
+## Documentation (Sadie)
 
 - Content:
     1. Old: CUG: LaTeX -> Sphinx (not critical)
     2. New: write in Sphinx
-- Infrastructure (doc generation) – copy from Rose etc.
+- Infrastructure (doc generation) – [~~copy from Rose etc~~ was not necessary,
+  as is fairly trivial to set-up].
 
 ## Cylc
 
