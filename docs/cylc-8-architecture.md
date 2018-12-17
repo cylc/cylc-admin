@@ -242,7 +242,7 @@ Largely unchanged from cylc-7 "suite server programs", except:
 - simple text files that map users or groups to privileges?
   - (By Unix group, good for service accounts?)
 
-## Similarity with JupyterHub for Jupyter Notebooks
+## Similarity with JupyterHub
 
 [Jupyter Notebooks](https://jupyter.org/) are a proven technology commonly used
 in scientific and educational institutions worldwide for interactive
