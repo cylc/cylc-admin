@@ -35,7 +35,7 @@ _suite daemon_  (old) -> _suite server program_ (recent) -> __workflow service__
 - Python 3 (above)
    1. Ordered dict gone (what about "ordereddict_with_defaults"?)
 - Packaging (above)
-- "rose suite-run"
+- [rose suite-run](proposal-rose-suite-run.md)
 - Cherrypy -> ZeroMQ (with protobuf?)
 - REST API to:
    1. ZeroMQ (Direct)
