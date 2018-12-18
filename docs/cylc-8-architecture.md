@@ -63,6 +63,7 @@ systems._ This is (necessarily) more complicated but it will enable us to:
 ## Diagram
 
 ![Cylc-8 Architecture](img/cylc-8-architecture.png "Cylc-8 Architecture")
+
 __Figure 1__ Cylc-8 Architecture: The "user A" box represents processes owned
 by a particular user (the _suite owner_) but potentially running on multiple
 _workflow hosts_ (on a shared filesystem) and multiple _job hosts_. The term
@@ -78,7 +79,7 @@ In fact we hope to use JupyterHub (Open Source, [3-Clause BSD
 License](https://opensource.org/licenses/BSD-3-Clause)) "out of the box" for
 the Hub and Proxy. Our back-end components are very different from a Jupyter
 Notebook, but some of the same technologies are appropriate nevertheless:
-Python 3, the [Tornado](https://www.tornadoweb.org) asynchronous web framework,
+Python 3, the [Tornado](#tornado) asynchronous web framework,
 and the [ZeroMQ](http://zermoq.org) asynchronous messaging library.
 
 ## Description
@@ -118,13 +119,13 @@ and the [ZeroMQ](http://zermoq.org) asynchronous messaging library.
   - User Database
     - stores Hub state, such as which users are running which workflows, and
       where (Hub user names only, no sensitive information)
-    - sqlite (light-weight, zero-admin)
+    - default sqlite (light-weight, zero-admin; but "should not be used on
+      NFS");
+      [https://jupyterhub.readthedocs.io/en/stable/reference/database.html](supports
+      full RDBMS) if needed.
   - Spawner - spawn [Cylc UI Servers](#cylc-ui-server) on user accounts, by:
-    - ssh
-    - sudo
-    - PBS
-    - Docker
-    - (extendable: custom spawners)
+    - ssh, sudo, PBS, Docker, ...
+    - (extendable with custom spawners)
 
 For more detail on component interaction, including session management, see
 [JupyterHub Technical
@@ -133,10 +134,11 @@ Overview](https://jupyterhub.readthedocs.io/en/stable/reference/technical-overvi
 ### Cylc UI Server
 
 - (Spawned by the [Cylc Hub](#cylc-hub) on demand.)
-- Serves the UI to the user's browser, for uniform presentation of stopped
-  suites and static services as well as running suites (a workflow service can
-  only be queried if it is running).
-- Receives suite state updates from Workflow Services (push - no polling)
+- Serves the UI to the user's browser.
+  - For uniform presentation of stopped suites and static services as well as
+    running suites (a workflow service can only be queried if it is running).
+- Receives suite state updates from Workflow Services.
+  - Pushed by Workflow Services - no need to pol them continually.
 - Implement in Python 3 + [Tornado](https://tornadoweb.org) +
   [Vue.js](https://vue.js.org)
   - (Tornado is [described above](#cylc-hub))
@@ -316,14 +318,16 @@ enable that, or do we need to fork the project and maintain our own "Cylc Hub"
 in the future?
 
 
-## Terminology
+## Glossary
 
-A Cylc __workflow__ is a single (possibly cycling) __suite__ of inter-dependent
+- A Cylc __workflow__ is a single (possibly cycling) __suite__ of inter-dependent
 tasks.
 
-A Cylc __workflow service__ is workflow manager program for a single workflow,
+- A Cylc __workflow service__ is workflow manager program for a single workflow,
 formerly known as a __suite server program__ or a __suite daemon__. (Cylc has
 no central server - each workflow gets its own ad-hoc service that runs as the
 user).
+
+- [Tornado](https://www.tornadoweb.org)  <a name="tornado"></a>
 
 
