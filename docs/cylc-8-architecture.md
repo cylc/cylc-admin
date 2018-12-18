@@ -1,46 +1,115 @@
 # Cylc-8 Architecture
 
-_Author:_ Hilary Oliver (last updated 17 December 2018)
+_Updated:_ 17 December 2018.
 
-_Contributors:_ Dave Matthews, Sujata Patnaik, Matt Shin, Oliver Sanders, Sadie
-Bartholomew, Martin Ryan, Bruno Kinoshita, David Sutherland
+_Author:_ Hilary Oliver.
+
+_Contributors:_ Dave Matthews, Matt Shin, Oliver Sanders, Sadie
+Bartholomew, Martin Ryan, Bruno Kinoshita, David Sutherland, Sujata Patnaik. 
 
 _This document is a primary output of the 3-7 December 2018 Cylc Development
-Workshop at the Bureau of Meteorology, Melbourne, Australia_. It describes the
-proposed components of Cylc-8, how they will interact, and the technologies
-that we intend to implement them in. 
+Workshop at the Bureau of Meteorology, Melbourne, Australia_.
 
 ## Table of Contents
+[TOP](#cylc-8-architecture)
 
+- [Cylc Terminology](#cylc-terminology)
+- [Technology Glossary](#technology-glossary)
 - [Motivation](#motivation)
-- [Diagram](#diagram)
-- [Description](#description)
-  - [Hub](#cylc-hub)
-    - [Hub Functionality Overview](#hub-functionality-overview)
-    - [Hub Technologies and Sub-Services](#hub-technologies-and-subservices)
-  - [UI Servers](#cylc-ui-server)
-  - [Workflow Services](#cylc-workflow-services)
-  - [User-to-UI-Server Communication](#user-to-ui-server-communication)
-    - [WebSocket](#web-socket)
-    - [GraphQL](#graphql)
-    - [Session Management](#session-management)
-  - [UI-Server-to-Workflow-Service Communication](#ui-server-to-workflow-service-communication)
+- [JupyterHub](#jupyterhub)
+- [Cylc-8 Architecture Diagram](#cylc-8-architecture-diagram)
+- [Cylc Hub](#cylc-hub)
+- [Cylc UI Server](#cylc-ui-server)
+- [Cylc Workflow Services](#cylc-workflow-services)
+- [Command Line Interface](#command-line-interface)
+- [Authorization](#authorization)
 
-  - [Job-to-Workflow-Service Communication](#job-to-workflow-service-communication)
-  - [Authorization](#authorization)
-- [Similarity with JupyterHub](#similarity-with-jupyter-hub)
-- [Terminology](#terminology)
+Appendix:
+- [Similarity with JupyterHub](#similarity-with-jupyterhub)
 
+## Cylc Terminology
+[TOP](#cylc-8-architecture)
+
+- A Cylc __workflow__ is a single (possibly cycling) __suite__ of inter-dependent
+tasks.
+
+- A Cylc __workflow service__ is workflow manager program for a single workflow,
+formerly known as a __suite server program__ or a __suite daemon__. (Cylc has
+no central server - each workflow gets its own ad-hoc service that runs as the
+user).
+
+## Technology Glossary
+[TOP](#cylc-8-architecture)
+
+(Hyperlinks in the text below point here for further information).
+
+- <a name="python-3"></a> [Python 3](https://wwww.python.org)
+  - _An interpreted high-level programming language for general-purpose
+    programming._
+  - The primary language of Cylc implementation.
+
+- <a name="tornado"></a> [Tornado](https://www.tornadoweb.org)
+  - _A Python web framework and asynchronous networking library._
+
+- <a name="graphqL"></a> [GraphQL](https://www.graphql.org)
+  - _A data query language ... that provides an alternative to REST and ad-hoc
+    web service architectures. It allows clients to define the structure of the
+    data required, and exactly the same structure of the data is returned from
+    the server._
+  - Originally out of (and backed by) Facebook.
+  - A single flexible endpoint, instead of many fixed inflexible REST endpoints.
+  - Should allow the UI to request just what it needs very easily.
+
+- <a name="websocket"></a> [WebSocket](https://en.wikipedia.org/wiki/WebSocket)
+  - _A communications protocol providing persistent full-duplex communication
+    channels over a single TCP connection._  
+  - Alternative to HTTPS (and initiated by HTTPS handshake).
+  - Good when server-side data changes quickly and unpredictably.
+
+- <a name="zeromq"></a> [ZeroMQ](http://zeromq.org)
+  - _A high-performance asynchronous messaging library aimed at use in
+    distributed or concurrent applications._ 
+  - For back-end server-to-server communications.
+
+- <a name="javascript"></a>
+  [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScrip)
+  - _A lightweight interpreted or JIT-compiled programming language with
+    first-class functions, most well-known as the scripting language for Web
+    pages_ (in which context it runs inside web browsers).
+
+- <a name="nodejs"></a> [Node.js](https://developer.mozilla.org/en-US/docs/Glossary/Node.js)
+  - _A cross-platform JavaScript runtime environment that allows developers to
+    build server-side and network applications with JavaScript_.
+
+- <a name="vuejs"></a> [Vue.js](http://vue.js.org)
+  - _A JavaScript framework for building user interfaces._
+  - The smallest but fastest-growing of the current top Javascript
+    frameworks.
+  - Lighter than Angular.js and React.js, and reputedly the easiest to learn.
+  - In terms of UI components our needs are quite modest, so we will try the
+    simplest modern framework first.
+
+- <a name="json"></a> [JSON](https://www.json.org)
+  - _JavaScript Object Notation, an open-standard format for human-readable
+    text transmission of data objects as attribute–value pairs and array types,
+    commonly used for asynchronous browser–server communication._
+
+- <a name="jupyterhub"></a> [JupyterHub](https://jupyterhub.readthedocs.io)
+  - _A multi-user Hub that spawns, manages, and proxies multiple instances of
+    the single-user Jupyter Notebook Server._ 
+  - Architecturally analogous to Cylc-8, with:
+    - "Jupyter Notebook Server" -> "Cylc UI Server"
+    - "Jupyter Notebook Kernel" -> "Cylc Workflow Service"
 
 ## Motivation
+[TOP](#cylc-8-architecture)
 
 Cylc-7 is written in Python 2, with PyGTK native desktop GUIs, and relatively
 simple [local client/server architecture](cylc-7-architecture.md) in which
 everything runs as the user, all clients are treated equally (user GUI and CLI,
-and job CLI), clients get server information via the filesystem and port
+and job CLI), clients get some server information via the filesystem and port
 scanning, and automatic owner-only authentication via a suite-specific
 passphrase file. (Un?)fortunately:
-
 - Python 2 end-of-life is 1 Jan 2020, after which ["there will be no [Python 2]
   updates, not even source-only security
   patches"](https://github.com/python/devguide/pull/344).
@@ -49,7 +118,8 @@ passphrase file. (Un?)fortunately:
 We have decided __not__ to port the existing Cylc GUIs to PyGObject (the
 successor to PyGTK) because _there is strong demand for a new architecture that
 supports an in-browser web GUI and integration with site identity management
-systems._ This is (necessarily) more complicated but it will enable us to:
+systems._ The full web architecture is (necessarily) more complicated, but it is
+more powerful. It will enable us to:
 1. Provide a single point of access to many Cylc workflows on a pool of servers.
 1. Run and interact with workflows via a web browser, without requiring:
     - a Cylc installation on the front-end (browser) platform
@@ -58,193 +128,165 @@ systems._ This is (necessarily) more complicated but it will enable us to:
 1. Drop the requirement for port scanning by users.
 1. Retire the suite-specific passphrase files and self-signed SSL certificates.
 1. Integrate with site identity management.
-1. Support fine-grained authorized access to specific worflows.
+1. Support fine-grained authorized access to individual Workflow Services.
 
-## Diagram
+## JupyterHub
+[TOP](#cylc-8-architecture)
+
+The architecture described below is inspired by [JupyterHub](#jupyterhub) - a
+proven technology, commonly used in scientific modeling and HPC contexts, that
+solves a very similar problem of managing back-end services spawned into user
+accounts. See below for details: [Similarity with
+Jupyter Hub](#similarity-with-jupyterhub)).
+
+We hope to use JupyterHub "out of the box" for the Hub and Proxy components of
+the new archtitecture. Our back-end components are very different from Jupyter
+Notebook, but some of the technologies involved remain relevant.
+
+## Cylc-8 Architecture Diagram
+[TOP](#cylc-8-architecture)
 
 ![Cylc-8 Architecture](img/cylc-8-architecture.png "Cylc-8 Architecture")
 
 __Figure 1__ Cylc-8 Architecture: The "user A" box represents processes owned
-by a particular user (the _suite owner_) but potentially running on multiple
-_workflow hosts_ (on a shared filesystem) and multiple _job hosts_. The term
-"HPC Platform" is used rather loosely - potentially only the jobs reside on
-actual HPC nodes. The yellow boxes show the technologies that will be used to
-implement the component or channel. 
+by one user, but potentially spread over multiple _workflow hosts_ (on a shared
+filesystem) and multiple _job hosts_. The term "HPC Platform" is used rather
+loosely - potentially only the jobs reside on actual HPC nodes. Yellow boxes
+show the technologies and protocols that will be used to implement each component. 
 
-__This architecture is inspired by JupyterHub__ - which solves a very similar
-problem of managing back-end services spawned into user accounts (see below:
-[Similarity with Jupyter
-Hub](#similarity-with-jupyterhub-for-jupyter-notebooks)).
-In fact we hope to use JupyterHub (Open Source, [3-Clause BSD
-License](https://opensource.org/licenses/BSD-3-Clause)) "out of the box" for
-the Hub and Proxy. Our back-end components are very different from a Jupyter
-Notebook, but some of the same technologies are appropriate nevertheless:
-Python 3, the [Tornado](#tornado) asynchronous web framework,
-and the [ZeroMQ](http://zermoq.org) asynchronous messaging library.
 
-## Description
+## Cylc Hub
+[TOP](#cylc-8-architecture)
 
-### Cylc Hub
-
-#### Hub Functionality Overview
+Overview:
 - At start-up, the Hub launches a web proxy.
 - The proxy forwards requests to the Hub by default.
 - The Hub handles user login (authentication) and spawns UI Servers on demand.
 - The Hub configures the proxy to forward URL prefixes to the UI Servers.
 
-#### Hub Technologies and Sub-Services
-- A privileged process (`root` or `sudo` - see [running
-  JupyterHub without root
-  privileges](https://jupyterhub.readthedocs.io/en/stable/reference/config-sudo.html))
-  - (It must be able to spawn [Cylc UI Servers](#cylc-ui-servers) as user processes).
-- Implemented in Python 3 with the [Tornado](https://www.tornadoweb.org) web
-  framework.
-  - Tornado is based on an _asynchronous event loop_, the state-of-the-art for
-    scalable request handling in Python.
-- Spawns a __web proxy__ that it dynamically configures to route requests to
-  services. The proxy is:
+Detail:
+- The Hub must be a privileged process - either root or sudo.
+  - See
+  [running JupyterHub without root
+  privileges](https://jupyterhub.readthedocs.io/en/stable/reference/config-sudo.html).
+  - (As it must be able to spawn [Cylc UI Servers](#cylc-ui-server) as user processes).
+- Implemented in [Python 3](#python-3) with [Tornado](#tornado).
+- Spawns a _Proxy_ that it dynamically configures to route requests to
+    [Cylc UI Servers](#cylc-ui-servers). The proxy is:
   - A single point of access for users.
   - The only process that listens on a public interface.
   - Implemented with
     [jupyterhub/configuable-http-proxy](https://github.com/jupyterhub/configurable-http-proxy)
-    ([Node.js](https://nodejs.org/); wraps
+    - ([Node.js](https://nodejs.org/); wraps
     [node-http-proxy](https://github.com/nodejitsu/node-http-proxy)).
-
-- Hub Sub-Services:
-  - Authenticator - calls out to host or site identity management; plugins for:
-    - PAM (sufficient for sites where PAM local accounts are driven by AD or LDAP?)
-    - LDAP
-    - OAuth (for accounts with GitHub, Google, and others)
-    - (extendible: custom authenticators)
-  - User Database
-    - stores Hub state, such as which users are running which workflows, and
-      where (Hub user names only, no sensitive information)
-    - default sqlite (light-weight, zero-admin; but "should not be used on
-      NFS");
-      [https://jupyterhub.readthedocs.io/en/stable/reference/database.html](supports
-      full RDBMS) if needed.
-  - Spawner - spawn [Cylc UI Servers](#cylc-ui-server) on user accounts, by:
-    - ssh, sudo, PBS, Docker, ...
-    - (extendable with custom spawners)
+- Hub Authenticator: calls out to host or site identity management, with plugins for:
+  - PAM, LDAP, OAuth (GitHub and Google accounts), etc.
+  - (PAM sufficient for sites where local accounts are driven by AD or LDAP?)
+  - (Extendable wit: custom authenticators)
+- Hub User Database
+  - Stores Hub state (which users are running which workflows where - user
+    names only, nothing sensitive).
+  - Default `sqlite` (light-weight serverless, zero-admin).
+    - But [https://jupyterhub.readthedocs.io/en/stable/reference/database.html]
+    (supports full RDBMS) if needed.
+- Hub Spawner: spawn [Cylc UI Servers](#cylc-ui-server) on user accounts; plugins for:
+  - ssh, sudo, PBS, Docker, ...
+  - (Extendable with custom spawners).
 
 For more detail on component interaction, including session management, see
 [JupyterHub Technical
 Overview](https://jupyterhub.readthedocs.io/en/stable/reference/technical-overview.html).
 
-### Cylc UI Server
+## Cylc UI Server
+[TOP](#cylc-8-architecture)
 
-- (Spawned by the [Cylc Hub](#cylc-hub) on demand.)
+Overview:
 - Serves the UI to the user's browser.
   - For uniform presentation of stopped suites and static services as well as
     running suites (a workflow service can only be queried if it is running).
-- Receives suite state updates from Workflow Services.
-  - Pushed by Workflow Services - no need to pol them continually.
-- Implement in Python 3 + [Tornado](https://tornadoweb.org) +
-  [Vue.js](https://vue.js.org)
-  - (Tornado is [described above](#cylc-hub))
-  - [Vue.js](https://vue.js.org) is the smallest but fastest-growing of the
-    current top-three front-end Javascript frameworks. It is lighter than
-    Angular and React, and is reputedly the easiest to learn. In terms of UI
-    components our needs are quite modest, so we will try the "simplest" modern
-    framework first.
+- Spawned by [Cylc Hub](#cylc-hub) on demand, into "suite owner" user accounts.
+
+Detail:
 - Must run as the user (that is the suite owner, not the UI user) because it
   must run sub-services as the user.
   - (consider another user authorized to view your suites: she must be able to
     read your suite files without relying on local file permissions - she might
     not even have a local account on the workflow host).
-- One UI Server per user (i.e. per suite owner account).
-  - Each UI server fronts multiple suites.
+- Implemented in [Python 3](#python-3) with [Vue.js](#vue-js)-generated UI
+- User-facing server communications:
+  - [Tornado](#tornado) web server, with [GraphQL](#graphql) API over
+    the [WebSocket](#websocket) protocol.
+  - WebSocket allows server _push_ to UI Servers (no need for polling) and the
+    server to return a response to clients even a command has to be queued for
+    asynchronous execution.
+  - GraphQL allows the UI to request exactly what it needs and no more.
+- Workflow Service-facing server, API, and network protocol:
+  - [JSON](#json) over [ZeroMQ](#zeromq).
+  - (ZeroMQ is used between Jupyter Notebook Servers and Kernels).
+  - (Later: consider Protocol Buffers and/or gRPC - possibly better efficiency).
+- One UI Server per (suite owner) user - i.e. a UI server fronts multiple suites.
   - Efficiency benefits for multiple UIs looking at the same suite?
   - Relieves workflow services of some comms load.
   - BUT consider one UI server per UI (i.e. per browser tab) for simplicity, if
     the aforementioned efficiency benefits can't be realized.
-- (Could potentially scrape suite databases rather than query workflow
-  services, to remove all comms load from the suites ... but this has the
-  potential for latency problems on NFS?)
-
-- UI Server Sub-Services
-  - Suite listing service (via the filesystem):
-    - Location and identity of running workflow services (host:port).
-    - Location and identity of inactive suites (stopped or never started).
-    - Status of stopped suites (e.g. "stopped with N failed tasks").
-  - Suite start service:
-    - Start up new workflow services (from inactive suites).
-  - Static services:
-    - `cylc graph` (dependency and inheritance graph visualization).
-    - `cylc review` (formerly Rose Bush).
-    - View suite definition.
-    - Suite analytics.
-    - `rose edit`.
-    - etc.
+- (Could potentially scrape suite databases rather than query Workflow
+  Services, to remove all comms load from the suites ... but this has the
+  potential for disk latency problems on NFS?)
+- Suite Listing Sub-Service:
+  - Location and identity of running workflow services (host:port).
+  - Location and identity of inactive suites (stopped or never started).
+  - Status of stopped suites (e.g. "stopped with N failed tasks").
+  - (use existing `cylc scan`, as the user)
+- Suite Start Sub-Service:
+  - Start up new workflow services (from inactive suites).
+  - (use existing `cylc run`, as the user):
+- Static Sub-Services, e.g.:
+  - `cylc graph` (dependency and inheritance graph visualization).
+  - `cylc review` (formerly Rose Bush).
+  - View suite definition.
+  - Suite analytics.
+  - `rose edit`.
+  - etc.
 
 ## Cylc Workflow Services
+[TOP](#cylc-8-architecture)
 
-Largely unchanged from cylc-7 "suite server programs", except:
-- Python 3
-- ZeroMQ, for communication with the UI Server
+Largely unchanged from Cylc-7 "suite server programs", except:
+- [Python 3](#python-3).
+- [JSON](#json) over [ZeroMQ](#zeromq) for communication with
+  [Cylc UI Servers](#cylc-ui-server).
 
-## User-to-UI-Server Communication
 
-- (GUI or CLI)
-- Via the Proxy.
+## Command Line Interface
+[TOP](#cylc-8-architecture)
 
-- Suite status updates.
-  - [GraphQL](https://graphql.org/) API over
-    [WebSocket](https://en.wikipedia.org/wiki/WebSocket)
-  - (rather than REST API over HTTPS).
-
-- Suite commands.
-  - Not much data transferred here, but WebSocket would still allow the server
-    to return results to clients even when command has to be queued for
-    asynchronous execution (in cylc-7 the user gets no direct feedback).
-
-#### WebSocket
-- Efficient, persistent full-duplex connections over TCP, initiated by HTTPS
-  handshake.
-  - (c.f. HTTPS: one-way one-off stateless connections.)
-- Allows server-push of status updates when ready.
-  - No need for continual polling by the GUI.
-- Good when server-side data changes quickly and unpredictably - that's us!
-
-#### GraphQL
-- Alternative to a REST API.
-- A single flexible endpoint.
-  - (c.f. many fixed inflexible REST endpoints.)
-- The query determines what data is returned and in what form.
-- Should allow the UI to request just what it needs very easily.
-
-#### Session Management
-- GUI: the usual browser cookie based mechanism.
-- CLI (multiple commands without repeatedly entering credentials manually):
-  some kind of in-memory or on-disk equivalent of browser cookies, or some
-  kind of single-use token?
-
-## UI-Server-to-Workflow-Service Communication
-
-- (suite status updates; commands)
-- Server-server: can use something more efficient than HTTPS or WebSocket.
-- [ZeroMQ](http://zeromq.org) messaging library (also used between Jupyter
-  Notebook Servers and Kernels).
-
-## Job-to-Workflow-Service Communication
-
-- (Job-executed CLI commands).
-- [ZeroMQ](http://zeromq.org) messaging library.
-- (Implies CLI clients need to talk both ZeroMQ _and_ WebSocket, because 
-  CLI commands executed remotely, or by other users, have to go via the Proxy).
-- Trust (server authentication) - single-use token?
+- User-executed commands go via the Proxy.
+  - Allows remote commands, and other authorized users.
+  - Might need some kind of in-memory or on-disk CLI session management, akin
+    to use of cookies for session management in the browser (TBD).
+- Job-executed commands (e.g. for job status messages) should go direct to the
+  parent Workflow Service.
+  - Job clients know where their own Workflow Service is.
+  - Suites must carry on even if the Hub and Proxy are down.
+  - Server authentication (trust) - some kind of single-use token? (TBD).
+- CLI clients need to talk both ZeroMQ (direct mode) _and_ WebSocket (indirect). 
 
 ## Authorization
+[TOP](#cylc-8-architecture)
 
-- Need two levels:
-  - UI Server: who is allowed to connect to my UI Server?
-  - Suites: who is allowed to do what to which of my suites?
+- Authenticated user name sent with requests.
+- Two-level authorization:
+  1. Who is allowed to connect to my UI Server?
+  1. Who is allowed to see or do what to which of my suites?
 - Both levels _could_ be enforced by the UI Server, which runs as the user and
-  can therefore see the same authorization data that the suite services can.
-- simple text files that map users or groups to privileges?
-  - (By Unix group, good for service accounts?)
+  can therefore see the same config files the Workflow Services can.
+- Simple text files that map user names or groups to privileges might do.
+  - (Use Unix group names to authorize service/role accounts).
+
+# Appendix
 
 ## Similarity with JupyterHub
+[TOP](#cylc-8-architecture)
 
 [Jupyter Notebooks](https://jupyter.org/) are a proven technology commonly used
 in scientific and educational institutions worldwide for interactive
@@ -282,6 +324,10 @@ spawn user processes and proxy requests to them, and a "UI Server" component to
 construct the UI (HTML/Javascript) around workflow status data obtained from
 the workflow services (and also static data about stopped workflows).
 
+JupyterHub is Open Source, with the [3-Clause BSD
+License](https://opensource.org/licenses/BSD-3-Clause)) 
+
+
 ### Differences from Jupyter Notebook
 
 The Jupyter Notebook back-end is highly specific to the Notebook Document
@@ -316,18 +362,3 @@ modifying the core of JupyterHub so that we can treat it as a third-party
 software requirement, or can we contribute a change back to JupyterHub to
 enable that, or do we need to fork the project and maintain our own "Cylc Hub"
 in the future?
-
-
-## Glossary
-
-- A Cylc __workflow__ is a single (possibly cycling) __suite__ of inter-dependent
-tasks.
-
-- A Cylc __workflow service__ is workflow manager program for a single workflow,
-formerly known as a __suite server program__ or a __suite daemon__. (Cylc has
-no central server - each workflow gets its own ad-hoc service that runs as the
-user).
-
-- [Tornado](https://www.tornadoweb.org)  <a name="tornado"></a>
-
-
