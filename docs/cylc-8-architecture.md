@@ -290,11 +290,17 @@ Largely unchanged from Cylc-7 "suite server programs", except:
 ## Deployment
 
 - Cylc-8 will be packaged for installation with `pip` and `conda`.
-- (Wasn't possible at Cylc-7 and earlier, due extremem difficulty of PyGTK installation).
-- We'll also consider .rpm and .deb for system package managers, and containers.
-- No Cylc installation will be needed on the UI (browser) platform.
+- (This wasn't possible at Cylc-7 and earlier due the extreme difficulty of
+  PyGTK installation).
+- This will enable us to stop bundling 3rd party libraries like Jinja2.
+- It should also eliminate problems with version compatibility of software
+  dependencies on the system. 
 - Tools like `safety` will be able to scan software dependencies (listed in
   a standard `requirements.txt`) for security vulnerabilities.
+- No Cylc installation will be needed on the UI (browser) platform (the UI is
+  served up by the [Cylc UI Server](#cylc-ui-server).
+- We'll also consider `.rpm` and `.deb` packaging for system package managers,
+  and containers.
 
 ## Similarity with JupyterHub
 [TOP](#cylc-8-architecture)
