@@ -24,7 +24,8 @@ Workshop at the Bureau of Meteorology, Melbourne, Australia_.
 - [Command Line Interface](#command-line-interface)
 - [Authorization](#authorization)
 
-Appendix:
+Appendices:
+- [Deployment](#deployment)
 - [Similarity with JupyterHub](#similarity-with-jupyterhub)
 
 ## Cylc Terminology
@@ -232,21 +233,22 @@ Detail:
 - (Could potentially scrape suite databases rather than query Workflow
   Services, to remove all comms load from the suites ... but this has the
   potential for disk latency problems on NFS?)
-- Suite Listing Sub-Service:
-  - Location and identity of running workflow services (host:port).
-  - Location and identity of inactive suites (stopped or never started).
-  - Status of stopped suites (e.g. "stopped with N failed tasks").
-  - (use existing `cylc scan`, as the user)
-- Suite Start Sub-Service:
-  - Start up new workflow services (from inactive suites).
-  - (use existing `cylc run`, as the user):
-- Static Sub-Services, e.g.:
-  - `cylc graph` (dependency and inheritance graph visualization).
-  - `cylc review` (formerly Rose Bush).
-  - View suite definition.
-  - Suite analytics.
-  - `rose edit`.
-  - etc.
+- Pluggable Sub-Services:
+  - Suite Listing Sub-Service:
+    - Location and identity of running workflow services (host:port).
+    - Location and identity of inactive suites (stopped or never started).
+    - Status of stopped suites (e.g. "stopped with N failed tasks").
+    - (use existing `cylc scan`, as the user)
+  - Suite Start Sub-Service:
+    - Start up new workflow services (from inactive suites).
+    - (use existing `cylc run`, as the user):
+  - Static Sub-Services, e.g.:
+    - `cylc graph` (dependency and inheritance graph visualization).
+    - `cylc review` (formerly Rose Bush).
+    - View suite definition.
+    - Suite analytics.
+    - `rose edit`.
+    - etc.
 
 ## Cylc Workflow Services
 [TOP](#cylc-8-architecture)
@@ -255,7 +257,6 @@ Largely unchanged from Cylc-7 "suite server programs", except:
 - [Python 3](#python-3).
 - [JSON](#json) over [ZeroMQ](#zeromq) for communication with
   [Cylc UI Servers](#cylc-ui-server).
-
 
 ## Command Line Interface
 [TOP](#cylc-8-architecture)
@@ -284,6 +285,16 @@ Largely unchanged from Cylc-7 "suite server programs", except:
   - (Use Unix group names to authorize service/role accounts).
 
 # Appendix
+[TOP](#cylc-8-architecture)
+
+## Deployment
+
+- Cylc-8 will be packaged for installation with `pip` and `conda`.
+- (Wasn't possible at Cylc-7 and earlier, due extremem difficulty of PyGTK installation).
+- We'll also consider .rpm and .deb for system package managers, and containers.
+- No Cylc installation will be needed on the UI (browser) platform.
+- Tools like `safety` will be able to scan software dependencies (listed in
+  a standard `requirements.txt`) for security vulnerabilities.
 
 ## Similarity with JupyterHub
 [TOP](#cylc-8-architecture)
