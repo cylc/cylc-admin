@@ -121,6 +121,15 @@ sources on installation. Other things to consider:
 * Automatic variables.
 * Add simple command to remove installed locations on demand.
 
+### Suite Validation
+
+The `rose suite-run` command calls `cylc validate --strict` by default.
+Automatic suite validation should become the default behaviour for `cylc run`
+and `cylc reload`. Things to consider:
+* Is the *strict* mode necessary by default?
+* `rose suite-run` does not currently validate Rose items. This should be
+  changed to ensure that all aspects of the suite are validated uniformly.
+
 ### Rationalise Suite Start Up Commands
 
 This is raised in [#1030](https://github.com/cylc/cylc/issues/1030). Consider
