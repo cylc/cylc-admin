@@ -21,13 +21,13 @@ _suite daemon_  (old) -> _suite server program_ (recent) -> __workflow service__
 - Video Conferencing – report back: who can use what?
   - ~~Riot.im video conferencing and screen sharing?~~ - DONE (should be able to use Riot.im)
 
-## Documentation (Sadie)
+## ~~Documentation (Sadie)~~ DONE
 
-- Content:
-    1. Old: CUG: LaTeX -> Sphinx (not critical)
-    2. New: write in Sphinx
-- Infrastructure (doc generation) – [~~copy from Rose etc~~ was not necessary,
-  as is fairly trivial to set-up].
+- ~~Content:~~
+    ~~1. Old: CUG: LaTeX -> Sphinx (not critical)
+    2. New: write in Sphinx~~
+- ~~Infrastructure (doc generation).~~
+
 
 ## Cylc
 
@@ -43,12 +43,12 @@ _suite daemon_  (old) -> _suite server program_ (recent) -> __workflow service__
    3. Representation of API – self-documenting/"API on the fly"
 - Callback to UI of async server command results (via ZeroMQ, then pass-thru to GUI?)
 
-## Rose
+## Rose (MO)
 
 - Remove Rose Bush
 - Python 3  (above)
 - Packaging (above)
-- Cherrypy -> tornado (rosie web server)
+- Cherrypy -> tornado (rosie web server) (Sadie)
 
 ## Packaging – pip and conda (Bruno and Matt)
 
@@ -81,7 +81,7 @@ _suite daemon_  (old) -> _suite server program_ (recent) -> __workflow service__
 
 - Separate project and packaging (if possible?)
 - GraphQL schema and endpoint
-- Tornado web server (client-facing)
+- Tornado web server (client-facing) (Sadie)
 - ZeroMQ (server-facing)
 - (note: UI server has to server multiple Cylc versions)
 
@@ -94,7 +94,7 @@ _suite daemon_  (old) -> _suite server program_ (recent) -> __workflow service__
    1. Tree view
    2. Dot view
    3. Graph view … (Oliver)
-   4. Extra views: "Quilts" etc.
+   4. Extra views: "Quilts" etc. (Sadie)
 
 ## Services (priority order)
 - Suite Discovery (listing running and stopped suites)
