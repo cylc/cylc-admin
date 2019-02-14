@@ -162,7 +162,7 @@ ARCHITECTURE](https://cylc.github.io/cylc-admin/cylc-8-architecture).
 The implementation plan can be summarized as follows.
 
 First:
-1. finish of critical Cylc-7 developments and release cylc-7.8.0,
+1. finish off critical Cylc-7 developments and release cylc-7.8.0,
    then make a 7.8.x branch for ongoing Cylc-7 maintenance
 
 Then begin Cylc-8 development:
