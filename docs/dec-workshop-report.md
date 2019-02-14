@@ -22,8 +22,9 @@ __Hilary Oliver,__ January 2019
 
 
 In December 2018 the Australian Bureau of Meteorology (BOM) hosted the
-first-ever Cylc development workshop. Delegates attended from NIWA (3), Met
-Office (3), ESiWACE (1), BOM (1), and Altair Engineering (1). Travel funding
+first-ever Cylc development workshop, with
+[participants](dec-workshop-agenda#participants) from NIWA (3), Met Office
+(3), ESiWACE (1), BOM (1), and Altair Engineering (1). Travel funding
 was generously provided by the Unified Model Partnership, ESiWACE, and Altair.
 
 The primary goal of the workshop was to plan how to port Cylc from Python 2 to
