@@ -47,7 +47,6 @@ See below for more information on background, the workshop agenda, and outcomes
 including a link to Cylc-8 architecture documentation.
 
 ## Workshop Goals and Agenda
-[TOP](#table-of-contents)
 
 ### Background
 [TOP](#table-of-contents)
@@ -103,7 +102,6 @@ AGENDA](https://cylc.github.io/cylc-admin/dec-workshop-agenda#agenda)
 shows the topics covered each day during the week, to support these goals.
 
 ## Workshop Outcomes
-[TOP](#table-of-contents)
 
 ### Communications and Working Practices
 [TOP](#table-of-contents)
