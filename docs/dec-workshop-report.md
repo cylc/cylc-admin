@@ -129,7 +129,7 @@ We decided to:
   [Discourse](https://www.discourse.org/) (we were subsequently successful in
   our application for a free Discourse instance as an Open Source project)
 * consider GitHub Projects or [Trello](https://trello.com) for project
-* management and task tracking
+  management and task tracking
 
 (Since the workshop one of our major sites has decided to block Riot.im for
 security reasons, forcing some of us to use personal devices to stay in touch
