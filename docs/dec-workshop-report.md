@@ -183,6 +183,7 @@ Concurrent with Python 3 porting:
      * user authentication and site plugins
      * spawning user processes
      * access to other user's suites
+1. implement Cylc Hub, leveraging JupyterHub as far as possible
 1. begin work on the UI Server, with Vue.js and other technologies
      * server-facing comms layer: ZeroMQ
      * UI-facing comms layer: Tornado (asynchronous Python web framework), 
