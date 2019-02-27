@@ -2,20 +2,20 @@
 
 ### Major Updates and Changes
  - Initially compiled after the December 2018 Development Workshop.
- - Updated 25 Feb 2019: added Gantt Chartt.
+ - Updated 25 Feb 2019: added Gantt Chart.
 
 ### New Terminology
 _suite daemon_  (original) -> _suite server program_ (more recent) -> __workflow service__ (WS) (new)
 
-## Projectt Gantt Chartt
+## Projectt Gantt Chart
 
 ### Key
 - `.` - in progress
 - `o` - estimated completion date
 - `x` - done (actual completion date)
 
-### Ganntt Chartt
-(Refer below the Chartt for details on some items).
+### Ganntt Chart
+(Refer below the Chart for details on some items).
 
 ```
 o-------------------------------o-----------------------------------------------------------o-------------o
@@ -89,9 +89,13 @@ o-------------------------------o-----------------------------------------------
     migration to Cylc           | .  | .  | .  | .. | .. |....|...o|    |    |    |    |    |    | /      |
 o-------------------------------o-----------------------------------------------------------o-------------o
 ROSE                            *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OCT. NOV. DEC.*JAN.| /  SEP.  
-  Cherrypy -> Tornado           | ?  |    |    |    |    |    |    |    |    |    |    |    |    | \      |
-  Python 3                      | ?  |    |    |    |    |    |    |    |    |    |    |    |    | /      |
-  Setup.py, packaging, PyPi     | ?  |    |    |    |    |    |    |    |    |    |    |    |    | \      |
+  Cherrypy -> Tornado           |   .|....|...o|    |    |    |    |    |    |    |    |    |    | \      |
+  Python 3                      |   .|....|...o|    |    |    |    |    |    |    |    |    |    | /      |
+  Setup.py, packaging, PyPi     |    |    |    |...o|    |    |    |    |    |    |    |    |    | \      |
+  WS UI Rose Config-Edit        |    |    |    |    |    |    |    |    |    |    |    |    |    | \      |
+    basic                       |    |    |    |   .| .. |....|...o|    |    |    |    |    |    | \      |
+    complete                    |    |    |    |    |    |    | .. | .. | .. |....|....|...o|    | \      |
+  WS UI Rosie Go                |    |    |    |    |    |    |    |    |    |    |    |    |????| \      |
 o-------------------------------o-----------------------------------------------------------o-------------o
 PRODUCTION (Cylc-8 + Rose-2)    *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OCT. NOV. DEC.*JAN.| /  SEP.  
   Testing and Refinement        |    |    |    |    |    |    |    |    |    |    |    |    |....|.\. ...o|
