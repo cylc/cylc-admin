@@ -7,7 +7,7 @@
 ### New Terminology
 _suite daemon_  (original) -> _suite server program_ (more recent) -> __workflow service__ (WS) (new)
 
-## Projectt Gantt Chart
+## Project Gantt Chart
 
 ### Key
 - `.` - in progress
