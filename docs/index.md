@@ -1,15 +1,19 @@
-# Contents
-
+## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)
 
-Cylc-8 Planning:
+## Cylc-8 Pre-planning
 - [GUI Replacement Options](gui-replacement-options)
-- [Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED (pre workshop)
-- [2018 Workshop Agenda](dec-workshop-agenda)
-  - [Working Practices](practices-prompts)
-- [2018 Workshop Report](dec-workshop-report)
+- [Tentative Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED
+
+## Dec 2018 Development Workshop (Melbourne)
+- [Agenda](dec-workshop-agenda)
+  - [Working Practices](practices-prompts) (thoughts on, from Sadie)
+- [Workshop Summary Report](dec-workshop-report)
+
+## Cylc-8 Work In Progress
 - [Cylc-8 Architecture](cylc-8-architecture)
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
 
-Orthogonal Work in Progress:
+## Orthogonal Work in Progress:
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
+ 
