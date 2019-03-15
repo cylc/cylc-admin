@@ -90,6 +90,8 @@
   - Do we need to choose coding styles?
       * Python Docstring Conventions - would be nice to have one that works with most tools (i.e. sphinx, vim syntax hightlight, IDE, napoleon, etc)
       * A `CONTRIBUTING.md` with guidelines for people creating PR for the first time (the 2 approvers rule is nice, but not well known until you send a contribution), also explaining that test coverage is desired when possible, as well as documentation update, etc
+      * Maybe worth filling in the full set of community profile e.g. https://github.com/cylc/cylc-admin/community as well.
+      * Should we use something like [Black](https://github.com/ambv/black)?
   - anything else?
 
 1. **END**
