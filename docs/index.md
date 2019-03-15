@@ -14,10 +14,11 @@
 - [Cylc-8 Architecture](cylc-8-architecture)
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
 
-## Orthogonal Work in Progress:
+## Orthogonal Work in Progress
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
  
 ## Monthly Video Conferences
 
 - February 2019
--  - [Agenda](vc-feb-2019-agenda.md)
+  - [Agenda](vc-feb-2019-agenda.md)
+  - [Summary](vc-feb-2019-summary.md)
