@@ -1,0 +1,94 @@
+# Cylc VC March 2019 Agenda
+
+[Previous meeting notes](vc-feb-2019-summary.md)
+
+## Site Updates, News
+
+- CiSE paper accepted.
+- Met Office PS42->OS42 at Met Office using Cylc 7.8.1 (with mod).
+- NIWA operations - 7.8.1? (David)
+- BOM? (Martin) - Cylc + SMS, a long-term marriage made in heaven?
+
+## Upcoming 7.8.2 maintenance release
+
+- quick review of issues
+- any blockers?
+- release date?
+
+## Python 2-to-3
+
+- Cylc Workflow Service + 0mq port  - **DONE**
+- Rose standalone toolkit - **DONE**.
+- Rosie disco + Tornado port - WiP
+- Rose suite wrappers - TBD
+
+## New Architecture 
+
+1. **Demo** (Bruno) Hub + UI server + Cylc-7 Workflow Service with Flask +
+  GraphQL
+
+1. **JupyterHub** more or less proven?
+  - tested with local PAM authentication and local process spawner
+  - no mods required so far
+  - other authentication
+  - other spawners (PBS spawner? - Martin)
+  - other-user view?
+
+1. Can we do any more on the **UI** without real workflow data?
+  - (fake data? - don't know structure yet, below)
+
+1. state summary data structures in **Workflow Service**?
+  - form? 
+  - efficient incremental update from task pool?
+  - how to push data increments to UI Servers?
+
+1. state summary data data structure in **UI Server**?
+  - form?
+    - same as in WS?
+  - one per workflow, or one per UI?
+
+1. UI Server subscription model?
+
+1. How do current APIs compare to what we want to end up with?
+  - ZeroMQ (Oliver)
+  - GraphQL schema (David)
+
+1. Any **Workflow Service** logic changes needed?
+  - state summary data structures and update (above)
+  - main loop asyncio?
+  - other?
+
+1. **Testing**
+  - Unit test + Battery test -> Pytest?
+  - UI testing - any decisions here? (Selenium?)
+
+1. **Next steps toward cylc-8.0a1?**
+  - Packaging - nearly done? (Bruno)
+  - Connecting UI Server to Python 3 Workflow Service 
+  - Review Gantt Chart? (Projectt Gantt Chartt!?)
+ 
+1. **Graph View**
+  - representation in Workflow Service, and UI Server?
+  - internal processing, or external Graph Engine, e.g. Neo4j
+  - server has to compute the "concrete graph" and client populates nodes (as now)?
+  - begin investigating now or leave until other views are done?
+
+## **Project Management**
+
+1. **Who does what?**
+
+1. **Task tracking**
+  - ZenHub? Trello? GitHub Projects?
+  - (let's decide and be done with it!)
+
+1. **Riot.im**
+  - the saga continues!
+  - (switch to Slack?)
+
+1. **Other?**
+  - Do the other new `cylc/*` repositories need milestones?
+  - anything else?
+
+1. **END**
+  - any other business?
+  - next meeting date - in 2 weeks?
