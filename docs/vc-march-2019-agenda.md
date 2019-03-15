@@ -43,8 +43,7 @@
   - how to push data increments to UI Servers?
 
 1. state summary data data structure in **UI Server**?
-  - form?
-    - same as in WS?
+  - form? (same as in WS?)
   - one per workflow, or one per UI?
 
 1. UI Server subscription model?
