@@ -80,8 +80,8 @@
   - ZenHub? Trello? GitHub Projects?
   - (let's decide and be done with it!)
 
-1. **Riot.im**
-  - the saga continues!
+1. **Riot.im** - the saga continues!
+  - (note todays email CC-list screw-up)
   - (switch to Slack?)
 
 1. **Other?**
@@ -91,7 +91,16 @@
       * A `CONTRIBUTING.md` with guidelines for people creating PR for the first time (the 2 approvers rule is nice, but not well known until you send a contribution), also explaining that test coverage is desired when possible, as well as documentation update, etc
       * Maybe worth filling in the full set of community profile e.g. https://github.com/cylc/cylc-admin/community as well.
       * Should we use something like [Black](https://github.com/ambv/black)?
-  - anything else?
+  - Change name of main `cylc/cylc` repo to `cylc/cylc-workflow-service`?
+      - (along with `cylc/cylc-web-ui`, `cylc/cylc.github.io`...)
+      - or does `pip install cylc-VERSION` dictate that we keep `cylc/cylc`?
+      - Sadie's Cheat Sheets idea: new repository `cylc/cylc-cheat-sheets`?
+      - `cylc review` to new repo `cylc/cylc-review`? 
+  - Pull Request template: e.g. add a message for the release change log?
+  - YAML vs suite.rc vs Python API
+      - is it worth doing both? or Python API for cylc-8 (probably too big a job!)
+  - `suite.rc` -> `cylc-workflow.rc`? (or `cylc-workflow.yaml`?...)
+  - *anything else?*
 
 1. **END**
   - any other business?
