@@ -90,43 +90,57 @@ Some disagreement on the underlying model here.
   - Who does what?
 
 ## Project Admin and Code Management
-- ZenHub? Trello? GitHub Projects? (let's decide and be done with it!)
+- ZenHub? Trello? GitHub Projects?
+  - (let's decide and be done with it!)
+
 -. **Riot.im**, the saga continues!
   - (note todays email CC-list screw-up)
   - status at MO? switch to Slack?
+
 - Do the other new `cylc/*` repositories need milestones?
   - eventually? (e.g. distinct UI release cycle)
   - and CONTRIBUTING.md etc.? (full GitHub "community profile"?)
+
 - Do we need to choose coding styles?
    - (only PEP8 so far)
    - Python Docstring Conventions - would be nice to have one that works
      with most tools (i.e. sphinx, vim syntax hightlight, IDE, napoleon,
      etc)
    - Should we use [Black](https://github.com/ambv/black)?
+
 - Source repository names:
   - `cylc/cylc` --> `cylc/cylc-workflow-service`? (or not, for `pip install cylc`?)
   - (along with `cylc/cylc-web-ui`, `cylc/cylc.github.io`...)
   - or does `pip install cylc-VERSION` dictate that we keep `cylc/cylc`?
+
 - Sadie's Cheat Sheets idea: new repository `cylc/cylc-cheat-sheets`?
    - `cylc review` to new repo `cylc/cylc-review`? 
    - `cylc profile-battery` command to new repo.
    - `suite.rc` -> `cylc-workflow.rc`? (or `cylc-workflow.yaml`?...)
+
 - Improved release process (Bruno) 
    - less reliance on Hilary
    - Pull Request template, require a message for the release change log?
    - automatically generate CHANGES.md?
+
 - Testing
   - Unit test + Battery test -> Pytest?
   - UI testing - any decisions here? (Selenium?)
 
-## Speculative, or off the cylc-8 critical path
+## Speculative or off-the-critical-path
+
 - suite.rc, YAML, Python API?
-   - my feeling is we could force users to change config file format, and we
-     need a Python API for advanced users/applications, but we can't force
-     users to use Python (simpler suites don't *need* Python)
-   - so is it worth considering suite.rc -> YAML? for cylc-8, or later?
-   - Does the intention to make a Python API change this?
-   - Is a Python API possible for cylc-8? (probably not)
+  - my feeling is we could force users to change config file format, and we
+    need a Python API for advanced users/applications, but we can't force
+    users to use Python (simpler suites don't *need* Python)
+  - so is it worth considering suite.rc -> YAML? for cylc-8, or later?
+  - Does the intention to make a Python API change this?
+  - Is a Python API possible for cylc-8? (probably not)
+
+- Oliver's API-only-the-fly POCs:
+  - CLI? web UI?
+  - How does GraphQL impact this? (Do we keep non-GraphQL endpoints for
+    commands? or can we do something similar with GraphQL?)
 
 ## END
 - anything else?
