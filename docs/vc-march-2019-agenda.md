@@ -61,8 +61,9 @@ Some disagreement on the underlying model here.
 - (what does incremental update mean or imply at the UI end?)
 - what (dict) form should the summary data structure take, exactly?
 - document method and data "schema" clearly before implementation
-- some of this could impact or invalidate some of Oliver's work on the WS ZMQ
-  API? e.g. [#3004](https://github.com/cylc/cylc/pull/3004)
+- Model 2 (GraphQL in WS?) (esp. for commands) could impact or invalidate some
+  of Oliver's work on the WS ZMQ API? e.g.
+  [#3004](https://github.com/cylc/cylc/pull/3004)
 
 ### UI Server
 - Need a new project `cylc-ui-server`? (Python Tornado)?
