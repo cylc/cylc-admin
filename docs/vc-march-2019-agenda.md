@@ -94,18 +94,14 @@ Some disagreement on the underlying model here.
   - (note todays email CC-list screw-up)
   - status at MO? switch to Slack?
 - Do the other new `cylc/*` repositories need milestones?
+  - eventually? (e.g. distinct UI release cycle)
+  - and CONTRIBUTING.md etc.? (full GitHub "community profile"?)
 - Do we need to choose coding styles?
    - (only PEP8 so far)
    - Python Docstring Conventions - would be nice to have one that works
      with most tools (i.e. sphinx, vim syntax hightlight, IDE, napoleon,
      etc)
-- A `CONTRIBUTING.md` with guidelines for people creating PR for the
-  first time (the 2 approvers rule is nice, but not well known until you
-  send a contribution), also explaining that test coverage is desired
-  when possible, as well as documentation update, etc
-- Maybe worth filling in the full set of community profile e.g.
-  https://github.com/cylc/cylc-admin/community as well.
-- Should we use [Black](https://github.com/ambv/black)?
+   - Should we use [Black](https://github.com/ambv/black)?
 - Source repository names:
   - `cylc/cylc` --> `cylc/cylc-workflow-service`? (or not, for `pip install cylc`?)
   - (along with `cylc/cylc-web-ui`, `cylc/cylc.github.io`...)
@@ -123,10 +119,13 @@ Some disagreement on the underlying model here.
   - UI testing - any decisions here? (Selenium?)
 
 ## Speculative, or off the cylc-8 critical path
-- YAML vs suite.rc vs Python API
-   - is it worth considering suite.rc -> YAML for cylc-8
-   - or not, given intention to make a Python API in time (is the API possible
-     for cylc-8? ... probably not)
+- suite.rc, YAML, Python API?
+   - my feeling is we could force users to change config file format, and we
+     need a Python API for advanced users/applications, but we can't force
+     users to use Python (simpler suites don't *need* Python)
+   - so is it worth considering suite.rc -> YAML? for cylc-8, or later?
+   - Does the intention to make a Python API change this?
+   - Is a Python API possible for cylc-8? (probably not)
 
 ## END
 - anything else?
