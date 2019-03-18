@@ -85,7 +85,8 @@ Some disagreement on the underlying model here.
 ### Next steps toward cylc-8.0a1
   - Packaging - nearly done? (Bruno)
   - UI Server?
-  - Review Gantt Chart? (Projectt Gantt Chartt!?)
+  - Review [Projectt Gantt
+    Chartt](cylc-8-tasks#project-gantt-chart)
   - Who does what?
 
 ## Project Admin and Code Management
