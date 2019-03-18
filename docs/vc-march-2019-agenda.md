@@ -39,7 +39,8 @@
 
 ### Workflow Status Summary Data and Communication
 
-Some disagreement on the fundamental model here.
+Some disagreement on the underlying model here.
+
 **MODEL 1: UI Server Mirror**:
 - UI Server holds a data structure that mirrors the Workflow state
 - One of these per Workflow Service (not one per UI)
@@ -48,12 +49,13 @@ Some disagreement on the fundamental model here.
 - GraphQL schema exactly mirrors the status data structure
 - Workflow Service does not see multiple UIs, just the UI Server (for status
   requests, not commands)
+
 **MODEL 2: UI Server Pass-Through**
 - UI Server just passes UI requests through to Workflow Services
 - Needs GraphQL at the backend too? 
 - What does incremental update mean in this case?
 - Is this simpler or not? 
--
+
 **TODO**
 - decide on model, with implications for API and subscription model, etc.
 - (what does incremental update mean or imply at the UI end?)
@@ -61,7 +63,7 @@ Some disagreement on the fundamental model here.
 - document method and data "schema" clearly before implementation
 
 ### UI Server
-- As a project: `cylc-ui-server` (Python Tornado), depends on cylc-web?
+- Need a new project `cylc-ui-server`? (Python Tornado)?
 - Can we start implementing this?  (questions above need resolving)
 - Initially serve fake workflow data
 
@@ -72,11 +74,12 @@ Some disagreement on the fundamental model here.
   - other?
 
 ### Graph Representation and Processing
-- stick with a flat list of nodes and edges?
+- stick with a flat list of nodes and edges (can't model the graph itself in
+  GraphQL)?
 - internal processing, or external Graph Engine, e.g. Neo4j
 - server has to compute the "concrete graph" over range of cycle points,
-  and client populates nodes (as now)?  (otherwise client needs graph pattern
-  and full cycling capability)
+  and client just populates nodes, as now?  (otherwise client needs to know
+  the graph *pattern* and have full cycling capability)
 - begin investigating now or leave until other views are done?
 
 ### Next steps toward cylc-8.0a1
