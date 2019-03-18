@@ -33,8 +33,8 @@ ISODATETIME LIBRARY             *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OC
   packaging, PyPi               |  ..|.x  |    |    |    |    |    |    |    |    |    |    |    | /      |
 o-------------------------------o-----------------------------------------------------------o-------------o
 WORKFLOW SERVICE (WS) and CLI   *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OCT. NOV. DEC.*JAN.| /  SEP.  
-  Python 3                      |   .|....|...o|    |    |    |    |    |    |    |    |    |    | \      | 
-  Cherrypy -> ZeroMQ network    |   .|....|...o|    |    |    |    |    |    |    |    |    |    | /      | 
+  Python 3                      |   .|....|...x|    |    |    |    |    |    |    |    |    |    | \      | 
+  Cherrypy -> ZeroMQ network    |   .|....|...x|    |    |    |    |    |    |    |    |    |    | /      | 
   Command-line clients          |    |    |  ..|...o|    |    |    |    |    |    |    |    |    | \      | 
     old passphrase authe        |    |    |  ..|...o|    |    |    |    |    |    |    |    |    | /      | 
     one-time token authe        |    |    | ...|....|...o|    |    |    |    |    |    |    |    | \      |
@@ -53,8 +53,8 @@ CYLC HUB VIA JUPYTERhUB         *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OC
   Spawn UIS (Local host)        |    |...x|    |    |    |    |    |    |    |    |    |    |    | \      |
   User Authentication (PAM)     |    |  ..|x   |    |    |    |    |    |    |    |    |    |    | /      |
   User Authentication (LDAP?)   |    |  ..|x   |    |    |    |    |    |    |    |    |    |    | \      |
-  Server Trust                  |    |   .|..o |    |    |    |    |    |    |    |    |    |    | /      |
-  Session Management            |    |   .|...o|    |    |    |    |    |    |    |    |    |    | \      |
+  Server Trust                  |    |   .|..? |    |    |    |    |    |    |    |    |    |    | /      |
+  Session Management            |    |   .|...?|    |    |    |    |    |    |    |    |    |    | \      |
   Other-User View (Admin?)      |    |   .|....|.o  |    |    |    |    |    |    |    |    |    | /      |
   Spawn UI Server (Remote)      |    |    |....|...o|    |    |    |    |    |    |    |    |    | \      |
   UI Server Authorization       |    |    | ...|....|..o |    |    |    |    |    |    |    |    | /      |
@@ -62,7 +62,7 @@ CYLC HUB VIA JUPYTERhUB         *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OC
 o-------------------------------o-----------------------------------------------------------o-------------o
 UI SERVER and UI                *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OCT. NOV. DEC.*JAN.| \  SEP.  
   Vue.js app POC                |....|...x|    |    |    |    |    |    |    |    |    |    |    | /      |
-  Hub Integration               |    |   .| .. |...o|    |    |    |    |    |    |    |    |    | \      |
+  Hub Integration               |    |   .| .. |...?|    |    |    |    |    |    |    |    |    | \      |
   Manage multiple suites        |    |    |    | .  | ...|...o|    |    |    |    |    |    |    | /      |
   UI: Tornado GraphQL WebSocket |    |    |    |    |   .| .. | .. |...o|    |    |    |    |    | \      |
   WS: ZeroMQ                    |    |    |    |    |   .|..o |    |    |    |    |    |    |    | /      |
