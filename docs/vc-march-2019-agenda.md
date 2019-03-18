@@ -96,7 +96,7 @@ Some disagreement on the underlying model here.
 - ZenHub? Trello? GitHub Projects?
   - (let's decide and be done with it!)
 
--. **Riot.im**, the saga continues!
+- Riot.im: the saga continues!
   - (note todays email CC-list screw-up)
   - status at MO? switch to Slack?
 
