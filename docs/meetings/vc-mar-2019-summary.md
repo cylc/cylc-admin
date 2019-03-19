@@ -59,15 +59,13 @@ We may be able to use a J-Hub Service to implement site-level authorization
 **ACTION: can the site authorization Hub service (above) be co-opted to display
 a clickable list of users whose UI Servers I can connect to?**
 
-## Workflow Status Summary and Communications
+## UI Server and Workflow Status Communications
 
 **ACTION: work through and decide which of model 1 or 2 (see agenda) to
 implement first.** (Matt and Oliver, initially).
 
-## UI Server
-
 **ACTION: begin implementation** (Oliver, David, Bruno)
-- DEPENDS ON: UI Server model (above)
+- DEPENDS ON model (above)
 - need "req, rep, rep, rep..." pub sub model too
 - use dummy workflow status data at the back end initially, if necessary
 
