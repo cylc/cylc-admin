@@ -17,11 +17,14 @@
 ## Orthogonal Work in Progress
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
  
-## Monthly Video Conferences
+## Video Conferences
+
+Agendas and post-meeting summary notes.
 
 - February 7 2019
   - [Agenda](meetings/vc-feb-2019-agenda.md)
-  - [Summary](meetings/vc-feb-2019-summary.md)
+  - [Notes](meetings/vc-feb-2019-summary.md)
 
 - March 18 2019
   - [Agenda](meetings/vc-mar-2019-agenda.md)
+  - [Notes](meetings/vc-mar-2019-summary.md)
