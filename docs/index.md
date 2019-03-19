@@ -24,4 +24,4 @@
   - [Summary](meetings/vc-feb-2019-summary.md)
 
 - March 18 2019
-  - [Agenda](meetings/vc-march-2019-agenda.md)
+  - [Agenda](meetings/vc-mar-2019-agenda.md)

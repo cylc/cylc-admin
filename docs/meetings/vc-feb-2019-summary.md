@@ -1,6 +1,6 @@
 # Feb 7 Cylc VC Summary
 
-See [Agenda](meetings/vc-feb-2019-agenda.md).
+See [Agenda](vc-feb-2019-agenda.md).
 
 __general__
 
