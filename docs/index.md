@@ -20,8 +20,8 @@
 ## Monthly Video Conferences
 
 - February 7 2019
-  - [Agenda](vc-feb-2019-agenda.md)
-  - [Summary](vc-feb-2019-summary.md)
+  - [Agenda](meetings/vc-feb-2019-agenda.md)
+  - [Summary](meetings/vc-feb-2019-summary.md)
 
 - March 18 2019
-  - [Agenda](vc-march-2019-agenda.md)
+  - [Agenda](meetings/vc-march-2019-agenda.md)

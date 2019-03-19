@@ -1,7 +1,5 @@
 # Cylc VC March 2019 Agenda
 
-[Previous meeting notes](vc-feb-2019-summary.md)
-
 ## Site Updates, News
 
 - CiSE paper accepted.
