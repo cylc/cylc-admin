@@ -134,11 +134,11 @@ more powerful. It will enable us to:
 ## JupyterHub
 [TOP](#cylc-8-architecture)
 
-The architecture described below is inspired by [JupyterHub](#jupyterhub) - a
-proven technology, commonly used in scientific modeling and HPC contexts, that
-solves a very similar problem of managing back-end services spawned into user
-accounts. See below for details: [Similarity with
-Jupyter Hub](#similarity-with-jupyterhub)).
+The Hub and Proxy architecture described below is inspired by
+[JupyterHub](#jupyterhub). JupyterHub is a proven technology that solves a very
+similar problem of managing back-end services spawned into user accounts. And
+it is commonly used in scientific modeling and HPC contexts, See below for details:
+[Similarity with Jupyter Hub](#similarity-with-jupyterhub)).
 
 We hope to use JupyterHub "out of the box" for the Hub and Proxy components of
 the new archtitecture. Our back-end components are very different from Jupyter
