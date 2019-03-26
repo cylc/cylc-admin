@@ -37,7 +37,7 @@
 
 ### Workflow Status Summary Data and Communication
 
-Some disagreement on the underlying model here.
+Need to resolve disagreement on the model:
 
 **MODEL 1: UI Server Mirror**:
 - UI Server holds a data structure that mirrors the Workflow state
@@ -53,6 +53,8 @@ Some disagreement on the underlying model here.
 - Needs GraphQL at the backend too? 
 - What does incremental update mean in this case?
 - Is this simpler or not? 
+
+**(or something in between)**
 
 **TODO**
 - decide on model, with implications for API and subscription model, etc.
