@@ -7,18 +7,18 @@
 
 **Trello:** project board(s) under "The Cylc Workflow Engine" Team.
 - for keeping track of topics, and recording related conclusions and decisions
-  reached on Riot. Trello card decks should eventually resolve to multiple
-  GitHub Issues
+  reached on Riot.
+- Trello card decks should eventually resolve to multiple GitHub Issues
 
 **GitHub Issues**: [cylc](https://github.com/cylc)
-- describe implementation of single well-defined topics that will eventually
-  result in a single PR (some may still result in multiple PRs, but full-blown
-  discussion can now go to Riot, and the big overarching Issues that we used to
-  have can be better handled on Trello)
+- describe implementation of single well-defined topics that eventually result
+- in single (or few) Pull Requests
+- (detail should be discussed on Riot, and big overarching Issues can be
+  tracked on Trello)
 
-**Cylc Admin:** (THIS SITE) overarching summary documents to explain our
-strategy to others, and to track of the full project (Gantt chart and list of
-major tasks as one-liners).
+**Cylc Admin:** (THIS SITE)
+- summary documents to explain our strategy to others
+- and to track the project globally (Gantt chart etc.)
 
 **Google Groups Cylc Forum:** 
 - release announcements, plus usage questions, feature requests, and bug
