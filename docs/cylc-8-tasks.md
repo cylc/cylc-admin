@@ -4,9 +4,6 @@
  - Initially compiled after the December 2018 Development Workshop.
  - Updated 25 Feb 2019: added Gantt Chart.
 
-### New Terminology
-_suite daemon_  (original) -> _suite server program_ (more recent) -> __workflow service__ (WS) (new)
-
 ## Project Gantt Chart
 
 ### Key
@@ -127,53 +124,69 @@ UPDATE: Riot.im now blocked at one site
 ### Python 3 Migration
 
 - ~~ISODatetime (Bruno and Matt)~~ - DONE
-- Cylc Scheduler ~~(Bruno and Matt)~~ Oliver
-- Rose (MO: Sadie and Tim)
+- ~~Cylc Scheduler~~ (Oliver)
+- Rose (WIP - Sadie and Tim)
 
-### Workflow Service
+### Cylc Hub
+
+(Martin, Hilary, Bruno)
+
+Primary question: *can we use JupyterHub "out of the box" as UI Server
+spawner?*
+- ~~Basic POC~~ - DONE
+  - LocalProcessSpawner, PAM, dummy UIS, other-user view
+- other authentication plugins?
+- remote spawners: ssh, PBS?
+- other-user view without having to type /user/[name] in URL?
+- site-level authorization via a Hub server?
+  - (not a show-stopper; could be done at UIS if necessary)
+- low priority but of interest:
+  - Docker spawner?
+  - support users with no local account?
+
+Summary (March): primary functionality demonstrated, with no need to
+modify JupyterHub code. Still remains to be seen whether UI support for
+other-user views and site authorization can be done with vanilla JupyterHub.
+
+### Workflow Service (WS)
+
+(Mostly Oliver)
 
 - ~~(remove PyGTK GUI)~~ DONE
-- Python 3 (Oliver, above)
-   1. Ordered dict gone (what about "ordereddict_with_defaults"?)
-- Packaging (Bruno, Matt)
-- [rose suite-run](proposal-rose-suite-run.md)
-- Replace Cherrypy with ZeroMQ ~~(with protobuf?)~~ DONE (minimally)
-- Replace REST API to ZeroMQ (Direct)
-- 3. Representation of API – self-documenting/"API on the fly"?
-- Callback to UI of async server command results (via ZeroMQ, then pass to GUI?)
+- ~~Python 3 (Oliver, above)~~ DONE
+- Packaging (WIP - Bruno, Matt)
+- [rose suite-run migration](proposal-rose-suite-run.md)
+- ~~Replace Cherrypy and REST API with ZeroMQ~~ DONE
+- ZeroMQ communications model to UI Server: REQ-REP-REP-REP (Oliver)
+  - See UI Server (below)
+    - and feedback of async command results (not just "command queued")
+- Representation of API – self-documenting/"API on the fly"?
+- Main loop asyncio.
 
-### Rose (MO)
+### UI Server (UIS)
 
-- Remove Rose Bush
-- Python 3  (above)
-- Packaging (above)
-- Cherrypy -> tornado (rosie web server) (Sadie)
+Design options described
+  [here](vc-mar-2019-agenda#workflow-status-summary-data-and-communications)
 
-### Cylc Hub =? Jupyter Hub Investigation (Martin, Hilary + Matt) – (urgent).
+Decision: implement "MODEL 1" (UIS as WS mirror)
+  - but avoid assumptions that restrict us from going to a pass-through model
+    in future if necessary
 
-- (user auth – Sujata - see above)
-- Can we do the following without forking Jupyter Hub:
-    1. See other users' UI Servers
-    2. (users with no local unix account?)
+Initial design, therefore:
+- UIS subscribes to WS
+- WS does initial push of full workflow status data to UIS
+- WS then pushes each change to UIS as an increment 
+- ~~Separate project (cylc-ui-server)~~ DONE
+- UIS resolves GraphQL queries from the UI
+  - GraphQL schema and endpoint (WIP - David and Oliver)
+  - GraphQl schema should exactly reflect the WS data model
+  - WS data model might need redesigning somewhat
+- Tornado web server (client-facing)
+- ZeroMQ (server-facing - SuiteRuntimeClient from WS)
+- (note: UI server has to serve multiple Cylc versions)
 
-### Authentication (~~Sujata~~ Hilary, + Damian and Martin ?)
-- (Sujata now unavailable till late March?)
-- Jupyter Hub user-authentication plug-ins 
-- Hub -> UI Server Trust (JupyterHub out of the box?) (via WebSocket)
-- UI Server -> Workflow Service Trust (via ZeroMQ)
-- CLI -> Workflow Service Trust
-   1. Direct - just Workflow Service owner (via ZeroMQ)
-   2. Via UI Server (via WebSocket)
-   3. Session management?
-- Jobs -> Workflow Service (one-time token?) (via ZeroMQ)
-
-### UI Server (replaces Jupyter notebook server)
-
-- Separate project and packaging (if possible?)
-- GraphQL schema and endpoint
-- Tornado web server (client-facing) (Sadie)
-- ZeroMQ (server-facing)
-- (note: UI server has to server multiple Cylc versions)
+Also:
+- packaging (WIP - Bruno)
 
 ### UI Presentation Layer (JS framework)
 
@@ -186,6 +199,17 @@ UPDATE: Riot.im now blocked at one site
    3. Graph view … (Oliver)
    4. Extra views: "Quilts" etc. (Sadie)
 
+### General Authentication issues (~~Sujata~~ Hilary, + Damian and Martin ?)
+- (Sujata now unavailable till late March?)
+- Jupyter Hub user-authentication plug-ins 
+- Hub -> UI Server Trust (JupyterHub out of the box?) (via WebSocket)
+- UI Server -> Workflow Service Trust (via ZeroMQ)
+- CLI -> Workflow Service Trust
+   1. Direct - just Workflow Service owner (via ZeroMQ)
+   2. Via UI Server (via WebSocket)
+   3. Session management?
+- Jobs -> Workflow Service (one-time token?) (via ZeroMQ)
+
 ### Authorization
 
 - User X can log in at Hub (at Hub)
@@ -194,7 +218,6 @@ UPDATE: Riot.im now blocked at one site
 - User X can do this to Workflow Services Y (at Workflow Service)
 - (initially implment by simple config files that relate users or groups to
    privileges)
-
 
 ### Services (priority order)
 - Workflow Services Discovery (listing running and stopped Workflow Services)
@@ -218,3 +241,12 @@ UPDATE: Riot.im now blocked at one site
 - Job batching
 - Cluster support
 - (Python API etc. … after cylc-8)
+
+### Rose (MO)
+
+- Remove Rose Bush
+- Python 3  (above)
+- Packaging (above)
+- Cherrypy -> tornado (rosie web server) (Sadie)
+
+
