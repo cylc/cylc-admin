@@ -11,6 +11,7 @@
 - for keeping track of topics, and recording related conclusions and decisions
   reached on Riot.
 - Trello card decks should eventually resolve to multiple GitHub Issues
+- Deck names should be pretty broad, with specific cards for sub-topics.
 
 **GitHub Issues**: [cylc](https://github.com/cylc)
 - describe implementation of single well-defined topics that eventually result
