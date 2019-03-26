@@ -12,7 +12,7 @@
 
 **GitHub Issues**: [cylc](https://github.com/cylc)
 - describe implementation of single well-defined topics that eventually result
-- in single (or few) Pull Requests
+  in single (or few) Pull Requests
 - (detail should be discussed on Riot, and big overarching Issues can be
   tracked on Trello)
 
