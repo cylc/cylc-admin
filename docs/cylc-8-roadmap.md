@@ -1,10 +1,13 @@
 # Cylc Web GUI & Architecture: Tentative Roadmap
 
-(Latest update: 1 Nov 2018)
+(Last update: 1 Nov 2018)
+
+**DOCUMENT OUTDATED**
+(this pre-dates the dec 2018 workshop)
+See [cylc-8 Architecture](cylc-8-architecture.md)
+and [cylc-8 Implementation Tasks](cylc-8-tasks.md)
 
 __Target completion date: late 2019__ (Python 2 end of life)
-
-_WARNING_ - THIS PRE-DATES THE DEC 2018 WORKSHOP - and is somewhat out of date 
 
 ## Architecture
 
