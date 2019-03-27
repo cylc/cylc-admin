@@ -137,7 +137,7 @@ Summary page created [here](project-collab.md).
 ### Python 3 Migration
 
 - ~~ISODatetime (Bruno and Matt)~~ - DONE
-- ~~Cylc Scheduler~~ (Oliver)
+- ~~Cylc Scheduler~~ (Oliver) - DONE
 - Rose (WIP - Sadie and Tim)
 
 ### Cylc Hub
@@ -157,7 +157,7 @@ spawner?*
   - Docker spawner?
   - support users with no local account?
 
-Summary (March): primary functionality demonstrated, with no need to
+Update (March): primary functionality demonstrated, with no need to
 modify JupyterHub code. Still remains to be seen whether UI support for
 other-user views and site authorization can be done with vanilla JupyterHub.
 
@@ -195,7 +195,7 @@ Initial design, therefore:
   - GraphQl schema should exactly reflect the WS data model
   - WS data model might need redesigning somewhat
 - Tornado web server (client-facing)
-- ZeroMQ (server-facing - SuiteRuntimeClient from WS)
+- ZeroMQ client (server-facing - SuiteRuntimeClient from WS)
 - (note: UI server has to serve multiple Cylc versions)
 
 Also:
