@@ -101,17 +101,30 @@ o-------------------------------o-----------------------------------------------
 
 ## Notes and Details
 
-### Communication:
+### Communication and Collaboration:
 
-- GitHub projects set up and use?
-- Discourse
-  - ~~apply for a free instance~~ - DONE
-  - ~~configure the new Cylc Forum, with GitHub and Google Account Login~~ - DONE 
-- ~~Riot.im (open it up to others, etc.)~~ - DONE
-- Video Conferencing – report back: who can use what?
-  - ~~Riot.im video conferencing and screen sharing?~~ - DONE (can use Riot.im)
+- Project Board
+  - ~~GitHub projects?~~ - too primitive
+  - trying Trello
 
-UPDATE: Riot.im now blocked at one site
+- Mail forum (mainly for users)
+  - Google Groups (now using, but deprecated)
+  - Discourse
+    - ~~apply for a free instance~~ - DONE
+    - ~~configure the new Cylc Forum, with GitHub and Google Account Login~~ - DONE 
+    - awaiting decision to go ahead with this
+
+- Chat Platform
+  - ~~Slack?~~ - free account is lossy
+  - using Riot.im
+    - ~~currently blocked at MO~~
+
+- Video Conference and screen sharing
+  - ~~Skype~~ - yuck
+  ~ ~~Google Hangouts~~ - tested, worked well, but:
+  - using Riot.im 
+
+Summary page created [here](project-collab.md).
 
 ### Documentation (Sadie) - DONE
 
