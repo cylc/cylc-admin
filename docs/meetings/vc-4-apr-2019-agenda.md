@@ -22,7 +22,7 @@ Go through  **ACTIONS** in [March meeting notes](vc-mar-2019-summary.md)
 
 ## cylc-8 packaging (5 min)
 
-Bruno: status update
+- Bruno: status update
     - PR had issues with profile-battery, fixed in [#3006](https://github.com/cylc/cylc/pull/3006) 
     - And issues with `cylc.version`, fixed in [#3001](https://github.com/cylc/cylc/pull/3001)
     - Then had issues with test-battery and CYLC_DIR, which I tried to address in [this commit](https://github.com/cylc/cylc/pull/2990/commits/64453299d533e17cf76a981f77ae3dac734bd92f) as a mitigation (CYLC_DIR is used in many other parts of Cylc, and might be incompatible with setuptools installed Cylc versions)
