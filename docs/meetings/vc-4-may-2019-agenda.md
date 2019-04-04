@@ -6,7 +6,7 @@ Go through  **ACTIONS** in [March meeting notes](vc-mar-2019-summary.md)
 
 ## Site Updates and News (5 min)
 
-- New [Cylc Trello Board]( - keep it up to date
+- New [Cylc Trello Board](https://trello.com/b/6k6KRUJM/cylc-main-board)
 - CiSE paper: preprint published
   - add to Cylc web site doc page.
 - NIWA
@@ -20,13 +20,11 @@ Go through  **ACTIONS** in [March meeting notes](vc-mar-2019-summary.md)
 - any blockers?
 - release date?
 
-## cylc-8 (35 min)
-
-### packaging (5 min)
+## cylc-8 packaging (5 min)
 
 Bruno: status update
 
-### Hub (10 min)
+## cylc-8 Hub (10 min)
 
 Martin: status update
 - BatchSpawner?
@@ -34,7 +32,7 @@ Martin: status update
 - ssh RemoteSpawner?
 - (other: auth etc.?)
 
-### WS, UIS, UI (20 min)
+## cylc-8 WS, UIS, UI (20 min)
 
 Oliver, Bruno, David: status update
   - UIS: we settled on the WS mirror data model
