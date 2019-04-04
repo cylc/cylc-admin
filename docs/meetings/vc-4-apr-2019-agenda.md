@@ -52,6 +52,10 @@ Oliver, Bruno, David: status update
     - (GraphQL in WS would impact this? ... but we're currently aiming for
        GraphQL in UIS, not WS)
 
+## cylc-8 integration (5 min)
+- Can we get all component repositories in working order, and working together,
+  as soon as possible?
+
 ## Orthogonal work (5 min)
 
 Matt: status update
