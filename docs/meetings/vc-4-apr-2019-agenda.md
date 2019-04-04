@@ -27,10 +27,11 @@ Bruno: status update
 ## cylc-8 Hub (10 min)
 
 Martin: status update
+- ssh spawner?
+    - [NERSC ssh spawner](https://github.com/NERSC/sshspawner)
 - BatchSpawner?
     - Bruno: Docker with PBS?
-- ssh RemoteSpawner?
-- (other: auth etc.?)
+- (other: authorization service etc.?)
 
 ## cylc-8 WS, UIS, UI (20 min)
 

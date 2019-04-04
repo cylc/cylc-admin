@@ -33,4 +33,7 @@ Agendas and post-meeting notes.
   - [Agenda](meetings/vc-mar-2019-agenda.md)
   - [Notes](meetings/vc-mar-2019-summary.md)
 
+- April 4/5 2019
+  - [Agenda](meetings/vc-4-apr-2019-agenda.md)
+
 
