@@ -1,6 +1,6 @@
 # Cylc VC March 2019 Summary Notes
 
-[Agenda](vc-march-2019-agenda.md)
+[Agenda](vc-mar-2019-agenda.md)
 
 ## Site Updates, News
 
