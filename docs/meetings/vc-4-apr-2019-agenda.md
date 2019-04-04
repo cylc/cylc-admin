@@ -31,7 +31,9 @@ Martin: status update
     - [NERSC ssh spawner](https://github.com/NERSC/sshspawner)
 - BatchSpawner?
     - Bruno: Docker with PBS?
-- (other: authorization service etc.?)
+- configurable-http-proxy or
+  [Traefik](https://jupyterhub-traefik-proxy.readthedocs.io/en/latest/)?
+- (other: authorization hub service, ?)
 
 ## cylc-8 WS, UIS, UI (20 min)
 
@@ -42,6 +44,9 @@ Oliver, Bruno, David: status update
   - Tornado, WebSocket, GraphQL (to UI)
   - WS asyncio
   - [API-on-the-fly?](https://github.com/cylc/cylc/pull/3005#issuecomment-479512438) 
+    - CLI? web UI?
+    - (GraphQL in WS would impact this? ... but we're currently aiming for
+       GraphQL in UIS, not WS)
 
 ## Orthogonal work (5 min)
 
@@ -67,8 +72,8 @@ Matt: status update
    - automatically generate CHANGES.md?
 
 - Testing
-  - Unit test + Battery test -> Pytest?
-  - UI testing - any decisions here? (Selenium?)
+  - Unit tests + Battery tests -> Pytest?
+  - UI testing (Selenium?)
 
 - suite.rc, YAML, Python API?
   - `suite.rc` -> `cylc-workflow.rc`? (or `cylc-workflow.yaml`?...)
@@ -78,11 +83,6 @@ Matt: status update
   - so is it worth considering suite.rc -> YAML? for cylc-8, or later?
   - Does the intention to make a Python API change this?
   - Is a Python API possible for cylc-8? (probably not)
-
-- Oliver's API-only-the-fly POCs:
-  - CLI? web UI?
-  - (GraphQL in WS would impact this? ... but we're currently aiming for
-    GraphQL in UI S, not WS)
 
 ## END
 - **anything else?**
