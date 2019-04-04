@@ -37,6 +37,8 @@ Martin: status update
     - Bruno: Docker with PBS?
 - configurable-http-proxy or
   [Traefik](https://jupyterhub-traefik-proxy.readthedocs.io/en/latest/)?
+- can we get code/config-files/instructions up on GitHub so others can start
+  playing with this, toward integration...
 - (other: authorization hub service, ?)
 
 ## cylc-8 WS, UIS, UI (20 min)
