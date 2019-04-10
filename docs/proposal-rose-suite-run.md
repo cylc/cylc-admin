@@ -45,7 +45,12 @@ While we consider the above, we may also want to consider the following:
   * Where relevant, sections and keys should be idenitical between `suite.rc`
     and `global.rc`. (Or a unified replacement called `cylc-flow.rc`?)
   * Migrate relevant settings from `rose.conf` and `rose-suite.conf`.
-  * Settings such as `run directory` and `work directory` may need better names.
+  * Settings such as `run directory` and `work directory` may need better names
+    (users think of "work" as a sub-directory of the run directory, but `run
+    directory` and `work directory` are configured separately, and the latter
+    (work directory) is actually the top level (run directory) location under
+    which to put the work directory ... and it may confuse users that a
+    non-standard run directory does bring the work directory with it).
 
 ### Clusters instead of Hosts as Logical Units
 
