@@ -41,6 +41,11 @@ While we consider the above, we may also want to consider the following:
   compute clusters/platforms.
 * Rationalise run/restart/reload CLI/API? E.g. A single command to unify
   `cylc run` and `cylc restart`, with a cleaner set of options and arguments.
+* Rationalise related settings from `suite.rc`, `global.rc`, `rose-suite.conf`:
+  * Where relevant, sections and keys should be idenitical between `suite.rc`
+    and `global.rc`. (Or a unified replacement called `cylc-flow.rc`?)
+  * Migrate relevant settings from `rose.conf` and `rose-suite.conf`.
+  * Settings such as `run directory` and `work directory` may need better names.
 
 ### Clusters instead of Hosts as Logical Units
 
