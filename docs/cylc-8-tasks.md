@@ -9,7 +9,9 @@
 ### Key
 - `.` - in progress
 - `o` - estimated completion date
+- `ooo` - ongoing beyond origional estimated completion date
 - `x` - done (actual completion date)
+- `?` - unsure of status
 
 ### Ganntt Chart
 (Refer below the Chart for details on some items).
@@ -31,35 +33,36 @@ ISODATETIME LIBRARY             *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OC
 o-------------------------------o-----------------------------------------------------------o-------------o
 WORKFLOW SERVICE (WS) and CLI   *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OCT. NOV. DEC.*JAN.| /  SEP.  
   Python 3                      |   .|....|...x|    |    |    |    |    |    |    |    |    |    | \      | 
-  Cherrypy -> ZeroMQ network    |   .|....|...x|    |    |    |    |    |    |    |    |    |    | /      | 
-  Command-line clients          |    |    |  ..|...o|    |    |    |    |    |    |    |    |    | \      | 
-    old passphrase authe        |    |    |  ..|...o|    |    |    |    |    |    |    |    |    | /      | 
-    one-time token authe        |    |    | ...|....|...o|    |    |    |    |    |    |    |    | \      |
-    session management          |    |    | ...|....|....|..o |    |    |    |    |    |    |    | /      |
+  Cherrypy -> ZeroMQ            |   .|....|...x|    |    |    |    |    |    |    |    |    |    | /      | 
+  Command-line clients          |    |    |  ..|...o| ?  |    |    |    |    |    |    |    |    | \      | 
+    old passphrase authe        |    |    |  ..|...o| ?  |    |    |    |    |    |    |    |    | /      | 
+    one-time token authe        |    |    |    |....|.?.o|    |    |    |    |    |    |    |    | \      |
+    session management          |    |    |    |   .|.?..|..o |    |    |    |    |    |    |    | /      |
   UI SERVER API                 |    |    |    |    |    |    |    |    |    |    |    |    |    | \      |
     serve old data model        |    |    |    |...o|    |    |    |    |    |    |    |    |    | /      |
     design new data model       |    |    |    |  ..|...o|    |    |    |    |    |    |    |    | \      |
     serve new data model        |    |    |    |    | ...|...o|    |    |    |    |    |    |    | /      |
   Async event loop              |    |    |    |    |    |  ..|....|..o |    |    |    |    |    | \      |
-  Fine-grained Authorization    |    |    |  ..|..o |    |    |    |    |    |    |    |    |    | /      |
+  Fine-grained Authorization    |    |    |  ..|..o.| ?  |    |    |    |    |    |    |    |    | /      |
   PYTHON PACKAGING              |    |    |    |    |    |    |    |    |    |    |    |    |    | \      |
-    pip, setup.py               |    |    |...o|    |    |    |    |    |    |    |    |    |    | /      |
-    Cylc available on PyPi      |    |    |   .|o   |    |    |    |    |    |    |    |    |    | \      |
+    pip, setup.py               |    |    |...o|oooo|x   |    |    |    |    |    |    |    |    | /      |
+    Cylc available on PyPi      |    |    |   .| ooo|x   |    |    |    |    |    |    |    |    | \      |
+    (N) namespacing             |    |    |    |   .|.o  |    |    |    |    |    |    |    |    | \      |
 o-------------------------------o-----------------------------------------------------------o-------------o
 CYLC HUB VIA JUPYTERhUB         *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OCT. NOV. DEC.*JAN.| /  SEP.  
   Spawn UIS (Local host)        |    |...x|    |    |    |    |    |    |    |    |    |    |    | \      |
   User Authentication (PAM)     |    |  ..|x   |    |    |    |    |    |    |    |    |    |    | /      |
   User Authentication (LDAP?)   |    |  ..|x   |    |    |    |    |    |    |    |    |    |    | \      |
-  Server Trust                  |    |   .|..? |    |    |    |    |    |    |    |    |    |    | /      |
-  Session Management            |    |   .|...?|    |    |    |    |    |    |    |    |    |    | \      |
-  Other-User View (Admin?)      |    |   .|....|.o  |    |    |    |    |    |    |    |    |    | /      |
-  Spawn UI Server (Remote)      |    |    |....|...o|    |    |    |    |    |    |    |    |    | \      |
+  Server Trust                  |    |   .|..??|????|?   |    |    |    |    |    |    |    |    | /      |
+  Session Management            |    |   .|...?|????|?   |    |    |    |    |    |    |    |    | \      |
+  Other-User View (Admin?)      |    |   .|....|.o??|?   |    |    |    |    |    |    |    |    | /      |
+  Spawn UI Server (Remote)      |    |    |....|...x|    |    |    |    |    |    |    |    |    | \      |
   UI Server Authorization       |    |    | ...|....|..o |    |    |    |    |    |    |    |    | /      |
   JupyterHub: Dep or Fork?      |    |    |  ..|....|...o|    |    |    |    |    |    |    |    | \      |
 o-------------------------------o-----------------------------------------------------------o-------------o
 UI SERVER and UI                *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OCT. NOV. DEC.*JAN.| \  SEP.  
   Vue.js app POC                |....|...x|    |    |    |    |    |    |    |    |    |    |    | /      |
-  Hub Integration               |    |   .| .. |...?|    |    |    |    |    |    |    |    |    | \      |
+  Hub Integration               |    |   .| .. |..x |    |    |    |    |    |    |    |    |    | \      |
   Manage multiple suites        |    |    |    | .  | ...|...o|    |    |    |    |    |    |    | /      |
   UI: Tornado GraphQL WebSocket |    |    |    |    |   .| .. | .. |...o|    |    |    |    |    | \      |
   WS: ZeroMQ                    |    |    |    |    |   .|..o |    |    |    |    |    |    |    | /      |
@@ -72,7 +75,7 @@ UI SERVER and UI                *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OC
     other (adj. matrix etc.?)   |    |    |    |    |    |    |    |    |    |    |    | .  | .. | /  ...o|
   SUB-SERVICES                  |    |    |    |    |    |    |    |    |    |    |    |    |    | \      |
     workflow scan               |    |    |  ..|....|..o |    |    |    |    |    |    |    |    | /      |
-    workflow start              |    |    |  ..|..o |    |    |    |    |    |    |    |    |    | \      |
+    workflow start              |    |    |  ..|..oo|oo  |    |    |    |    |    |    |    |    | \      |
   Packaging? (separate from WS) |    |    |    | .  | ...|..o |    |    |    |    |    |    |    | /      |
   Authorization                 |    |    |    | .. | .. |...o|    |    |    |    |    |    |    | \      |
   UI Test framework?            |    |    | .  | .. |....|...o|    |    |    |    |    |    |    | /      | 
