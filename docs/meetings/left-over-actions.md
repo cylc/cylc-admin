@@ -19,13 +19,18 @@ March 2019
   - can site authorization Hub service (above) be co-opted to display a
     clickable list of users whose UI Servers I can connect to?
 
-- investigate the Hub form for entering additional info before spawing
+- investigate the Hub form for entering additional info before spawning
   - is this spawner-specific or generic?
 
 - cylc-flow main-loop asyncio (on critical path but low priority)
   - OS has concerns about what it means to put the ZMQ server in the same event
     loop; but asyncio has a *priority queue* so we should be OK.
     (MS and TP to look at this in due course)
+
+- new repos needed:
+  - SB "cheat sheets"
+  - profile battery
+  - cylc-review?
 
 April 2019
 
