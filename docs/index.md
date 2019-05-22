@@ -41,4 +41,4 @@ Agendas and post-meeting notes.
   - [Agenda](meetings/vc-22-may-2019-agenda.md)
   - [Notes](meetings/vc-22-may-2019-summary.md)
 
-[LEFT OVER ACTIONS](left-over-actions.md)
+[LEFT OVER ACTIONS](meetings/left-over-actions.md)
