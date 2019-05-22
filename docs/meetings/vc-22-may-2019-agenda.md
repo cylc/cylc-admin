@@ -9,7 +9,7 @@
 - is our speed and concurrency of development OK? (Do we need to slow down a
   bit to enable more involvement in more components from more people?)
 
-## Review Previous Meeting Notes and Actions (10 min)
+## Review Previous Meeting Notes and Actions (5 min)
 
 - [April agenda](vc-4-apr-2019-agenda.md)
 - [April summary](vc-4-apr-2019-summary.md)
@@ -21,7 +21,7 @@
  - (note summary email from Matt to Hilary)
 - BOM?
 
-## 7.8 maintenance (5 min)
+## 7.8 maintenance (2 min)
 
 - [7.8.2](https://github.com/cylc/cylc/releases/tag/7.8.2) released 3 weeks ago
 - any new issues noted?
@@ -58,8 +58,7 @@
   - cylc-ui <-> cylc-uiserver via GraphQL over WebSocket
   - cylc-uiserver <-> cylc-flow via Protobuf over ZeroMQ
 
-
-## Orthogonal work (5 min)
+## Orthogonal work (2 min)
 
 Probably little progress, and Matt is away
 - Rose Python 3
@@ -67,16 +66,6 @@ Probably little progress, and Matt is away
 - cluster awareness
 - other?
 
-## Other (10 min; if time allows)
-
-  - Sadie's Cheat Sheets idea: new repository `cylc/cylc-cheat-sheets`?
-  - `cylc review` to new repo `cylc/cylc-review`? 
-  - `cylc profile-battery` to new repo.
-
-- Testing
-  - Unit tests + Battery tests -> Pytest?
-  - UI testing (Selenium?)
-
-## END
+## End (5 min)
 - **anything else?**
 - next meeting date
