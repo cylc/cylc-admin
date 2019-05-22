@@ -38,7 +38,7 @@ migration suite installation; and 3) cylc run/restart CLI rationalization.
 
 New name for server program and repository: "cylc-flow", `cylc-flow.rc` (Sadie)
 
-**ACTION: PR Template needed** including description for change log.
+**ACTION: PR Template needed** including description for change log. - DONE
 
 **ACTION: Oliver to put up a PR to do the test battery (minimally at first)
 with pytest.**

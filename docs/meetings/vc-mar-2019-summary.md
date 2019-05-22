@@ -44,8 +44,6 @@ Successfully tested:
 **ACTION: demonstrate ssh spawner with our proto UI Server** (Martin)
 (do we need to take on ssh spawner development - it's not currently maintained?)
 
-**ACTION: demonstrate batch spawner with our proto UI Server** (Martin) 
-
 **ACTION: consider and demo Hub Service based authorization** (Martin, Bruno)
 We may be able to use a J-Hub Service to implement site-level authorization
 (which users can even look at which other user's UI Server)
