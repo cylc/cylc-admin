@@ -8,6 +8,7 @@
 - over-all progress - are we on track?
 - is our speed and concurrency of development OK? (Do we need to slow down a
   bit to enable more involvement in more components from more people?)
+- Discourse: are we ready to do it?
 
 ## Review Previous Meeting Notes and Actions (5 min)
 
