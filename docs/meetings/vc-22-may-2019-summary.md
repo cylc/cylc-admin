@@ -46,7 +46,9 @@ We are good to go on the switch-over from Google Groups
   - ACTION (OS, DS, and others): discuss in relevant Issues and make a decision
    - arrange a sub-group meeting once participants have understood the issues
 
-- ACTION (BK) - mock some WS data to serve as a basis for UI development and testing
+- ACTION (BK) - mock some WS data to serve as a basis for UI development and
+  testing, and work on the initial text tree view. (Or dot view).
+
 
 ## END
 
