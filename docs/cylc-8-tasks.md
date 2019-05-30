@@ -118,7 +118,7 @@ o-------------------------------o-----------------------------------------------
     - awaiting decision to go ahead with this
 
 - Chat Platform
-  - ~~Slack?~~ - free account is lousy
+  - ~~Slack?~~ - free account is lossy
   - using Riot.im
     - ~~currently blocked at MO~~
 

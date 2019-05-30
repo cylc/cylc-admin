@@ -18,7 +18,7 @@ functionalities of Rose.
 
 In reality, Cylc has become the centre of the Rose application suites, and the
 extra functionalities provided by Rose are equally desirable on sites who
-choose not to use Cylc.
+choose not to use Rose.
 
 The logical step is therefore to move these extra functionalities provided by
 Rose into Cylc - and retire `rose suite-run` and related utilities - so that

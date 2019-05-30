@@ -257,11 +257,12 @@ Shorthands used throughout:
   *groups* of users.
 * For individuals, use the method of *ethnographic interview*,
   which is a combination of interviewing (asking questions) & observing for
-  the user in their natural environment & context. We would take a (perhaps)
-  30-minute slot to sit with the user at a set time where they are using
-  C &/ R & we observe them as they undertake their daily tasks, asking them
-  to verbalise what they are doing & why, as well as asking questions &/or
-  taking notes on the item from Q5 at appropriate points.
+  the user in their natural environment & context (see the first paragraph
+  [here](https://confluence.sakaiproject.org/display/UX/Ethnographic+Interviews+-+Interviewing+and+Observing+Users) for further information). We would take a
+  short e.g. 30-minute slot to sit with the user at a set time where they are
+  using C &/ R & we observe them as they undertake their daily tasks, asking
+  them to verbalise what they are doing & why, as well as asking questions &/or
+  taking notes on the items from Q5 at appropriate points.
 * For groups of users, such as the group attending a Suites Guild session, use
   a *focus group* (possibly including card sorting exercises) which revolves
   around a volunteer user working on a specific pre-arranged suite
