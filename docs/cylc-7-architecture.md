@@ -1,6 +1,9 @@
 # Cylc-7 System Architecture
 
-(Last updated 1 Nov 2018)
+Cylc-7 (and earlier) has a local client/server architecture in which everything
+runs as the user, all clients are treated equally (user GUI and CLI, and job
+CLI), clients get server information via the filesystem and port scanning, and
+automatic owner-only authentication uses a suite-specific passphrase file.
 
 ## Distributed client/server Architecture (No Central Server)
 

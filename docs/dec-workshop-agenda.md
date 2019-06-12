@@ -177,7 +177,6 @@ Roadmap](cylc-8-roadmap) - and the other references above - for more detail.
 - Hilary Oliver - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <hilary.oliver@niwa.co.nz>
 - Bruno Kinoshita - [NIWA](https://www.niwa.co.nz), (Auckland, New Zealand - <bruno.kinoshita@niwa.co.nz>
 - David Sutherland - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <david.sutherland@niwa.co.nz>
-- Raghavendra (Raghu) S. Mupparthy - [NCMRWF](http://www.ncmrwf.gov.in), (Noida, India) - <raghav@ncmrwf.gov.in> 
 - Dave Matthews - [ESiWACE](https://www.esiwace.eu), [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <david.matthews@metoffice.gov.uk> 
 - Sadie Bartholomew - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <sadie.bartholomew@metoffice.gov.uk>
 - Matt Shin - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <matthew.shin@metoffice.gov.uk>
