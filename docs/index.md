@@ -7,6 +7,7 @@
 
 ## Cylc-8 Pre-planning
 - [GUI Replacement Options](gui-replacement-options)
+- [Cylc-8 Roadmap](cylc-8-roadmap)
 - [Tentative Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED
 
 ## Dec 2018 Development Workshop (Melbourne)
@@ -42,3 +43,6 @@ Agendas and post-meeting notes.
   - [Notes](meetings/vc-22-may-2019-summary.md)
 
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
+
+## Cylc Market research
+- [Suites Guild GUI Review](research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
