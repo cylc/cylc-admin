@@ -3,7 +3,8 @@
 A discussion with a group of (mainly power) users about what they like/dislike
 about using the current cylc GUIs.
 Hosts: Tim Pillinger (Editor), Oliver Sanders
-[Editor's Notes]
+
+[Editor's Notes Attempting to add context in square brackets]
 
 These are:
 * Cylc GUI (gcylc)
@@ -32,11 +33,11 @@ These are:
   CLI in scripts or suites[?!]
 * Stop a suite - about 50-50
 * Create pictures for presentations - lines too thin.
-* GUI good for inserting tasks, holding suites, triggering  tasks
+* GUI good for inserting tasks, holding suites, triggering tasks
 
 #### Other comments
 * Advertise Plug Button!
-* Difference between nudging and [???] tasks
+* Difference between nudging and polling tasks [is unclear?]
 * Namespace graph too big/complex for many suites. Needs better navigation.
 * Lots of love for gpanel (when it worked). Request for RHEL7 version.
 * Graph diff is rarely used, but very useful when it is.
@@ -45,10 +46,10 @@ These are:
 
 ### Usage of Cylc GUI
 #### Are there common gotchas in the cylc guis?
-* I find it confusing [ed] that task states are ordererd opposite in Gcylc and
+* [I find it confusing that] task states are ordererd opposite in Gcylc and
   Gscan
 * Controls that behave unexpectedly
-  * All the time on state and name]?]
+  * All the time on state and name
   * Could it filter differently for different views?
 * Triggering task inheritance sometimes does wierd things
 
