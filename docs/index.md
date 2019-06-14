@@ -44,8 +44,9 @@ Agendas and post-meeting notes.
 
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
-## Cylc Market research
+## Cylc UI Research
 - [Suites Guild GUI Review](research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
+- [gcylc.rc usage](research/MO-gcylc-rc-report.md)
 
 ## Cylc 8 Guides
 Guides for developers, and therefore slightly separate to main documentation
