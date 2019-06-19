@@ -46,3 +46,7 @@ Agendas and post-meeting notes.
 
 ## Cylc Market research
 - [Suites Guild GUI Review](research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
+
+## Cylc 8 Guides
+Guides for developers, and therefore slightly separate to main documentation
+- [Getting Started](howto/environment.md)
