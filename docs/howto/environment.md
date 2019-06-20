@@ -6,7 +6,7 @@
   conda activate my-example-env
   ```
 
-+ Ensure that you install node-js using conda first*. If you allow pip to
+1. Ensure that you install node-js using conda first*. If you allow pip to
   install it as a dependency of cylc & cylc-uiserver it you will end up with
   a very old version.
   ```bash
@@ -15,33 +15,33 @@
   ```
   For comparison devs have used node at 10.13.x and 12.x.x.
 
-+ Install development copies of cylc and cylc-uiserver:
+1. Install development copies of cylc and cylc-uiserver:
   ```bash
   pip install -e $DEVDIR/cylc
   pip install -e $DEVDIR/cylc-uiserver
   ```
-+ Install npm in cylc-ui client.
+1. Install npm in cylc-ui client.
   ```bash
   cd $DEVDIR/cylc-ui
   npm install
   npm install -g configurable-http-proxy
   ```
 
-+ in `$DEVDIR/cylc-uiserver/jupyterhub_config.py` change
+1. in `$DEVDIR/cylc-uiserver/jupyterhub_config.py` change
 ```diff
 -c.Spawner.args = ['-s', '../cylc-ui/dist/']
-+c.Spawner.args = ['-s', '/home/h02/tpilling/metomi/cylc-ui/dist/']
++c.Spawner.args = ['-s', '/path/to/my/home/metomi/cylc-ui/dist/']
 ```
 
-+ Set `jupyterhub` running.
+1. Set `jupyterhub` running.
 
-+ Open a new terminal and ensure that you have the correct conda environment.
+1. Open a new terminal and ensure that you have the correct conda environment.
   ```bash
   conda activate my-example-env
   cd $DEVDIR/cylc-ui
   ```
 
-+ Run the UI
+1. Run the UI
   ```bash
   npm run build:watch
   ```
