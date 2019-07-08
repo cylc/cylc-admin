@@ -9,7 +9,7 @@
 ### Key
 - `.` - in progress
 - `o` - estimated completion date
-- `ooo` - ongoing beyond origional estimated completion date
+- `ooo` - ongoing beyond original estimated completion date
 - `x` - done (actual completion date)
 - `?` - unsure of status
 
@@ -66,7 +66,7 @@ UI SERVER and UI                *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OC
   Manage multiple suites        |    |    |    | .  | ...|...o|    |    |    |    |    |    |    | /      |
   UI: Tornado GraphQL WebSocket |    |    |    |    |   .| .. | .. |...o|    |    |    |    |    | \      |
   WS: ZeroMQ                    |    |    |    |    |   .|..o |    |    |    |    |    |    |    | /      |
-  WS UI Workslow State Views    |    |    |    |    |    |    |    |    |    |    |    |    |    | \      |
+  WS UI Workflow State Views    |    |    |    |    |    |    |    |    |    |    |    |    |    | \      |
     table view (basic)          |    |    |    |  . | .. |...o|    |    |    |    |    |    |    | /      |
     table view (complete)       |    |    |    |    |  . | ...| ...|...o|    |    |    |    |    | /      |
     dot view                    |    |    |    |    |    | ...|..o |    |    |    |    |    |    | \      |
@@ -89,7 +89,7 @@ o-------------------------------o-----------------------------------------------
     migration to Cylc           | .  | .  | .  | .. | .. |....|...o|    |    |    |    |    |    | /      |
 o-------------------------------o-----------------------------------------------------------o-------------o
 ROSE                            *JAN. FEB. MAR. APR. MAY. JUN. JUL. AUG. SEP. OCT. NOV. DEC.*JAN.| /  SEP.  
-  Cherrypy -> Tornado           |   .|....|...o|    |    |    |    |    |    |    |    |    |    | \      |
+  Cherrypy -> Tornado           |   .|....|....|....|x   |    |    |    |    |    |    |    |    | \      |
   Python 3                      |   .|....|...o|    |    |    |    |    |    |    |    |    |    | /      |
   Setup.py, packaging, PyPi     |    |    |    |...o|    |    |    |    |    |    |    |    |    | \      |
   WS UI Rose Config-Edit        |    |    |    |    |    |    |    |    |    |    |    |    |    | \      |
@@ -182,7 +182,7 @@ other-user views and site authorization can be done with vanilla JupyterHub.
 ### UI Server (UIS)
 
 Design options described
-  [here](vc-mar-2019-agenda#workflow-status-summary-data-and-communications)
+  [here](meetings/vc-mar-2019-agenda#workflow-status-summary-data-and-communications)
 
 Decision: implement "MODEL 1" (UIS as WS mirror)
   - but avoid assumptions that restrict us from going to a pass-through model
@@ -232,7 +232,7 @@ Also:
 - User X can see these UI Servers (at Hub, or at UI Server?)
 - User X can see these Workflow Services (at UI server)
 - User X can do this to Workflow Services Y (at Workflow Service)
-- (initially implment by simple config files that relate users or groups to
+- (initially implement by simple config files that relate users or groups to
    privileges)
 
 ### Services (priority order)
@@ -260,9 +260,7 @@ Also:
 
 ### Rose (MO)
 
-- Remove Rose Bush
+- ~~Remove Rose Bush (Tim)~~ - DONE
 - Python 3  (above)
 - Packaging (above)
-- Cherrypy -> tornado (rosie web server) (Sadie)
-
-
+- ~~Cherrypy -> tornado (rosie web server) (Sadie)~~ - DONE
