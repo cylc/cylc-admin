@@ -42,6 +42,10 @@ Agendas and post-meeting notes.
   - [Agenda](meetings/vc-22-may-2019-agenda.md)
   - [Notes](meetings/vc-22-may-2019-summary.md)
 
+- June 2019 Exeter
+  - [Notes](meetings/exeter-jun-2019.md)
+
+
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
 ## User Research
