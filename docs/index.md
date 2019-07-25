@@ -45,14 +45,14 @@ Agendas and post-meeting notes.
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
 ## User Research
-- [Suites Guild GUI Review](research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
-- [gcylc.rc usage](research/MO-gcylc-rc-report.md)
+- [Suites Guild GUI Review](user-research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
+- [gcylc.rc usage](user-research/MO-gcylc-rc-report.md)
 - 04/06/19 Metomi team meeting on UR:
-  - [Discussion Prompts (sent out in advance)](research/ur-initiation-questions.md)
-  - [Summary Notes](research/ur-meetings/ur-04-june-2019-summary.md)
+  - [Discussion Prompts (sent out in advance)](user-research/ur-initiation-questions.md)
+  - [Summary Notes](user-research/ur-meetings/ur-04-june-2019-summary.md)
 - Overall UR summary/record documents:
-  - [Insight Pool](research/ur-insight-pool.md)
-  - [Interaction Summaries & Log](research/ur-interaction-summaries-log.md)
+  - [Insight Pool](user-research/ur-insight-pool.md)
+  - [Interaction Summaries & Log](user-research/ur-interaction-summaries-log.md)
 
 ## Cylc 8 Guides
 Guides for developers, and therefore slightly separate to main documentation
