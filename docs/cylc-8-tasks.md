@@ -179,7 +179,7 @@ other-user views and site authorization can be done with vanilla JupyterHub.
 - ~~(remove PyGTK GUI)~~ DONE
 - ~~Python 3 (Oliver, above)~~ DONE
 - Packaging (WIP - Bruno, Matt)
-- [rose suite-run migration](proposal-rose-suite-run.md)
+- [rose suite-run migration](proposals/proposal-rose-suite-run.md)
 - ~~Replace Cherrypy and REST API with ZeroMQ~~ DONE
 - ZeroMQ communications model to UI Server: REQ-REP-REP-REP (Oliver)
   - See UI Server (below)

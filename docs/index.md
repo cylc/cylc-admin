@@ -19,9 +19,10 @@
 - [Cylc-8 Architecture](cylc-8-architecture)
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
 
-## Orthogonal Work in Progress
-- [rose suite-run migration proposal](proposal-rose-suite-run.md)
- 
+## Proposals
+- [for the rose suite-run migration](proposals/proposal-rose-suite-run.md)
+- [for workflow authentication](proposals/proposal-workflow-authentication.md)
+
 ## Video Conferences
 
 Agendas and post-meeting notes.
