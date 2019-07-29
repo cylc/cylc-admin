@@ -21,7 +21,7 @@
 
 ## Proposals
 - [for the rose suite-run migration](proposals/proposal-rose-suite-run.md)
-- [for workflow authentication](proposals/proposal-workflow-authentication.md)
+- [for authentication between the CLI & workflow service](proposals/proposal-workflow-authentication.md)
 
 ## Video Conferences
 
