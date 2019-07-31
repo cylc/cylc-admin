@@ -2,7 +2,7 @@
 
 1. Create a clean conda install:
   ```bash
-  conda create -n my-example-env python=3.7
+  conda create -n my-example-env python=3.7 --yes
   conda activate my-example-env
   ```
 
@@ -10,7 +10,7 @@
   install it as a dependency of cylc & cylc-uiserver it you will end up with
   a very old version.
   ```bash
-  conda install nodejs
+  conda install nodejs --yes
   node --version
   ```
   For comparison devs have used node at 10.13.x and 12.x.x.
