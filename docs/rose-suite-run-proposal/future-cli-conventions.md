@@ -1,14 +1,37 @@
-Placeholder - populate in new PR
 # `cylc flow` CLI proposal
-Refers to discussion in [cylc-flow #1030](https://github.com/cylc/cylc-flow/issues/1030).
 
+## Purpose
+Specify how the Cylc8 command to replace `rose-suite-run` will work.
+
+## References
+[cylc-flow #1030](https://github.com/cylc/cylc-flow/issues/1030).
 
 ## Discussion of possible names for new command
 
+Possibilities include:
+
+| Name | For | Against |
+| --- | --- | --- |
+|`cylc run`||Already in use for another command|
+|`cylc suite-run`|similar to `rose suite-run` -familiar|similar to `rose suite-run` -confusing<br>Quite long|
+|`cylc`|Short<br>Hints at the core-ness of this command to Cylc|Already in use|
+|`cylc flow`|Consistent naming<br>Like nothing currently in use  ||
+|`cylc go`|Short|Confusable with `rosie go`|
+|`cylc execute`/`exec`||Long<br>Too generic|
+||||
+
+For the remainder of this document this command will be referred to
+as `cylc flow`.
+
+
 ## Discussion of functionality available
-* Restart a suite from last checkpoint (`--restart`, `--continue`).
-* Restart a suite at a given checkpoint (`--restart-from`, `--restart-at`,
-  `--continue-from`).
+
+The following functionality may be necessary or desirable:
+
+* Restart a suite from last checkpoint (`--restart`, `--continue`
+  `--resume`).
+* Restart a suite at a given checkpoint (`--restart-from`,
+  `--continue-at`,  `--continue-from`).
 * Restart a suite from an arbitary point (warm start, `--warm-start`,
   `--restart-from`, `--continue-from`).
 * Cool start - start a suite from the beginning without cleaning install or
