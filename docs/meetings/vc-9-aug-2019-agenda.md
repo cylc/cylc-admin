@@ -71,6 +71,8 @@ Nothing further done on:
  
 ### UI (10 min)
 
+- Vue tree component
+
 BK (if he has audio at home):
 - status update
 - next steps?
