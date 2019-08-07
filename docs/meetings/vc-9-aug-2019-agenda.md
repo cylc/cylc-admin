@@ -4,9 +4,9 @@ Previous: week-long meeting(s) in Exeter in June.
 
 Present: HO, BK, DS, SB, OS, MS (others away, jet lagged, or ill).
 
-## Outstanding Actions from previous meetings:
+## Actions (5 min)
 - [May meeting actions](vc-22-may-2019-summary.md) - largely achieved
-- [All old
+- [outstanding
   actions](https://cylc.github.io/cylc-admin/meetings/left-over-actions.html)
 
 ## General Admin (5 min)
@@ -17,11 +17,9 @@ Present: HO, BK, DS, SB, OS, MS (others away, jet lagged, or ill).
 ## Site Updates and News (5 min)
 
 - NIWA
-   - we (still) need [root-dir{log} PR](https://github.com/metomi/rose/pull/2297)
-   - formal NIWA/UM-Partnership contract for Bruno - still in prep
-   - discussion started on sustaining Cylc development
-
-- Any new technical issues at sites?
+   - NIWA/UM-Partnership contract for Bruno - still in prep
+   - discussion started on Cylc development and "opportunities"
+- Any new issues at other sites?
 
 ## 7.8 maintenance (2 min)
 
