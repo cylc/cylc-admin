@@ -60,14 +60,24 @@ TP (if present?) or MS:
 
 ### Other Topics (5 min)
 
-Nothing further done on:
-- Packaging: 
-  - once we have the first semi-usable system, start thinking about the total
+Packaging: 
+- once we have the first semi-usable system, start thinking about the total
   packaging solution for first users? 
-- Hub:
-  - have proved it works
-  - need to document use with Cylc
-  - and consider other-user display
+- MS: Is it a good time to create the alpha1 releases for our current stack of
+software, including all the cylc-* projects and rose? Cylc-flow should be ready
+for the alpha1 release after #3202, and the other projects are currently
+relatively quiet. With all of these in place, we should be in a better position
+to work on the next step on packaging, etc.
+
+Hub:
+- have proved it works
+- need to document use with Cylc
+- and consider other-user display
+
+Tests:
+- MS: Flaky cylc-flow tests on Travis CI. Please continue to mark them down before
+  kicking the build - and move any left over to live under flakytests/. E.g. I
+believe a few under tests/reload/ are still flaky. 
  
 ### UI (10 min)
 
