@@ -39,7 +39,7 @@ SB:
 - what still needs to be decided
 - implementation plan?
  
-### UI Server and WFS
+### UI Server and WFS (15 min)
 
 DS:
 - status update
@@ -48,7 +48,7 @@ DS:
   - incremental update to UIS
   - hook up CLI to GraphQL endpoint
 
-### Orthogonal work (5 min)
+### Orthogonal work (15 min)
 
 - "rose suite-run" migration
 - "cluster awareness"
@@ -58,7 +58,7 @@ TP (if present?) or MS:
 - status updates
 - next steps
 
-### Other Topics
+### Other Topics (5 min)
 
 Nothing further done on:
 - Packaging: 
