@@ -45,6 +45,8 @@ Agendas and post-meeting notes.
 - June 2019 Exeter
   - [Notes](meetings/exeter-jun-2019.md)
 
+- 9 Aug 2019
+  - [Agenda](meetings/vc-9-aug-2019-agenda.md)
 
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 

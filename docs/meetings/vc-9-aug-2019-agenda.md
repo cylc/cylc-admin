@@ -2,22 +2,22 @@
 
 Previous: week-long meeting(s) in Exeter in June.
 
-Present: HO, BK, DS, SB, OS, MS (others away or just back home).
+Present: HO, BK, DS, SB, OS, MS (others away, jet lagged, or ill).
 
 ## Outstanding Actions from previous meetings:
-- [May meeting actions] (vc-22-may-2019-summary.md) - largely achieved
+- [May meeting actions](vc-22-may-2019-summary.md) - largely achieved
 - [All old
   actions](https://cylc.github.io/cylc-admin/meetings/left-over-actions.html)
 
 ## General Admin (5 min)
 
-- Decision made to use ZenHub, which provides a unified view of multiple repos
+- Decision made to use ZenHub, which provides a unified view of multiple repos:
   [Cylc and Rose Project Board](https://app.zenhub.com/workspaces/cylc-and-rose-5d122023f9628b5d0da532a5/board?repos=1836229)
 
 ## Site Updates and News (5 min)
 
 - NIWA
-   - we need [root-dir{log} PR](https://github.com/metomi/rose/pull/2297)
+   - we (still) need [root-dir{log} PR](https://github.com/metomi/rose/pull/2297)
    - formal NIWA/UM-Partnership contract for Bruno - still in prep
    - discussion started on sustaining Cylc development
 
@@ -32,24 +32,25 @@ Present: HO, BK, DS, SB, OS, MS (others away or just back home).
 
 We now have a workable end-to-end system.
 
-#### CLI-WFS Authentication (20 min)
+### CLI-WFS Authentication (20 min)
 
-[proposal PR])https://github.com/cylc/cylc-admin/pull/41)
+[proposal PR](https://github.com/cylc/cylc-admin/pull/41)
 
 SB:
-- status/plans update
+- plans/thoughts so far
 - what still needs to be decided
 - implementation plan?
  
-#### UI Server and WFS
+### UI Server and WFS
 
 DS:
 - status update
 - incremental data WFS data store update
 - next steps?
   - incremental update to UIS
+  - hook up CLI to GraphQL endpoint
 
-#### Orthogonal work (5 min)
+### Orthogonal work (5 min)
 
 - "rose suite-run" migration
 - "cluster awareness"
@@ -59,7 +60,7 @@ TP (if present?) or MS:
 - status updates
 - next steps
 
-#### Other Topics
+### Other Topics
 
 Nothing further done on:
 - Packaging: 
@@ -70,12 +71,11 @@ Nothing further done on:
   - need to document use with Cylc
   - and consider other-user display
  
-#### UI (10 min)
+### UI (10 min)
 
 BK (if he has audio at home):
 - status update
 - next steps?
 
-
-#### AOB?
+### AOB?
 - next meeting - 2 weeks?
