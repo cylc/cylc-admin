@@ -132,8 +132,7 @@ functional:
        not be a performance overhead from too much interaction with the
        filesystem etc., but not so coarse-grained as to compromise security.
        How long-lived should the events be, along the scale of covering the
-       duration (longest to shortest, where the extreme cases are clearly not
-       good choices!) of a whole:
+       duration of a whole:
          * workflow (as in Cylc 7)?
          * cycle-point?
          * task (i.e. for all of its task-jobs)?
@@ -165,10 +164,10 @@ functional:
         * [``secrets``](https://docs.python.org/3/library/secrets.html): "used
           for generating cryptographically strong random numbers".
     * *Third-party*? Notably e.g:
-        * [``pyjwt``](https://github.com/jpadilla/pyjwt): JSON Web Tokens
-          implemented in Python;
-        * [``PyOTP``](https://github.com/pyauth/pyotp): a Python library for
-          generating and verifying one-time passwords.
+        * [``pyjwt``](https://github.com/jpadilla/pyjwt): "JSON Web Token
+          implementation in Python";
+        * [``PyOTP``](https://github.com/pyauth/pyotp): "a Python library for
+          generating and verifying one-time passwords".
 
 
 ## Working Proposal for a Solution
@@ -185,6 +184,8 @@ rest) for the problem outlined in 'The Problem' section above.
 * 29.07.19: extended again to include UML Sequence diagrams created by MS.
 * 01.08.19: proposal updated in response to feedback from DM, & reformatted
   to accommodate much higher level of detail than was originally intended.
+* 12.08.19: proposal updated to account for discussions in 'Cylc Core' team
+  video conference on 08.08.19 (UK date).
 
 
 ### Case-by-case Outline
@@ -194,7 +195,16 @@ rest) for the problem outlined in 'The Problem' section above.
 (The numbers below refer to the cases outlined in the 'Client cases' section
 above, so please cross-reference with that.)
 
-* (1i) **Direct timed tokens**.
+* (1i) Ideally, & therefore to try in the first instance, **event-based
+  one-time tokens, which each last for the duration of a single command (upon
+  its execution to its return) only (call them "one-command" tokens)**.
+  However, concerns have been raised that such one-command tokens will have a
+  significant overhead, so if once they are set up & tested we find that they
+  slow the user CLI response times to an extent that is not sustainable, we
+  will consider a "plan B" of one of either of the following:
+    * setting up sharing of tokens between multiple commands for when commands
+      are sent in at a frequency that is considered "high";
+    * using direct timed tokens, instead.
 * (1ii) Out of scope (in the future this may be supported to go through the
   UIS).
 * (2i) **Event-based one-time tokens, which each last for the duration of
@@ -206,9 +216,9 @@ above, so please cross-reference with that.)
     * extending an existing job file such as the 'job.status' so that such
       files also carry the token information for each job, & preventing that
       information from being displayed in Cylc Review.
-* (2ii) **Direct timed tokens, the same ones from (1i)** which will be
-  accessible via the local file system.
-* (3i) Equivalent to cases under (1i), hence **direct timed tokens**.
+* (2ii) **Treat the same as (1i), so see that case as above**, making use of
+  the shared file system.
+* (3i) Equivalent to cases under (1i), hence **treat like for (1i) as above**.
 * (3ii) Out of scope (see note for 1ii).
 
 
@@ -230,22 +240,13 @@ below, so anyone that would like to make edits can do so easily.
 * Purple: *batch scheduling* interaction or process
 
 
-### Direct timed tokens for cases (1i) & (2ii)
+### "One-command" (one-time for a single command) tokens, the "plan A" for cases (1i), (2ii) & (3i)
 
-This diagram outlines interactions for the *creation, changeover & deletion*
-of valid timed tokens:
-
-<!---
-DIAGRAM CODE HERE
--->
-
-[DIAGRAM TO BE ADDED SHORTLY]
-
-This diagram outlines interactions for the *usage* of the valid timed tokens
-(which are created, replaced & deleted as in the diagram above):
+This diagram outlines the interactions for the *creation & deletion*, &
+for the *usage*, of valid one-command tokens:
 
 <!---
-title Authentication: CLI => WFS: a) Token Usage
+title Authentication: CLI => WFS:
 
 actor User
 participantgroup #lightblue **WFS Host**
@@ -259,6 +260,7 @@ end
 database File System
 participant WFS
 activate CLI
+CLI-#red>CLI: create token
 CLI-#red>File System: put token
 activate File System
 CLI-#green>CLI: encrypt message
@@ -271,18 +273,19 @@ WFS-#green>WFS: encrypt reply
 WFS--#blue>CLI: reply
 deactivate WFS
 CLI-#green>CLI: decrypt reply
+CLI-#red>File System: delete token
 deactivate File System
 deactivate CLI
 destroyafter CLI
 end
 -->
 
-![Authentication: CLI => WFS](img/wfs_auth_local_usage.png)
+![Authentication: CLI => WFS](img/wfs_auth_local.png)
 
 
 ### "One-job" (one-time over the lifetime of a single job) tokens for case (2i)
 
-This diagram outlines the interactions for *both* the *creation & deletion*, &
+This diagram outlines the interactions for the *creation & deletion*, &
 for the *usage*, of valid one-job tokens:
 
 <!---
