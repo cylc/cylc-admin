@@ -19,12 +19,14 @@
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
 - [Cylc-8 (Proposal) Authentication between the CLI & Workflow Service](proposal-cli-wfs-authentication)
 
-## Orthogonal Work in Progress
+## Change Proposals
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
   More detail on rose-suite-run migration:
   - [Specification for new combined config file](rose-suite-run-proposal/cylc-flow-rc.md)
   - Specification for new CLI - [WIP]
 
+- [task state, output, and trigger name rationalization](proposal-state-names.md)
+ 
 ## Video Conferences
 
 Agendas and post-meeting notes.
