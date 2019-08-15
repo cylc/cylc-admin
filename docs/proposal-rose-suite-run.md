@@ -71,6 +71,12 @@ of Cylc:
 * On start up and reload, install suite on all task job remotes (such as Cray,
   Spice, remote-desktop, raspi, suite-origin-desktop).
 * Utility to clean locations that are known to be created by the suite.
+* On starting up a new run of the suite assign a new run name:
+  ```
+  mi-aa001/
+    run1
+    run2
+  ```
 
 While we consider the above, we may also want to consider the following:
 * Introduce configuration and logic to recognise suite clusters and task hosts
