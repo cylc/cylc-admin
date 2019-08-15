@@ -10,25 +10,28 @@ grammatically inconsistent.
 
 ### Task and Job States
 
-| Job?  | old name          | new name :question:    | meaning | comment |
-|--   | --             |----               | ---     | ---     | 
-|     | waiting         | -                 | waiting for prerequisites to be met |
-|     | queued          | limited           | held back by a size-limited internal queue | **queued** gets confused with "submitted" (to a batch queue)! |
-|     | ready           | submitting        | queued to the subprocess pool for job submission | | 
-|     | expired         | -                 | waiting for too long, will never be submitted | | 
+| Job?  | old name      | new name :question: | meaning | comment |
+|--     | --              |----               | ---     | ---     | 
+|       | runahead        |  -                | in the runahead pool (too far ahead) | |
+|       | waiting         | -                 | waiting for prerequisites to be met |
+|       | queued          | limited           | held back by a size-limited internal queue | **queued** gets confused with "submitted" (to a batch queue)! |
+|       | ready           | submitting        | queued to the subprocess pool for job submission | | 
+|       | expired         | -                 | waiting for too long, will never be submitted | | 
 | :heavy_check_mark:  | submitted       | -                 | job submitted to batch system for execution | | 
 | :heavy_check_mark:  | submit-failed   | submission-failed | job submission failed, did not execute | | 
-|     | submit-retrying | submission-retry  | job submission failed, will try again later | retry**ing** suggests already re-submitted |
+|     | submit-retrying | submission-retry  | job submission failed, will try again later | retry**ing** suggests already re-submitted (TODO: REMOVE) |
 | :heavy_check_mark:  | running         | executing         | job execution commenced | | 
 | :heavy_check_mark:  | succeeded       | execution-succeeded | job execution completed successfully | | 
 | :heavy_check_mark:  | failed          | execution-failed  | job execution completed, but failed | | 
-|     | retrying        | execution-retry   | job execution failed, will try again later | retry**ing** suggests already re-executing | 
+|     | retrying        | execution-retry   | job execution failed, will try again later | retry**ing** suggests already re-executing (TODO: REMOVE) | 
 
 Note:
-- ("held" removed - demoted from state to attribute in Cylc 8)
-- ("runahead" - i.e. beyond "max active cycle points" - removed; it is a task pool
-  implmentation detail that should not be exposed to users, and it will not
-  exist in the spawn-on-demand era)
+- ("held" no longer a task state - demoted from state to attribute in Cylc 8)
+- "runahead" is really implementation that should not be exposed, and will not
+  exist in the spawn-on-demand era, but so long as we still have a task pool
+  users occasionally need to understand it (e.g. if they `cylc insert` a task
+  beyond "max active cycle points").
+- The "retry" states are to be removed as for "held"
 
 ### Outputs
 
