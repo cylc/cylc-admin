@@ -8,21 +8,21 @@ Cylc has gradually accrued new task states and associated triggers and outputs
 over the years, and the resulting names are variously ambiguous, confusing, or
 grammatically inconsistent.
 
-### Task (T) and Job (J) States
+### Task and Job States
 
-| old             | new :question:    | meaning | comment |
-|----             |----               | ---     | ---     | 
-| T   waiting         | -                 | waiting for prerequisites to be met |
-| T   queued          | limited           | held back by a size-limited internal queue | **queued** gets confused with "submitted" (to a batch queue)! |
-| T   ready           | submitting        | queued to the subprocess pool for job submission | | 
-| T   expired         | -                 | waiting for too long, will never be submitted | | 
-| T/J submitted       | -                 | job submitted to batch system for execution | | 
-| T/J submit-failed   | submission-failed | job submission failed, did not execute | | 
-| T/J submit-retrying | submission-retry  | job submission failed, will try again later | retry**ing** suggests already re-submitted |
-| T/J running         | executing         | job execution commenced | | 
-| T/J succeeded       | execution-succeeded | job execution completed successfully | | 
-| T/J failed          | execution-failed  | job execution completed, but failed | | 
-| T   retrying        | execution-retry   | job execution failed, will try again later | retry**ing** suggests already re-executing | 
+| Job?  | old name          | new name :question:    | meaning | comment |
+|--   | --             |----               | ---     | ---     | 
+|     | waiting         | -                 | waiting for prerequisites to be met |
+|     | queued          | limited           | held back by a size-limited internal queue | **queued** gets confused with "submitted" (to a batch queue)! |
+|     | ready           | submitting        | queued to the subprocess pool for job submission | | 
+|     | expired         | -                 | waiting for too long, will never be submitted | | 
+| :heavy_check_mark:  | submitted       | -                 | job submitted to batch system for execution | | 
+| :heavy_check_mark:  | submit-failed   | submission-failed | job submission failed, did not execute | | 
+|     | submit-retrying | submission-retry  | job submission failed, will try again later | retry**ing** suggests already re-submitted |
+| :heavy_check_mark:  | running         | executing         | job execution commenced | | 
+| :heavy_check_mark:  | succeeded       | execution-succeeded | job execution completed successfully | | 
+| :heavy_check_mark:  | failed          | execution-failed  | job execution completed, but failed | | 
+|     | retrying        | execution-retry   | job execution failed, will try again later | retry**ing** suggests already re-executing | 
 
 Note:
 - ("held" removed - demoted from state to attribute in Cylc 8)
