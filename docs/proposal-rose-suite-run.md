@@ -58,7 +58,7 @@ all suites will start up with only Cylc commands in the future.
 
 
 - [ ] Replace `rose-suite.conf`.
-  - [ ] Create an alternative jinja2 format and tests for this format.
+  - [ ] Create an alternate way to supply Jinja2 template with data and tests for this format.
   - [ ] Create a rose-suite.conf parsing plugin for cylc flow.
 
 
@@ -247,7 +247,7 @@ appropriate command switches should be agreed on in a pull
 request to this repository modifying [this document](rose-suite-run-proposal/future-cli-conventions.md)
 
 ## Replace Rose Fileinstall & rose-suite.conf
-Create a new file to provide jinja2 data to `cylc-flow.rc` - replaces
+Create a new mechanism to provide jinja2 data to `cylc-flow.rc` - replaces
 `rose-suite.conf`. This file should be fairly easy to inject into the
 `cylc-flow.rc`, and allow the use of more advanced jinija2 features than the
 current system.
