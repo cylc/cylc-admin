@@ -35,7 +35,7 @@ all suites will start up with only Cylc commands in the future.
 - [ ] Implement new `cylc-flow.rc` schema. [Cylc-flow #3260](https://github.com/cylc/cylc-flow/issues/3260)
   - [ ] Check old tests for `global.rc` & `suite.rc` to ensure that functionality
     is not lost.
-  - [ ] Devise tests for the new flow.rc
+  - [ ] Devise tests for the new `cylc-flow.rc`
   - [ ] Create new config parser, perhaps called `cylc-flow-rc-parser.py`
 
 
