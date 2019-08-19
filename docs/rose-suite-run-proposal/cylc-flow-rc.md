@@ -46,13 +46,7 @@ very simple runtime might be added too, for training and debugging purposes.)
 It is likely that most users will continue to have these set by site admins.
 
 ```ini
-[task events]
-  ...
-[test battery]
-  ...
-[suite host self-identification]
-  ...
-[authentication]
+[authorization]
   ...
 ```
 The `[suite servers]` to be deprecated in favour of suite platforms.
@@ -110,7 +104,10 @@ for the purpose of keeping the name "platforms" conistent. This is expected to
 be set only by system administrators.
 
 ```ini
-[suite platforms]
+[suite run platforms]
+# should include formerly free-standing section:
+[[suite host self-identification]]
+  ...
 ```
 
 
@@ -132,6 +129,11 @@ We should select the platform defined by `[job platforms]`
 
 ```ini
 [runtime]
+
+# Task events is moved to  runtime
+ [[task events]]
+  ...
+
   [[job platform]]
     platform =                            
 ```

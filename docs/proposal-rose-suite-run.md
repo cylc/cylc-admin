@@ -36,11 +36,14 @@ all suites will start up with only Cylc commands in the future.
   - [ ] Check old tests for `global.rc` & `suite.rc` to ensure that functionality
     is not lost.
   - [ ] Devise tests for the new `cylc-flow.rc`
-  - [ ] Create new config parser, perhaps called `cylc-flow-rc-parser.py`
+  - [ ] Create new config parser module, called `cylc.flow.config_schema`
+  - [ ] Remove the `cylc.flow.cfgspec` folder.
 
 
 - [ ] Implement Cluster support functionality. [Cylc-flow #2199](https://github.com/cylc/cylc-flow/issues/2199)
-  - [ ] Modify `task_job_mgr.py` to use the new variables.
+  - [ ] Modify modules to use the new variables:
+    - [ ]  `task_job_mgr.py`
+    - [ ] `task_remote_mgr`    
   - [ ] Randomize login host used
 
 
@@ -63,11 +66,11 @@ all suites will start up with only Cylc commands in the future.
 
 These functionalities are currently provided by Rose, but should really be part
 of Cylc:
-* On start up and reload, install suite on suite server cluster (cylc servers).
+* On start up and reload, install suite on "suite run platform" (cylc servers).
 * On start up and reload, validate suite.
 * On start up, archive old log directory.
-* On start up and reload, install suite on all task job remotes (such as Cray,
-  Spice, remote-desktop, raspi, suite-origin-desktop).
+* On start up and reload, install suite on all task job remotes (such as
+  supercomputer, compute cluster, remote-desktop, raspi, suite-origin-desktop).
 * Utility to clean locations that are known to be created by the suite.
 
 While we consider the above, we may also want to consider the following:
@@ -135,7 +138,7 @@ configuration logic. Some points to consider:
 
 So, for example, a suite `flow.rc` might look like this:
 ```ini
-[cylc]
+[general]
     ...
 
 [scheduling]
