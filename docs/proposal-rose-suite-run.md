@@ -32,7 +32,7 @@ all suites will start up with only Cylc commands in the future.
   - [ ] Add sections for `[job platforms]`
 
 
-- [ ] Implement new `cylc-flow.rc` form. [Cylc-flow #3260](https://github.com/cylc/cylc-flow/issues/3260)
+- [ ] Implement new `cylc-flow.rc` schema. [Cylc-flow #3260](https://github.com/cylc/cylc-flow/issues/3260)
   - [ ] Check old tests for `global.rc` & `suite.rc` to ensure that functionality
     is not lost.
   - [ ] Devise tests for the new flow.rc
