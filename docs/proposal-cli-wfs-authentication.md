@@ -3,8 +3,9 @@
 ##### Acronyms used:
 
 * CLI == command line interface;
-* WFS == workflow service (in Cylc <=7 terminology, the suite daemon or server
-  program);
+* WFS == workflow service (in Cylc <=7 terminology, the suite daemon or
+  server program);
+* SSP == suite server program;
 * UIS == UI (user interface) server.
 
 
@@ -57,7 +58,7 @@ These forms have been distinguished as options:
   vaild for one such event instance.
 
 
-### The Old (Cylc 7) Approach
+### The old (Cylc 7) approach
 
 The approach for authentication between the CLI & the suite server program
 (name for the Cylc 7 WFS equivalent) is
@@ -74,17 +75,25 @@ where the creation event is the first suite run & the deletion event is the
 deletion of the suite (or its ``.service`` directory).
 
 
-### New challenges for Cylc 8
+###  Relevant differences from Cylc 7 to 8
 
-There are complications relative to the Cylc 7 approach:
+There are aspects of the Cylc 7 authentication we have decided, at the
+least, to change, or which otherwise necessitate changes, as follows:
 
-* in Cylc 7, jobs authenticate automatically as the user, but for a web UI
-  that is not possible, so task-job clients as previous case (2ii) must be
-  explicitly dealt with;
-* a [core principle of the new architecture](cylc-8-roadmap.md#core-principles--motivation-for-the-new-architecture)
-  is that it will "enable users to view and interact with suites on remote
-  platforms without requiring shared file system or SSH access" so case (2i)
-  is a new case to accommodate.
+* We now have a UIS, for which we also need to manage authentication (to &
+  from it & the WFS, & to it from the CLI).
+* In the new architecture, the WFS is a central server, whereas the old SSP
+  was a distributed per-suite server, which means multi-user
+  authentication is necessary.
+* We have decided the new approach should:
+  * not require port-scanning;
+  * not require SSH access;
+  * in some cases at least (notably for some remote task-job clients where
+    the file system is not shared so it is not possible) not use the
+    file system;
+  * not preclude (later implementation of) fine-grained authorisation for
+    control capacbility, which is not possible with the Cylc 7
+    authentication model.
 
 
 ### Aims: what do we want?
@@ -107,7 +116,7 @@ functional:
   *  jobs running on cloud platforms.
 
 
-### Open Questions
+### Open questions
 
 #### On client cases (c.f. 'Client cases' section above)
 
@@ -146,9 +155,8 @@ functional:
 6. What **algorithms &/or standards** to use (see also Q9)? Notably for:
     * tokenisation (signing, verification, etc.);
     * encryption, if used;
-7. How shall we provide any **related information required to identify e.g.
-   jobs**:
-    * incorporated it into the token?
+7. How shall we provide any **related information required to identify jobs**:
+    * incorporate it into the token?
     * just have it alongside the token (exposing it, but does that matter)?
 8. Which **location** shall we use **to store** the token(s)?
     * Somewhere under each workflow's ``.service`` as before?
@@ -164,6 +172,10 @@ functional:
         * [``secrets``](https://docs.python.org/3/library/secrets.html): "used
           for generating cryptographically strong random numbers".
     * *Third-party*? Notably e.g:
+        * [``python-jose``](https://github.com/mpdavis/python-jose): "A JOSE
+          [JavaScript Object Signing and Encryption technologies: JSON Web
+          Signature (JWS), JSON Web Encryption (JWE), JSON Web Key (JWK), and
+          JSON Web Algorithms (JWA)] implementation in Python"
         * [``pyjwt``](https://github.com/jpadilla/pyjwt): "JSON Web Token
           implementation in Python";
         * [``PyOTP``](https://github.com/pyauth/pyotp): "a Python library for
@@ -177,7 +189,7 @@ stated as 'out of scope' meaning to be addressed in the future, after the
 rest) for the problem outlined in 'The Problem' section above.
 
 
-### Timeline of major updates to the working proposal
+#### Timeline of major updates to the working proposal
 
 * 25.07.19: initial PR up, with a very basic proposal.
 * 28.07.19: proposal extended in response to PR feedback from MS, HO & BK.
@@ -186,14 +198,18 @@ rest) for the problem outlined in 'The Problem' section above.
   to accommodate much higher level of detail than was originally intended.
 * 12.08.19: proposal updated to account for discussions in 'Cylc Core' team
   video conference on 08.08.19 (UK date).
+* 19.08.19: amendments made in response to some general feedback by DM & to
+  adapt the proposal to the new context & plan relating to overarching
+  WFS security, i.e. also considering the network commuications.
 
 
-### Case-by-case Outline
+### Case-by-case outline
 
 **For command-to-workflow-service (CLI-to-WFS) authentication, use:**
 
-(The numbers below refer to the cases outlined in the 'Client cases' section
-above, so please cross-reference with that.)
+(The numbers below refer to the cases outlined in the
+['Client cases' section above](#client-cases), so please cross-reference with
+that.)
 
 * (1i) Ideally, & therefore to try in the first instance, **event-based
   one-time tokens, which each last for the duration of a single command (upon
@@ -216,10 +232,45 @@ above, so please cross-reference with that.)
     * extending an existing job file such as the 'job.status' so that such
       files also carry the token information for each job, & preventing that
       information from being displayed in Cylc Review.
-* (2ii) **Treat the same as (1i), so see that case as above**, making use of
-  the shared file system.
+* (2ii) **Treat the same as *either* (1i) or (2i) (to which of the two
+  remains an open question), so see those cases as above**, where treating
+  equivalently to (1i) is possible from utilising the shared file system.
 * (3i) Equivalent to cases under (1i), hence **treat like for (1i) as above**.
 * (3ii) Out of scope (see note for 1ii).
+
+
+### Questions addressed & remaining
+
+Overall, from the above case outline, for the questions in
+['Open Questions'](open-questions), we have:
+
+* Q1. Two distinct approach used to cover all cases: those described for (1i) &
+  for (2i).
+* Q2. (3i) is in scope, (3ii) is out of scope.
+* Q3. (1i) uses a so-called "one-command" token, (2i) a so-called "one-job"
+  token (see the descriptions against these cases); both of these are
+  event-based one-time tokens, but the events to which tokens are associated
+  to instances are different in each case.
+* Q4. n/a, as there are no timed tokens.
+* Q5. The lifetime of individual commands for (1i) & same-approach cases, &
+      of individual jobs for (2i) & same-approach cases.
+* Q6. Not yet decided.
+* Q7. Not yet decided.
+* Q8. Not yet decided.
+* Q9. Not yet decided.
+
+Plus a new question of:
+
+10. Do we authenticate case (2ii) by the same approach as (1i), or the same
+    approach as (2i)? Some brief points on this:
+      * Treating as for (2i) would be beneficial, as it would mean *all jobs
+        are treated equally*. This could have benefits, for instance making
+        the storage & reading/writing of tokens for jobs simpler & consistent.
+      * But, treating as for (1i) would mean that all cases where the
+        file system is shared are treated in the same way, which could have
+        its own advantages.
+      * It could simply be that the most performant approach of the two would
+        be the best choice?
 
 
 ### Case-by-case UML Sequence Diagrams
