@@ -15,11 +15,17 @@
 
 We need authentication between the CLI & the WFS in Cylc 8.
 
+(NB: we also need security for network communications to & from the WFS, &
+though that is not the domain of this proposal, approaches or libraries or
+protocols (etc.) used for this may also be relevant, as
+[outlined below](#note-on-status-of-the-working-proposal).)
+
 
 #### Client cases
 
-There are various client cases to cover, ultimately, some of which we will treat
-in the same way, & some differently (see the next section for requirements):
+There are various client cases to cover, ultimately, some of which we will
+treat in the same way, & some differently (see the next section for
+requirements):
 
 1. **User (interactive) CLI** => WFS, for user commands:
     1. what I will call **"the direct, or full-privilege full-access (FPFA),
@@ -101,7 +107,7 @@ least, to change, or which otherwise necessitate changes, as follows:
 We want to provide & solution that will, by means of, & on top of, being
 functional:
 
-* **address the complications** outlined in the previous section;
+* **account for required changes** outlined in the previous section;
 * **offer increased security**, rather than just being a "rebrand" accounting
   for the above;
 * **not preclude, or make difficult, any future work** that we need to or want
@@ -182,7 +188,7 @@ functional:
           generating and verifying one-time passwords".
 
 
-## Working Proposal for a Solution
+## Working Proposal for a Solution [on hold, see [note](#note-on-status-of-the-working-proposal)]
 
 This is the **current status of the plan** to address defined aspects (else
 stated as 'out of scope' meaning to be addressed in the future, after the
@@ -242,7 +248,7 @@ that.)
 ### Questions addressed & remaining
 
 Overall, from the above case outline, for the questions in
-['Open Questions'](open-questions), we have:
+['Open Questions'](#open-questions), we have:
 
 * Q1. Two distinct approach used to cover all cases: those described for (1i) &
   for (2i).
@@ -261,16 +267,16 @@ Overall, from the above case outline, for the questions in
 
 Plus a new question of:
 
-10. Do we authenticate case (2ii) by the same approach as (1i), or the same
-    approach as (2i)? Some brief points on this:
-      * Treating as for (2i) would be beneficial, as it would mean *all jobs
-        are treated equally*. This could have benefits, for instance making
-        the storage & reading/writing of tokens for jobs simpler & consistent.
-      * But, treating as for (1i) would mean that all cases where the
-        file system is shared are treated in the same way, which could have
-        its own advantages.
-      * It could simply be that the most performant approach of the two would
-        be the best choice?
+* Q10. Do we authenticate case (2ii) by the same approach as (1i), or the
+  same approach as (2i)? Some brief points:
+    * Treating as for (2i) would be beneficial, as it would mean *all jobs
+      are treated equally*. This could have benefits, for instance making
+      the storage & reading/writing of tokens for jobs simpler & consistent.
+    * But, treating as for (1i) would mean that all cases where the
+      file system is shared are treated in the same way, which could have
+      its own advantages.
+    * It could simply be that the most performant approach of the two would
+      be the best choice?
 
 
 ### Case-by-case UML Sequence Diagrams
@@ -378,3 +384,22 @@ destroyafter Remote Job
 -->
 
 ![Authentication: WFS <=> Remote Job](img/wfs_auth_remote.png)
+
+
+## Note on Status of the Working Proposal
+
+Note that this proposal represents the state of plans preceding discussions
+on an approach based on public & private keys (asymmetric cryptography)
+for WFS network communications security which could also be viable
+solution here: see the
+[corresponding Issue](https://github.com/cylc/cylc-flow/issues/3298)
+for details (& perhaps the comment
+[here](https://github.com/cylc/cylc-admin/pull/41#issuecomment-522061122)).
+
+Consequently, we have agreed to postpone this work until we have undertaken
+some investigations there & know more about the potential of CurveZMQ as
+an approach for (some) CLI <=> WFS authentication.
+
+Therefore this document represents a plan that will be re-considered &
+perhaps went forward with depending on the above, but is currently
+"on hold".
