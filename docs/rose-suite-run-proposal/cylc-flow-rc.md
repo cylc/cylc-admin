@@ -10,7 +10,7 @@ it is proposed that the options available in global, user and suite config
 files are brought into alignment. This file sets out a specification for the
 combined `cylc-flow.rc` file.
 
-## Preabamble
+## Preamble
 
 To reduce changes required for end users this file format is based on
 `suite.rc`: Where aspects of the file are described as unchanged this implies
@@ -28,8 +28,8 @@ and some are more likely to be used in suite configs.
 
 ### Top level sections to copy from `suite.rc` to `cylc-flow.rc`
 
-Most sites will leave these to users (Although I could imagine adding a copy-
-right message to meta by default, for example, and one user has suggested a
+Most sites will leave these to users (Although I could imagine adding a
+copyright message to meta by default, for example, and one user has suggested a
 very simple runtime might be added too, for training and debugging purposes.)
 
 ```ini
@@ -49,7 +49,7 @@ It is likely that most users will continue to have these set by site admins.
 [authorization]
   ...
 ```
-The `[suite servers]` to be deprecated in favour of suite platforms.
+The `[suite servers]` to be renamed `[suite run platforms]`.
 
 
 ### Entirely new top level sections
@@ -98,7 +98,7 @@ small numbers of power users may wish to over-ride them.
       --some-directive="directive here!"  # sometime after cylc8
 ```
 
-#### `[suite platforms]`
+#### `[suite run platforms]`
 This is the dictionary key formerly known as ``[suite servers]``. Changed only
 for the purpose of keeping the name "platforms" conistent. This is expected to
 be set only by system administrators.
@@ -112,7 +112,9 @@ be set only by system administrators.
 
 
 ### Top level sections to merge in a more complex way
-#### `[cylc]`
+#### `[cylc]` -> `[general]`
+This section is to be renamed.
+
 `global.rc` at present contains a subset of the items available in `suite.rc`
 for this section so it is proposed that the new fill just has the larger set.
 ```ini
@@ -123,7 +125,7 @@ for this section so it is proposed that the new fill just has the larger set.
 ```
 
 `[hosts]` will be deprecated but we need to keep many of its settings
-in `[job platforms]`. Old `[[job]]` & `[[remote]]` sections to be merged and rationalized, being replaced by a new `[[job platform]]` section.
+in `[job platforms]`. Old `[runtime][[__MANY__]][[[job]]]` & `[[[remote]]]` sections to be merged and rationalized, being replaced by a new `[runtime][[__MANY__]][[[job platform]]]` section.
 
 We should select the platform defined by `[job platforms]`
 
@@ -131,7 +133,7 @@ We should select the platform defined by `[job platforms]`
 [runtime]
 
 # Task events is moved to  runtime
- [[task events]]
+[[task events]]
   ...
 
   [[job platform]]
