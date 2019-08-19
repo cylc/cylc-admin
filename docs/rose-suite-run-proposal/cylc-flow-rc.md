@@ -6,7 +6,7 @@
 
 ## Purpose
 As part of the work to transfer functionality from `rose suite run` to cylc
-is is proposed that the options available in global, user and suite config
+it is proposed that the options available in global, user and suite config
 files are brought into alignment. This file sets out a specification for the
 combined `cylc-flow.rc` file.
 
