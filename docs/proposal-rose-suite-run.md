@@ -4,6 +4,14 @@
 
 Complete [cylc/cylc#1885](https://github.com/cylc/cylc/issues/1885)
 
+## Synopsis
+
+The work described in this document aims to:
+* Deprecate `rose suite-run`.
+* Provide a new cylc command to replace `rose suite-run`.
+* Change the way hosts for jobs are selected to improve support for clusters.
+* Rationalize the formats of settings `*.rc` files.
+
 ## Background
 
 In the early days of Rose, there was the desire for Rose to be an umbrella
@@ -36,7 +44,8 @@ all suites will start up with only Cylc commands in the future.
   - [ ] Check old tests for `global.rc` & `suite.rc` to ensure that functionality
     is not lost.
   - [ ] Devise tests for the new flow.rc
-  - [ ] Create new config parser, perhaps called `cylc-flow-rc-parser.py`
+  - [ ] Create new config specification, perhaps called `config_schema.py` &
+    remove the config schemas folder.
 
 
 - [ ] Implement Cluster support functionality. [Cylc-flow #2199](https://github.com/cylc/cylc-flow/issues/2199)
@@ -140,7 +149,8 @@ configuration logic. Some points to consider:
 * Users will configure tasks to run on clusters instead of hosts/batch systems.
 * If relevant, improve alignment with DRMAA Open Grid Forum API?
 
-So, for example, a suite `flow.rc` might look like this:
+So, for example, a suite `suite-flow.rc` might look like this:
+(Although a detailed specification should also be created)
 ```ini
 [cylc]
     ...
@@ -238,8 +248,13 @@ Automatic suite validation should become the default behaviour for `cylc run`
 and `cylc reload`. Things to consider:
 * `rose suite-run` does not currently validate Rose apps against their
   metadata. Rose apps should be validated against their metadata by default,
-  but contain switches in the manner of bandit or pylint in a config file.
-  (perhaps `cylc-validate.yml` or similar)
+  but a `cylc-validate.yml` (or similar) should be available to allow
+  the user to customize the extent of the validation, or disable it althogethr.
+  At present Rose offers three validations, with associated time trade-offs:
+    * Built-in (fast)
+    * Fail-if Warn-if (fastish)
+    * Macros (slow)
+
 * Creators of largers suites may want to turn this because the validation
   process will be too slow.
 
@@ -249,15 +264,3 @@ This is raised in [#1030](https://github.com/cylc/cylc/issues/1030). Consider
 a single command (e.g. `cylc flow`, `cylc go`?) to with
 appropriate command switches should be agreed on in a pull
 request to this repository modifying [this document](rose-suite-run-proposal/future-cli-conventions.md)
-
-## Replace Rose Fileinstall & rose-suite.conf
-Create a new file to provide jinja2 data to `cylc-flow.rc` - replaces
-`rose-suite.conf`. This file should be fairly easy to inject into the
-`cylc-flow.rc`, and allow the use of more advanced jinija2 features than the
-current system.
-
-For back-compatibility there is an intention that a `rose-suite.conf` reader
-plugin will be created to convert the old format (which is fairly simple,
-containing as it does only key=value pairs) into the new jinja2 format.
-
-__What about rose-fileinstall?__
