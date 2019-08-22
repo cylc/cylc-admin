@@ -8,7 +8,8 @@
 As part of the work to transfer functionality from `rose suite run` to cylc
 it is proposed that the options available in global, user and suite config
 files are brought into alignment. This file sets out a specification for the
-combined `cylc-flow.rc` file.
+combined `cylc-flow.rc` file, although for the foreseeable future `suite.rc`
+will also be read in the same way.
 
 ## Preamble
 
@@ -20,43 +21,69 @@ to the format of this file are preferable.
 
 It should be noted that although it will be possible to modify all settings in
 all contexts, that some settings are more likely to be used in global contexts
-and some are more likely to be used in suite configs.
+and some are more likely to be used in suite configs. It has been proposed
+that it ought to be possible for sysadmins to lock some settings in site
+configurations.
 
 ****
 
 ## specification for `cylc-flow.rc`
 
-### 1. Top level sections to remain unchanged from `suite.rc`
+### 1. Top level sections to come from from `suite.rc`
 
 Most sites will leave these to users (Although I could imagine adding a
 copyright message to meta by default, for example, and one user has suggested a
 very simple runtime might be added too, for training and debugging purposes.)
 
+These items are:
 ```ini
 [meta]
-  ...
 [scheduling]
-  ...
 [vizualization]
-  ...
 ```
 
-### 2. Top level sections to remain unchanged from `global.rc` to `cylc-flow.rc`
+* `[cylc]` will be renamed `[general]`
+
+### 2. Top level sections from site configuration
 
 It is likely that most users will continue to have these set by site admins.
 
+#### 2.1 Small changes
+
+* `[authentication]` becomes `[authorization]`
+
+* The `[suite servers]` to be renamed `[suite run platforms]` for consistency
+  with job platforms.
+
+* `[test battery]` will be removed entirely.
+
+* `[task events]` will be moved to `[runtime][[root]][[[events]]]`
+
+#### 2.2 `[suite run platforms]`
+This is the dictionary key formerly known as ``[suite servers]``. Changed only
+for the purpose of keeping the name "platforms" conistent. This is expected to
+be set only by system administrators. It should include the former top-level
+section `[[suite host self-identification]]`.
+
+#### 2.3 `[cylc]` -> `[general]`
+
+`[cylc]` is be renamed `[general]`.
+
+`global.rc[cylc]` at present contains a subset of the items available in
+`suite.rc[cylc]` for this section so it is proposed that the new fill just has
+the larger set. These items are:
 ```ini
-[authorization]
-  ...
+[cylc]
+  health check interval = 600
+  task event mail interval = 300
+  [[events]]
 ```
-The `[suite servers]` to be renamed `[suite run platforms]`.
 
-
-### 3 Entirely new top level sections
+### 3 Job Platforms and the deprecation of `[runtime][[TASK]][[[job]]]host`
 
 #### 3.1 `[job platforms]`
 Many of the options in this section will be very similar to `[hosts]`
-It is expected that these will mainly be set in site `cylc-flow.rc`, but that
+It is expected that these will mainly be set at site level, but that
 small numbers of power users may wish to over-ride them.
 
 ```ini
@@ -83,8 +110,6 @@ small numbers of power users may wish to over-ride them.
     task event handler retry delays =
     tail command template =
     [[batch systems]]
-    # Does this need to be like this? Are there really likely to be more than
-    # One batch system per platform.
       [[__MANY__]]
         err tailer =
         out tailer =
@@ -98,54 +123,28 @@ small numbers of power users may wish to over-ride them.
       --some-directive="directive here!"  # sometime after cylc8
 ```
 
-
-
-#### 3.2 `[suite run platforms]`
-This is the dictionary key formerly known as ``[suite servers]``. Changed only
-for the purpose of keeping the name "platforms" conistent. This is expected to
-be set only by system administrators.
-
-```ini
-[suite run platforms]
-# should include formerly free-standing section:
-[[suite host self-identification]]
-  ...
-```
+#### 3.2 Legacy Hosts behaviour
+`[hosts]` will be deprecated but we need to keep many of its settings in
+`[job platforms]`. For back compatibility host should re-direct to
+`[runtime][[__MANY__]][[[platform]]]`. If the re-mapped `host` is part of a
+cluster defined in `[job platforms]` then that job will use that cluster.
+If a user wishes to over-ride this they can over-ride the
+`[job-platforms][[PLATFORM]]` section.
 
 
 ### 4 Top level sections to merge in a more complex way
-#### 4.1 `[cylc]` -> `[general]`
-This section is to be renamed.
 
-#### 4.2 `[general]` configuration items.
-`global.rc` at present contains a subset of the items available in `suite.rc`
-for this section so it is proposed that the new fill just has the larger set.
-```ini
-[cylc]
-  health check interval = 600
-  task event mail interval = 300
-  [[events]]
-```
-
-#### 4.3 `[hosts]` deprecation
-`[hosts]` will be deprecated but we need to keep many of its settings in
-`[job platforms]`. For back compatibility host should re-direct to
-`[runtime][[__MANY__]][[[job platform]]]` with a warning and behaviour
-described in 4.6.
-
-#### 4.4 `[[task events]]` to be moved to runtime
-
-#### 4.5 `[[[job]]]` & `[[[remote]]]`
+#### 4.1 `[[[job]]]` & `[[[remote]]]`
 Old `[runtime][[__MANY__]][[[job]]]` & `[[[remote]]]`
 sections to be merged and rationalized, being replaced by a new
-`[runtime][[__MANY__]][[[job platform]]]` section.
+`[runtime][[__MANY__]][[[job]]]` section.
 
 We should select the platform defined by `[job platforms]`
 
 ```ini
 [runtime]
 
-[[job platform]]
+[[job]]
   platform =                            
 ```
 
@@ -175,13 +174,3 @@ deprecated back compat over-rides which will give warnings if set?
         job name length maximum =
         execution time limit polling intervals =
 ```
-
-#### 4.6 Using a single host?
-We could do some quite sophisticated logic here:
-
-if "host" in ``[job platforms][[platform]]->login hosts``:
- translate `host=???` into platform = platform containing ??? as a login host.
-
-This means that users are forced onto the new behaviour by default.
-Users who want a specific host can over-write
-``[job platforms][[platform]]->login hosts``.
