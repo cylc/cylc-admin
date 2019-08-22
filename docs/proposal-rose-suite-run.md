@@ -58,7 +58,7 @@ all suites will start up with only Cylc commands in the future.
 
 
 - [ ] Replace `rose-suite.conf`.
-  - [ ] Create an alternate way to supply Jinja2 template with data and tests for this format.
+  - [ ] Create an alternative jinja2 format and tests for this format.
   - [ ] Create a rose-suite.conf parsing plugin for cylc flow.
 
 
@@ -81,9 +81,8 @@ While we consider the above, we may also want to consider the following:
 * Rationalise run/restart/reload CLI/API? E.g. A single command to unify
   `cylc run` and `cylc restart`, with a cleaner set of options and arguments.
 * Rationalise related settings from `suite.rc`, `global.rc`, `rose-suite.conf`:
-  * Sections and keys should be idenitical between `flow.rc`
-    (`global-flow.rc`?) in a global location and a suite `flow.rc` (`suite-
-      flow.rc`?) in the suite folder.
+  * There should be a single `cylc-flow.rc` schema combining the settings
+    from the local `suite.rc` and the `global.rc` files.
   * This combined file should prefer to maintain compatibility with `suite.rc`
     for ease of end user upgrade. Users of `global.rc` are generally
     administrators.
@@ -247,7 +246,7 @@ appropriate command switches should be agreed on in a pull
 request to this repository modifying [this document](rose-suite-run-proposal/future-cli-conventions.md)
 
 ## Replace Rose Fileinstall & rose-suite.conf
-Create a new mechanism to provide jinja2 data to `cylc-flow.rc` - replaces
+Create a new file to provide jinja2 data to `cylc-flow.rc` - replaces
 `rose-suite.conf`. This file should be fairly easy to inject into the
 `cylc-flow.rc`, and allow the use of more advanced jinija2 features than the
 current system.

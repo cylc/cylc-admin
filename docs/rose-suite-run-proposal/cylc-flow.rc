@@ -1,0 +1,191 @@
+[meta]
+title = "the first cylc-suite.rc"
+description = "This file is designed to be a test case for the new cylc-flow.rc"
+more = "Test for the [__MANY__] section"
+
+[scheduling]
+initial cycle point = 19831213T0600Z
+final cycle point = 19831213T0600Z
+[[graph]]
+    PT3H="""Alice => Bob
+            Alice => Charlie
+            Alice => Dai
+            Alice => Erica
+         """
+
+#[vizualization]
+
+#[task events]
+
+#[test battery]
+
+#[suite host self-identification]
+
+#[authentication]
+
+[job platforms]
+  [[vld392]]
+    run directory =
+    work directory =
+    task communication method =
+    submission polling intervals =
+    execution polling intervals =
+    scp command =
+    ssh command =
+    use login shell =
+    login hosts = vld392
+    batch system =
+    cylc executable =
+    global init-script =
+    copyable environment variables =
+    retrieve job logs =
+    retrieve job logs command =
+    retrieve job logs max size =
+
+    retrieve job logs retry delays =
+    task event handler retry delays =
+    tail command template =
+
+  [[cylc_farm]]
+    run directory =
+    work directory =
+    task communication method =
+    submission polling intervals =
+    execution polling intervals =
+    scp command =
+    ssh command =
+    use login shell =
+    login hosts = exvcylc01, exvcylc02, exvcylc03
+#    login hosts = [f'exvcylc{i:2d}' for i in range(1,13)]
+    batch system =
+    cylc executable =
+    global init-script =
+    copyable environment variables =
+    retrieve job logs =
+    retrieve job logs command =
+    retrieve job logs max size =      [[default directives]]
+
+    retrieve job logs retry delays =
+    task event handler retry delays =
+    tail command template =
+
+  [[spice]]
+    run directory =
+    work directory =
+    task communication method =
+    submission polling intervals =
+    execution polling intervals =
+    scp command =
+    ssh command =
+    use login shell =
+    login hosts =
+    batch system =
+    cylc executable =
+    global init-script =
+    copyable environment variables =
+    retrieve job logs =
+    retrieve job logs command =
+    retrieve job logs max size =      [[default directives]]
+
+    retrieve job logs retry delays =
+    task event handler retry delays =
+    tail command template =
+    [[[batch systems]]]
+      [[[[slurm]]]]
+        err tailer =
+        out tailer =
+        err viewer =
+        out viewer =
+        job name length maximum =
+        execution time limit polling intervals =
+
+  [[cray]]
+    run directory =
+    work directory =
+    task communication method =
+    submission polling intervals =
+    execution polling intervals =
+    scp command =
+    ssh command =
+    use login shell =
+    login hosts =
+    batch system =
+    cylc executable =
+    global init-script =
+    copyable environment variables =
+    retrieve job logs =
+    retrieve job logs command =
+    retrieve job logs max size =      [[default directives]]
+
+    retrieve job logs retry delays =
+    task event handler retry delays =
+    tail command template =
+    [[[batch systems]]]
+      [[[[slurm]]]]
+        err tailer =
+        out tailer =
+        err viewer =
+        out viewer =
+        job name length maximum =
+        execution time limit polling intervals =
+
+[suite platforms]
+  run hosts =
+  run ports = 43001..43100
+  condemned hosts =
+  auto restart delay =
+  [[run host select]]
+      rank = random
+      thresholds =
+
+[cylc]
+  # health check interval = 600
+  # task event mail interval = 300
+  [[events]]
+
+[runtime]
+[[Alice]]
+    # This script should run on desktop (?) after the changes
+    script="""
+           sleep 5
+           echo "Alice\'s script is boring"
+           """
+    [[[platform]]]
+        platform = vld392
+
+[[Bob]]
+    script="""
+           sleep 5
+           echo "Bob\'s script is boring"
+           """
+    [[[platform]]]
+        platform = vld392
+
+
+[[Charlie]]
+    script="""
+           sleep 5
+           echo "Charlie\'s script is boring"
+           """
+
+    [[[platform]]]
+        platform = spice
+    [[[directives]]]
+        --mem=5
+        --ntasks=1
+
+[[Dai]]
+    script="""
+           sleep 5
+           echo "Dai\'s script is boring"
+           """
+    [[[platform]]]
+        platform = cray
+
+[[Erica]]
+    script="""
+           sleep 5
+           echo "Erica\'s script is boring"
+           """
+    [[[platform]]]
+        platform = cylc_farm

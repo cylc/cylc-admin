@@ -185,7 +185,3 @@ if "host" in ``[job platforms][[platform]]->login hosts``:
 This means that users are forced onto the new behaviour by default.
 Users who want a specific host can over-write
 ``[job platforms][[platform]]->login hosts``.
-
-```ini
-
-```
