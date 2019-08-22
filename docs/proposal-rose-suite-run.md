@@ -36,7 +36,7 @@ all suites will start up with only Cylc commands in the future.
   - [ ] Check old tests for `global.rc` & `suite.rc` to ensure that functionality
     is not lost.
   - [ ] Devise tests for the new `cylc-flow.rc`
-  - [ ] Create new config parser module, called `cylc.flow.config_schema`
+  - [ ] Create new config schema module, called `cylc.flow.config_schema`
   - [ ] Remove the `cylc.flow.cfgspec` folder.
 
 
