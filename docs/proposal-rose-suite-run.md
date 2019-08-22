@@ -55,7 +55,7 @@ all suites will start up with only Cylc commands in the future.
 
 
 - [ ] Replace `rose-suite.conf`.
-  - [ ] Create an alternative jinja2 and/or python format file and tests for
+  - [ ] Create an alternative python config file and tests for
     these format.
   - [ ] Create a cylc plugin to maintain back compatibility by parsing
     rose-suite.conf
