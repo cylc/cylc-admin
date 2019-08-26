@@ -18,10 +18,11 @@
 ## Cylc-8 Work In Progress
 - [Cylc-8 Architecture](cylc-8-architecture)
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
+- [Cylc-8 (Proposal) Authentication between the CLI & Workflow Service](proposal-workflow-authentication.md)
 
 ## Orthogonal Work in Progress
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
- 
+
 ## Video Conferences
 
 Agendas and post-meeting notes.
