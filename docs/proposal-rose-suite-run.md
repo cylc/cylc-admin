@@ -12,6 +12,7 @@ The work described in this document aims to:
 * Change the way hosts for jobs are selected to improve support for clusters.
 * Rationalize the formats of settings `*.rc` files.
 
+
 ## Background
 
 In the early days of Rose, there was the desire for Rose to be an umbrella
@@ -40,16 +41,18 @@ all suites will start up with only Cylc commands in the future.
   - [ ] Add sections for `[job platforms]`
 
 
-- [ ] Implement new `cylc-flow.rc` form. [Cylc-flow #3260](https://github.com/cylc/cylc-flow/issues/3260)
+- [ ] Implement new `cylc-flow.rc` schema. [Cylc-flow #3260](https://github.com/cylc/cylc-flow/issues/3260)
   - [ ] Check old tests for `global.rc` & `suite.rc` to ensure that functionality
     is not lost.
-  - [ ] Devise tests for the new flow.rc
-  - [ ] Create new config specification, perhaps called `config_schema.py` &
-    remove the config schemas folder.
+  - [ ] Devise tests for the new `cylc-flow.rc`
+  - [ ] Create new config schema module, called `cylc.flow.config_schema`
+  - [ ] Remove the `cylc.flow.cfgspec` folder.
 
 
 - [ ] Implement Cluster support functionality. [Cylc-flow #2199](https://github.com/cylc/cylc-flow/issues/2199)
-  - [ ] Modify `task_job_mgr.py` to use the new variables.
+  - [ ] Modify modules to use the new variables:
+    - [ ]  `task_job_mgr.py`
+    - [ ] `task_remote_mgr`    
   - [ ] Randomize login host used
 
 
@@ -74,6 +77,7 @@ all suites will start up with only Cylc commands in the future.
 
 These functionalities are currently provided by Rose, but should really be part
 of Cylc:
+
 * On start up and reload, install suite on suite server cluster (cylc servers).
 * On start up and reload, validate suite.
 * On start up, archive old log directory.
@@ -107,6 +111,7 @@ While we consider the above, we may also want to consider the following:
     subsets of settings:
     ![Venn Diagram showing expected common usage](img/flow_rc_settings_locs.svg)
   * Migrate relevant settings from `rose.conf` and `rose-suite.conf`.
+    __UPDATE THIS__
   * Settings such as `run directory` and `work directory` may need better names
     (users think of "work" as a sub-directory of the run directory, but `run
     directory` and `work directory` are configured separately, and the latter
@@ -149,10 +154,12 @@ configuration logic. Some points to consider:
 * Users will configure tasks to run on clusters instead of hosts/batch systems.
 * If relevant, improve alignment with DRMAA Open Grid Forum API?
 
+
 So, for example, a suite `suite-flow.rc` might look like this:
 (Although a detailed specification should also be created)
 ```ini
 [cylc]
+
     ...
 
 [scheduling]
@@ -244,8 +251,10 @@ sources on installation. Other things to consider:
 ### Suite Validation
 
 The `rose suite-run` command calls `cylc validate --strict` by default.
+
 Automatic suite validation should become the default behaviour for the new
-command, as well as for `cylc reload`. 
+command, as well as for `cylc reload`.
+
 
 ### Rationalise Suite Start Up Commands
 
