@@ -174,3 +174,11 @@ deprecated back compat over-rides which will give warnings if set?
         job name length maximum =
         execution time limit polling intervals =
 ```
+
+### Locking down global settings
+There should be a mechanism by which system administators can lock global
+settings for their sites. This should probably be a `lock=True/False` switches
+within those settings that we wish to make lockable. If unset these will
+default to `False`. If set to `True` a user who tries to over-ride that setting
+will see a warning explaining that the setting has been over-ridden by a site
+admin.
