@@ -2,7 +2,7 @@
 
 1. Create a clean conda install:
   ```bash
-  conda create -n my-example-env python=3.7
+  conda create -n my-example-env python=3.7 --yes
   conda activate my-example-env
   ```
 
@@ -10,7 +10,7 @@
   install it as a dependency of cylc & cylc-uiserver it you will end up with
   a very old version.
   ```bash
-  conda install nodejs
+  conda install nodejs --yes
   node --version
   ```
   For comparison devs have used node at 10.13.x and 12.x.x.
@@ -32,27 +32,21 @@
   ```
   where `${DEVDIR}/cylc-ui` is the location
   of your local (git) worktree of the project.
+  
 
-5. Edit `${DEVDIR}/cylc-uiserver/jupyterhub_config.py`. Change:
-```diff
--c.Spawner.args = ['-s', '../cylc-ui/dist/']
-+c.Spawner.args = ['-s', '/path/to/my/home/metomi/cylc-ui/dist/']
-```
-where `/path/to/my/home/metomi/cylc-ui` is the value of `${DEVDIR}/cylc-ui`.
-
-6. Run `jupyterhub`.
+5. Run `jupyterhub`.
   ```bash
   conda activate my-example-env
   jupyterhub -f ${DEVDIR}/cylc-uiserver/jupyterhub_config.py
   ```
 
-7. Run UI.
+6. Run UI.
   ```bash
   conda activate my-example-env
   npm run --prefix="${DEVDIR}/cylc-ui" build:watch
   ```
 
-8. Open a browser and navigate to http://localhost:8000/.
+7. Open a browser and navigate to http://localhost:8000/.
    You will be asked to log in with your desktop credentials if you have not
    done so before.
   

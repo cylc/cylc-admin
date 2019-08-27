@@ -68,6 +68,9 @@ These are:
 * What are hierachically named suites?
   * Those that know what they are don't use them [at least in this room, if you
     read this on Sharepoint and disagree...].
+  * A user who does use hierachically named suites contacted us later
+    saying that he likes them and would appreciate more controls, 
+    both in the GUI and CLI.
 * Not many of us [use them] but seems useful.
 * Not well known.
 * Iteration over experiments is desirable in suites.

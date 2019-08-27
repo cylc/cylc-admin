@@ -47,3 +47,6 @@ April 2019
   evolution) - good for standalone and automated testing without the need to
   hook up to a running workflow.
 
+May 2019
+
+- document release process, for less reliance on HO

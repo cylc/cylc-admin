@@ -4,6 +4,15 @@
 
 Complete [cylc/cylc#1885](https://github.com/cylc/cylc/issues/1885)
 
+## Synopsis
+
+The work described in this document aims to:
+* Deprecate `rose suite-run`.
+* Provide a new cylc command to replace `rose suite-run`.
+* Change the way hosts for jobs are selected to improve support for clusters.
+* Rationalize the formats of settings `*.rc` files.
+
+
 ## Background
 
 In the early days of Rose, there was the desire for Rose to be an umbrella
@@ -58,20 +67,29 @@ all suites will start up with only Cylc commands in the future.
 
 
 - [ ] Replace `rose-suite.conf`.
-  - [ ] Create an alternative jinja2 format and tests for this format.
-  - [ ] Create a rose-suite.conf parsing plugin for cylc flow.
+  - [ ] Create an alternative python config file and tests for
+    these format.
+  - [ ] Create a cylc plugin to maintain back compatibility by parsing
+    rose-suite.conf
 
 
 ## Functionalities to Consider
 
 These functionalities are currently provided by Rose, but should really be part
 of Cylc:
-* On start up and reload, install suite on "suite run platform" (cylc servers).
+
+* On start up and reload, install suite on suite server cluster (cylc servers).
 * On start up and reload, validate suite.
 * On start up, archive old log directory.
-* On start up and reload, install suite on all task job remotes (such as
-  supercomputer, compute cluster, remote-desktop, raspi, suite-origin-desktop).
+* On start up and reload, install suite on all task job remotes (such as Cray,
+  Spice, remote-desktop, raspi, suite-origin-desktop).
 * Utility to clean locations that are known to be created by the suite.
+* On starting up a new run of the suite assign a new run name:
+  ```
+  mi-aa001/
+    run1
+    run2
+  ```
 
 While we consider the above, we may also want to consider the following:
 * Introduce configuration and logic to recognise suite clusters and task hosts
@@ -81,8 +99,9 @@ While we consider the above, we may also want to consider the following:
 * Rationalise run/restart/reload CLI/API? E.g. A single command to unify
   `cylc run` and `cylc restart`, with a cleaner set of options and arguments.
 * Rationalise related settings from `suite.rc`, `global.rc`, `rose-suite.conf`:
-  * There should be a single `cylc-flow.rc` schema combining the settings
-    from the local `suite.rc` and the `global.rc` files.
+  * Sections and keys should be idenitical between `flow.rc`
+    (`global-flow.rc`?) in a global location and a suite `flow.rc` (`suite-
+      flow.rc`?) in the suite folder.
   * This combined file should prefer to maintain compatibility with `suite.rc`
     for ease of end user upgrade. Users of `global.rc` are generally
     administrators.
@@ -135,9 +154,12 @@ configuration logic. Some points to consider:
 * Users will configure tasks to run on clusters instead of hosts/batch systems.
 * If relevant, improve alignment with DRMAA Open Grid Forum API?
 
-So, for example, a suite `flow.rc` might look like this:
+
+So, for example, a suite `suite-flow.rc` might look like this:
+(Although a detailed specification should also be created)
 ```ini
-[general]
+[cylc]
+
     ...
 
 [scheduling]
@@ -229,14 +251,10 @@ sources on installation. Other things to consider:
 ### Suite Validation
 
 The `rose suite-run` command calls `cylc validate --strict` by default.
-Automatic suite validation should become the default behaviour for `cylc run`
-and `cylc reload`. Things to consider:
-* `rose suite-run` does not currently validate Rose apps against their
-  metadata. Rose apps should be validated against their metadata by default,
-  but contain switches in the manner of bandit or pylint in a config file.
-  (perhaps `cylc-validate.yml` or similar)
-* Creators of largers suites may want to turn this because the validation
-  process will be too slow.
+
+Automatic suite validation should become the default behaviour for the new
+command, as well as for `cylc reload`.
+
 
 ### Rationalise Suite Start Up Commands
 
@@ -244,15 +262,3 @@ This is raised in [#1030](https://github.com/cylc/cylc/issues/1030). Consider
 a single command (e.g. `cylc flow`, `cylc go`?) to with
 appropriate command switches should be agreed on in a pull
 request to this repository modifying [this document](rose-suite-run-proposal/future-cli-conventions.md)
-
-## Replace Rose Fileinstall & rose-suite.conf
-Create a new file to provide jinja2 data to `cylc-flow.rc` - replaces
-`rose-suite.conf`. This file should be fairly easy to inject into the
-`cylc-flow.rc`, and allow the use of more advanced jinija2 features than the
-current system.
-
-For back-compatibility there is an intention that a `rose-suite.conf` reader
-plugin will be created to convert the old format (which is fairly simple,
-containing as it does only key=value pairs) into the new jinja2 format.
-
-__What about rose-fileinstall?__

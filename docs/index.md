@@ -18,10 +18,11 @@
 ## Cylc-8 Work In Progress
 - [Cylc-8 Architecture](cylc-8-architecture)
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
+- [Cylc-8 (Proposal) Authentication between the CLI & Workflow Service](proposal-workflow-authentication.md)
 
 ## Orthogonal Work in Progress
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
- 
+
 ## Video Conferences
 
 Agendas and post-meeting notes.
@@ -42,11 +43,23 @@ Agendas and post-meeting notes.
   - [Agenda](meetings/vc-22-may-2019-agenda.md)
   - [Notes](meetings/vc-22-may-2019-summary.md)
 
+- June 2019 Exeter
+  - [Notes](meetings/exeter-jun-2019.md)
+
+- 9 Aug 2019
+  - [Agenda](meetings/vc-9-aug-2019-agenda.md)
+
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
-## Cylc UI Research
-- [Suites Guild GUI Review](research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
-- [gcylc.rc usage](research/MO-gcylc-rc-report.md)
+## User Research
+- [Suites Guild GUI Review](user-research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
+- [gcylc.rc usage](user-research/MO-gcylc-rc-report.md)
+- 04/06/19 Metomi team meeting on UR:
+  - [Discussion Prompts (sent out in advance)](user-research/ur-initiation-questions.md)
+  - [Summary Notes](user-research/ur-meetings/ur-04-june-2019-summary.md)
+- Overall UR summary/record documents:
+  - [Insight Pool](user-research/ur-insight-pool.md)
+  - [Interaction Summaries & Log](user-research/ur-interaction-summaries-log.md)
 
 ## Cylc 8 Guides
 Guides for developers, and therefore slightly separate to main documentation
