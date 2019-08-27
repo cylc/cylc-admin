@@ -244,19 +244,8 @@ sources on installation. Other things to consider:
 ### Suite Validation
 
 The `rose suite-run` command calls `cylc validate --strict` by default.
-Automatic suite validation should become the default behaviour for `cylc run`
-and `cylc reload`. Things to consider:
-* `rose suite-run` does not currently validate Rose apps against their
-  metadata. Rose apps should be validated against their metadata by default,
-  but a `cylc-validate.yml` (or similar) should be available to allow
-  the user to customize the extent of the validation, or disable it althogethr.
-  At present Rose offers three validations, with associated time trade-offs:
-    * Built-in (fast)
-    * Fail-if Warn-if (fastish)
-    * Macros (slow)
-
-* Creators of largers suites may want to turn this because the validation
-  process will be too slow.
+Automatic suite validation should become the default behaviour for the new
+command, as well as for `cylc reload`. 
 
 ### Rationalise Suite Start Up Commands
 
