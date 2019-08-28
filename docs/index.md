@@ -7,7 +7,6 @@
 
 ## Cylc-8 Pre-planning
 - [GUI Replacement Options](gui-replacement-options)
-- [Cylc-8 Roadmap](cylc-8-roadmap)
 - [Tentative Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED
 
 ## Dec 2018 Development Workshop (Melbourne)
@@ -18,7 +17,7 @@
 ## Cylc-8 Work In Progress
 - [Cylc-8 Architecture](cylc-8-architecture)
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
-- [Cylc-8 (Proposal) Authentication between the CLI & Workflow Service](proposal-workflow-authentication.md)
+- [Cylc-8 (Proposal) Authentication between the CLI & Workflow Service](proposal-cli-wfs-authentication)
 
 ## Orthogonal Work in Progress
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
