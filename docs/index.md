@@ -21,6 +21,9 @@
 
 ## Orthogonal Work in Progress
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
+  More detail on rose-suite-run migration:
+  - [Specification for new combined config file](rose-suite-run-proposal/cylc-flow-rc.md)
+  - Specification for new CLI - [WIP]
 
 ## Video Conferences
 
