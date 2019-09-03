@@ -50,6 +50,7 @@ Agendas and post-meeting notes.
 
 - 9 Aug 2019
   - [Agenda](meetings/vc-9-aug-2019-agenda.md)
+  - [Notes](meetings/vc-9-aug-2019-summary.md)
 
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
