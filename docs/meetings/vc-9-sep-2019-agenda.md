@@ -48,8 +48,12 @@ Discuss any progress or problems on the following topics:
 - N-distance queries and "hybrid mode" (HO, DS)
   - DS has implemented already
   - shall we use this in the UI?
-    - I think we should!  (at least optionally)
+    - any major concerns or gotchas?
+    - if not, let's do it!  (at least as a UI option)
     - implications:
+      - a more sensible and more concise set of tasks for the UI
+        (c.f. all the waiting and succeeded tasks in the task pool)
+      - requires auto-insertion for operations on ghost nodes (easy)
       - instead of scissor nodes, several (not many?) disjoint graphs
       - other?
 
@@ -68,6 +72,15 @@ Discuss any progress or problems on the following topics:
     - can the one component do it all "responsively", or do we need two
       different components (pure tree, and tabular)?
     - do we need a temporary solution (e.g. pure tree) for alpha-1 release?
+
+- UI Graph View (MR)
+  - progress, problems, or thoughts on:
+    - use of our common icons
+    - hook-up to live workflow data
+    - layout and display of job icons?
+  - anything else?
+  - any changes needed to conform to UI project directory structure (location
+    of components etc?) - BK 
 
 - "rose suite-run" migration (TP, MS)
 
