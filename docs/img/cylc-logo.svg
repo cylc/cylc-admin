@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="655" height="260" id="svg2" version="1.1" inkscape:version="0.92.2 (5c3e80d, 2017-08-06)" sodipodi:docname="cylc-logo.svg" inkscape:export-filename="/home/vagrant/website/css/cylc-logo.png" inkscape:export-xdpi="21.58" inkscape:export-ydpi="21.58">
+  <defs id="defs4">
+    <linearGradient id="linearGradient5211" osb:paint="solid">
+      <stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop5213"/>
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:zoom="0.51094443" inkscape:cx="953.66532" inkscape:cy="676.84217" inkscape:document-units="px" inkscape:current-layer="g5369" showgrid="false" fit-margin-top="20" fit-margin-left="20.1" fit-margin-right="20" fit-margin-bottom="20" borderlayer="false" inkscape:showpageshadow="false" inkscape:window-width="1481" inkscape:window-height="981" inkscape:window-x="123" inkscape:window-y="28" inkscape:window-maximized="0" inkscape:pagecheckerboard="false"/>
+  <metadata id="metadata7">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(292.53268,-49.505044)">
+    <g id="g5353">
+      <g id="g5369" inkscape:export-filename="/home/vagrant/website/css/g5369.png" inkscape:export-xdpi="21.58" inkscape:export-ydpi="21.58">
+        <g id="g4583">
+          <circle r="27.743086" cy="248.39331" cx="-135.70163" transform="scale(-1,1)" id="path2991" style="fill:#ff5966;fill-opacity:1;stroke:none;stroke-width:1.29467726;stroke-opacity:1"/>
+          <circle r="72.85714" cy="216.6479" cx="201.04846" id="path2985" style="fill:#0dc66e;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-opacity:1"/>
+          <circle r="37.37936" cy="136.32114" cx="167.3486" inkscape:export-ydpi="21.58" inkscape:export-xdpi="21.58" inkscape:export-filename="/home/vagrant/website/css/path2987.png" id="path2987" style="fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1.18934333;stroke-opacity:1"/>
+          <circle r="49.79998" cy="121.63028" cx="292.31558" id="path2989" style="fill:#00b4fd;fill-opacity:1;stroke:none;stroke-width:0.91736811;stroke-opacity:1"/>
+          <path d="m -239.15268,150.44225 q 5.28,0 17.92,1.92 l 3.84,0.48 -0.48,9.76 q -12.8,-1.44 -18.88,-1.44 -13.6,0 -18.56,6.56 -4.8,6.4 -4.8,24 0,17.44 4.48,24.32 4.64,6.88 19.04,6.88 l 18.88,-1.44 0.48,9.92 q -14.88,2.24 -22.24,2.24 -18.72,0 -25.92,-9.6 -7.04,-9.6 -7.04,-32.32 0,-22.88 7.68,-32 7.68,-9.28 25.6,-9.28 z" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:1.25;font-family:'Titillium Web';-inkscape-font-specification:'Titillium Web';letter-spacing:0px;word-spacing:0px;fill:#ff5966;fill-opacity:1;stroke:none" id="path826" inkscape:connector-curvature="0"/>
+          <path d="m -175.59268,152.04225 h 12 l 20,69.6 h 5.28 l 20.16,-69.6 h 12 l -33.28,115.52 h -12 l 10.4,-35.52 h -11.84 z" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:1.25;font-family:'Titillium Web';-inkscape-font-specification:'Titillium Web';letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none" id="path828" inkscape:connector-curvature="0"/>
+          <path d="m -58.612682,232.04225 v -114.88 h 12 v 114.88 z" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:1.25;font-family:'Titillium Web';-inkscape-font-specification:'Titillium Web';letter-spacing:0px;word-spacing:0px;fill:#0dc66e;fill-opacity:1;stroke:none" id="path830" inkscape:connector-curvature="0"/>
+          <path d="m 34.534818,150.44225 q 5.28,0 17.92,1.92 l 3.84,0.48 -0.48,9.76 q -12.8,-1.44 -18.88,-1.44 -13.6,0 -18.56,6.56 -4.8,6.4 -4.8,24 0,17.44 4.48,24.32 4.64,6.88 19.04,6.88 l 18.88,-1.44 0.48,9.92 q -14.88,2.24 -22.24,2.24 -18.72,0 -25.9199999,-9.6 -7.04,-9.6 -7.04,-32.32 0,-22.88 7.68,-32 7.6799999,-9.28 25.5999999,-9.28 z" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:1.25;font-family:'Titillium Web';-inkscape-font-specification:'Titillium Web';letter-spacing:0px;word-spacing:0px;fill:#00b4fd;fill-opacity:1;stroke:none" id="path832" inkscape:connector-curvature="0"/>
+          <text id="text4549" y="80.933609" x="-431.42239" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:53.33333206px;line-height:1.25;font-family:'Titillium Web';-inkscape-font-specification:'Titillium Web Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none" xml:space="preserve"><tspan y="127.32852" x="-431.42239" id="tspan4547" sodipodi:role="line"/></text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
