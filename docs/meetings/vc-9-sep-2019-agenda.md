@@ -5,17 +5,17 @@
 - [agenda](vc-9-aug-agenda.md)
 - [notes](vc-9-aug-summary.md)
 
-## Previous Actions (5 min)
+## Previous Actions - 5 min
 - (see 9 Aug notes)
 - [outstanding
   actions](https://cylc.github.io/cylc-admin/meetings/left-over-actions.html)
 
-## General Admin (5 min)
+## General Admin - 5 min
 
 - Start using ZenHub, for unified milestones etc.
   [Cylc and Rose Project Board](https://app.zenhub.com/workspaces/cylc-and-rose-5d122023f9628b5d0da532a5/board?repos=1836229)
 
-## Site Updates and News (5 min)
+## Site Updates and News - 5 min
 
 - NIWA
    - NIWA/UM-Partnership contract for Bruno - still in prep
@@ -23,12 +23,14 @@
 - BOM?
 - UK?
 
-## 7.8 maintenance (2 min)
+## 7.8 maintenance - 2 min
 
 - [7.8.4 release](https://github.com/cylc/cylc-flow/milestone/80)
 - any issues reported?
 
-## Packaging and ALPHA-1 RELEASE
+## Cylc 8 Topics
+
+Packaging and ALPHA-1 RELEASE - 10 min
 
 - can we put out a "full system" conda recipe?
 - what needs doing?
@@ -41,11 +43,10 @@
   - incremental UIS udpate - no?
   - websocket and subscriptions - no?
 
-## Cylc 8 Topics
 
 Discuss any progress or problems on the following topics:
 
-- N-distance queries and "hybrid mode" (HO, DS)
+- N-distance queries and "hybrid mode" (HO, DS) - 10 min
   - DS has implemented already
   - shall we use this in the UI?
     - any major concerns or gotchas?
@@ -57,7 +58,7 @@ Discuss any progress or problems on the following topics:
       - instead of scissor nodes, several (not many?) disjoint graphs
       - other?
 
-- Task State Naming and Icons (HO)
+- Task State Naming and Icons (HO)  - 5 min
   - we tentatively decided to:
     - absorb "queued" and "ready" into a single "submitting" state in the UI
       (icon: a circle, with a smaller central dot that "submitted")
@@ -66,14 +67,14 @@ Discuss any progress or problems on the following topics:
     - so what names? (queued and preparing in UI and server?)
     - what icons?
  
-- UI Tree View issues (BK)
+- UI Tree View issues (BK)  - 10 min
   - how to display task data (Job ID and batch system etc.)?
     - need tabular form (esp. desktop) and tree collapse (esp. mobile)
     - can the one component do it all "responsively", or do we need two
       different components (pure tree, and tabular)?
     - do we need a temporary solution (e.g. pure tree) for alpha-1 release?
 
-- UI Graph View (MR)
+- UI Graph View (MR)  - 10 min
   - progress, problems, or thoughts on:
     - use of our common icons
     - hook-up to live workflow data
@@ -82,18 +83,18 @@ Discuss any progress or problems on the following topics:
   - any changes needed to conform to UI project directory structure (location
     of components etc?) - BK 
 
-- "rose suite-run" migration (TP, MS)
+- "rose suite-run" migration (TP, MS) - 5 min
 
-- CLI-WFS Authentication (SB)
+- CLI-WFS Authentication (SB) - 2 min
  
-- UIS incremental update (DS)
+- UIS incremental update (DS)  - 5 min
   - thoughts on how to implement
 
-- Websocket and subscriptions (DS, BK)
+- Websocket and subscriptions (DS, BK)  - 5 min
   - the Tornado PR etc.
 
 - ANYTHING ELSE?
 
-
 ## AOB?
-- next meeting - first week of October
+- meeting schedule: first Mon/Tues every month
+- UK team announcements from Dave and/or Matt
