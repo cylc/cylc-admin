@@ -2,8 +2,8 @@
 
 ## Previous meeting
 9 August
-- [agenda](vc-9-aug-agenda.md)
-- [notes](vc-9-aug-summary.md)
+- [agenda](vc-9-aug-2019-agenda.html)
+- [notes](vc-9-aug-2019-summary.html)
 
 ## Previous Actions - 5 min
 - (see 9 Aug notes)
