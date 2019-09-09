@@ -50,6 +50,7 @@ Agendas and post-meeting notes.
 
 - 9 August 2019
   - [Agenda](meetings/vc-9-aug-2019-agenda.md)
+  - [Notes](meetings/vc-9-aug-2019-summary.md)
 
 - 9 September 2019
   - [Agenda](meetings/vc-9-sep-2019-agenda.md)
