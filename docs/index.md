@@ -54,6 +54,7 @@ Agendas and post-meeting notes.
 
 - 9 September 2019
   - [Agenda](meetings/vc-9-sep-2019-agenda.md)
+  - [Notes](meetings/vc-9-sep-2019-notes.md)
 
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
