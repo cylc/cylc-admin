@@ -78,4 +78,4 @@ Guides for developers, and therefore slightly separate to main documentation
 - [Create a Release](howto/create-a-release.rst)
 
 ## Misc
-- [thread modeling outcomes](threats.md)
+- [threat modelling outcomes](threats.md)
