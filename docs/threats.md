@@ -18,7 +18,7 @@ accepted technology for use at the BOM.
 > Security User Stories
 >
 - As an attacker I want to stop user A suite A from running
-- As an attacker I want to be able to fool authentication on the Cylc HUB
+- As an attacker I want to be able to fool authentication on the Cylc Hub
 - As an attacker I want to harvest usernames and passwords
 - As an attacker I want to be able to get the network map relevant to the Cylc solution
 - As an attacker I want to hijack current tokens to take over sessions
