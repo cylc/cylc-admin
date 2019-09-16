@@ -22,7 +22,7 @@ accepted technology for use at the BOM.
 - As an attacker I want to harvest usernames and passwords
 - As an attacker I want to be able to get the network map relevant to the Cylc solution
 - As an attacker I want to hijack current tokens to take over sessions
-- As an attacker I want to harvest suite state via the HTTP proxy on Cylc hub
+- As an attacker I want to harvest suite state via the HTTP proxy on Cylc Hub
 - As an attacker I want to execute my own suite/arbitrary code on HPC
 - As an attacker I want to inject arbitrary code into al already running suite
 - As an attacker I want to 'spawn' a non UI server (arbitrary code, not cylc)
