@@ -56,8 +56,8 @@ Test the build
    rm -r dist
 
 
-Tag the build
-=============
+Tag the version
+===============
 
 .. code-block:: bash
 
@@ -76,7 +76,7 @@ Create a release on Github
 * On Github navigate to the repository for which you are creating a release
   for and click on the relases tab. You should see your tag at the top.
 * [Optional] You may wish to open the edit page of a previous release in a
-  new tab so that you can copy and paste it's data.
+  new tab so that you can copy and paste its data.
 * Click "Draft a new release" button.
 * Add your tag to the release. Edit the other fields to give appropriate
   information.
@@ -92,6 +92,9 @@ Upload build to PyPI
 
     # Create your build
     python3 setup.py bdist_wheel sdist
+
+    # Check that the dist folder contains the right artifacts:
+    ls dist/
 
     # Upload your build to PyPI. n.b. This will not work if your build has the
     # same version number as one already on PyPI.
