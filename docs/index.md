@@ -71,3 +71,4 @@ Agendas and post-meeting notes.
 ## Cylc 8 Guides
 Guides for developers, and therefore slightly separate to main documentation
 - [Getting Started](howto/environment.md)
+- [Create a Release](howto/create-a-release.rst)
