@@ -60,11 +60,28 @@ Update on the recent work (UI, UIServer, and WFS)
 
 WIP PR status update
 - what has been done / is being done / is still to do; how it works
- 
+
 ## Config schema unification - 10 min - TP
 
 Status update
-- what has been done / is being done / is still to do; how it works
+#### What has been done
+  - [Cylc-flow PR #3348](https://github.com/cylc/cylc-flow/pull/3348) Outlines the new
+    config schema without actually making it _do_ anything. It's waiting on a
+    review from DM.
+  - [Cylc-admin PR #58](https://github.com/cylc/cylc-admin/pull/58) Attempts to
+    update the documentation in the light of the comments on
+    [Cylc-flow PR #3348](https://github.com/cylc/cylc-flow/pull/3348)
+#### What is being done
+  - [Cylc-flow PR #3357](https://github.com/cylc/cylc-flow/pull/3357) attempts
+    to plug the new schema in for local usage, and starts to look at how
+    that changes will continue to support Cylc 7.x `suite.rc` files.
+#### What is still to do
+  - Approving any of the above PR's.
+  - Getting the new config working and well tested with new style `global.rc`
+    files.
+#### how it works
+  - [The `suite.rc` proposal document in cylc-admin] contains details of how
+    this change should work.
 
 ## Changelogs
 
