@@ -1,15 +1,17 @@
 # Cylc VC 8 October 2019 Agenda
 
+__ALL__: please:
+- read below and add a placeholder for anything you think we need to talk about
+- read the [9 September meeting notes](vc-9-sep-2019-notes.html) as a reminder
+
 ## Previous meeting
-9 August
+9 September
 - [agenda](vc-9-sep-2019-agenda.html)
 - [notes](vc-9-sep-2019-notes.html)
 
-## General Admin etc. - 5 min
+## General Admin etc. - 5 min - HO
 
-HO:
-- We are now Matt-less! :-(
-- NIWA/UM-Partnership contract for Bruno - STILL in prep
+- NIWA/UM-Partnership contract for BK - STILL in prep
 - Hacktoberfest - got a few bites!
 - OS secondment to NIWA approved (late Nov - mid Feb)
 - Need to decide week of second Cylc workshop, and start planning
@@ -25,11 +27,11 @@ Other?
 
 ## Packaging - 5 min - SB and BK
 
-- cylc-8.0a1 full-system available from kinow channel
+- cylc-8.0a1 full-system available via conda from kinow channel
 - cylc-flow-8.0a1 now available from conda-forge
 - what remains to be done on conda-forge? (and ETA?)
 
-## Graph View - 10 min - MR
+## UI Graph View - 10 min - MR
 
 Update on:
 - Cytoscape vs D3 etc
@@ -40,6 +42,7 @@ Update on:
 Update on the recent work:
 - UI, UIServer, and WFS
 - what has been done and how it works
+- what remains to be done
 
 ## CLI-WFS Authentication (SB) - 10 min__
 
