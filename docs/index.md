@@ -76,3 +76,6 @@ Agendas and post-meeting notes.
 Guides for developers, and therefore slightly separate to main documentation
 - [Getting Started](howto/environment.md)
 - [Create a Release](howto/create-a-release.rst)
+
+## Misc
+- [threat modelling outcomes](threats.md)
