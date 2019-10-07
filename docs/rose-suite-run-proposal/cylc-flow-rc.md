@@ -81,6 +81,14 @@ Many of the options in this section will be very similar to items formerly in
 It is expected that these will mainly be set at site level, but that
 small numbers of power users may wish to over-ride them.
 
+__The key items in this config are `batch system` and `login hosts`
+as these between them define way the cluster will function.__
+
+Cases for this include
+- Batch system run on local host.
+- Job run without batch system on login node of a cluster.
+- Batch system run from login node of a cluster.
+
 ```ini
 [job platforms]
   [[example platform]]
