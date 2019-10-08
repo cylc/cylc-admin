@@ -48,11 +48,10 @@ Update on the recent work (UI, UIServer, and WFS)
   - what has been done:
     - https://github.com/cylc/cylc-flow/pull/3390 (pending review): added subscriptions to the schema
     - https://github.com/cylc/cylc-uiserver/pull/82 (pending review): added code from graphene-tornado pending pull request; uses the schema updates from the PR above; adds a tornado WebSocket handler to expose the schema/graphql endpoint
-  - what is being done
-    - https://github.com/cylc/cylc-ui/pull/280: updated project dependencies; fixed build & tests; adjusted previous code to keep working
+    - https://github.com/cylc/cylc-ui/pull/280: updated project dependencies; fixed build & tests; adjusted previous code to keep working; updated views to use WebSockets/subscriptions
   - what is still to do:
-    - https://github.com/cylc/cylc-ui/pull/280: switch from polling to WebSockets (will start Tuesday morning NZ time)
     - Cylc Flow and Cylc UI Server pull requests need review (probably 1 reviewer DW, but needs one more)
+    - After Cylc Flow and Cylc UI Server PR's are merged, review Cylc UI PR
     - create follow up issues after review/merge, with what's missing (e.g. data-driven on the websocket side instead of interval-based)
 
 
