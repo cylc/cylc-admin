@@ -31,24 +31,14 @@ configurations.
 
 ### 1. Top level sections to come from from `suite.rc`
 
-Most sites will leave these to users (Although I could imagine adding a
-copyright message to meta by default, for example, and one user has suggested a
-very simple runtime might be added too, for training and debugging purposes.)
+The new file will be based on `suite.rc` and so items in the new file
+will be the same as in `suite.rc` unless explicitly stated.
 
-These items are:
-```ini
-[meta]
-[scheduling]
-[vizualization]
-```
-
-* `[cylc]` will be renamed `[general]`
-
-### 2. Top level sections from site configuration
+### 2. Top level sections from global and user configs
 
 It is likely that most users will continue to have these set by site admins.
 
-#### 2.1 Small changes
+#### 2.1 Simple changes
 
 * `[authentication]` becomes `[authorization]`
 
@@ -79,12 +69,25 @@ the larger set. These items are:
   [[events]]
 ```
 
+#### 2.4 New `email` top level section
+All config items in the form `[global][event]mail *` will be moved to a new
+top level section `[email]`
+
 ### 3 Job Platforms and the deprecation of `[runtime][[TASK]][[[job]]]host`
 
 #### 3.1 `[job platforms]`
-Many of the options in this section will be very similar to `[hosts]`
+Many of the options in this section will be very similar to items formerly in 
+`[hosts]`, `[runtime][TASK][remote]` and `[runtime][TASK][job]`
 It is expected that these will mainly be set at site level, but that
 small numbers of power users may wish to over-ride them.
+
+__The key items in this config are `batch system` and `login hosts`
+as these between them define way the cluster will function.__
+
+Cases for this include
+- Batch system run on local host.
+- Job run without batch system on login node of a cluster.
+- Batch system run from login node of a cluster.
 
 ```ini
 [job platforms]
@@ -101,16 +104,13 @@ small numbers of power users may wish to over-ride them.
     batch system =                        # name of batch system
     cylc executable =
     global init-script =
-    copyable environment variables =
     retrieve job logs =
     retrieve job logs command =
-    retrieve job logs max size =      [[default directives]]
-
+    retrieve job logs max size =
     retrieve job logs retry delays =
     task event handler retry delays =
     tail command template =
     [[batch systems]]
-      [[__MANY__]]
         err tailer =
         out tailer =
         err viewer =
@@ -123,59 +123,34 @@ small numbers of power users may wish to over-ride them.
       --some-directive="directive here!"  # sometime after cylc8
 ```
 
-#### 3.2 Legacy Hosts behaviour
-`[hosts]` will be deprecated but we need to keep many of its settings in
-`[job platforms]`. For back compatibility host should re-direct to
-`[runtime][[__MANY__]][[[platform]]]`. If the re-mapped `host` is part of a
-cluster defined in `[job platforms]` then that job will use that cluster.
-If a user wishes to over-ride this they can over-ride the
+The `job platform` to use will be set for a task in the top level of the
+`[runtime][task]` definition using the key `platform = <name of platform>`
+
+#### 3.2 Legacy `[runtime][TASK][job]` & `[runtime][TASK][remote]` behaviour
+
+All the items in `[runtime][TASK][remote]` will be deprecated in favour of equivelent
+items in a `job platform`. The following items from `[runtime][TASK][job]` will also
+be deprecated in favour of items in `[job platforms]`:
+- `batch system`
+- `batch submit command template`
+- `submission polling intervals`
+- `submission retry delays`
+
+
+`[runtime][TASK][remote]hosts` will be deprecated but we need to ensure that 
+we can handle deprecated useage in a sophisticated way. For back compatibility 
+if host `host` is a login node defined in `[job platforms]` then that job 
+will use that platform. If a user wishes to over-ride this they can over-ride the
 `[job-platforms][[PLATFORM]]` section.
 
+The other settings to be moved to `job platforms` could be subject to these
+strategies:
+1. Raise a warning, ignore the deprecated keys, and use the `job platform` 
+   selected using the value in `hosts`.
+2. Raise a warning and over-ride the values in `job platform`
+3. Raise an error and stop everything dead.
 
-### 4 Top level sections to merge in a more complex way
-
-#### 4.1 `[[[job]]]` & `[[[remote]]]`
-Old `[runtime][[__MANY__]][[[job]]]` & `[[[remote]]]`
-sections to be merged and rationalized, being replaced by a new
-`[runtime][[__MANY__]][[[job]]]` section.
-
-We should select the platform defined by `[job platforms]`
-
-```ini
-[runtime]
-
-[[job]]
-  platform =                            
-```
-
-I think that we will probably want users to set this in the
-[job platforms] section, leaving some of these options here as due-to-be
-deprecated back compat over-rides which will give warnings if set?
-
-```ini
-    batch system =
-    batch submit command template =
-    execution polling intervals =
-    execution retry delays =
-    execution time limit =
-    submission polling intervals =
-    submission retry delays =
-    host =
-    owner =
-    suite definition directory =
-    retrieve job logs =
-    retrieve job logs max size =
-    retrieve job logs retry delays =
-      [[[batch systems]]]
-        err tailer =
-        out tailer =
-        err viewer =
-        out viewer =
-        job name length maximum =
-        execution time limit polling intervals =
-```
-
-### Locking down global settings
+### 4. Locking down global settings
 There should be a mechanism by which system administators can lock global
 settings for their sites. This should probably be a `lock=True/False` switches
 within those settings that we wish to make lockable. If unset these will

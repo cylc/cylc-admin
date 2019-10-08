@@ -33,19 +33,17 @@ all suites will start up with only Cylc commands in the future.
 
 ## Work Plan
 
-- [ ] Agree future form of `cylc-flow.rc` [Cylc-Admin #43](https://github.com/cylc/cylc-admin/issues/43)
-  - [x] Create new issue against cylc-admin
-  - [ ] Create a template `flow.rc`, listing all the options
-    to be available in the combined `flow.rc`. [Link to it](example_files/flow.rc)
-  - [ ] Deprecate settings for job host?
-  - [ ] Add sections for `[job platforms]`
-
+- [ ] Agree future form of `cylc-flow.rc` 
+  - [x] Create new issue against cylc-admin [Cylc-Admin #43](https://github.com/cylc/cylc-admin/issues/43)
+  - [x] Create [detailed specification for the new `.rc` file](rose-suite-run-proposal/cylc-flow-rc.md).
+  - [ ] Create new [`config-schema.py` (PR3348)](https://github.com/cylc/cylc-flow/pull/3348)
 
 - [ ] Implement new `cylc-flow.rc` schema. [Cylc-flow #3260](https://github.com/cylc/cylc-flow/issues/3260)
-  - [ ] Check old tests for `global.rc` & `suite.rc` to ensure that functionality
-    is not lost.
-  - [ ] Devise tests for the new `cylc-flow.rc`
-  - [ ] Create new config schema module, called `cylc.flow.config_schema`
+  - [ ] Modify enough of the code to allow basic validation of new __or__ old configs.
+  - [ ] Add the upgraders needed to make a valid cylc 7.x `suite.rc` validate sensibly at cylc8
+  - [ ] Create new tests under `tests/deprecations` and `tests/validate` to check that the
+        new schema can be validated.
+  - [ ] Ensure that the global config can be parsed too!
   - [ ] Remove the `cylc.flow.cfgspec` folder.
 
 
