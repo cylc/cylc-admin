@@ -264,7 +264,7 @@ appropriate command switches should be agreed on in a pull
 request to this repository modifying [this document](rose-suite-run-proposal/future-cli-conventions.md)
 
 Additionally, we should consider the behaviour created by the `CYLC_VERSION`
-and `ROSE_SUITE` variables in `rose-suite.conf`. These allow rose suite-run to:
+and `ROSE_VERSION` variables in `rose-suite.conf`. These allow rose suite-run to:
 - Check that appropriate matching versions of Rose and Cylc are being used. At
   Cylc8 this coupling will be much weaker. 
 - Pin Cylc to a given version for a suite:
