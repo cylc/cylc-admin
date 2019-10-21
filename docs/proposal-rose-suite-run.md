@@ -266,6 +266,7 @@ request to this repository modifying [this document](rose-suite-run-proposal/fut
 Additionally, we should consider the behaviour created by the `CYLC_VERSION`
 and `ROSE_VERSION` variables in `rose-suite.conf`. These allow rose suite-run to:
 - Check that appropriate matching versions of Rose and Cylc are being used. At
+- Change the version of Cylc and check the version of Rose used to run the suite.
   Cylc8 this coupling will be much weaker. 
 - Pin Cylc to a given version for a suite:
   - To prevent operational suites upgrading.
