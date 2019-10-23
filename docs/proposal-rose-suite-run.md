@@ -260,3 +260,12 @@ This is raised in [#1030](https://github.com/cylc/cylc/issues/1030). Consider
 a single command (e.g. `cylc flow`, `cylc go`?) to with
 appropriate command switches should be agreed on in a pull
 request to this repository modifying [this document](rose-suite-run-proposal/future-cli-conventions.md)
+
+Additionally, we should consider the behaviour created by the `CYLC_VERSION`
+and `ROSE_VERSION` variables in `rose-suite.conf`. These allow rose suite-run to:
+- Check that appropriate matching versions of Rose and Cylc are being used. At
+- Change the version of Cylc and check the version of Rose used to run the suite.
+  Cylc8 this coupling will be much weaker. 
+- Pin Cylc to a given version for a suite:
+  - To prevent operational suites upgrading.
+  - To prevent upgraded suites downgrading on restart.
