@@ -35,7 +35,7 @@ These are problematic in several ways, detailed below the table.
 
 | current name       | meaning                                                   |
 |--                  |---                                                        |
-| `runahead`         | task held back because it is too far ahead                |
+| `runahead`         | task held in the non-active runahead pool while too far ahead |
 | `waiting`          | waiting for prerequisites to be met                       |
 | `held`             | will not submit job even if prerequisites met                   |
 | `queued`           | held back in an internal queue                            |
@@ -45,6 +45,8 @@ These are problematic in several ways, detailed below the table.
 | `retrying`         | job execution failed, will try again later                | 
 
 Problems:
+- `runahead` is really an artifact of the task-pool implementation and should not
+  be exposed to users; it will not exist in the spawn-on-demand era
 - `queued` (internal queue) gets confused with `submitted` (to a batch queue)
 - `ready` is not descriptive of what is actually going on (see "meaning" in the
   table)
@@ -55,10 +57,6 @@ Problems:
   word `retrying` wrongly suggests already running again. In fact "retrying"
   is the *reason* why a previously-failed or previously submit-failed task has
   been returned to the `waiting` state, with a new clock-trigger
-- `runahead` is really implementation that should not be exposed to users, and
-  will not exist in the spawn-on-demand era, but so long as we still have a
-  task pool users occasionally need to know about it (e.g. if they `cylc
-  insert` a task beyond *max active cycle points*).
 
 #### New Abstract Task States
 
@@ -66,17 +64,14 @@ Problems:
 
 | NEW name      | meaning                                             |
 |----           | ---                                                 |
-| `waiting`     | (formerly `waiting` and `queued`) waiting on **all** prequisites |
+| `waiting`     | (formerly `waiting`, `queued`, and `runahead`) waiting on **all** prequisites |
 | `preparing`   | (formerly `ready`) all prerequisites met; preparing for job submission |
-| `runahead`    | (unchanged) task held back because it is too far ahead  |
 | `expired`     | (unchanged) waited too long, do not bother to submit    |
 
 Notes:
-- `runahead` is still needed, until we get rid of the task pool (see above)
-- `queued` has been absorbed into `waiting` (internal queues are really just
-  another prerequisite to be waited on)
-- `waiting` now means waiting on all prerequisites: task dependencies, clock
-  and xtriggers, internal queues, etc.
+- removed the `runahead` and `queued` status, but absorbing them into into
+  `waiting`, which now means waiting on all prerequisites: task dependencies,
+  clock and xtriggers, internal queues, runahead release, etc.
 - removed the `held` state
   - "held" is now just an attribute of a task, whatever its state
   - it only affects `waiting` tasks, but we should still attach a "held" badge
@@ -85,7 +80,7 @@ Notes:
 - removed `submit-retry` and `(run-)retry` (see above)
   - the fact that a task is going to retry will now be obvious from a) the task
     state; and b) the job icon of the previous try
-- `preparing` includes:
+- the `preparing` state includes:
   - Writing and verifying the job file.
   - Selecting a remote job host.
   - Initialising the remote job host.
@@ -135,7 +130,7 @@ Code
 - deal with absorption of `queued` into `waiting`
 - (TODO: do we still need the "retry(ing?)" event - probably OK as it triggers
   when a retrying task submits, and distinguishes original try from retries).  
-- create back-compat tests 
+- create back-compat for all changed items, and write associated tests 
 - write code to support interrogation of a waiting task's queue status
 
 User Guide
@@ -143,8 +138,9 @@ User Guide
 
 UI
 - need a new `preparing` task icon
-- new new "held" and "queued" badges/icons 
+- new new "held", "queued", and "runahead" badges/icons 
   - graph view: represent as dependencies (like xtriggers in cylc 7 GUI)
     (diagram: https://github.com/cylc/cylc-admin/pull/47#issuecomment-531849902)
   - other views: represent as badges on top of the task state icon
+  - (TODO: can runahead be treated as a built-in queue?)
 - (allow interrogation of a waiting task's queue status)
