@@ -93,7 +93,7 @@ Notes:
 | current           | new             |
 |---                |----             |
 | `expired`         | `expired`       |
-| `submitted`       | `submitted`     |
+| `submitted`       | `submit-succeeded`     |
 | `submit-failed`   | `submit-failed` |
 | `started`         | `run-started`   |
 | `succeeded`       | `run-succeeded` |
@@ -108,17 +108,17 @@ Notes:
 | old                  | new              |
 |----                  |----              |
 | `:expire[d]`         | `:expired`       |
-| `:submit[ted]`       | `:submitted`     |
+| `:submit[ted]`       | `:submit-succeeded`     |
 | `:submit-fail[ed]`   | `:submit-failed` |
 | `:start[ed]`         | `:started`       |
-| `:succeed[ed]`       | `:[run-]succeeded` (default) |
-| `:fail[ed]`          | `:[run-]failed`  |
+| `:succeed[ed]`       | `:run-succeeded` (default) |
+| `:fail[ed]`          | `:run-failed`  |
 | :(custom)            | :(custom)      |
 
 Notes:
-- `run-` added to disambiguate, and for consistency with state names
-- however, `run-succeeded` is the default so will rarely be used explicitly;
-  and we'll need to support the old/abbreviated names for back-compat anyway
+- changes to disambiguate, and for consistency with state names
+- however, `run-succeeded` is the default and rarely be used explicitly
+- need to support the old/abbreviated names for back-compat anyway
 
 ### Implementation Plan
 
