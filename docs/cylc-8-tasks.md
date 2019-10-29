@@ -1,5 +1,13 @@
 # cylc-8 Implementation Task List
 
+**DISCLAIMER:** this page is largely for internal use by the Cylc team;
+completion dates given below are only estimates.
+
+**WARNING (30 October 2019): reduced team size will result in significant
+delays, but new dates have not been estimated yet.**
+
+---
+
 ### Major Updates and Changes
  - Initially compiled after the December 2018 Development Workshop.
  - Updated 25 Feb 2019: added Gantt Chart.
