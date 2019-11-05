@@ -1,4 +1,8 @@
-# Proposal example of a new style `cylc-flow.rc` file
+# Proposal - example of a new style `cylc-flow.rc` file
+
+**WARNING: this document does not reflect the latest discussions from
+[PR3348](https://github.com/cylc/cylc-flow/pull/3348) nor the latest proposals
+for [supporting platforms](../proposal-platforms.md).**
 
 ## References
 [cylc-admin PR #40](https://github.com/cylc/cylc-admin/pull/40)
