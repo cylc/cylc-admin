@@ -13,8 +13,6 @@ Workshop at the Bureau of Meteorology, Melbourne, Australia_.
 ## Table of Contents
 [TOP](#cylc-8-architecture)
 
-- [Cylc Terminology](#cylc-terminology)
-- [Technology Glossary](#technology-glossary)
 - [Background](#background)
 - [Cylc-8 Architecture Diagram](#cylc-8-architecture-diagram)
 - [Cylc Hub](#cylc-hub)
@@ -23,24 +21,23 @@ Workshop at the Bureau of Meteorology, Melbourne, Australia_.
 - [Cylc Workflow Services](#cylc-workflow-services)
 - [Command Line Interface](#command-line-interface)
 - [Authorization](#authorization)
+- [Technology Glossary](#technology-glossary)
 
 Appendices:
 - [Deployment](#deployment)
 - [Similarity with JupyterHub](#similarity-with-jupyterhub)
 
-## Cylc Terminology
-[TOP](#cylc-8-architecture)
-
-- A Cylc __workflow__ is a single (possibly cycling) __suite__ of inter-dependent
-tasks.
-
-- A Cylc __workflow service__ is workflow manager program for a single workflow,
-formerly known as a __suite server program__ or a __suite daemon__. (Cylc has
-no central server - each workflow gets its own ad-hoc service that runs as the
-user).
-
 ## Background
 [TOP](#cylc-8-architecture)
+
+(A Cylc __workflow__ is a single (possibly cycling) __suite__ of inter-dependent
+tasks).
+
+(A Cylc __workflow service__ is workflow manager program for a single workflow,
+formerly known as a __suite server program__ or a __suite daemon__. (Cylc has
+no central server - each workflow gets its own ad-hoc service that runs as the
+user)).
+
 
 Cylc-7 is written in Python 2, with PyGTK desktop GUIs and relatively simple
 [local client/server architecture](cylc-7-architecture.md) in which
