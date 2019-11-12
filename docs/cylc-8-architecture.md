@@ -1,6 +1,6 @@
 # Cylc-8 Architecture
 
-_Updated:_ 17 December 2018.
+_Last Updated:_ November 2019.
 
 _Author:_ Hilary Oliver.
 
@@ -15,11 +15,11 @@ Workshop at the Bureau of Meteorology, Melbourne, Australia_.
 
 - [Cylc Terminology](#cylc-terminology)
 - [Technology Glossary](#technology-glossary)
-- [Motivation](#motivation)
-- [JupyterHub](#jupyterhub)
+- [Background](#background)
 - [Cylc-8 Architecture Diagram](#cylc-8-architecture-diagram)
 - [Cylc Hub](#cylc-hub)
 - [Cylc UI Server](#cylc-ui-server)
+- [Cylc UI](#cylc-ui)
 - [Cylc Workflow Services](#cylc-workflow-services)
 - [Command Line Interface](#command-line-interface)
 - [Authorization](#authorization)
@@ -39,78 +39,15 @@ formerly known as a __suite server program__ or a __suite daemon__. (Cylc has
 no central server - each workflow gets its own ad-hoc service that runs as the
 user).
 
-## Technology Glossary
+## Background
 [TOP](#cylc-8-architecture)
 
-(Hyperlinks in the text below point here for further information).
-
-- <a name="python-3"></a> [Python 3](https://wwww.python.org)
-  - _An interpreted high-level programming language for general-purpose
-    programming._
-  - The primary language of Cylc implementation.
-
-- <a name="tornado"></a> [Tornado](https://www.tornadoweb.org)
-  - _A Python web framework and asynchronous networking library._
-
-- <a name="graphqL"></a> [GraphQL](https://www.graphql.org)
-  - _A data query language ... that provides an alternative to REST and ad-hoc
-    web service architectures. It allows clients to define the structure of the
-    data required, and exactly the same structure of the data is returned from
-    the server._
-  - Originally out of (and backed by) Facebook.
-  - A single flexible endpoint, instead of many fixed inflexible REST endpoints.
-  - Should allow the UI to request just what it needs very easily.
-
-- <a name="websocket"></a> [WebSocket](https://en.wikipedia.org/wiki/WebSocket)
-  - _A communications protocol providing persistent full-duplex communication
-    channels over a single TCP connection._  
-  - Alternative to HTTPS (and initiated by HTTPS handshake).
-  - Good when server-side data changes quickly and unpredictably.
-
-- <a name="zeromq"></a> [ZeroMQ](http://zeromq.org)
-  - _A high-performance asynchronous messaging library aimed at use in
-    distributed or concurrent applications._ 
-  - For back-end server-to-server communications.
-
-- <a name="javascript"></a>
-  [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScrip)
-  - _A lightweight interpreted or JIT-compiled programming language with
-    first-class functions, most well-known as the scripting language for Web
-    pages_ (in which context it runs inside web browsers).
-
-- <a name="nodejs"></a> [Node.js](https://developer.mozilla.org/en-US/docs/Glossary/Node.js)
-  - _A cross-platform JavaScript runtime environment that allows developers to
-    build server-side and network applications with JavaScript_.
-
-- <a name="vuejs"></a> [Vue.js](http://vue.js.org)
-  - _A JavaScript framework for building user interfaces._
-  - The smallest but fastest-growing of the current top Javascript
-    frameworks.
-  - Lighter than Angular.js and React.js, and reputedly the easiest to learn.
-  - In terms of UI components our needs are quite modest, so we will try the
-    simplest modern framework first.
-
-- <a name="json"></a> [JSON](https://www.json.org)
-  - _JavaScript Object Notation, an open-standard format for human-readable
-    text transmission of data objects as attribute–value pairs and array types,
-    commonly used for asynchronous browser–server communication._
-
-- <a name="jupyterhub"></a> [JupyterHub](https://jupyterhub.readthedocs.io)
-  - _A multi-user Hub that spawns, manages, and proxies multiple instances of
-    the single-user Jupyter Notebook Server._ 
-  - Architecturally analogous to Cylc-8, with:
-    - "Jupyter Notebook Server" -> "Cylc UI Server"
-    - "Jupyter Notebook Kernel" -> "Cylc Workflow Service"
-
-## Motivation
-[TOP](#cylc-8-architecture)
-
-Cylc-7 is written in Python 2, with PyGTK native desktop GUIs, and relatively
-simple [local client/server architecture](cylc-7-architecture.md) in which
+Cylc-7 is written in Python 2, with PyGTK desktop GUIs and relatively simple
+[local client/server architecture](cylc-7-architecture.md) in which
 everything runs as the user, all clients are treated equally (user GUI and CLI,
 and job CLI), clients get some server information via the filesystem and port
 scanning, and automatic owner-only authentication via a suite-specific
-passphrase file. (Un?)fortunately:
+passphrase file. Unfortunately:
 - Python 2 end-of-life is 1 Jan 2020, after which ["there will be no [Python 2]
   updates, not even source-only security
   patches"](https://github.com/python/devguide/pull/344).
@@ -131,19 +68,6 @@ more powerful. It will enable us to:
 1. Integrate with site identity management.
 1. Support fine-grained authorized access to individual Workflow Services.
 
-## JupyterHub
-[TOP](#cylc-8-architecture)
-
-The Hub and Proxy architecture described below is inspired by
-[JupyterHub](#jupyterhub). JupyterHub is a proven technology that solves a very
-similar problem of managing back-end services spawned into user accounts. And
-it is commonly used in scientific modeling and HPC contexts, See below for details:
-[Similarity with Jupyter Hub](#similarity-with-jupyterhub)).
-
-We hope to use JupyterHub "out of the box" for the Hub and Proxy components of
-the new archtitecture. Our back-end components are very different from Jupyter
-Notebook, but some of the technologies involved remain relevant.
-
 ## Cylc-8 Architecture Diagram
 [TOP](#cylc-8-architecture)
 
@@ -158,6 +82,18 @@ show the technologies and protocols that will be used to implement each componen
 
 ## Cylc Hub
 [TOP](#cylc-8-architecture)
+
+The Hub and Proxy architecture described below is inspired by
+[JupyterHub](#jupyterhub). JupyterHub is a proven technology that solves a very
+similar problem of managing back-end services spawned into user accounts. And
+it is commonly used in scientific modeling and HPC contexts, See below for details:
+[Similarity with Jupyter Hub](#similarity-with-jupyterhub)).
+
+We hope to use JupyterHub "out of the box" for the Hub and Proxy components of
+the new archtitecture. Our back-end components are very different from Jupyter
+Notebook, but some of the technologies involved remain relevant.
+
+
 
 Overview:
 - At start-up, the Hub launches a web proxy.
@@ -213,7 +149,7 @@ Detail:
   - (consider another user authorized to view your suites: she must be able to
     read your suite files without relying on local file permissions - she might
     not even have a local account on the workflow host).
-- Implemented in [Python 3](#python-3) with [Vue.js](#vue-js)-generated UI
+- Implemented in [Python 3](#python-3)
 - User-facing server communications:
   - [Tornado](#tornado) web server, with [GraphQL](#graphql) API over
     the [WebSocket](#websocket) protocol.
@@ -249,6 +185,21 @@ Detail:
     - Suite analytics.
     - `rose edit`.
     - etc.
+
+## Cylc UI 
+[TOP](#cylc-8-architecture)
+- Javascript with the [Vue.js](#vue-js) framework
+- [Target design](Cylc8-UI-design-June2019.pdf)  
+- Multiple workflow views:
+  - "dot"
+  - text tree
+  - dependency graph
+- Responsive design (e.g. mobile compatible)
+- Separates the concepts of "task" and "job" (unlike Cylc 7)
+- Presents a simpler array of 
+- Contains a shared data-store that collates data subscriptions from views into
+  a single subscription, for incremental update from the UI Server by GraphQL
+- Unifies the two Cylc 7 GUIs into one (multi-suite gscan side-bar)
 
 ## Cylc Workflow Services
 [TOP](#cylc-8-architecture)
@@ -379,3 +330,68 @@ modifying the core of JupyterHub so that we can treat it as a third-party
 software requirement, or can we contribute a change back to JupyterHub to
 enable that, or do we need to fork the project and maintain our own "Cylc Hub"
 in the future?
+
+## Technology Glossary
+[TOP](#cylc-8-architecture)
+
+(Hyperlinks in the text below point here for further information).
+
+- <a name="python-3"></a> [Python 3](https://wwww.python.org)
+  - _An interpreted high-level programming language for general-purpose
+    programming._
+  - The primary language of Cylc implementation.
+
+- <a name="tornado"></a> [Tornado](https://www.tornadoweb.org)
+  - _A Python web framework and asynchronous networking library._
+
+- <a name="graphqL"></a> [GraphQL](https://www.graphql.org)
+  - _A data query language ... that provides an alternative to REST and ad-hoc
+    web service architectures. It allows clients to define the structure of the
+    data required, and exactly the same structure of the data is returned from
+    the server._
+  - Originally out of (and backed by) Facebook.
+  - A single flexible endpoint, instead of many fixed inflexible REST endpoints.
+  - Should allow the UI to request just what it needs very easily.
+
+- <a name="websocket"></a> [WebSocket](https://en.wikipedia.org/wiki/WebSocket)
+  - _A communications protocol providing persistent full-duplex communication
+    channels over a single TCP connection._  
+  - Alternative to HTTPS (and initiated by HTTPS handshake).
+  - Good when server-side data changes quickly and unpredictably.
+
+- <a name="zeromq"></a> [ZeroMQ](http://zeromq.org)
+  - _A high-performance asynchronous messaging library aimed at use in
+    distributed or concurrent applications._ 
+  - For back-end server-to-server communications.
+
+- <a name="javascript"></a>
+  [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScrip)
+  - _A lightweight interpreted or JIT-compiled programming language with
+    first-class functions, most well-known as the scripting language for Web
+    pages_ (in which context it runs inside web browsers).
+
+- <a name="nodejs"></a> [Node.js](https://developer.mozilla.org/en-US/docs/Glossary/Node.js)
+  - _A cross-platform JavaScript runtime environment that allows developers to
+    build server-side and network applications with JavaScript_.
+
+- <a name="vuejs"></a> [Vue.js](http://vue.js.org)
+  - _A JavaScript framework for building user interfaces._
+  - The smallest but fastest-growing of the current top Javascript
+    frameworks.
+  - Lighter than Angular.js and React.js, and reputedly the easiest to learn.
+  - In terms of UI components our needs are quite modest, so we will try the
+    simplest modern framework first.
+
+- <a name="json"></a> [JSON](https://www.json.org)
+  - _JavaScript Object Notation, an open-standard format for human-readable
+    text transmission of data objects as attribute–value pairs and array types,
+    commonly used for asynchronous browser–server communication._
+
+- <a name="jupyterhub"></a> [JupyterHub](https://jupyterhub.readthedocs.io)
+  - _A multi-user Hub that spawns, manages, and proxies multiple instances of
+    the single-user Jupyter Notebook Server._ 
+  - Architecturally analogous to Cylc-8, with:
+    - "Jupyter Notebook Server" -> "Cylc UI Server"
+    - "Jupyter Notebook Kernel" -> "Cylc Workflow Service"
+
+
