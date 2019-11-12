@@ -193,7 +193,7 @@ Detail:
   - dependency graph
 - Responsive design (e.g. mobile compatible)
 - Separates the concepts of "task" and "job" (unlike Cylc 7)
-- Presents a simpler array of 
+- And presents a simpler set of [task/job statuses]((proposal-state-names.md) to the user
 - Contains a shared data-store that collates data subscriptions from views into
   a single subscription, for incremental update from the UI Server by GraphQL
 - Unifies the two Cylc 7 GUIs into one (multi-suite gscan side-bar)
