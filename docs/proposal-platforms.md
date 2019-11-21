@@ -161,9 +161,9 @@ section for a job. They refer to the example platforms shown above.
   settings in the new runtime section are converted using the normal deprecate
   method. e.g. `[job] execution time limit`.
 
-* The remaining `[remote]` & `[job]` settings are converted by searched for a
-  matching platform. If there is none the conversion fails resulting in an
-  error.
+* The remaining `[remote]` & `[job]` settings are converted by searching for a
+  platform which matches **all** the items set. If there is none the conversion
+  fails resulting in an error.
 
 * For fixed remote hosts the conversion happens at load time and the lack of a
   matching platform results in a validation failure.
@@ -192,11 +192,18 @@ section for a job. They refer to the example platforms shown above.
         # => platform = localhost (set at load time)
 
     [[beta]]
+        [[[remote]]]
+            host = desktop01
+        [[[job]]]
+            batch system = slurm
+        # => validation failure (no matching platform)
+
+    [[gamma]]
         [[[job]]]
             batch system = slurm
         # => platform = sugar (set at load time)
 
-    [[gamma]]
+    [[delta]]
         [[[remote]]]
             host = $(rose host-select hpc)
             # assuming this returns "hpcl1" or "hpcl2"
@@ -204,7 +211,14 @@ section for a job. They refer to the example platforms shown above.
             batch system = pbs
         # => platform = hpc (set at job submission time)
 
-    [[delta]]
+    [[epsilon]]
+        [[[remote]]]
+            host = $(rose host-select hpc)
+        [[[job]]]
+            batch system = slurm
+        # => job submission failure (no matching platform)
+
+    [[zeta]]
         [[[remote]]]
             host = hpcl1
         [[[job]]]
