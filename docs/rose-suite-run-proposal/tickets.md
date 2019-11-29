@@ -5,33 +5,16 @@ transitory tickets.
 
 Based on notes originally created by @OSanders.
 
-## Approaches:
-1. Add the new configurations but don't use them at first, do all the the
-   upgrader stuff then change over towards the end.
-   Means you have two sets of configuration hanging about.
+## Approach:
+Most of the work can be done in relatively small PRs creating new functions
+each of which can be unit tested, and which will not break master.
 
-2. Remove the old configurations then add the upgrader stuff towards the
-   Will break master, so either you will need to work on a "feature"
-   branch or else others will have to maintain their own "feature"
-
-3. Hybrid approach - Work mainly on master, but create a feature branch for
-   PR's related to the "wireing" ticket, which _will_ break master.
-
-Do what you think best, there are pros and cons to both approaches.
-
-If we can avoid breaking master that would make life easier for everyone.
-If we do break master it will effectively halt all Cylc Flow work until
-its done, in which case it should probably become a more international
-effort so that we get Cylc Flow development back on track quickly. Otherwise
-you will have to work on a feature branch and accept any rebase mess which
-
-I think Cylc Flow might actually be heading towards a quiet patch as we
-move our focus downstream to the UI Server and UI. There may be changes
-to the GraphQL stuff in Cylc Flow but that wont create conflicts. However,
+Toward the end of the work the new configurations will need to be wired into
+Cylc. This is likely to be complex and to break Master.
 
 ## ​Blocking PRs:
 
-(these things block the "wireing" portion of the work):
+(these things block the "wiring" portion of the work):
 * Python Endpoints
 * ZMQ Curve Authentication
 * Incremental Data Store Updates
@@ -51,7 +34,6 @@ Add platform setting to the task section of `cylc/flow/cfgspec/suite.rc`.
 Move Configs from `suite.rc[runtime][TASK][job/remote]` to
 `flow.rc[platforms][__MANY__]`. [The diff for PR #3348](https://github.com/cylc/cylc-flow/pull/3348/files/cb83a8ac04ac567488ae97061ee0f934ffc46bbd..ae70eafc03e045ce6255a8bb5910ca208991fb65) should provide further details.
 
-Remove old configurations.
 
 ### Forward Lookup
 PREREQS: "job platform spec"
@@ -68,7 +50,7 @@ Note the platform_function (i.e. rose host-select) functionality. This may not
 be fully testable within the scope of this ticket, since in some cases it may
 not be evaluated until job submission time.
 
-This item will need unit testing but will not be wired into cylc as part of
+This function will need unit testing but will not be wired into cylc as part of
 this ticket.
 
 This code can be written and tested without breaking master since it will not
@@ -92,7 +74,11 @@ reverse(host, batch_sys, user=None) -> platform_name
 This should return the platform name if there is exactly one possible
 ...or raise an error otherwise.
 
-This work should not break master.
+This function will need unit testing but will not be wired into cylc as part of
+this ticket.
+
+This code can be written and tested without breaking master since it will not
+yet be used outside its own tests.
 
 ### Config Upgrader
 
@@ -102,8 +88,11 @@ Write a test battery to show how the old settings should be converted
 Write a function which actually does that (but for the moment doesn't
 remove the old configurations).
 
-You will probably want to consider existing tests in `tests/deprecations`
-as templates for the new test or tests.
+This function will need unit testing but will not be wired into cylc as part of
+this ticket.
+
+This code can be written and tested without breaking master since it will not
+yet be used outside its own tests.
 
 ### DB Upgrader
 
@@ -115,7 +104,13 @@ The database stores the host and batch_system, we would need to upgrade
 This could be done towards the end, you might need to put off upgrading
 the DB but instead upgrade the information comming out of the database.
 
-### Wireing 1: Understanding Where hosts are used
+This function will need unit testing but will not be wired into cylc as part of
+this ticket.
+
+This code can be written and tested without breaking master since it will not
+yet be used outside its own tests.
+
+### Wiring 1: Understanding Where hosts are used
 
 PREREQS: None
 
@@ -123,15 +118,15 @@ Examine the code base for references to use of settings based on hosts and
 record them, probably by editing the ticket below - "Wireing 2".
 Replace all references to the old settings with the new ones.
 
-​This needs to be done right at the start before upgraders etc come
+​This can be done at any time before Wiring 2.
 
-### Wireing 2: Replacing the use of all settings under hosts.
+### Wiring 2: Replacing the use of all settings under hosts.
 
-PREREQS: "forward lookup", "Wireing 1"
+PREREQS: "forward lookup", "Wiring 1"
 
 Replace all the references to hosts with platforms.
 
 This work is complete when you can deprecate all the old configurations
 
-**This ticket will break master, and should almost certainly be carried out
-in a feature branch**.
+**This ticket will break master, and it may be desirable to create a 
+medium-term feature branch against which smaller PRs can be raised.**.
