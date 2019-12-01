@@ -1,31 +1,35 @@
 # Cylc VC 3 Dec 2019 Agenda
 
-## Previous meeting
-5 Nov
-- [agenda and notes](vc-5-nov-2019-agenda.html)
+- Project admin - 15 min (HO)
+  - OS visit to NIWA
+  - SC19
+  - 7.8.5?
+  - 8.0a2?
+  - Cylc FTE (etc.) TAG meeting
+  - New timelines 
+  - Feb Workshop 
 
-## Discussion Items
+- Platforms support (TP)  - 10 min
+  - and config unification?
 
-- Project admin update - 20 min (HO)
+- Back-end authentication (DM, OS?) - 10 min
+  - merged, but what remains to do?
+  - documentation?
 
-- Cylc 7 bug reports? - 2 min
+- UI views etc. (BK, OS) - 10 min
+  - status and next steps
+  - mutations
 
-- Cylc 8.0a2 release? - 2 min
+- UI Server
+  - time to get on to sub-services?
 
-- Config unification - 5 min
-
-- Back-end authentication - 5 min
-
-- Back-end data provision - 5 min
-
-- Web sockets and subscriptions - 5 min
-
-- Tree, scan, and dot views - 10 min
-
-- Graph view thoughts, post Martin - 5 min
-
-- December meeting date 
+- Current cylc-flow PRs - 5 min
+  - CLI: entry points
+  - sqlalchemy
+  - retry as xtriggers
+ 
+- Misc
+  - "Tip of the Day" Discourse category (OS)
+  - GitHub Actions (BK)
 
 - AOB?
-
-  - "Tip of the Day" Discourse category (OS suggestion).
