@@ -64,6 +64,10 @@ Agendas and post-meeting notes.
 - 5 November 2019
   - [Agenda](meetings/vc-nov-2019-agenda.md)
 
+- 3 December 2019
+  - [Agenda](meetings/vc-dec-2019-agenda.md)
+
+
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
 ## User Research
