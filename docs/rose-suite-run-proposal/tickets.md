@@ -10,7 +10,7 @@ Most of the work can be done in relatively small PRs creating new functions
 each of which can be unit tested, and which will not break master.
 
 Toward the end of the work the new configurations will need to be wired into
-Cylc. This is likely to be complex and to break Master.
+Cylc - this is likely to be a slightly more complex piece of work.
 
 ## ​Blocking PRs:
 
@@ -110,23 +110,12 @@ this ticket.
 This code can be written and tested without breaking master since it will not
 yet be used outside its own tests.
 
-### Wiring 1: Understanding Where hosts are used
+### Wiring: Replacing the use of all settings under hosts.
 
-PREREQS: None
+PREREQS: "forward lookup"
 
 Examine the code base for references to use of settings based on hosts and
-record them, probably by editing the ticket below - "Wireing 2".
-Replace all references to the old settings with the new ones.
+replace all the references to hosts with platforms.
 
-​This can be done at any time before Wiring 2.
+This work is complete when you can deprecate all the old configurations.
 
-### Wiring 2: Replacing the use of all settings under hosts.
-
-PREREQS: "forward lookup", "Wiring 1"
-
-Replace all the references to hosts with platforms.
-
-This work is complete when you can deprecate all the old configurations
-
-**This ticket will break master, and it may be desirable to create a 
-medium-term feature branch against which smaller PRs can be raised.**.
