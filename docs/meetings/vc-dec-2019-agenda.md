@@ -4,8 +4,7 @@
   - OS visit to NIWA
     - computer and office sorted!
     - staying across from NIWA, first week
-  - SC19
-    - Cylc 
+  - SC19 update
   - 7.8.5?
     - agreed we will make another release soon
   - 8.0a2?
@@ -14,9 +13,10 @@
       - websocket and subscriptions (not 5 sec polling)
       - (maybe: view and start stopped suites)
   - Cylc FTE (etc.) TAG meeting
-     - all parties accepted that Cylc 8 is a high priority but (a) getting more
-       resource will take time; (b) not too much concern about sticking with
-       7.8.x in production for a bit longer
+     - Cylc 8 is a high priority and trying various channels to get more
+       resource, but it will take time, so we just have to accept delays.
+       Not too much concern about sticking with 7.8.x in production for a bit
+       longer at least.
   - Feb Workshop 
      - time to start making bookings
      - discuss and implement config name changes, and "unification"
