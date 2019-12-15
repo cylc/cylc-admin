@@ -20,9 +20,19 @@ __ALL__:
   - location NIWA, Wellington, NZ
   - late Jan or early Feb?
 
+  **Early Feb, but avoid Waitangi Day**
+
 Cylc-8.0a1 feedback/questions:
-  - how to install on secure systems with no internet access - see this comment from [cylc-admin#27](https://github.com/cylc/cylc-admin/issues/27#issuecomment-534375389) for more
-  - bug from a user that tested using base_url in JupyterHub (good use case, where the hub is behind a rev proxy) - https://github.com/cylc/cylc-ui/issues/258
+  - how to install on secure systems with no internet access - see this comment
+    from
+    [cylc-admin#27](https://github.com/cylc/cylc-admin/issues/27#issuecomment-534375389)
+    for more
+  - bug from a user that tested using base_url in JupyterHub (good use case,
+    where the hub is behind a rev proxy) -
+    https://github.com/cylc/cylc-ui/issues/258
+
+*DM: NRL's problem with non-HTTPS on the back-end is that their remote
+platforms are **really** remote. Proper solution is job CLI via the UIS?*
 
 Any new Cylc-7 bug reports or problems?
 
@@ -41,6 +51,11 @@ Update on:
 - Cytoscape vs D3 etc
 - prospects for custom node icons etc.
 
+*MR: Cytoscape probably best in most respects, e.g. dynamic graphs and partical
+updates; "El Grapho" faster?*
+
+*DM and OS: don't forget "cylc graph"; data provision to UI of static graph.*
+
 ## WebSockets and Subscriptions - 10 min - BK and DS
 
 Update on the recent work (UI, UIServer, and WFS)
@@ -54,11 +69,13 @@ Update on the recent work (UI, UIServer, and WFS)
     - After Cylc Flow and Cylc UI Server PR's are merged, review Cylc UI PR
     - create follow up issues after review/merge, with what's missing (e.g. data-driven on the websocket side instead of interval-based)
 
-
 ## CLI-WFS Authentication - 20 min - SB
 
 WIP PR status update
 - what has been done / is being done / is still to do; how it works
+
+*SB away, but this should be done before she leaves the project; DS agrees on
+the approach taken.*
 
 ## Config schema unification - 10 min - TP
 
@@ -88,3 +105,7 @@ Status update
 
 ## AOB?
 - next meeting? (first Mon/Tues each month)
+
+*OS: Why Cylc? questions at UK RSE conf (plus "cloud integration" etc.); need
+good answers to these; Cylc 8 best time to start pushing it*
+
