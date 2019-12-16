@@ -12,7 +12,7 @@ changes any harder in the future (it will make them easier if anything). The
 advantages are so great that we should seriously consider doing it for Cylc 8:
 - A dramatic reduction in task pool size, and hence a big performance boost
   - e.g.: a pool of 1000+ tasks/cycle (active, waiting, succeeded)
-    might drop to 10s/cycle max.
+    might drop to 10's of task/cycle max.
   - (Dramatically reduces number of tasks for the UI too)
 - Naturally gives a sensible/explicable window on the workflow
   - (we were planning to fake this before Cylc 9).
@@ -28,13 +28,17 @@ the workflow, then each spawns its own next-cycle successor at job submit time
 run in parallel). This achieves the primary goal of ensuring that task proxies
 exist at or before the time they are needed,
 - Except in one case: tasks can't run out of cycle-point order
-  - one consequence of this: failed tasks have spawned their own successors,
-    but tasks waiting downstream of them won't, which stalls the worklow
-- Also, because task's spawn their own successors, the task pool has to include
-  at least one cycle-point instance of every task, and more if there are
+  - one consequence of this: failed tasks will have already spawned their own
+    successors, but tasks waiting downstream of them won't have done, which
+    stalls the worklow
+- Also, because tasks spawn their own successors the task pool has to include
+  at least one cycle-point instance of *every task*, and more if there are
   multiple active cycle points.
-  - (so parameterized iteration is bad: every parameter-value is a separate
-    task to Cylc, so they all have to be instantiated at once).
+  - this is overkill - a lot of tasks are created in the waiting state long
+    before they are needed (including parameterized tasks for the whole
+    parameter range).
+  - the overkill is made even worse by the need to keep succeeded tasks around
+  for dynamic dependency matching
 - Suicide triggers are needed to get rid of already-spawned waiting tasks that
   will never run on alternate paths through the graph.
 - Dynamic dependency matching can be expensive (at least it used to be).
