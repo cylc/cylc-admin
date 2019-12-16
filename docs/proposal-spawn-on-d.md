@@ -81,6 +81,11 @@ including those with no prerequisites.
 - Natural workflow window: n=1 based on outputs (not on tasks; if we spawn
   downstream tasks on submit or on start instead of on outputs, suicide
   triggers may become necessary again).
+- This makes it much easier to
+  [https://github.com/cylc/cylc-flow/issues/2143](hide the concept of insertion
+  from users). To retrigger a sub-tree (e.g.) we would still need to
+  auto-insert the first task proxy but spawn-on-demand takes care of the
+  rest.
 - In caught-up real-time operation, between cycles the task pool will only
   contain the few tasks that are waiting on clock-triggers (and the UI can
   optionally show their n-distance descendants as well if requested)
