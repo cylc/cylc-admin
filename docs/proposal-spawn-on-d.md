@@ -75,14 +75,15 @@ including those with no prerequisites.
     the new runahead point.
   - (No need to spawn first instances of late-onset no-prereq tasks into the
     runahead pool at start-up (e.g. stop-point tasks) although could do (TBD).
-- If a disembodied output message arrives, choice to ignore it or
-  instantiate the owner task
 - Suicide triggers:
   - not needed so long as the alternate paths don't share outputs.
   - self-suicide not needed, as finished tasks need not be kept in the pool.
 - Natural workflow window: n=1 based on outputs (not on tasks; if we spawn
   downstream tasks on submit or on start instead of on outputs, suicide
   triggers may become necessary again).
+- In caught-up real-time operation, between cycles the task pool will only
+  contain the few tasks that are waiting on clock-triggers (and the UI can
+  optionally show their n-distance descendants as well if requested)
 - Conditional triggers are the only tricky thing? Consider "A|B => C"
   with C triggering off of A. Do we remove C once it has finished regardless of
   whether or not B is running or will run? If B does run later we need to stop
@@ -90,6 +91,8 @@ including those with no prerequisites.
   - So: for conditional triggers only, we need to check that the downstream
     tasks have not already spawned and executed? (Ask the DB, or keep some
     record in memory?)
+- If a disembodied output message arrives, choice to ignore it or
+  instantiate the owner task
 
 ## Misc. Notes
 
