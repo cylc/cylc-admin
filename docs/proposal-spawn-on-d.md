@@ -1,77 +1,117 @@
-# Proposal: Replace Spawn-on-Submit with Spawn-on-Demand
+# Proposal: Spawn-on-Demand
 
-We have considered spawn-on-demand as a major enhancement for some time but
-have tended to tie it to Cylc 9 plans such as an abstracted scheduler kernel.
+*Hilary Oliver December 2019*
 
-However spawn-on-demand is technically orthogonal to these other plans and we
-can do it quite easily within the current framework. This will NOT make other
-Cylc 9 changes any harder (it will make them easier if anything). It will
-provide a huge efficiency boost by dramatically reducing the size of the task
-pool; it will enable workflow branching without suicide triggers; and
-there will be no need for dependency matching and task pool housekeeping.
+We have talked about replacing spawn-next-instance-on-submit with
+spawn-dependent-tasks-on-demand for some time (years!) but have tended to tie
+it to Cylc 9 plans such as an abstracted scheduler kernel.
 
-## Currently: spawn-on-submit
+However spawn-on-demand is technically orthogonal to these other plans,
+surprisingly easy to implement in the current system, and it won't make Cylc 9
+changes any harder in the future (it will make them easier if anything). The
+advantages are so great that I propose we seriously consider doing it for Cylc
+8:
+- A dramatic reduction in task pool size for almost all workflows
+  - massive performance boost
+  - e.g.: a pool of 1000+ tasks/cycle (active, waiting, succeeded)
+    might drop to 10s/cycle max.
+  - naturally gives us a sensible/explicable window on the workflow (we were
+   planning to fake this before Cylc 9).
+  - (dramatically reduces what the UI has to display too, c.f. current task pool)
+- Easily re-run sections of workflow (e.g. back up to re-run a whole sub-tree)
+- Workflow branching without suicide triggers.
+- No need for dependency matching and task pool housekeeping.
 
-We instantiate the first cycle-point instance of *every* task in the workflow
-then have each one spawn its own next-cycle successor at job submit time (which
-prevents uncontrolled spawning into future cycles but still allows successive
-instances of the same task to run concurrently if the opportunity arises). This
-has worked remarkably well but it does have the following problems:
+## Current: spawn-on-submit
+
+To avoid holding up the workflow, task proxies must exist at or before the time
+they are needed. To achieve this, at start-up we instantiate the first
+cycle-point instance of *every* task in the workflow, then we have each spawn
+its own next-cycle successor at submit time (which prevents uncontrolled
+spawning but still allows successive instances of the same task to run
+concurrently). This works as advertised but has some problems:
 - The task pool has to include at least one cycle-point instance of every task
-  in the workflow, and more if there are multiple active cycle points. So
-  parameterized iteration, for example, can badly bloat the task pool.
-- Instances of a task cannot run out of order. So unspawned tasks downstream of
-  a failed task can cause a stall (the failed task itself will spawn).
+  in the workflow, and more if there are multiple active cycle points.
+  - as a particular case worth singling out: parameterized iteration can badly
+    bloat the task pool because every parameter-value looks like a separate
+    task to Cylc - they all have to be in the task pool at once.
+- Tasks can't run out of cycle-point order. While a failed task will itself
+  have spawned, those waiting downstream of it won't, which stalls the worklow
 - Suicide triggers are needed to get rid of already-spawned waiting tasks that
   will never run on alternate paths through the graph.
-- (dynamic dependency matching and task pool housekeeping can be expensive -
-  however these are not strictly required for spawn-on-submit either - see
-  NOTES below)
+- Dynamic dependency matching can be expensive (at least it used to be).
 
 ## Proposal: spawn-on-demand
 
-At parse-time:
-- decompose the graph to determine prerequisites and outputs of every task (as
+#### At parse-time:
+- Decompose the graph to determine prerequisites and outputs of every task (as
   now) **AND** the downstream target task ID(s) of each output.
 
-At start-up:
-- instantiate the first (cycle point) instance of every task with no task
+#### At start-up:
+- Instantiate the first (cycle point) instance of every task with no task
   prerequisites, as far ahead as the runahead pool. This is typically a small
-  number even in huge suites.
+  number even in huge workflows.
 
-At run-time
-- as output messages comes in, instantiate the target tasks (if not already
-  instantiated) and update their prerequisite(s)
-- when a task finishes it can be removed from the task pool after updating
-  downstream tasks with its final output(s)
-- change the task pool from the current list to a task-ID keyed dictionary, so
-  that no iteration is required to find target tasks
+#### At run-time
+- As output messages comes in, instantiate the target tasks (if not already
+  instantiated) and update their prerequisite(s).
+- When a task finishes it can be removed from the task pool after updating
+  downstream tasks with its final output(s).
+- The task pool should be a task-ID keyed dict, not a list, so no iteration is
+  required to find target tasks.
 
-Notes:
-- retain the runahead pool for tasks that are spawned too far ahead, including
-those with no prerequisites. When the the runhead point moves forward, spawn
-more no-prereq tasks out to the new point.
-  - future no-prereq tasks don't need to be spawned into the runahead pool
-    immediately (e.g. final-point tasks, to pick the extreme case) although
-    they could be (TBD).
+#### Notes, edge cases, etc.:
 
-## Background info
+- Cycling sequences are currently stored by each task to enable spawning of
+next-cycle successors - where's the best place to hold this for spawn-on-demand?
+- Need to retain the runahead pool for tasks that are spawned too far ahead,
+including those with no prerequisites.
+  - When the the runhead point moves forward, spawn more no-prereq tasks out to
+    the new runahead point.
+  - (No need to spawn first instances of late-onset no-prereq tasks into the
+    runahead pool at start-up (e.g. stop-point tasks) although could do (TBD).
+- If a disembodied output message arrives, choice to ignore it or
+  instantiate the owner task
+- Suicide triggers: not needed so long as alternate paths don't share some
+  outputs.
+- Window on the workflow: n=1 based on outputs not tasks (if we spawn
+  downstream tasks on submit or start of execution instead of on outputs,
+  suicide triggers may become necessary again).
+- Conditional triggers: these are the only tricky thing? Consider "A|B => C"
+  with C triggering off of A. Do we remove C once it finished regardless of
+  whether or not B is running or will run? (are A and B on the same workflow
+  branch or not?). If B does run later we need to stop C being spawned again.
+  - So: for conditional triggers only, we need to check that the downstream
+    tasks have not already spawned and executed? (Ask the DB, or keep some
+    record in memory?)
 
-Cylc manages an evolving pool of "task proxy" objects that move along a
-potentially infinite workflow graph. To avoid holding up the workflow task
-proxies must exist at (or before) the time they are needed. 
+## Misc. Notes
 
-Currently cycling sequences are stored by each task to enable spawning of
-next-cycle successors - need to change this?
+The reason for spawn-on-submit and run-time dependency matching is historical:
+Cylc originally had no workflow definition and no graph, just a loose
+collection of separate task definitions with their own prerequisites and
+outputs. Each task also knew its own cycling sequence (e.g. the forecast model
+should run on a 6 hour cycle...), so it seemed natural that a task should spawn
+its own next-cycle successor.
 
-Dynamic dependency matching is technically unnecessary in the current system -
-because the graph knows exactly who satisfies whose prerequisites, but (at
-Cylc 3?) we bolted the graph on the front, using it to determine prerequisites
-and outputs to pass to the original "self-organising scheduler" which works on
-a loose collection of task proxies with prerequisites and outputs.
+However, dynamic dependency matching is technically unnecessary in the current
+system (even with spawn-on-submit) because the graph knows exactly who
+satisfies whose prerequisites. But when I bolted the "new" suite.rc and
+graph on the front (Cylc 3?) I used it only to determine automatic
+prerequisites and outputs for each task, and just passed these to the original
+"self-organising scheduler".
 
 We have discussed allowing self-assembling workflows again (more like the
-originally Cylc) but even those won't require dynamic dependency matching - we
+original Cylc) but even those won't require dynamic dependency matching - we
 can have the graph self-assemble at start-up, after which the dependencies are
 static. (Dynamic matching is really only required to allow insertion of new
 tasks into a running workflow).
+
+Cycling is still a special form of iteration, compared to parameterization. I
+think that is reasonable because cycling can go on forever. Perhaps with the
+future Python API we could make them equal by just following the graph
+generated by arbitrary user-supplied iterative functions. But it isn't clear
+whether that is feasible or not yet, and this proposal is still a massive
+improvement that has no impact on our ability to go further in the future.
+Note this doesn't help horizontal parameterization (e.g. an ensemble) but
+that's not a major problem, and those tasks tend to all trigger at once anyway.
