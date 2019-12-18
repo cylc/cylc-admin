@@ -19,8 +19,10 @@ Topics discussed and outcomes:
   - TODO: show the UIS user clearly when viewing workflows
   - TODO: confirm authenticated user info passed to the UIS for use in
       authorization
-  - not a high priority yet though (we're reasonably confident it can all be
-    done quite easily, and single user access is of primary importance)
+  - reasonably confident this can be done quite easily
+  - [DM] We will need this to allow "anonymous" access for users who do
+    not have an account (to replace the existing functionality of cylc review).
+    We expect to do this via a guest account.
 
 - Remote job CLI over HTTPS (TW@NRL has properly remote job sites)
   - API-on-the-fly will allow CLI to easily switch (or fall-back) from
