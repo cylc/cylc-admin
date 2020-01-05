@@ -68,7 +68,7 @@ Agendas and post-meeting notes.
   - [Agenda](meetings/vc-dec-2019-agenda.md)
 
 - 17 December 2019
-  - [OS NIWA initial meeting](meetings/dm-os-ho-17dec2019.md)
+  - [OS NIWA initial meeting](meetings/dm-os-ho-17Dec2019.md)
 
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
