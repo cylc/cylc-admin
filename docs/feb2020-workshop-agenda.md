@@ -3,19 +3,20 @@
 
 #### Attendees:
 
-Hilary Oliver, NIWA
-Bruno Kinoshita, NIWA
-David Sutherland, NIWA
-Mel Hall, Met Office
-Tim Pillinger, Met Office
-Oliver Sanders, Met Office
-David Matthews, Met Office
+- Hilary Oliver, NIWA
+- Bruno Kinoshita, NIWA
+- David Sutherland, NIWA
+- Mel Hall, Met Office
+- Tim Pillinger, Met Office
+- Oliver Sanders, Met Office
+- David Matthews, Met Office
+- 
 
-**Primary purpose:** review Cylc 8 progress to date and map out our roadmap to
-completion
-
-**Secondary purpose:** learning as much as we can about parts of the system
-mostly worked on by others, to gain understanding and enable future work
+### Workshop Goals
+- Primarily: review Cylc 8 progress to date and map out our roadmap to
+  completion
+- Secondarily: learn as much as we can about parts of the system mostly
+  worked on by others, to gain understanding and enable future work
 
 ## Prelimary Agenda Topics
 
@@ -47,16 +48,16 @@ mostly worked on by others, to gain understanding and enable future work
 - rose suite-run migration and related changes
   - including new "cylc run" semantics (name/run1,2,3... etc.)
 
-- practical debugging session
-  - how to debug the UI (with browser and Vue dev tools)
-  - how to debug WFS and the UIS
-
-- coding, if time allows
-  - can we usefully work together on something?
-    (e.g. an initial UI dot view?)
-
 - authorization
   - can we specify an initial set of access levels?
   - implementation ideas
 
-Finally: Gantt Chart
+- practical debugging session
+  - how to debug the UI (with browser and Vue dev tools)
+  - how to debug WFS and the UIS
+
+- coding
+  - can we usefully work together on something, for several afternoons (say)?
+    e.g. an initial UI dot view?
+
+Finally: update the Gantt Chart through mid-2021
