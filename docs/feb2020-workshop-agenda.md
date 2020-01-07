@@ -29,7 +29,7 @@
   - potential problems? (remote spawning, scaling, load balancing?)
 
 - Hub:
-  - multi-user aspects
+  - access to other users' workflows
 
 - UI
   - review current status of tree view
@@ -45,19 +45,21 @@
 
 - platform changes
 
-- rose suite-run migration and related changes
-  - including new "cylc run" semantics (name/run1,2,3... etc.)
+- rose suite-run migration and related changes including new "cylc run"
+  semantics (name/run1,2,3... etc.)
 
 - authorization
-  - can we specify an initial set of access levels?
+  - can we settle on an initial set of privilege levels?
   - implementation ideas
 
 - practical debugging session
   - how to debug the UI (with browser and Vue dev tools)
   - how to debug WFS and the UIS
 
-- coding
-  - can we usefully work together on something, for several afternoons (say)?
-    e.g. an initial UI dot view?
+- coding: can we usefully work together on something, for several afternoons
+  (say)? E.g.
+  - an initial UI dot view?
+  - Hub cross-user access
+  - authorization
 
 Finally: update the Gantt Chart through mid-2021
