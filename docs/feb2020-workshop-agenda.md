@@ -10,7 +10,9 @@
 - Tim Pillinger, Met Office
 - Oliver Sanders, Met Office
 - David Matthews, Met Office
-- (Tim Whitcomb, NRL - TBC) 
+TBC?:
+- (Tim Whitcomb, NRL) 
+- (Developer, BOM)
 
 ### Workshop Goals
 - Primarily: review Cylc 8 progress to date and map out our roadmap to
@@ -74,8 +76,10 @@
   - implementation ideas
 
 - practical debugging session
-  - how to debug the UI (with browser and Vue dev tools)
-  - how to debug WFS and the UIS
+  - UI (using browser and Vue dev tools)
+  - WFS (including subprocesses)
+  - UIS (including async routines)
+  - inspect network traffic between components
 
 - coding: can we usefully work together on something, for several afternoons
   (say)? E.g.
@@ -93,5 +97,8 @@
   - installing without conda?
   - reducing size of UI dist/ package
   - containers: how many docker files; use of docker compose; non-docker?
+
+- component version compatibility
+  - how should new versions deal with existing (running) WFS at older versions?
 
 Finally: update the Gantt Chart through mid-2021
