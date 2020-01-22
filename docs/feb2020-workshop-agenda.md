@@ -11,8 +11,8 @@
 - Oliver Sanders, Met Office
 - David Matthews, Met Office
 TBC?:
-- (Tim Whitcomb, NRL) 
-- (Developer, BOM)
+- (?Tim Whitcomb, NRL) 
+- (?Developer, BOM)
 
 ### Workshop Goals
 - Primarily: review Cylc 8 progress to date and map out our roadmap to
@@ -60,10 +60,13 @@ TBC?:
 
 - platform changes
 
-- config rationalization
-  - potential user & global config changes (going back to the suggestions made
-    during the aborted unified config work). We'll try to prepare some notes /
-    a proposal in advance.
+- configuration items and files
+  - decide final config file names and locations for all components
+  - Tim to explain new cylc-flow platforms config
+  - make a final decision on cylc-flow config unification
+  - consider the item name changes proposed in earlier unification discussions
+  - decide if we want to give Cylc Flow plugins the ability to add
+    configuration items to the Flow global conf (e.g. [cylc][plugin:kafka]server=ab.c.d:123)?
 
 - rose suite-run migration and related changes including new "cylc run"
   semantics (name/run1,2,3... etc.)
