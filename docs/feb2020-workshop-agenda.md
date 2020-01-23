@@ -55,8 +55,9 @@ TBC?:
 
 - spawn-on-demand enhancement
   - POC implemented already, solves many problems
-  - consequences (e.g. need n=1,2,3 workflow window)
-  - for Cylc 8?
+  - any negative consequences?
+  - what would need to be done, to get it into Cylc 8?
+    - primarily, access to n >= 1 tasks via the UI
 
 - platform changes
 
@@ -91,11 +92,14 @@ TBC?:
   - authorization
 
 - deployment
-  - versioning strategy (now we have many repos)
+  - versioning (and milestone) strategy (now we have many repos)
   - future of cylc wrapper / multi-version support?
   - minimal client install?
+  - `cylc --version` and the cylc meta-package - part of cylc-flow or not?
+      - need to solve https://github.com/cylc/cylc-admin/issues/76
   - use of conda pack?
   - reducing the size of conda environments?
+  - "portable conda environments" for no-internet deployment
   - optional dependencies?
   - installing without conda?
   - reducing size of UI dist/ package
