@@ -40,10 +40,11 @@ TBC?:
   - other views: dot, graph, etc.
     - when to start on these?
   - common data store and subscriptions etc.
-  - whiteboard/inkscape design session
+  - whiteboard/inkscape design session on stuff not yet implemented
       - Gantt view
       - Multi-workflows/dashboards
       - selecting sharing (drag n drop?)
+      - how to represent xtriggers
       - other?
 
 - Security
