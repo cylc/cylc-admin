@@ -59,8 +59,6 @@ TBC?:
   - what would need to be done, to get it into Cylc 8?
     - primarily, access to n >= 1 tasks via the UI
 
-- platform changes
-
 - configuration items and files
   - decide final config file names and locations for all components
   - Tim to explain new cylc-flow platforms config
