@@ -19,6 +19,9 @@
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
 - [Cylc-8 (Proposal) Authentication between the CLI & Workflow Service](proposal-cli-wfs-authentication)
 
+## Feb 2020 Development Workshop (Wellington)
+- [Agenda Ideas](feb2020-workshop-agenda)
+
 ## Change Proposals
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
   More detail on rose-suite-run migration:
