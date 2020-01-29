@@ -6,7 +6,7 @@ The Background
 
 Pre Cylc8 there was some level of multi-user functionality offered by Cylc.
 
-We had the "anomalous" user, the ability to scan other users suites and HTTP(s)
+We had the "anonymous" user, the ability to scan other users suites and HTTP(s)
 endpoints had authorisation levels.
 
 With the movement to the Cylc8 architecture we are planning to control suites
