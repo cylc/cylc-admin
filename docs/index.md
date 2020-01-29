@@ -29,6 +29,8 @@
   - Specification for new CLI - [WIP]
 
 - [task state, output, and trigger name rationalization](proposal-state-names.md)
+
+- [config file changes](proposal-config-changes.md)
  
 ## Video Conferences
 
