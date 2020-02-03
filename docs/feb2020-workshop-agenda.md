@@ -1,5 +1,5 @@
 ![Cylc Workshop 2020 Logos](img/logos-2020.png)
-![Cylc Logo](img/cylc-logo-small.png)
+![Cylc Logo](img/cylc-logo-new.png)
 
 ## Cylc Development Workshop 2020
 ### 10-14 Feb, NIWA, Wellington, New Zealand
@@ -143,4 +143,4 @@ Thanks to NIWA for hosting the workshop, and the UM Partnership and IS-ENES3
 for sponsoring travel for relevant participants.
 
 ![Cylc Workshop 2020 Logos](img/logos-2020.png)
-![Cylc Logo](img/cylc-logo-small.png)
+![Cylc Logo](img/cylc-logo-new.png)
