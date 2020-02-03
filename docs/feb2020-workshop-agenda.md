@@ -1,5 +1,5 @@
 ![UMC Core Partner Logos](img/umc.png)
-![ESiWACE - Cylc - Altair Logos](img/esiwace-cylc-altair-logos.png)
+![IS-ENES3 - Cylc - Altair Logos](img/isenes-cylc-altair-logos.png)
 ![UMC Assoc Partner Logos](img/umc-associate-logos-2018.jpg)
 
 ## Cylc Development Workshop 2020
@@ -131,7 +131,7 @@ EVENING:
 - Hilary Oliver - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <hilary.oliver@niwa.co.nz>
 - Bruno Kinoshita - [NIWA](https://www.niwa.co.nz), (Auckland, New Zealand - <bruno.kinoshita@niwa.co.nz>
 - David Sutherland - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <david.sutherland@niwa.co.nz>
-- Dave Matthews - [ESiWACE](https://www.esiwace.eu), [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <david.matthews@metoffice.gov.uk> 
+- Dave Matthews - [IS-ENES3](https://is.enes.org/), [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <david.matthews@metoffice.gov.uk> 
 - Tim Pillinger - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <tim.pillinger@metoffice.gov.uk>
 - Mel Hall - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <mel.hall@metoffice.gov.uk>
 - Oliver Sanders - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <oliver.sanders@metoffice.gov.uk>
@@ -140,9 +140,9 @@ EVENING:
 
 ## Acknowledgements
 
-Thanks to NIWA for hosting the workshop, and the UM Partnership and ESiWACE for
-funding travel for selected participants.
+Thanks to NIWA for hosting the workshop, and the UM Partnership and IS-ENES3
+for sponsoring travel for relevant participants.
 
 ![UMC Assoc Partner Logos](img/umc-associate-logos-2018.jpg)
-![ESiWACE - Cylc - Altair Logos](img/esiwace-cylc-altair-logos.png)
+![IS-ENES3 - Cylc - Altair Logos](img/isenes-cylc-altair-logos.png)
 ![UMC Logos](img/umc.png)
