@@ -5,10 +5,10 @@
 ## Cylc Development Workshop 2020
 ### 10-14 Feb, NIWA, Wellington, New Zealand
 
-### Workshop Goals
+## Goals
 
 Primarily: to review Cylc 8 progress and chart the roadmap to completion. Cylc
-8 has more complex architecture than Cylc 7 (and earlier versions) and it makes
+8 has a more complex architecture than Cylc 7 (and earlier versions) and it makes
 use of a much wider variety of technologies and protocols. This is an
 opportunity for us all to get a better understanding of the complete system as
 well as plan next steps.
@@ -33,8 +33,8 @@ prepared to ask questions until we understand the whole system.
 
 Acronyms used below:
 - WFS = Workflow Service (formerly known as the "suite daemon" or "suite server program")
-- UIS = "UI Server"
-- UI, CLI = (duh)
+- UIS = UI Server
+- (UI, CLI = ...duh)
 
 ### Monday 10 Feb: Architecture and Data Provision
 
@@ -45,7 +45,8 @@ Acronyms used below:
   - Remote spawning
   - Scaling and load balancing
   - CLI via the UI Server (e.g for task communication)
-  - Hub access to other-user workflows
+  - Access to other-user workflows
+  - Hub Sub-services: Workflow start-up, Cylc review, tasks beyond the active window, other?
 - Data provision to the UI:
    - Data stores and incremental update via ZMQ, Protobuf, GraphQL
 - Practical debugging session:
@@ -57,17 +58,12 @@ Acronyms used below:
 
 - Web UI overview:
   - Vue.js, common data store, subscriptions, GraphQL, websocket, etc.
-  - Mutations (commands)
-  - Performance
-  - API-on-the-fly
+  - Mutations (commands) and API-on-the-fly
+  - Performance considerations
+  - Task/job separation and implications
+  - Spawn-on-Demand: comparison with Spawn-on-Submit, implications
 - Treeview status and plans
 - Other views TBD: dot, graph, etc.
-- What the UI shows
-  - Task/job separation and implications
-  - Spawn-on-Demand comparison with Spawn-on-Submit, and implications
- - Subservices providing other information to the UI
-   - Workflow start-up
-   - Cylc review, and tasks outside the active window
 - Whiteboard/inkscape session on remaining design issues:
     - Gantt view
     - Multi-workflows/dashboards
@@ -77,7 +73,7 @@ Acronyms used below:
     - other?
 - CLI: entry points, new `cylc monitor`, CLI simplification? (post API-on-the-fly)
 
-### Wednesday 12 Feb: Configuring and running workflows
+### Wednesday 12 Feb: Configuring and Running Workflows
 
 - Config file names and locations: WFS (workflow, user, site), UIS, Hub
 - Proposed config item changes, and the new cylc-flow platforms config
@@ -105,31 +101,32 @@ EVENING:
   - review threat modeling notes
 - Authorization
   - All handled by the UIS (not WFS)?
-  - Can we settle on a authorized access levels and privileges?
+  - Can we settle on authorization levels and corresponding privileges?
   - Configuration and implementation
 
-### Friday 14 Feb
+### Friday 14 Feb: Deployment and Documentation
 
-- Deployment
-  - Versioning (and milestone) strategy (now we have many repos)
-  - Future of the `cylc` central wrapper and multi-version support?
-  - Minimal client install?
-  - `cylc --version` and the cylc meta-package - part of cylc-flow or not?
-      - need to solve https://github.com/cylc/cylc-admin/issues/76
-  - Use of conda pack?
-  - Reducing the size of conda environments?
-  - "Portable conda environments" for no-internet deployment
-  - Optional dependencies?
-  - Installing without conda?
-  - Reducing size of the UI `dist/` package
-  - Containers: how many Docker files; use of Docker compose; non-Docker?
+- Versioning (and milestone) strategy (now we have many repos)
+- Future of the `cylc` central wrapper and multi-version support?
+- Minimal client install?
+- `cylc --version` and the cylc meta-package - part of cylc-flow or not?
+    - need to solve https://github.com/cylc/cylc-admin/issues/76
+- Use of conda pack?
+- Reducing the size of conda environments?
+- "Portable conda environments" for no-internet deployment
+- Optional dependencies?
+- Installing without conda?
+- Reducing size of the UI `dist/` package
+- Containers: how many Docker files; use of Docker compose; non-Docker?
 
-- component version compatibility
+- Component version compatibility
   - how should new versions deal with existing (running) WFS at older versions?
+
+- Documenting Cylc 8 for admins and users
 
 - **Update the Projectt Gantt Chartt** to Cylc-8.0.0 by (or before) mid-2021
 
-# Participants
+## Participants
 
 - Hilary Oliver - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <hilary.oliver@niwa.co.nz>
 - Bruno Kinoshita - [NIWA](https://www.niwa.co.nz), (Auckland, New Zealand - <bruno.kinoshita@niwa.co.nz>
@@ -138,10 +135,10 @@ EVENING:
 - Tim Pillinger - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <tim.pillinger@metoffice.gov.uk>
 - Mel Hall - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <mel.hall@metoffice.gov.uk>
 - Oliver Sanders - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <oliver.sanders@metoffice.gov.uk>
-- Jacinta Richardson - [BoM](https://www.bom.gov.au), (Melbourne, Australia) - <<jacinta.richardson@bom.gov.au>
+- Jacinta Richardson - [BoM](https://www.bom.gov.au), (Melbourne, Australia) - <jacinta.richardson@bom.gov.au>
 - Tim Whitcomb - [NRL](https://www.nrlmry.navy.mil/), (Monterey, USA) - <tim.whitcomb@nrlmry.navy.mil>
 
-# Acknowledgements
+## Acknowledgements
 
 Thanks to NIWA for hosting the workshop, and the UM Partnership and ESiWACE for
 funding travel for selected participants.
