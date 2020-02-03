@@ -1,6 +1,4 @@
-![UMC Core Partner Logos](img/umc.png)
-![IS-ENES3 - Cylc - Altair Logos](img/isenes-cylc-altair-logos.png)
-![UMC Assoc Partner Logos](img/umc-associate-logos-2018.jpg)
+![Cylc Workshop 2020 Logos](img/logos-2020.png)
 
 ## Cylc Development Workshop 2020
 ### 10-14 Feb, NIWA, Wellington, New Zealand
@@ -143,6 +141,4 @@ EVENING:
 Thanks to NIWA for hosting the workshop, and the UM Partnership and IS-ENES3
 for sponsoring travel for relevant participants.
 
-![UMC Assoc Partner Logos](img/umc-associate-logos-2018.jpg)
-![IS-ENES3 - Cylc - Altair Logos](img/isenes-cylc-altair-logos.png)
-![UMC Logos](img/umc.png)
+![Cylc Workshop 2020 Logos](img/logos-2020.png)
