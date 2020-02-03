@@ -2,12 +2,8 @@
 ## Working Practices
 - [project communication and collaboration platforms](project-collab.md)
 
-## Cylc-7
-- [Cylc-7 Architecture](cylc-7-architecture)
-
-## Cylc-8 Pre-planning
-- [GUI Replacement Options](gui-replacement-options)
-- [Tentative Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED
+## February 2020 Development Workshop (Wellington)
+- [Agenda](feb2020-workshop-agenda)
 
 ## Dec 2018 Development Workshop (Melbourne)
 - [Agenda](dec-workshop-agenda)
@@ -19,9 +15,6 @@
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
 - [Cylc-8 (Proposal) Authentication between the CLI & Workflow Service](proposal-cli-wfs-authentication)
 
-## Feb 2020 Development Workshop (Wellington)
-- [Agenda Ideas](feb2020-workshop-agenda)
-
 ## Change Proposals
 - [rose suite-run migration proposal](proposal-rose-suite-run.md)
   More detail on rose-suite-run migration:
@@ -30,6 +23,31 @@
 
 - [task state, output, and trigger name rationalization](proposal-state-names.md)
  
+## Cylc-7
+- [Cylc-7 Architecture](cylc-7-architecture)
+
+## User Research
+- [Suites Guild GUI Review](user-research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
+- [gcylc.rc usage](user-research/MO-gcylc-rc-report.md)
+- 04/06/19 Metomi team meeting on UR:
+  - [Discussion Prompts (sent out in advance)](user-research/ur-initiation-questions.md)
+  - [Summary Notes](user-research/ur-meetings/ur-04-june-2019-summary.md)
+- Overall UR summary/record documents:
+  - [Insight Pool](user-research/ur-insight-pool.md)
+  - [Interaction Summaries & Log](user-research/ur-interaction-summaries-log.md)
+
+## Cylc 8 Guides
+Guides for developers, and therefore slightly separate to main documentation
+- [Getting Started](howto/environment.md)
+- [Create a Release](howto/create-a-release.rst)
+
+## Misc
+- [BOM threat modelling notes](threats.md)
+
+## (Old) Cylc-8 Pre-planning
+- [GUI Replacement Options](gui-replacement-options)
+- [Tentative Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED
+
 ## Video Conferences
 
 Agendas and post-meeting notes.
@@ -75,20 +93,4 @@ Agendas and post-meeting notes.
 
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
-## User Research
-- [Suites Guild GUI Review](user-research/20190606-suites-guild-cylc-gui-review.md) Notes taken from a discussion 2019-06-06.
-- [gcylc.rc usage](user-research/MO-gcylc-rc-report.md)
-- 04/06/19 Metomi team meeting on UR:
-  - [Discussion Prompts (sent out in advance)](user-research/ur-initiation-questions.md)
-  - [Summary Notes](user-research/ur-meetings/ur-04-june-2019-summary.md)
-- Overall UR summary/record documents:
-  - [Insight Pool](user-research/ur-insight-pool.md)
-  - [Interaction Summaries & Log](user-research/ur-interaction-summaries-log.md)
 
-## Cylc 8 Guides
-Guides for developers, and therefore slightly separate to main documentation
-- [Getting Started](howto/environment.md)
-- [Create a Release](howto/create-a-release.rst)
-
-## Misc
-- [threat modelling outcomes](threats.md)
