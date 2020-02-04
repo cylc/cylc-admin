@@ -38,7 +38,7 @@ Cylc Flow Instance
 
 Cylc config files: `cylc-flow.conf`, `cylc-flow-global.conf`
 - (we're dropping the term "suite" - see above)
-- the `.rc` post-fix is archaic, rarely used today 
+- the `.rc` suffix is archaic, rarely used today 
 - the old `global.rc` is too generic
 - :question: `flow.conf` is an option
   - (but `cylc-flow.conf` is clearer without being too verbose)
