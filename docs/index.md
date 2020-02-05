@@ -22,7 +22,9 @@
   - Specification for new CLI - [WIP]
 
 - [task state, output, and trigger name rationalization](proposal-state-names.md)
- 
+
+- [Component Naming](proposal-component-names.md)
+
 ## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)
 
