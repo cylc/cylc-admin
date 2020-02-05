@@ -58,6 +58,10 @@ have not been updated yet ... "suite daemon", "suite server program",
 
 - Welcome and Introductions etc.
 - Components and code repositories
+    - Cylc Hub (Hub)
+    - Cylc Web UI (wUI)
+    - Cylc UI Server (UIS)
+    - Cylc Scheduler (Sched)
 - Getting everything installed and running - demo
 - Issues that still need some thought:
   - Remote spawning
@@ -68,7 +72,7 @@ have not been updated yet ... "suite daemon", "suite server program",
 - Data provision to the UI:
    - Data stores and incremental update via ZMQ, Protobuf, GraphQL
 - Practical debugging session:
-  - UI (browser and Vue tools), CS (incl. subprocesses), UIS (incl. async
+  - UI (browser and Vue tools), Sched (incl. subprocesses), UIS (incl. async
     routines), traffic between components
 
 
@@ -96,7 +100,7 @@ have not been updated yet ... "suite daemon", "suite server program",
 - 10:20am **visit from Andrew Tait** (NIWA Chief Scientist and UM Board member)
 - 6:30pm **workshop dinner** at Fork and Brewer
 
-- Config file names and locations: CS (workflow, user, site), UIS, Hub
+- Config file names and locations: Sched (workflow, user, site), UIS, Hub
 - Proposed config item changes, and the new cylc-flow platforms config
 - Should plugins be allowed to add global config items?  ([cylc][plugin:kafka]server=ab.c.d:123?)
 - Rose suite-run migration, new "cylc run" semantics, and rationalizing the workflow start-up CLI
@@ -112,14 +116,14 @@ AFTERNOON:
 
 - Hub: authentication plugins; sessions; managing identity; which config options?
 - Back-end connection authentication:
-  - Hub-UIS, UIS-CS, CLI-CS, CLI-UIS
-  - CS and ZMQ auth files
+  - Hub-UIS, UIS-Sched, CLI-Sched, CLI-UIS
+  - Sched and ZMQ auth files
 - Single user issues, e.g. standalone (sans Hub) UIS? (like Jupyter notebook)
 - BOM security concerns:
   - review cylc-7 pen testing report
   - review threat modeling notes
 - Authorization
-  - All handled by the UIS (not CS)?
+  - All handled by the UIS (not Sched)?
   - Can we settle on authorization levels and corresponding privileges?
   - Configuration and implementation
 
@@ -138,7 +142,7 @@ AFTERNOON:
 - Reducing size of the UI `dist/` package
 - Containers: how many Docker files; use of Docker compose; non-Docker?
 - Component version compatibility
-  - how should new versions deal with existing (running) CS at older versions?
+  - how should new versions deal with existing (running) Sched at older versions?
 - Documenting Cylc 8 for admins and users
 
 - **Update the Projectt Gantt Chartt** to Cylc-8.0.0 by (or before) mid-2021
@@ -162,7 +166,7 @@ for sponsoring travel for relevant participants.
 
 ## Glossary
 
-- CS = Cylc Scheduler (formerly the "suite daemon" or "suite server program")
+- Sched = Cylc Scheduler
 - UIS = UI Server
 - WUI = Web UI
 
