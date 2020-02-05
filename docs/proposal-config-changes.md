@@ -10,12 +10,8 @@ These notes mainly address [cylc-flow #3422](https://github.com/cylc/cylc-flow/i
      settings are actually referring to the workflow server which is unclear).
      * Note: "suite" is referred to through-out the code, tests and
        documentation.
-   * Do we want to use `server` as shorthand for `workflow server`?
-     * Presumably there is no confusion with `UI server` since this will have a
-       separate config file?
-     * Using `server` for now in this proposal.
-     * See
-       [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r332985001).
+   * **NOTE** "server" changed to "scheduler" below in light of the recent
+     component name decision - *we still need to check each instance carefully*
 
 ### Deprecation
    * The global config will be changing drastically for the platforms support.
@@ -63,33 +59,33 @@ These are proposed changes to the
 
 See [cylc-admin#77](https://github.com/cylc/cylc-admin/pull/77).
 
-### `[cylc][events]mail *` -> `[server][mail]`
+### `[cylc][events]mail *` -> `[scheduler][mail]`
 
-`mail from`, `mail smtp`, `mail to` and `mail footer` can apply to both server
+`mail from`, `mail smtp`, `mail to` and `mail footer` can apply to both scheduler
 and task events so move them to a separate section and remove `mail` from the
 name. See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r324580369).
 
-### `[cylc][events]` -> `[server][events]`
+### `[cylc][events]` -> `[scheduler][events]`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r333229597).
 
-### `[cylc]task event mail interval` -> `[server][mail]task event interval`
+### `[cylc]task event mail interval` -> `[scheduler][mail]task event interval`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r332937797).
 
-### `[cylc][server][environment]` <- new
+### `[cylc][scheduler][environment]` <- new
 
 We can define handlers in the global config but not configure the handler
 environment - this doesn't make sense.
 
-### `[cylc]health check interval` -> `[server]health check interval`
+### `[cylc]health check interval` -> `[scheduler]health check interval`
 
 Makes sense to move this.
 
-### `process pool *` -> `[server]process pool *`
+### `process pool *` -> `[scheduler]process pool *`
 
 Makes sense to move these.
 
@@ -103,11 +99,11 @@ See
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r325406770).
 
-### `[suite logging]` -> `[server][logging]`
+### `[suite logging]` -> `[scheduler][logging]`
 
 Makes sense to move these.
 
-### `run directory rolling archive length` -> `[server]run directory rolling archive length`
+### `run directory rolling archive length` -> `[scheduler]run directory rolling archive length`
 
 Makes sense to move this. May well change as part of the rose suite-run
 migration work.
@@ -121,19 +117,19 @@ No reason to set this separately for task events.
 Can't think of a good reason to want to delay the sending of an email
 notification or to want to retry it (unlikely to succeed on retry if it fails).
 
-(If we do decide to keep this setting, surely it should apply to server events
-as well and should be moved into the `[server][mail]` section.)
+(If we do decide to keep this setting, surely it should apply to scheduler events
+as well and should be moved into the `[scheduler][mail]` section.)
 
-### `[suite servers]` -> `[server platforms]`
+### `[suite servers]` -> `[scheduler platforms]`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r332985001).
-Would `[server hosts]` be better or `[server][hosts]`?
+Would `[scheduler hosts]` be better or `[scheduler][hosts]`?
 Difficult to plan for the future methods (e.g. running via kubernetes?).
 
 Note: alternative proposal later in this document.
 
-### `[suite host self-identification]` -> `[server platforms][host self-identification]`
+### `[suite host self-identification]` -> `[scheduler platforms][host self-identification]`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r333243416).
@@ -153,7 +149,7 @@ SPEC = {
     'cylc': {
         'UTC mode': [VDR.V_BOOLEAN],
     },
-    'server': {
+    'scheduler': {
         'health check interval': [VDR.V_INTERVAL, DurationFloat(600)],
         'process pool size': [VDR.V_INTEGER, 4],
         'process pool timeout': [VDR.V_INTERVAL, DurationFloat(600)],
@@ -189,7 +185,7 @@ SPEC = {
             'maximum size in bytes': [VDR.V_INTEGER, 1000000],
         },
     },
-    'server platforms': {
+    'scheduler platforms': {
         'run hosts': [VDR.V_SPACELESS_STRING_LIST],
         'run ports': [VDR.V_INTEGER_LIST, list(range(43001, 43101))],
         'condemned hosts': [VDR.V_ABSOLUTE_HOST_LIST],
@@ -352,17 +348,17 @@ Note that we also need to deprecate the
 [environment variables](https://cylc.github.io/doc/built-sphinx/suite-config.html?highlight=cylc_suite_def_path#task-job-script-variables)
 `$CYLC_SUITE_DEF_PATH` & `$CYLC_SUITE_DEF_PATH_ON_SUITE_HOST`.
 
-### `[cylc][events]mail *` -> `[server][mail]`
+### `[cylc][events]mail *` -> `[scheduler][mail]`
 
 Matches global config change.
 
 Also make `smtp` obsolete? No reason to set this on a per workflow basis?
 
-### `[cylc][events]` -> `[server][events]`
+### `[cylc][events]` -> `[scheduler][events]`
 
 Matches global config change.
 
-### `[cylc]task event mail interval` -> `[server][mail]task event interval`
+### `[cylc]task event mail interval` -> `[scheduler][mail]task event interval`
 
 Matches global config change.
 
@@ -374,23 +370,23 @@ Matches global config change to `[task events]mail smtp`.
 
 Matches global config change to `[task events]mail retry delays`.
 
-### `[cylc][reference test]expected task failures` -> `[server][events]expected task failures`
+### `[cylc][reference test]expected task failures` -> `[scheduler][events]expected task failures`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/issues/3404#issuecomment-540190164).
 
-### `[server][events]abort if any task fails` -> `[server][events]abort if any unexpected task fails`
+### `[scheduler][events]abort if any task fails` -> `[scheduler][events]abort if any unexpected task fails`
 
 See change above (different name proposed).
 
-### `[cylc][environment]` -> `[server][environment]`
+### `[cylc][environment]` -> `[scheduler][environment]`
 
 Makes sense to move this.
 
 Rename to `handler environment`?
 (think this was proposed but can't find discussion)
 
-### `[cylc]health check interval` -> `[server]health check interval`
+### `[cylc]health check interval` -> `[scheduler]health check interval`
 
 Matches global config change.
 
@@ -416,7 +412,7 @@ SPEC = {
             'disable suite event handlers': [VDR.V_BOOLEAN, True],
         },
     },
-    'server': {
+    'scheduler': {
         'health check interval': [VDR.V_INTERVAL],
         'environment': {
             '__MANY__': [VDR.V_STRING],
@@ -586,11 +582,11 @@ SPEC = {
 
 Possible changes not currently included in this proposal.
 
-### `[server platforms]` alternative proposal
+### `[scheduler platforms]` alternative proposal
 
 ```python
 SPEC = {
-    'server': {
+    'scheduler': {
         'auto restart delay': [VDR.V_INTERVAL],
         'host self-identification': {
             'method': [VDR.V_STRING, 'name', 'address', 'hardwired'],
