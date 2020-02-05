@@ -30,6 +30,11 @@ prepared to ask questions until we understand the entire system.
 
 ### Reading Material
 
+(WARNING: we have been using several provisional names for the back-end
+workflow manager before settling on "Cylc Scheduler" and the following docs
+have not been updated yet ... "suite daemon", "suite server program",
+"workflow server", "workflow service" are all the same thing)
+
  - [Cylc-7 Architecture](cylc-7-architecture.md)
  - [Cylc-8 Architecture](cylc-8-architecture.md)
  - [Cylc 8 Component Naming](proposal-component-names.md)
