@@ -13,17 +13,22 @@
 ## Cylc-8 Work In Progress
 - [Cylc-8 Architecture](cylc-8-architecture)
 - [Cylc-8 Implementation Task List](cylc-8-tasks)
-- [Cylc-8 (Proposal) Authentication between the CLI & Workflow Service](proposal-cli-wfs-authentication)
 
 ## Change Proposals
-- [rose suite-run migration proposal](proposal-rose-suite-run.md)
+
+- [Authentication between CLI & Scheduler](proposal-cli-wfs-authentication.md)
+- [Platforms Config](proposal-platforms.md)
+
+- [`rose suite-run` migration](proposal-rose-suite-run.md)
   More detail on rose-suite-run migration:
   - [Specification for new combined config file](rose-suite-run-proposal/cylc-flow-rc.md)
   - Specification for new CLI - [WIP]
 
-- [task state, output, and trigger name rationalization](proposal-state-names.md)
+- [task state name rationalization](proposal-state-names.md)
 
 - [Component Naming](proposal-component-names.md)
+
+- [Suite Evolution: Spawn-on-demand](proposal-spawn-on-d.md)
 
 ## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)

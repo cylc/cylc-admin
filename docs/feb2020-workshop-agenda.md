@@ -19,22 +19,37 @@ For each of the main topics below we will cover:
 
 ## Preparation
 
-Participants should bring a notebook computer with root access to a recent
-Linux system, and preferably have Cylc 8 installed and running already from git
-clones of each component.
+Participants should bring a notebook computer capable of installing and running
+Cylc 8 if possible (Linux with admin access to install a lot of software as
+needed). If that's not possible your locked-down work laptop will do for
+viewing code and documentation, and showing slides and documents as needed.
 
 Those who have worked on aspects of the project already should be prepared to
 explain and demo their parts of the system to others. And we should all be
-prepared to ask questions until we understand the whole system.
+prepared to ask questions until we understand the entire system.
+
+### Reading Material
+
+ - [Cylc-7 Architecture](cylc-7-architecture.md)
+ - [Cylc-8 Architecture](cylc-8-architecture.md)
+ - [Cylc 8 Component Naming](proposal-component-names.md)
+ - [Task States and Names](proposal-state-names.md)
+ - [Cylc Web UI Design](https://github.com/cylc/cylc-ui/pull/87) (latest mock-up at top of page)
+ - [CLI-Scheduler Authentication](proposal-cli-wfs-authentication.md)
+   [Platforms Config](proposal-platforms.md)
+   [`rose suite-run` migration](proposal-rose-suite-run.md)
+ - Spawn-on-Demand (workflow evolution)
+     - [Proposal](proposal-spawn-on-d.md)
+     - [POC implentation PR](https://github.com/cylc/cylc-flow/pull/3474)
+ - Security
+     - [BOM threat modelling notes](threats.md)
+     - Cylc 7 Pen Test Report - by email
+- ([Dec 2018 Workshop Summary Report](dec-workshop-report.md))
+
 
 ## Agenda
 
-Acronyms used below:
-- WFS = Workflow Service (formerly known as the "suite daemon" or "suite server program")
-- UIS = UI Server
-- (UI, CLI = ...duh)
-
-### Monday 10 Feb: Architecture and Data Provision
+### Monday: Architecture and Data Provision
 
 - Welcome and Introductions etc.
 - Components and code repositories
@@ -48,11 +63,11 @@ Acronyms used below:
 - Data provision to the UI:
    - Data stores and incremental update via ZMQ, Protobuf, GraphQL
 - Practical debugging session:
-  - UI (browser and Vue tools), WFS (incl. subprocesses), UIS (incl. async
+  - UI (browser and Vue tools), CS (incl. subprocesses), UIS (incl. async
     routines), traffic between components
 
 
-### Tuesday 11 Feb: UI
+### Tuesday: UI
 
 - Web UI overview:
   - Vue.js, common data store, subscriptions, GraphQL, websocket, etc.
@@ -71,9 +86,12 @@ Acronyms used below:
     - other?
 - CLI: entry points, new `cylc monitor`, CLI simplification? (post API-on-the-fly)
 
-### Wednesday 12 Feb: Configuring and Running Workflows
+### Wednesday: Configuring and Running Workflows
 
-- Config file names and locations: WFS (workflow, user, site), UIS, Hub
+- 10:20am **visit from Andrew Tait** (NIWA Chief Scientist and UM Board member)
+- 6:30pm **workshop dinner** at Fork and Brewer
+
+- Config file names and locations: CS (workflow, user, site), UIS, Hub
 - Proposed config item changes, and the new cylc-flow platforms config
 - Should plugins be allowed to add global config items?  ([cylc][plugin:kafka]server=ab.c.d:123?)
 - Rose suite-run migration, new "cylc run" semantics, and rationalizing the workflow start-up CLI
@@ -81,28 +99,26 @@ Acronyms used below:
 - Contingency for delayed Rose 2: Python 2 release with `rose suite-run` etc. stripped out?
 
 AFTERNOON:
+- finish morning discussions
 - visit NIWA operations?
 - visit NIWA HPC facility?
 
-EVENING:
-- workshop dinner?
-
-### Thursday 13 Feb:  Authentication, Authorization, Security
+### Thursday:  Authentication, Authorization, Security
 
 - Hub: authentication plugins; sessions; managing identity; which config options?
 - Back-end connection authentication:
-  - Hub-UIS, UIS-WFS, CLI-WFS, CLI-UIS
-  - WFS and ZMQ auth files
+  - Hub-UIS, UIS-CS, CLI-CS, CLI-UIS
+  - CS and ZMQ auth files
 - Single user issues, e.g. standalone (sans Hub) UIS? (like Jupyter notebook)
 - BOM security concerns:
   - review cylc-7 pen testing report
   - review threat modeling notes
 - Authorization
-  - All handled by the UIS (not WFS)?
+  - All handled by the UIS (not CS)?
   - Can we settle on authorization levels and corresponding privileges?
   - Configuration and implementation
 
-### Friday 14 Feb: Deployment and Documentation
+### Friday: Deployment and Documentation
 
 - Versioning (and milestone) strategy (now we have many repos)
 - Future of the `cylc` central wrapper and multi-version support?
@@ -116,10 +132,8 @@ EVENING:
 - Installing without conda?
 - Reducing size of the UI `dist/` package
 - Containers: how many Docker files; use of Docker compose; non-Docker?
-
 - Component version compatibility
-  - how should new versions deal with existing (running) WFS at older versions?
-
+  - how should new versions deal with existing (running) CS at older versions?
 - Documenting Cylc 8 for admins and users
 
 - **Update the Projectt Gantt Chartt** to Cylc-8.0.0 by (or before) mid-2021
@@ -140,5 +154,11 @@ EVENING:
 
 Thanks to NIWA for hosting the workshop, and the UM Partnership and IS-ENES3
 for sponsoring travel for relevant participants.
+
+## Glossary
+
+- CS = Cylc Scheduler (formerly the "suite daemon" or "suite server program")
+- UIS = UI Server
+- WUI = Web UI
 
 ![Cylc Workshop 2020 Logos](img/logos-2020.png)
