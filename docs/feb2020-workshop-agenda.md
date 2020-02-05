@@ -1,110 +1,173 @@
-## Cylc Workshop
-### 10-14 Feb 2020, NIWA, Wellington, NZ
+![Cylc Workshop 2020 Logos](img/logos-2020.png)
 
-#### Attendees:
+## Cylc Development Workshop 2020
+### 10-14 Feb, NIWA, Wellington, New Zealand
 
-- Hilary Oliver, NIWA
-- Bruno Kinoshita, NIWA
-- David Sutherland, NIWA
-- Mel Hall, Met Office
-- Tim Pillinger, Met Office
-- Oliver Sanders, Met Office
-- David Matthews, Met Office
-TBC?:
-- (?Tim Whitcomb, NRL) 
-- (?Developer, BOM)
+## Goals
 
-### Workshop Goals
-- Primarily: review Cylc 8 progress to date and map out our roadmap to
-  completion
-- Secondarily: learn as much as we can about parts of the system mostly
-  worked on by others, to gain understanding and enable future work
+Primarily: to review Cylc 8 progress and chart the roadmap to completion. Cylc
+8 has a more complex architecture than Cylc 7 (and earlier versions) and it makes
+use of a much wider variety of technologies and protocols. This is an
+opportunity for us all to get a better understanding of the complete system as
+well as plan next steps.
 
-## Prelimary Agenda Topics
+For each of the main topics below we will cover:
+  - What we are aiming for
+  - What we have achieved so far - with demos
+  - What is still to be done
+    - and any major problems still to be solved
 
-(TBD: collate with others' suggestions and make a timetable)
+## Preparation
 
-- architecture
-  - review the new architecture
-  - make sure we all know how to get the full system up and running
-  - what still needs improving?
-  - potential problems? (remote spawning, scaling, load balancing?)
-  - support for CLI via the UI Server (e.g for task communication)
+Participants should bring a notebook computer capable of installing and running
+Cylc 8 if possible (Linux with admin access to install a lot of software as
+needed). If that's not possible your locked-down work laptop will do for
+viewing code and documentation, and showing slides and documents as needed.
 
-- Hub:
-  - access to other users' workflows
+Those who have worked on aspects of the project already should be prepared to
+explain and demo their parts of the system to others. And we should all be
+prepared to ask questions until we understand the entire system.
 
-- UI
-  - review current status of tree view
-    - what still needs improving?
-  - other views: dot, graph, etc.
-    - when to start on these?
-  - common data store and subscriptions etc.
-  - whiteboard/inkscape design session on stuff not yet implemented
-      - Gantt view
-      - Multi-workflows/dashboards
-      - selecting sharing (drag n drop?)
-      - how to represent xtriggers
-      - other?
+### Reading Material
 
-- Security
-  - review BOM cylc-7 pen testing concerns
-  - review BOM threat modeling notes
-  - which J-Hub options should we be using
-  - single users: e.g. should users be able to run the UIS standalone as
-  - you can with notebooks?
+(WARNING: we have been using several provisional names for the back-end
+workflow manager before settling on "Cylc Scheduler" and the following docs
+have not been updated yet ... "suite daemon", "suite server program",
+"workflow server", "workflow service" are all the same thing)
 
-- spawn-on-demand enhancement
-  - POC implemented already, solves many problems
-  - any negative consequences?
-  - what would need to be done, to get it into Cylc 8?
-    - primarily, access to n >= 1 tasks via the UI
+ - [Cylc-7 Architecture](cylc-7-architecture.md)
+ - [Cylc-8 Architecture](cylc-8-architecture.md)
+ - [Cylc 8 Component Naming](proposal-component-names.md)
+ - [Task States and Names](proposal-state-names.md)
+ - [Cylc Web UI Design](https://github.com/cylc/cylc-ui/pull/87) (latest mock-up at top of page)
+ - [CLI-Scheduler Authentication](proposal-cli-wfs-authentication.md)
+   [Platforms Config](proposal-platforms.md)
+   [`rose suite-run` migration](proposal-rose-suite-run.md)
+ - Spawn-on-Demand (workflow evolution)
+     - [Proposal](proposal-spawn-on-d.md)
+     - [POC implentation PR](https://github.com/cylc/cylc-flow/pull/3474)
+ - Security
+     - [BOM threat modelling notes](threats.md)
+     - Cylc 7 Pen Test Report - by email
+- ([Dec 2018 Workshop Summary Report](dec-workshop-report.md))
 
-- configuration items and files
-  - decide final config file names and locations for all components
-  - Tim to explain new cylc-flow platforms config
-  - make a final decision on cylc-flow config unification
-  - consider the item name changes proposed in earlier unification discussions
-  - decide if we want to give Cylc Flow plugins the ability to add
-    configuration items to the Flow global conf (e.g. [cylc][plugin:kafka]server=ab.c.d:123)?
 
-- rose suite-run migration and related changes including new "cylc run"
-  semantics (name/run1,2,3... etc.)
+## Agenda
 
-- brief discussion on contingency planning for a delayed Rose2 release - New
-  Python2 Rose release with rose suite-run etc stripped out for use with Cylc8.
+### Monday: Architecture and Data Provision
 
-- authorization
-  - can we settle on an initial set of privilege levels?
-  - implementation ideas
+- Welcome and Introductions etc.
+- Components and code repositories
+    - Cylc Hub (Hub)
+    - Cylc Web UI (wUI)
+    - Cylc UI Server (UIS)
+    - Cylc Scheduler (Sched)
+- Getting everything installed and running - demo
+- Issues that still need some thought:
+  - Remote spawning
+  - Scaling and load balancing
+  - CLI via the UI Server (e.g for task communication)
+  - Access to other-user workflows
+  - Hub Sub-services: Workflow start-up, Cylc review, tasks beyond the active window, other?
+- Data provision to the UI:
+   - Data stores and incremental update via ZMQ, Protobuf, GraphQL
+- Practical debugging session:
+  - UI (browser and Vue tools), Sched (incl. subprocesses), UIS (incl. async
+    routines), traffic between components
 
-- practical debugging session
-  - UI (using browser and Vue dev tools)
-  - WFS (including subprocesses)
-  - UIS (including async routines)
-  - inspect network traffic between components
 
-- coding: can we usefully work together on something, for several afternoons
-  (say)? E.g.
-  - an initial UI dot view?
-  - Hub cross-user access
-  - authorization
+### Tuesday: UI
 
-- deployment
-  - versioning (and milestone) strategy (now we have many repos)
-  - future of cylc wrapper / multi-version support?
-  - minimal client install?
-  - `cylc --version` and the cylc meta-package - part of cylc-flow or not?
-      - need to solve https://github.com/cylc/cylc-admin/issues/76
-  - use of conda pack?
-  - reducing the size of conda environments?
-  - "portable conda environments" for no-internet deployment
-  - optional dependencies?
-  - installing without conda?
-  - reducing size of UI dist/ package
-  - containers: how many docker files; use of docker compose; non-docker?
+- Web UI overview:
+  - Vue.js, common data store, subscriptions, GraphQL, websocket, etc.
+  - Mutations (commands) and API-on-the-fly
+  - Performance considerations
+  - Task/job separation and implications
+  - Spawn-on-Demand: comparison with Spawn-on-Submit, implications
+- Treeview status and plans
+- Other views TBD: dot, graph, etc.
+- Whiteboard/inkscape session on remaining design issues:
+    - Gantt view
+    - Multi-workflows/dashboards
+    - selecting sharing (drag n drop?)
+    - how to represent xtriggers
+    - theming?
+    - other?
+- CLI: entry points, new `cylc monitor`, CLI simplification? (post API-on-the-fly)
 
-- component version compatibility
-  - how should new versions deal with existing (running) WFS at older versions?
+### Wednesday: Configuring and Running Workflows
 
-Finally: update the Gantt Chart through mid-2021
+- 10:20am **visit from Andrew Tait** (NIWA Chief Scientist and UM Board member)
+- 6:30pm **workshop dinner** at Fork and Brewer
+
+- Config file names and locations: Sched (workflow, user, site), UIS, Hub
+- Proposed config item changes, and the new cylc-flow platforms config
+- Should plugins be allowed to add global config items?  ([cylc][plugin:kafka]server=ab.c.d:123?)
+- Rose suite-run migration, new "cylc run" semantics, and rationalizing the workflow start-up CLI
+  - `name/run1,2,3...` etc.
+- Contingency for delayed Rose 2: Python 2 release with `rose suite-run` etc. stripped out?
+
+AFTERNOON:
+- finish morning discussions
+- visit NIWA operations?
+- visit NIWA HPC facility?
+
+### Thursday:  Authentication, Authorization, Security
+
+- Hub: authentication plugins; sessions; managing identity; which config options?
+- Back-end connection authentication:
+  - Hub-UIS, UIS-Sched, CLI-Sched, CLI-UIS
+  - Sched and ZMQ auth files
+- Single user issues, e.g. standalone (sans Hub) UIS? (like Jupyter notebook)
+- BOM security concerns:
+  - review cylc-7 pen testing report
+  - review threat modeling notes
+- Authorization
+  - All handled by the UIS (not Sched)?
+  - Can we settle on authorization levels and corresponding privileges?
+  - Configuration and implementation
+
+### Friday: Deployment and Documentation
+
+- Versioning (and milestone) strategy (now we have many repos)
+- Future of the `cylc` central wrapper and multi-version support?
+- Minimal client install?
+- `cylc --version` and the cylc meta-package - part of cylc-flow or not?
+    - need to solve https://github.com/cylc/cylc-admin/issues/76
+- Use of conda pack?
+- Reducing the size of conda environments?
+- "Portable conda environments" for no-internet deployment
+- Optional dependencies?
+- Installing without conda?
+- Reducing size of the UI `dist/` package
+- Containers: how many Docker files; use of Docker compose; non-Docker?
+- Component version compatibility
+  - how should new versions deal with existing (running) Sched at older versions?
+- Documenting Cylc 8 for admins and users
+
+- **Update the Projectt Gantt Chartt** to Cylc-8.0.0 by (or before) mid-2021
+
+## Participants
+
+- Hilary Oliver - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <hilary.oliver@niwa.co.nz>
+- Bruno Kinoshita - [NIWA](https://www.niwa.co.nz), (Auckland, New Zealand - <bruno.kinoshita@niwa.co.nz>
+- David Sutherland - [NIWA](https://www.niwa.co.nz), (Wellington, New Zealand) - <david.sutherland@niwa.co.nz>
+- Dave Matthews - [IS-ENES3](https://is.enes.org/), [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <david.matthews@metoffice.gov.uk> 
+- Tim Pillinger - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <tim.pillinger@metoffice.gov.uk>
+- Mel Hall - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <mel.hall@metoffice.gov.uk>
+- Oliver Sanders - [Met Office](https://www.metoffice.gov.uk), (Exeter, UK) - <oliver.sanders@metoffice.gov.uk>
+- Jacinta Richardson - [BoM](https://www.bom.gov.au), (Melbourne, Australia) - <jacinta.richardson@bom.gov.au>
+- Tim Whitcomb - [NRL](https://www.nrlmry.navy.mil/), (Monterey, USA) - <tim.whitcomb@nrlmry.navy.mil>
+
+## Acknowledgements
+
+Thanks to NIWA for hosting the workshop, and the UM Partnership and IS-ENES3
+for sponsoring travel for relevant participants.
+
+## Glossary
+
+- Sched = Cylc Scheduler
+- UIS = UI Server
+- WUI = Web UI
+
+![Cylc Workshop 2020 Logos](img/logos-2020.png)
