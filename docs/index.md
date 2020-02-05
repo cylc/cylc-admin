@@ -28,7 +28,7 @@
 
 - [Component Naming](proposal-component-names.md)
 - [Suite Evolution: Spawn-on-demand](proposal-spawn-on-d.md)
-- [multi-user and cylc-flow](proposal-multi-user-approach.rst)
+- [multi-user and cylc-flow](proposal-multi-user-approach.md)
 
 ## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)
