@@ -41,12 +41,29 @@ See [cylc-flow #3170](https://github.com/cylc/cylc-flow/issues/3170).
      * Read from `/etc/cylc/flow/8.0a1/flow.rc` and
        `~/.cylc/cylc/flow/8.0a1/flow.rc` unless `$CYLC_CONF_PATH` set in which
        case it is read only from this path.
-     * We need the ability to override where the site config file is read from,
+     * We need the ability to override where the site (and user) config file is read from,
        e.g. by setting `$CYLC_SITE_CONF_PATH`?
      * Should we include the version in the path? Users should not have to
        create a new config file every time we deploy a new version. Perhaps
        major version only (with backwards compatibility assumed for minor
        versions)?
+
+
+OS comment:
+> I think going version specific makes the upgrade process unnecessarily
+> difficult, particularly for independent installations.
+> We might be able to reduce the pain by being less specific e.g:
+>```
+>~/
+>  `-/.cylc/
+>      `- flow/
+>         |- 8/
+>         |  `- flow.rc
+>         |- 8.0/
+>         |  `- flow.rc
+>          `- 8.0.1/
+>             `- flow.rc,
+>```
 
 *******************************************************************************
 
