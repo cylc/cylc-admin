@@ -44,12 +44,12 @@ Cylc config files: `cylc-flow.conf`, `cylc-flow-global.conf`
   - (but `cylc-flow.conf` is clearer without being too verbose)
 
 Cylc Hub
-- A vanilla (so far) instance of JupyterHub, BUT
-  - Configured to show Cylc branding and launch the Cylc UI Server
-- To avoid confusion with other JupyterHub on the system we need to call it
-  "Cylc Hub", but we should be clear that it is just an instance of JupyterHub
-- :question: do we need to launch it with a special command: `cylc hub`? (which
-  automatically picks up the Cylc-specific `jupyterhub_config.py`?)
+- A vanilla (so far) JupyterHub instance, configured to show Cylc branding and
+  launch the Cylc UI Server
+- To avoid confusion, and in case we ever need to go non-vanilla, we will call
+  it "Cylc Hub" - but we should be clear that it is actually just JupyterHub
+- :question: do we need to launch it with a special Cylc command that 
+  automatically picks up the Cylc-specific `jupyterhub_config.py`?
 
 Cylc UI Server
 - The word "Server" is not so confusing here (as it could be for the scheduler
