@@ -24,6 +24,8 @@
   - [Specification for new combined config file](rose-suite-run-proposal/cylc-flow-rc.md)
   - Specification for new CLI - [WIP]
 
+- [config file changes](proposal-config-changes.md)
+ 
 - [task state name rationalization](proposal-state-names.md)
 
 - [Component Naming](proposal-component-names.md)
