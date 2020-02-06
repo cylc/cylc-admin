@@ -44,6 +44,7 @@ have not been updated yet ... "suite daemon", "suite server program",
  - [Platforms Config](proposal-platforms.md)
  - [`rose suite-run` migration](proposal-rose-suite-run.md)
  - [Config Changes](proposal-config-changes.md)
+ - [Subscription Model](proposal-subscriptions.md)
  - Spawn-on-Demand (workflow evolution)
      - [Proposal](proposal-spawn-on-d.md)
      - [POC implentation PR](https://github.com/cylc/cylc-flow/pull/3474)

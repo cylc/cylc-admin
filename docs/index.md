@@ -24,13 +24,14 @@
   - [Specification for new combined config file](rose-suite-run-proposal/cylc-flow-rc.md)
   - Specification for new CLI - [WIP]
 
-- [config file changes](proposal-config-changes.md)
+- [Config File Changes](proposal-config-changes.md)
  
-- [task state name rationalization](proposal-state-names.md)
+- [Task State Name Rationalization](proposal-state-names.md)
 
 - [Component Naming](proposal-component-names.md)
 - [Suite Evolution: Spawn-on-demand](proposal-spawn-on-d.md)
-- [multi-user and cylc-flow](proposal-multi-user-approach.md)
+- [Multi-user and cylc-flow](proposal-multi-user-approach.md)
+- [Subscription Model](proposal-subscriptions.md)
 
 ## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)
