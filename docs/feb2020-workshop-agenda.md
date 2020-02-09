@@ -65,11 +65,13 @@ To squeeze in somewhere if needed and/or if time allows:
 
 - 9-10am Welcome and Introductions etc.
 - Project status
-  - Update on funding etc.
   - How we run the project
-  - Communictation: [GitHub](https://github.com/cylc), [Riot Chat](https://riot.im/app/#/room/#cylc-admin:matrix.org),
-  [Discourse](https://cylc.discourse.group/)
-
+  - Update on funding etc.
+  - Communication:
+    - [GitHub](https://github.com/cylc) - code repos and [cylc-admin
+      docs](https://github.com/cylc/cylc-admin)
+    - [Riot Chat](https://riot.im/app/#/room/#cylc-admin:matrix.org)
+    - [Discourse](https://cylc.discourse.group/)
 - Cylc-8 Architecture recap
   - [document](cylc-8-architecture.md)
   - [slides](https://hjoliver.github.io/cylc-presentations/Altair-SC19-Denver/#/c7-arch)
