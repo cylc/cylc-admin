@@ -70,7 +70,9 @@ To squeeze in somewhere if needed and/or if time allows:
   - Communictation: [GitHub](https://github.com/cylc), [Riot Chat](https://riot.im/app/#/room/#cylc-admin:matrix.org),
   [Discourse](https://cylc.discourse.group/)
 
-- [Cylc-8 Architecture](cylc-8-architecture.md) recap
+- Cylc-8 Architecture recap
+  - [document](cylc-8-architecture.md)
+  - [slides](https://hjoliver.github.io/cylc-presentations/Altair-SC19-Denver/#/c7-arch)
 - Components and [code repositories](https://github.com/cylc)
 - Quick Cylc 8 DEMO
 - Architectural issues that still need some thought:
@@ -97,11 +99,13 @@ To squeeze in somewhere if needed and/or if time allows:
   - Performance considerations
 - Treeview status and plans
 - Other views TBD: dot, graph, etc.
+  - how does the ideal graph view differ from our current POC?
 - Whiteboard/inkscape session on remaining design issues:
     - Gantt view
     - Multi-workflows/dashboards
     - selecting sharing (drag n drop?)
-    - how to represent xtriggers
+    - representing xtriggers
+    - representing dependencies in non-graph views?
     - theming?
     - other?
 - CLI: entry points, new `cylc monitor`, CLI simplification? (post
