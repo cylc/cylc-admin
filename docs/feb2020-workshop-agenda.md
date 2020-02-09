@@ -12,16 +12,16 @@ opportunity for us all to get a better understanding of the complete system as
 well as plan next steps.
 
 For each of the main topics below we will cover:
-  - What we are aiming for
-  - What we have achieved so far - with demos
+  - What we are aiming for (and why)
+  - What we have achieved so far
   - What is still to be done
-    - and any major problems still to be solved
+    - and any problems still to be solved
 
 ## Preparation
 
 Participants should bring a notebook computer capable of installing and running
 Cylc 8 if possible (Linux with admin access to install software as needed). If
-that's not possible your locked-down work laptop will do for viewing code and
+not possible, your locked-down work laptop will do for viewing code and
 documentation, and showing slides and documents as needed.
 
 Those who have worked on aspects of the project already should be prepared to
@@ -53,48 +53,48 @@ have not been updated yet ... "suite daemon", "suite server program",
      - Cylc 7 Pen Test Report - by email
 - ([Dec 2018 Workshop Summary Report](dec-workshop-report.md))
 
-
 ## Agenda
+
+### Floating Items
+
+To squeeze in somewhere if needed and/or if time allows:
+- BOM and NRL perspectives and priorities?
+- Beyond Cylc 8
 
 ### Monday: Intro, Architecture and Data Provision
 
 - 9-10am Welcome and Introductions etc.
-- Project status; and how we run the project.
-- Working practices: GitHub, [Riot
-  Chat](https://riot.im/app/#/room/#cylc-admin:matrix.org),
+- Project status
+  - Update on funding etc.
+  - How we run the project
+  - Communictation: [GitHub](https://github.com/cylc), [Riot Chat](https://riot.im/app/#/room/#cylc-admin:matrix.org),
   [Discourse](https://cylc.discourse.group/)
+
+- [Cylc-8 Architecture](cylc-8-architecture.md) recap
 - Components and [code repositories](https://github.com/cylc)
-    - Cylc Hub (Hub) and UI Server (UIS)
-      - [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver)
-    - Cylc Web UI (wUI)
-      - [cylc/cylc-ui](https://github.com/cylc/cylc-ui) (rename to
-        cylc/cylc-webui)
-    - Cylc Scheduler (Sched)
-      - [cylc/cylc-flow](https://github.com/cylc/cylc-flow) 
-    - Cylc Documentation
-      - [cylc/cylc-doc](https://github.com/cylc/cylc-doc) 
-    - (etc.)
-- DEMO: getting Cylc 8 installed and running
-- Issues that still need some thought:
+- Quick Cylc 8 DEMO
+- Architectural issues that still need some thought:
   - Remote spawning
   - Scaling and load balancing
   - CLI via the UI Server (e.g for task communication)
   - Access to other-user workflows
-  - Hub Sub-services: Workflow start-up, Cylc review, tasks beyond the active window, other?
-- Data provision to the UI:
+  - Single User usage
+  - Hub Sub-services: workflow start-up, Cylc review, tasks beyond the active window, other?
+  - (Cloud, containers?)
+- Data provision to the UI (David S):
    - Data stores and incremental update via ZMQ, Protobuf, GraphQL
 - Practical debugging session:
   - UI (browser and Vue tools), Sched (incl. subprocesses), UIS (incl. async
     routines), traffic between components
 
-
-### Tuesday: UI
+### Tuesday: UI plus Spawn-on-Demand and Friends
 
 - Web UI overview:
+  - [Design](https://github.com/cylc/cylc-ui/pull/87) (latest mock-up at top of page)
+  - Task/job separation and implications
   - Vue.js, common data store, subscriptions, GraphQL, websocket, etc.
   - Mutations (commands) and API-on-the-fly
   - Performance considerations
-  - Task/job separation and implications
 - Treeview status and plans
 - Other views TBD: dot, graph, etc.
 - Whiteboard/inkscape session on remaining design issues:
@@ -104,9 +104,15 @@ have not been updated yet ... "suite daemon", "suite server program",
     - how to represent xtriggers
     - theming?
     - other?
-- Spawn-on-Demand: comparison with Spawn-on-Submit, implications
 - CLI: entry points, new `cylc monitor`, CLI simplification? (post
   API-on-the-fly)
+
+Tuesday or Wednesday?
+- The future is sooner than you think
+  - Spawn-on-Demand: comparison with Spawn-on-Submit, implications
+    - [SoS animation](https://hjoliver.github.io/cylc-presentations/Altair-SC18-Dallas/#/features-cycling-vid)
+    - [SoD animation](https://hjoliver.github.io/cylc-presentations/Altair-SC19-Denver-Booth/#/infinite-cycling)
+  - Towards a fully event-driven scheduler (main loop asyncio...)
 
 ### Wednesday: Configuring and Running Workflows
 
@@ -124,6 +130,7 @@ AFTERNOON:
 - finish morning discussions
 - visit NIWA operations?
 - visit NIWA HPC facility?
+- (DM, HO, and JR side meeting?)
 
 ### Thursday:  Authentication, Authorization, Security
 
