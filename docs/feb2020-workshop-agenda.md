@@ -20,9 +20,9 @@ For each of the main topics below we will cover:
 ## Preparation
 
 Participants should bring a notebook computer capable of installing and running
-Cylc 8 if possible (Linux with admin access to install a lot of software as
-needed). If that's not possible your locked-down work laptop will do for
-viewing code and documentation, and showing slides and documents as needed.
+Cylc 8 if possible (Linux with admin access to install software as needed). If
+that's not possible your locked-down work laptop will do for viewing code and
+documentation, and showing slides and documents as needed.
 
 Those who have worked on aspects of the project already should be prepared to
 explain and demo their parts of the system to others. And we should all be
@@ -30,10 +30,10 @@ prepared to ask questions until we understand the entire system.
 
 ### Reading Material
 
-(WARNING: we have been using several provisional names for the back-end
+(NOTE: we have been using several provisional names for the back-end
 workflow manager before settling on "Cylc Scheduler" and the following docs
 have not been updated yet ... "suite daemon", "suite server program",
-"workflow server", "workflow service" are all the same thing)
+"workflow server", "workflow service" are all the same thing.)
 
  - [Cylc-7 Architecture](cylc-7-architecture.md)
  - [Cylc-8 Architecture](cylc-8-architecture.md)
@@ -56,15 +56,25 @@ have not been updated yet ... "suite daemon", "suite server program",
 
 ## Agenda
 
-### Monday: Architecture and Data Provision
+### Monday: Intro, Architecture and Data Provision
 
-- Welcome and Introductions etc.
-- Components and code repositories
-    - Cylc Hub (Hub)
+- 9-10am Welcome and Introductions etc.
+- Project status; and how we run the project.
+- Working practices: GitHub, [Riot
+  Chat](https://riot.im/app/#/room/#cylc-admin:matrix.org),
+  [Discourse](https://cylc.discourse.group/)
+- Components and [code repositories](https://github.com/cylc)
+    - Cylc Hub (Hub) and UI Server (UIS)
+      - [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver)
     - Cylc Web UI (wUI)
-    - Cylc UI Server (UIS)
+      - [cylc/cylc-ui](https://github.com/cylc/cylc-ui) (rename to
+        cylc/cylc-webui)
     - Cylc Scheduler (Sched)
-- Getting everything installed and running - demo
+      - [cylc/cylc-flow](https://github.com/cylc/cylc-flow) 
+    - Cylc Documentation
+      - [cylc/cylc-doc](https://github.com/cylc/cylc-doc) 
+    - (etc.)
+- DEMO: getting Cylc 8 installed and running
 - Issues that still need some thought:
   - Remote spawning
   - Scaling and load balancing
@@ -85,7 +95,6 @@ have not been updated yet ... "suite daemon", "suite server program",
   - Mutations (commands) and API-on-the-fly
   - Performance considerations
   - Task/job separation and implications
-  - Spawn-on-Demand: comparison with Spawn-on-Submit, implications
 - Treeview status and plans
 - Other views TBD: dot, graph, etc.
 - Whiteboard/inkscape session on remaining design issues:
@@ -95,7 +104,9 @@ have not been updated yet ... "suite daemon", "suite server program",
     - how to represent xtriggers
     - theming?
     - other?
-- CLI: entry points, new `cylc monitor`, CLI simplification? (post API-on-the-fly)
+- Spawn-on-Demand: comparison with Spawn-on-Submit, implications
+- CLI: entry points, new `cylc monitor`, CLI simplification? (post
+  API-on-the-fly)
 
 ### Wednesday: Configuring and Running Workflows
 
