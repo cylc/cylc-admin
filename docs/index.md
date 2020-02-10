@@ -4,6 +4,7 @@
 
 ## February 2020 Development Workshop (Wellington)
 - [Agenda](feb2020-workshop-agenda)
+- [Notes](feb2020-workshop-notes)
 
 ## Dec 2018 Development Workshop (Melbourne)
 - [Agenda](dec-workshop-agenda)
