@@ -120,3 +120,172 @@ Data Provision
      graphed, but future dynamic sub-graphs cannot be known in advance (display
      as an empty box that gets populated once known?)
 
+## Tuesday
+
+- (Notes TBD)
+
+- TW: SOD follow-up: consider two tasks waiting on different xtriggers; if one
+  gets satisfied it means the other never will and needs to be removed from the suite.
+  It seems we'll still need suicide triggers to achieve that removal.
+
+
+## Wednesday 
+
+(Config item discussion extended to Thursday morning - all noted here though)
+
+New Platforms Config:
+
+- proposal generally agreed
+  - (JR) should help with BOM two-cluster setup
+
+- `[foo/d/d|bar/d/d]` - need to support comma-sep list for consistency (but
+  can't prevent OR'd regex obviously)
+
+File Installation (`rose suite-run` migration):
+- this is next up for implementation
+  - what gets installed needs to be configurable, or else copy all
+
+- need a shell interface as well as `psutils` for "load" on platforms, e.g. to
+  query number of pending PBS jobs
+
+- TW generally agrees with the `rose suite-run` way of working with suites, no
+  need to continue supporting the old way
+
+- Ideally file installation and FS setup needs to be handled as a "pre-graph"
+  task, for visibility (otherwise pre-detach ties up the terminal, and
+  post-detach is hard to show users what's happening).
+
+- New "run1, run2" structure:
+  - new run for any "cold start", for safety and provenance
+  - "in-place warm start" use case requires option to copy or mv data dirs from
+    prev run
+  - might want to compress logs in old runs
+  - NN symlink to latest run
+  - NEW: first under cylc-run dir should be the suite source name (with
+    location link inside it) - the source is a template for multiple suites,
+    which can each have multiple runs
+    - this is just to impose a clearer convention - it uses the existing cylc
+      reg hierarchy capability. Otherwise nothing has changed.
+
+- run (and install) command semantics
+  - need a separate command for install, avoid confusing compound commands 
+    - (however, a "cold start" should always install)
+  - NEW (actually, discussed in Exeter, but we forgot!) use git to automatically 
+   manage the installed dir - detect and describe changes, checkout to install, etc.
+  - `--set` Jinja2 command line parameters should be stored in the install dir
+    in a user-readable config file (they are in the DB for restart use, but not
+    really visible to users)
+  
+NEW run command names (intuitive, good UI icons):
+  - `cylc install`
+  - `cylc play` (cold start, warm start, restart-from-state-snapshot, un-hold)
+  - `cylc stop` (shutdown, pause)
+
+- Rose: just drop `rose suite-run` and print a helpful error message if users
+  invoke it.
+
+Config File Changes
+
+- File Names agreed:
+  - `flow.cylc`
+  - `global.cylc`
+
+- (DM) let's not bother deprecating global config changes
+
+- need ability to configure site global conf location by `CYLC_CONF_PATH` for
+  cylc installations with no `/etc` access.  Default to `/etc` though.
+
+- agreed on the conf dir hierachy in the proposal (need version sub-dirs)
+
+- agreed on the "alternative" scheduler platform config proposal
+
+- `task event batch interval` (for event mail batching)
+
+- get rid of `cylc` section entirely
+
+- `platforms`, NOT `job platforms`
+
+- move all `cylc point` items to the scheduling section
+  - future: need clearer names of initial vs start, and stop vs final cycle
+    points?  (start and stop may be "inside" the graph)
+  - UTC mode: separate config needed for cycle point UTC mode from log
+    timestamps
+
+- need `stop after cycle point` (have `hold after...`)
+
+- `expected task failures` - leave as-is (ref tests only)
+
+- `abort if any task fails` - deprecate this config and make it a command line
+  option
+
+- `scheduler environment` - remove it!
+  - (otherwise for consistent behaviour on local and remote hosts we have to
+    export these vars in subprocess before command invocations, ... but this
+    will get muddied once we allow async *functions* as well as subprocess
+    (e.g. event handlers)
+
+- TW: we need to restore non-local dummy mode to allow investigation
+  of the effect of resource changes on a workflow (you can tell PBS it has more
+  resources than it really has, then request more but just submit a dummy task...)
+  - we have removed this already from Cylc 8 because dummy-local is much
+    simpler to implement as just a "dummy platform".
+
+- `simulation: disable suite event handlers`
+  - should be phrased positively
+  - `[scheduling]use suite event handlers = True`?
+  - (hmm, can't recall what we decided on this)
+
+- `[editors]` - discourage use and make it default to `$EDITOR` and `$GEDITOR`
+  (and to `vi` if those vars aren't set).
+
+- agreed to use None as config default instead of emtpy string, to allow us to
+  distinguish "set to nothing" from "not set"
+
+- `disable interactive command prompts` - remove command prompts
+
+- change `batch system` to `job runner`
+  - "batch system" is a poor name for background jobs
+  - and for future cloud-y and otherwise non-HPC ways of running jobs
+
+- batch system handlers should be plugins (we put an issue up for this)
+
+- `batch system command template` - put an issue up to consider removing this
+  (inconsistent as no poll and kill templates here) but leave for now as it is
+  used in the test battery about 6 times.
+
+- `task event handler retry delays` is not needed as a platform setting (remove
+  it)
+
+- remove `scp command` config, and the `scp-copy` util command
+
+- test battery config section can be removed as now in `global-tests.cylc`
+  (but need to check this)
+
+- `extra log files` - remove this and just provide access to all files found
+  in the job log dir (DS to remove from data schemas too)
+
+-  (forget other suggested item name changes, not worth it)
+
+- TODO:
+  - get current config-affecting PRs merged, then
+  - update the config proposal via PR, then
+  - OS to document configs with his auto-doc changes
+
+NOTES TBD:
+- (MH) Back-end Authentication 
+- Authorization method and config
+- BOM C7 pen test report relevance to C8?
+- consider and doucment BOM threat modeling points
+
+
+## Thursday TBD
+
+(carried forward from Wednesday)
+- (JR) BOM would like to be able to start the UI in read-only or
+  read-execute-only mode, and have a button to escalate to authorized level,
+  possibly with force re-authentication at that point. Full privileges should
+  time out after a configurable interval of inactivity (probably a full shift,
+  because the UI is often used for no-interaction monitoring for long periods).
+  (Belongs in Thursday's security session). (Probably after Cylc 8)
+
+
