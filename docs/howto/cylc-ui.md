@@ -19,7 +19,8 @@
    [cylc/cylc-flow](https://github.com/cylc/cylc-flow/) and
    [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver/):
   ```bash
-  pip install -e "${DEVDIR}/cylc-flow" -e "${DEVDIR}/cylc-uiserver"
+  pip install -e "${DEVDIR}/cylc-flow"[all]
+  pip install -e "${DEVDIR}/cylc-uiserver"[all]
   ```
   where `${DEVDIR}/cylc-flow` and `${DEVDIR}/cylc-uiserver` are the locations
   of your local (git) worktrees of the two projects.
