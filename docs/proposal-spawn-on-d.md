@@ -1,132 +1,243 @@
-# Proposal: Spawn-on-Demand
+# Proposal: Cylc 8 Spawn-on-Demand
 
-*Hilary Oliver, December 2019*
+**Hilary Oliver**, *December 2019 - February 2020*
 
-We have talked about replacing spawn-next-instance-on-submit with
-spawn-dependent-tasks-on-demand for some time (years!) but have tended to tie
-it to Cylc 9 plans such as an abstracted scheduler kernel.
+Terminology:
+- "upstream" and "downstream" refer to graph relationships
+- "task" is short for "task proxy object"
+- "n=0 window": all tasks the scheduler is currently aware of 
+- "n=M window": all tasks within M edges of the n=0 pool
 
-However spawn-on-demand is technically orthogonal to these other plans,
-surprisingly easy to implement in the current system, and it won't make Cylc 9
-changes any harder in the future (it will make them easier if anything). The
-advantages are so great that we should seriously consider doing it for Cylc 8:
-- A dramatic reduction in task pool size, and hence a big performance boost
-  - e.g.: a pool of 1000+ tasks/cycle (active, waiting, succeeded)
-    might drop to 10's of task/cycle max.
-  - (Dramatically reduces number of tasks for the UI too)
-- Naturally gives a sensible/explicable window on the workflow
-  - (we were planning to fake this before Cylc 9).
-- Easily re-run sections of workflow (e.g. back up to re-run a whole sub-tree)
-- Workflow branching without suicide triggers.
-- No need for dependency matching and task pool housekeeping.
+We first considered replacing task-cycle-based
+[Spawn-On-Submit](spawn-on-submit-history) (SoS)
+with graph-based Spawn-On-Demand (SoD) back in
+[cylc/cylc-flow#993](https://github.com/cylc/cylc-flow/issues/993).
 
-## Current: spawn-on-submit
+The ultimate solution probably looks like
+[cylc/cylc-flow#3304](https://github.com/cylc/cylc-flow/issues/3304)
+but that involves a major refactoring of the codebase for Cylc 9.
 
-At start-up we instantiate the first cycle-point instance of *every* task in
-the workflow, then each spawns its own next-cycle successor at job submit time
-(which prevents uncontrolled spawning but still allows successive instances to
-run in parallel).
-- This achieves the primary goal of ensuring that task proxies exist at or
-  before the time they are needed,
-  - except that tasks can't run out of cycle-point order (one consequence:
-    failed tasks have already spawned their own successors, but tasks waiting
-    downstream of them won't have, which stalls the worklow)
-- Also, because tasks spawn their own successors the task pool has to include
-  at least one cycle-point instance of *every task*, and more if there are
-  multiple active cycle points.
-  - this is overkill - a lot of tasks are created in the waiting state long
-    before they are needed (including parameterized tasks for the whole
-    parameter range).
-  - the overkill is made even worse by the need to keep succeeded tasks around
-  for dynamic dependency matching
-- Suicide triggers are needed to get rid of already-spawned waiting tasks that
-  will never run on alternate paths through the graph.
-- Re-running a sub-tree requires careful manual insertion of relevant task
-  proxies while the workflow is held, because spawning is not
-  dependency-driven.
-- Dynamic dependency matching can be expensive (at least it used to be).
+In fact SoD is technically orthogonal to other Cylc 9 plans and can be
+implemented easily within the current framework, by simply getting task proxies
+to spawn downstream tasks on demand instead of next-cycle successors on submit.
+This will simplify Cylc internals and will only make future Cylc 9 changes
+easier to implement in the future.
 
-## Proposal: spawn-on-demand
+### Advantages
 
-#### At parse-time:
-- Decompose the graph to determine prerequisites and outputs of every task (as
-  now) **AND** the downstream task ID(s) targetted by each output.
+- Dramatic reduction in task pool size (e.g. 10-100x in large workflows)
+  - No need to hold many waiting and succeded tasks in addition to the "active" ones
+  - No need for dynamic dependency matching (update prerequisites directly)
+  - Lighter load on the UI; the graph view becomes usable in large workflows
+- A graph-based "window on the workflow" that is easy for users to understand.
+  - (try explaining SoS to users!)
+- Suicide triggers not needed for alternate path branching
+    - the unused path does not get spawned in the first place
+- Task instances can run out of (cycle point) order
+  - No stalled workflows due to unspawned waiting tasks downstream of a failed task
+- "Re-flow" sub-graphs of the workflow by simply triggering the top task
+  - (automatic partial triggering by the original flow is difficult though)
 
-#### At start-up:
-- Instantiate the first (cycle point) instance of every task with no task
-  prerequisites, as far ahead as the runahead pool. This is typically a small
-  number even in huge workflows.
+## Implementation Overview
 
-#### At run-time
-- As output messages comes in, instantiate the downstream tasks (if not already
-  instantiated) and update their prerequisite(s).
-- When a task finishes (succeed or fail) it can be removed from the task pool
-  as soon as it has updated downstream tasks with its final output(s).
-- The task pool should be a task-ID keyed dict, not a list, so no iteration is
-  required to find target tasks (to update their prerequisites).
+Details and subtleties are discussed below, but the SoD algorithm is
+essentially as simple as this:
 
-#### Notes, edge cases, etc.:
+1. Record the downstream tasks that depend on each upstream task output
+   - Available at graph parsing but not used in SoS
+1. At start-up auto-spawn tasks with nothing upstream to spawn them
+   - And continue to do this as the workflow evolves
+1. As tasks complete outputs, spawn (if not already spawned) the downstream
+    tasks that depend on them
+   - And update their prerequisites directly
+1. Remove finished tasks immedidately, so long as doing so won't empty the task pool
 
-- Cycling sequences are currently stored by each task to enable spawning of
-next-cycle successors - where's the best place to hold this for spawn-on-demand?
-- Need to retain the runahead pool for tasks that are spawned too far ahead,
-including those with no prerequisites.
-  - When the the runhead point moves forward, spawn more no-prereq tasks out to
-    the new runahead point.
-  - (No need to spawn first instances of late-onset no-prereq tasks into the
-    runahead pool at start-up (e.g. stop-point tasks) although could do (TBD).
-- Suicide triggers:
-  - not needed so long as the alternate paths don't share outputs.
-  - self-suicide not needed, as finished tasks need not be kept in the pool.
-- Natural workflow window: n=1 based on outputs (not on tasks; if we spawn
-  downstream tasks on submit or on start instead of on outputs, suicide
-  triggers may become necessary again).
-- This makes it much easier to
-  [https://github.com/cylc/cylc-flow/issues/2143](hide the concept of insertion
-  from users). To retrigger a sub-tree (e.g.) we would still need to
-  auto-insert the first task proxy but spawn-on-demand takes care of the
-  rest.
-- In caught-up real-time operation, between cycles the task pool will only
-  contain the few tasks that are waiting on clock-triggers (and the UI can
-  optionally show their n-distance descendants as well if requested)
-- Conditional triggers are the only tricky thing? Consider "A|B => C"
-  with C triggering off of A. Do we remove C once it has finished regardless of
-  whether or not B is running or will run? If B does run later we need to stop
-  C being spawned again.
-  - So: for conditional triggers only, we need to check that the downstream
-    tasks have not already spawned and executed? (Ask the DB, or keep some
-    record in memory?)
-- If a disembodied output message arrives, choice to ignore it or
-  instantiate the owner task
+## Details, Choices, and Subtleties
 
-## Misc. Notes
+### Spawning on upstream outputs
 
-The reason for spawn-on-submit and run-time dependency matching is historical:
-Cylc originally had no workflow definition and no graph, just a loose
-collection of separate task definitions with their own prerequisites and
-outputs - it was up to Cylc to make the connections.
+Tasks can have multiple prerequisites that get completed at different times, so
+we have to either:
+- spawn on upstream outputs and manage waiting tasks with partially satisfied
+  prerequisites.
+- OR manage prerequisites separately and only spawn a task when all of its
+  prerequisites are completely satisfied.
 
-Each task also knew its own cycling sequence (e.g. the forecast model should
-run on a 6 hour cycle...), so it seemed natural that a task should spawn its
-own next-cycle successor.
+Spawning on outputs is easier in the current framework, because:
+- tasks already know how to evaluate satisfaction of their own prerequisites
+- this makes it easier to expose partially satisfied prerequisites to users
 
-When I bolted the "new" suite.rc and graph on the front (Cylc 3?) I used the
-graph only to determine automatic prerequisites and outputs for each task, and
-just passed these to the original "self-organising scheduler". But this dynamic
-dependency matching is technically unnecessary even in the current system,
-because the graph knows who satisfies whose prerequisites. 
+(And the memory cost of keeping a few whole task proxies - as opposed to just
+the prerequisites and associated methods - around for a bit longer than
+strictly necessary is very low).
 
-We have discussed allowing self-assembling workflows again (more like the
-original Cylc) but even those won't require dynamic dependency matching - we
-can have the graph self-assemble at start-up, after which the dependencies are
-static. (Dynamic matching is really only required to allow non-predetermined
-changes in workflow structure at run time - which we might come back to at some
-point).
+### Partially satisfied waiting tasks
 
-Cycling is still a special form of iteration compared to parameterization. I
-think that is reasonable because cycling can go on indefinitely. Perhaps with the
-future Python API we may be able to put the two concepts on equal footing and
-just follow the graph - whatever it is - generated by arbitrary user-supplied
-iterative functions. But it isn't yet clear whether that is feasible or not,
-and anyway this proposal has no impact on our ability to go there in the
-future. 
+We still have a few waiting tasks: those with partially satisfied
+prerequisites (see just above). Unlike SoS there are no wholly unsatisfied waiting
+tasks. We could choose to hide these in the runahead pool until fully satisfied
+to make it look as if they are only spawned at the last moment. However:
+- users need to know if a task's rerequisites are partially satisfied 
+- and any partially satisfied tasks (or sets of prerequisites) that don't get
+  fully satisfied (because their upstream outputs are never generated) have to
+  be exposed to users or else automatically removed.
+
+So the easiest thing to do at first is simply expose all waiting tasks in the
+main pool. We can figure out later which ones can be removed automatically.
+
+Possibly: waiting tasks can be removed if:
+- all of their upstream tasks have *finished*
+  - (upstream tasks should update their finished status in downstream tasks?)
+- all active tasks have moved on to future cycle points?
+
+### Avoiding Conditional-Triggered Reflow
+
+```
+A | B => C
+```
+If `C` triggers off of of `A` we need to avoid spawning `C` again if
+`B` runs later (after `C` has already finished). 
+
+So: keep finished conditionally-triggered tasks in the pool until
+- all of their upstream tasks have *finished*
+- all active tasks have moved on to future cycle points?
+
+(Same as for housekeeping partially satisfied waiting tasks, above)
+
+(restrict to conditional prerequisites, or make it universal for convenience?)
+
+(If cycle point based housekeeping is not valid in general we could cache the
+infor for some arbitrary period, and query the DB if it is not in the cache?)
+
+### Finished task removal and scheduler shutdown
+
+In SoS normal shutdown occurs when there is nothing left to run, i.e. there are
+no waiting tasks in the pool.
+
+```
+foo => bar => baz ...
+foo:fail => diagnose => cleanup
+```
+In this example, the intended path is `foo => bar => baz ...`. If `foo` fails
+SoS will stall when `cleanup` finishes, but we know the workflow is not
+finished because waiting tasks have already been spawned on the intended path.
+
+SoD seems potentially problematic in this respect because tasks can be removed
+immediately once finished, and there may not be any waiting tasks at all
+(unless there are partially satisfied preserequisites). In this example,
+if `foo` fails `bar` will not be spawned at all as the workflow follows the
+failure path, and if `cleanup` is removed once finished there will be nothing
+at all left in the task pool. How do we distinguish this from "workflow
+finished" when there is no way to automaticaly determine the intended path.
+
+We considered keeping non-terminating finished tasks in the pool if they have
+"un-handled" outputs.  For instance, `foo` above failed but it has a task that
+depends on `foo:succeed` that was not used. However this doesn't work in
+general. Failure may or may not be handled; it may even be expected in some
+cases; and Cylc can't know if custom outputs are sequential or mutually
+exclusive (one per branch, say).
+
+(And if we stayed alive with an empty task pool, where would the n=0 window be
+anchored for users?)
+
+SOLUTION: **remove finished tasks immediately unless doing so
+would leave the task pool empty.** Then,
+- the n=0 window contains current active tasks OR (if the workflow stalled)
+  the most recent active tasks - which is exactly what the window should be
+  centered on
+- when the workflow stalls the n=0 window may no longer contain the branch
+  point where things went off piste (in the example above, it would be just the
+  `cleanup` task) but that's fine - the essence of SoD is to follow the graph
+  where it leads. If stalled, widen the n=M window to see what led to the stall. 
+
+It may be difficult to automatically distinguish "workflow finished" from other
+stalls, in general. ("All tasks finished in the final cycle point"? - nope,
+there might be unused branches in the workflow, or it could be a massive
+non-cycling workflow...). We could allow users to specify what normal shutdown
+looks like, e.g. "`archive.$` succeeded" (where `$` is final cycle point) so
+that the scheduler can log "finished" instead of "stalled".
+
+Perhaps we should treat any stall (including workflow finished) like this:
+- report (UI and log) "workflow stalled with (list n=0 tasks)"
+- wait for user action or shutdown on a 15 minute (say) timeout
+- a restarted stalled workflow will similarly wait for 15 minutes before
+  shutting down again if not un-stalled
+
+### Tasks with nothing upstream to spawn them
+
+These tasks (those with no prerequisites at all, and those that depend only on
+xtriggers - including clock triggers) need to be auto-spawned out to the
+runahead limit.
+
+In future we can spawn xtrigger-tasks on demand too, in response to
+outputs/events emitted by xtrigger functions,
+but for the moment auto-spawning them as waiting tasks is easy to do and makes
+it easy to expose what's going on to users.
+
+### Suicide triggers *mostly* not needed
+
+Suicide triggers are no longer needed for normal workflow branching: the path
+that's not needed will not get spawned at all. We may still need them for
+obscure edge cases though. E.g. (Tim W): if task `foo` is waiting on an
+xtrigger `x`, and `bar` determines that `x` will never be satisfied, `bar`
+would need to suicide the waiting `foo`. (Not however this is an artifact of
+auto-spawning xtriggered tasks - if these tasks were also spawned on demand in
+response to xtrigger events, suicide triggers wouldn't be needed here either).
+
+### What's in the n=0 Window?
+
+- current active tasks: preparing, submitted, running
+    - or the most recent active tasks, if the workflow has stalled
+- waiting tasks with partially satisfied prerequisites
+- waiting tasks that are waiting on xtriggers
+
+### REFLOW
+
+In SoD the workflow will naturally flow on from manually (re-)triggered tasks
+just like the original flow. This seems like a very powerful feature, e.g.
+re-run whole sub-graphs without any complex setting up required, but with great
+power comes great responsibility!
+
+It is easy and safe to reflow an isolated sub-graph from the top, BUT what
+if the reflowing sub-graph is not isolated from the original flow (i.e.
+it has some dependencies that cannot be satisfied within the reflow)? Should
+tasks in the reflow be partially triggered by outputs from the original flow?
+(which would require DB queries)
+- If so, how do we determine if each reflowed task needs to wait to be
+  satisfied by yet-to-materialise reflow outputs or immediately use outputs
+  from the original flow? (i.e. does the reflowing graph touch the upstream
+  outputs or not?)
+  - How can we know if the reflow has infected the whole workflow so that we
+    can stop checking for this?
+
+We'll need a "flow number" that gets passed to downstream tasks at spawning,
+in order to distinguish one (re)flow from another.
+
+#### Reflow proposal:
+
+First implement SoD reflow without automatic use of outputs from the original
+flow. The lack of this feature, until we figure it out, should not be a blocker
+because we can't do it in SoS either! (In fact reflow is not possible at all in
+SoS, in general, without complex manual intervention to insert waiting tasks
+throughout the graph).
+
+So, tasks with prerequisites outside flow will be stuck as waiting until the user
+intervenes - but this is simpler than the corresponding intervention required
+to do the same thing in SoS.
+- The UI will need to make it clear why a task is still waiting, however, if
+  the view window extends to upstream tasks from the original flow
+
+We may want various reflow-stop conditions from "run the triggered task only"
+(no reflow) to "stop the reflow at cycle point x (or task y...)".
+
+## Future Enhancements
+
+For Cylc 9: [cylc/cylc-flow#3304](https://github.com/cylc/cylc-flow/issues/3304)
+
+But but several easy wins may be possible before then:
+- Refactor the task pool to avoid iterating to find the right task. A simple
+  task ID-keyed dict might do it.
+- Consider unifying prerequisites and outputs, which might lead to separate
+  tracking of prerequisites
+- Extend SoD to clock- and external-triggers: tasks should be spawned in
+  response to trigger events (depends on xtriggers as main-loop coroutines)
