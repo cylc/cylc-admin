@@ -43,7 +43,7 @@
     transferring the right auth info to the UIS to make them connect - difficult?)
     - (HO) was told J-Hub approved by the architecture team; single-point of
     access and site ident integration was insisted on by BOM and requires this
-    kind of architecture
+    kind of architecture (with distributed run-as-the-user components on the back end)
     - (DM) let's not go down this route until we know if it really is a problem
     - JR to find out more and report back
   - (OS) load balancing of multiple UIS (many users) on multiple VMs: should be
@@ -122,7 +122,27 @@ Data Provision
 
 ## Tuesday
 
-- (Notes TBD)
+- DM: Suite UUID? (messages from orphaned tasks rejected as UUID differs from
+  that in the contact file). Suite "run number" is probably simpler than UUID.
+
+- Agreed how to represent retries & other xtriggers in the UI - OS to update
+  the Issue pages. Most xtriggers like nodes in the graph view, but queued
+  should be shown as a badge like held (and only if the task is actively held
+  back in the queue; queued takes precedence).
+
+-  selection sharing, i.e. link views in the UI. Could link focus of two views,
+   e.g. by mouse drag, then subsequently keep linked, or not?  If linked,
+   should be two-way.
+
+- job icon theming is in already - have standard, greyscale, colour blind, but
+  no way to set prefs yet. Theming should be straightforward, just needs to be done.
+
+- User Preferences:
+  - TODO: can the Hub DB or our own Hub Service + DB store user preferences?  
+  - authentiated users don't necessarily have an account on the back end, so we
+    should store prefs at the Hub (slightly more general than browser cookies).
+
+
 
 - TW: SOD follow-up: consider two tasks waiting on different xtriggers; if one
   gets satisfied it means the other never will and needs to be removed from the suite.
