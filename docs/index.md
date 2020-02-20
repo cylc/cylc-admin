@@ -61,46 +61,56 @@ Guides for developers, and therefore slightly separate to main documentation
 
 ## Video Conferences
 
-Agendas and post-meeting notes.
+Meeting agendas and notes.
 
-- February 7 2019
-  - [Agenda](meetings/vc-feb-2019-agenda.md)
-  - [Notes](meetings/vc-feb-2019-summary.md)
+- March 2020 
+  - [Agenda](meetings/vc-march-2020-agenda.md)
 
-- March 18 2019
-  - [Agenda](meetings/vc-mar-2019-agenda.md)
-  - [Notes](meetings/vc-mar-2019-summary.md)
+- Februrary 2020 Workshop (links coming...)
 
-- April 4/5 2019
-  - [Agenda](meetings/vc-4-apr-2019-agenda.md)
-  - [Notes](meetings/vc-4-apr-2019-summary.md)
+- 17 December 2019
+  - [OS NIWA initial meeting](meetings/dm-os-ho-17Dec2019.md)
 
-- May 22 2019
-  - [Agenda](meetings/vc-22-may-2019-agenda.md)
-  - [Notes](meetings/vc-22-may-2019-summary.md)
+- 3 December 2019
+  - [Agenda](meetings/vc-dec-2019-agenda.md)
 
-- June 2019 Exeter
-  - [Notes](meetings/exeter-jun-2019.md)
+- 5 November 2019
+  - [Agenda](meetings/vc-nov-2019-agenda.md)
 
-- 9 August 2019
-  - [Agenda](meetings/vc-9-aug-2019-agenda.md)
-  - [Notes](meetings/vc-9-aug-2019-summary.md)
+- 8 October 2019
+  - [Agenda and notes](meetings/vc-8-oct-2019-agenda.md)
 
 - 9 September 2019
   - [Agenda](meetings/vc-9-sep-2019-agenda.md)
   - [Notes](meetings/vc-9-sep-2019-notes.md)
 
-- 8 October 2019
-  - [Agenda and notes](meetings/vc-8-oct-2019-agenda.md)
+- 9 August 2019
+  - [Agenda](meetings/vc-9-aug-2019-agenda.md)
+  - [Notes](meetings/vc-9-aug-2019-summary.md)
 
-- 5 November 2019
-  - [Agenda](meetings/vc-nov-2019-agenda.md)
+- June 2019 Exeter
+  - [Notes](meetings/exeter-jun-2019.md)
 
-- 3 December 2019
-  - [Agenda](meetings/vc-dec-2019-agenda.md)
+- 22 May 2019
+  - [Agenda](meetings/vc-22-may-2019-agenda.md)
+  - [Notes](meetings/vc-22-may-2019-summary.md)
 
-- 17 December 2019
-  - [OS NIWA initial meeting](meetings/dm-os-ho-17Dec2019.md)
+- 4/5 April 2019
+  - [Agenda](meetings/vc-4-apr-2019-agenda.md)
+  - [Notes](meetings/vc-4-apr-2019-summary.md)
+
+- 18 March 2019
+  - [Agenda](meetings/vc-mar-2019-agenda.md)
+  - [Notes](meetings/vc-mar-2019-summary.md)
+
+- 7 February 2019
+  - [Agenda](meetings/vc-feb-2019-agenda.md)
+  - [Notes](meetings/vc-feb-2019-summary.md)
+
+
+
+
+
 
 [LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
