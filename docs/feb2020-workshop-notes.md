@@ -1,10 +1,14 @@
 ## Feb 2020 Cylc Workshop Notes
+Hilary Oliver
 
-(Points noted mostly in the order they arose in discussions; to be organised later)
+Points noted mostly in the order they arose in discussions.
+I'll attempt to distil a summary report from this later
 
 ## Monday 
 
 - (DM) cross-user functionality is essential for 8.0
+  - can J-Hub do it out of the box?
+  - expose via the UI?
 
 - (DM) apparently not all J-Hub internal communication is secure yet. Need to
   investigate and check latest release
@@ -131,6 +135,7 @@ Data Provision
   the Issue pages. Most xtriggers like nodes in the graph view, but queued
   should be shown as a badge like held (and only if the task is actively held
   back in the queue; queued takes precedence).
+![OS output design](img/CylcCon2020/IMG-2978.jpg)
 
 -  selection sharing, i.e. link views in the UI. Could link focus of two views,
    e.g. by mouse drag, then subsequently keep linked, or not?  If linked,
@@ -187,6 +192,10 @@ Spawn-on-Demand (HO)
   suite. It seems we'll still need suicide triggers to achieve that removal?
   (HO to consider and update SoD proposal).
  ![TW suicide trigger example](img/CylcCon2020/IMG-2988.jpg)
+
+ - contingency plan if we can't pull off SoD:
+   - revert to the old SoS model: need to show task pool and ghost nodes (like
+     the cylc 7 graph view does)
 
 - (OS) "task pool" no longer a good term? (HO not so sure... now it's just a pool of active tasks.
 - (OS) TaskProxy should be renamed Job? (the Proxy class has been gutted, no
@@ -391,6 +400,10 @@ Authorization
 - auth config file needs to be `.cylc` format
 
 ![authorization config files](img/CylcCon2020/IMG-2994.jpg)
+
+UIS Sub-services
+- (OS) scan would be faster by parsing OS process listings
+
 - 
 
 - (MH) Back-end Authentication 
@@ -399,7 +412,7 @@ Authorization
 - consider and doucment BOM threat modeling points
 
 
-## Thursday TBD
+## Thursday
 
 (carried forward from Wednesday)
 - (JR) BOM would like to be able to start the UI in read-only or
@@ -412,11 +425,132 @@ Authorization
 Multi-user gscan
 ![multi-user gscan in single page app](img/CylcCon2020/IMG-2996.jpg)
 
+Security
+- J-Hub "internal SSL" (between proxy and hub) is optional
+  - (SSL is really TLS now)
+  - DM couldn't get it working
+  - (BK) the :8000 URL is the proxy
+  - TODO need to understand how all hub and proxy comms work
 
-What's this? A better network diagram?
+- JR: BOM might want start in read-only (or read-execute) mode, and have to 
+  explicitly elevate to full authorized (e.g. read-execute-write) privileges 
+  (and maybe require re-authentication for that).
+
+- note we have only one end-point for mutations, at each component (small
+  attack surface)
+
+- UIS-WFS: CurveZMQ
+- Hubless operation? don't bother
+- UI session timeouts? 
+  - disconnect after 15 min, configurable to never? (for long monitoring)
+  - (Hub auth cookie expire forces re-auth)
+  - UIS could drop the session?
+  - TODO can J-Hub do this
+
+- No tracebacks in production code (reveals internal paths etc.) 
+  - to clients, that as (maybe to authorized clients?)
+
+BOM Threat Modeling
+  - went through the list of points and addressed each one
+
+BOM VC
+  - present: IB, DA, MN, TL, MW
+  - some discussion about aspects of architecture and secure connects
+  - follow-up:
+    - HO sent comprehensive email to BOM participants + DM and JR
+    - JR to document security of the architecture
+
+Cylc 7 to 8 transition
+- DM: restart from cylc 7 will not be supported
+
+## Friday
+
+Versioning, packaging, and deployment
+- conda seems the most straightforward for us to focus on now
+  - but still some issues to work through
+  - and keep an eye on containers etc. too, for the future
+- conda meta-package will track cylc-flow version
+- components may release minor versions between full releases
+- node is not well liked by security people
+  - we only use it to build the UI
+  - could build the UI with node then package the build for pip
+  - configurable http proxy (J-Hub default proxy) is a node package though
+  - traffic proxy may be an option (written in Go)
+- the central cylc wrapper script will still work for choosing between multiple
+  installed versions
+- UI should be upgradeable on the fly (like Riot)
+  - it is just a static dir
+  - use an arbitrary UI version parameter in the URL to avoid browser caching
+  - we can do incremental UI upgrades without full conda meta-package releases
+- DM: main users of the conda metapackage will be individuals not sites
+- UI dist size is not too bad now
+- Deployment by Docker?
+  - should be useable just like a conda Cylc installation
+  - OK for the central wrapper
+  - only local background jobs different (they'll run inside the container)
+- `cylc hub` should be an entry point plugin supplied by the UIS package
+  - just J-Hub under the hood, but needs to pick up our config file
+- minimal install for job platforms: just CLI
+  - OS: we can have `scripts` as a `cylc-cli` sub-package inside `cylc-flow`
+    (same repo, two pip packages, with one a superset of the other).
+- CLI and version command can stay in cylc flow now
+  - `cylc version` returns cylc-flow version
+  -  ... unless installed by conda, then (TBD) we need another way to retrieve
+     that version (cylc meta package adds another version)
+
+Alpha-2 release
+- via conda forge if possible
+- BK and OS to follow up on any outstanding c-forge PR review questions
+
+7.8.5 release?
+- few closed issues, not worth releasing yet
+
+UIS back compat?
+- OK unless we increment the API version
+- forward compat not possible
+- spawn lastest UIS version by default
+- could force auto-shutdown-and-restart (on timeout?) ... maybe not popular
+
+UI datastore
+- not yet handling deltas - but that is conceptually quite simple
+- (OS) flat store is essential if possible
+  - views should construct the data structure they need as a skeleton populated
+    with *references* to (not copies of!) the data store elements
+
+- drop live file tailing for 8.0?
+- text editor in UI easy enough (no need to reinvent that wheel)
+
+Cylc Review
+- TODO make old Cylc 7 version work with Cylc 8 workflows
+- so it is easier to kill Cylc Review later (proper UI integration should
+  render it obsolete)
+
+CLI use of ZMQ or UIS needs to be configurable (no built-in fallback)
+
+CLI - if interactive need ZMQ, else https will do
+
+Documentation TODO
+
+- UI Guide (in the UI)
+
+- Cylc 7-8 migration guide      
+  - platforms
+  - "rose suite-run" migration changes - file install, cylc-run structure, etc.
+  - config changes
+  - no restarts from Cylc 7
+  - the new UI
+  - Python 2 to 3 for xtriggers etc.
+  - plugins (xtriggers etc.)
+  - Jinja2 (version number upped ... meh)
+
+- User Guide - massive upgrade to reflect the new system
+
+- Security Overview of the new architecture - cylc-doc#113.
+  - model on J-Hub docs
+  - JR to start on this
+
+- TODO - put the above in an issue on cylc-doc
+
+- A better network diagram?
 ![comms protocols](img/CylcCon2020/IMG-2981.jpg)
-
-To be placed:
-![OS output design](img/CylcCon2020/IMG-2978.jpg)
-
 
