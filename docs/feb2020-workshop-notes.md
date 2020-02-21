@@ -78,6 +78,8 @@
   - (can keep old monitor as well if really necessary - it's pretty trivial)
 
 Data Provision
+- [DS Slides](https://cylc.github.io/cylc-presentations/CylcCon2020-data/index.html)
+
 - Event driven, incremental update, throughout the system, is almost done.
   - (the two new PRs are implemented via a different subscription to avoid
     breaking the current UI, until we mod the data store to the new way ... has
@@ -141,13 +143,75 @@ Data Provision
   - TODO: can the Hub DB or our own Hub Service + DB store user preferences?  
   - authentiated users don't necessarily have an account on the back end, so we
     should store prefs at the Hub (slightly more general than browser cookies).
+  - Prefs export/input functionality for easy switch to other hubs?
+  - named profiles might be needed, to associate different prefs with different
+    UI Servers (e.g. ops vs test) - after 8.0
+    - or just do this via user@hub box color?
+
+- Graph View
+  - Cytoscape not good for our needs (canvas vs svg, display engine)
+  - Dagre layout engine is needed
+  - but writing our own display engine should be hard (OS had a POC ready in one day)
+
+- BK debugging demo:
+  - front end: browser dev tools, including Vue extension
+  - back end: PyCharm, easy to connect to subprocesses
+
+- DS on the data stores: concerned about how to group changes once the Sched main loop is gone.
+  The main loop is a convenient way to ensure that changes to various data
+  elements are grouped in a self-consistent whole before pushing to the subscription.
+
+- OS: need CylcCon page on the website to show that we are an active project. HO to do.
+
+Spawn-on-Demand (HO)
+- Tantalisingly close to do-able within the current "task pool" framework, for Cylc 8?
+- Needs n-edge window for the UI to be effective
+  - but we need to deal with this anyway
+  - SoS has some serious problems, we've just learned to live with them
+- `cylc monitor` needs to go via UIS and direct to WFS (Workflow Scheduler).
+  Direct will see on n=0 (active tasks)
+- Need an "n-max" setting that will populate entire cycle points in the UI
+- Can treat succeded and failed states equally (in SoD, remove them
+  immediately) - but we can choose (optionally?) to keep them until dismissed,
+  at least until the UI has better ways to alert users to failed tasks
+  - a list of failed tasks? Have to be able to retrigger from the alerting list
+- Tracking conditional prerequisites is tricky, requires in-memory or perhaps disk caching?
+  - (JR) if needed, use existing disk caching or in-memory DB (redis) systems for this
+- Can't let suite stalls result in shutdown because no active tasks left in the pool!
+  - watch out for failed tasks that are not a graph leaf node
+  - so: don't remove tasks whose outputs were not handled - i.e. they did not spawn
+      (conditionals are difficult again?)
+- Need a battery of examples to clearly demonstrate expected behaviours (HO to start this)
+- (TW): consider two tasks waiting on different xtriggers; if one gets
+  satisfied it means the other never will and needs to be removed from the
+  suite. It seems we'll still need suicide triggers to achieve that removal?
+  (HO to consider and update SoD proposal).
+ ![TW suicide trigger example](img/CylcCon2020/IMG-2988.jpg)
+
+- (OS) "task pool" no longer a good term? (HO not so sure... now it's just a pool of active tasks.
+- (OS) TaskProxy should be renamed Job? (the Proxy class has been gutted, no
+  longer doing retry logic etc.)
+- Can we unifiy outputs and prerequisites/triggers?
+- Reflow could be super-useful (just trigger the top task of the tree to re-run)
+  - HO: need a "flow ID" passed along via the on-demand spawning mechanism
+  - hard to support partial triggering by tasks from the original flow (have to
+    search arbitrarily far back to determine whether a task can be fully
+    satisfied within the reflow or not?)
+  - initially may have to disallow reflow (retriggering just runs the one task)
+    or require manual triggering of tasks with off-flow prerequisites
+   ![reflow with off-flow prerequisites](img/CylcCon2020/IMG-2984.jpg)
+- (MH) interesting idea on representing tasks as edges that connect task event nodes.
+    - looks somewhat promising but difficult to see how to handle multiple
+      outputs and conditional triggers. Investigate further for Cylc 9?
+ ![MH graph representation](img/CylcCon2020/IMG-2995.jpg)
 
 
-
-- TW: SOD follow-up: consider two tasks waiting on different xtriggers; if one
-  gets satisfied it means the other never will and needs to be removed from the suite.
-  It seems we'll still need suicide triggers to achieve that removal.
-
+Asyncio and coroutines (OS)
+- we should make an event-driven system where coroutines process queued task events
+    - e.g. job submission done by a coroutine that processes job submission events
+    - queues become the state of the workflow (which need to be cleared for shutdown)
+- better xtriggers:
+  - "push" xtriggers, e.g. for suite-state (await socket, yield result)
 
 ## Wednesday 
 
@@ -187,6 +251,8 @@ File Installation (`rose suite-run` migration):
     - this is just to impose a clearer convention - it uses the existing cylc
       reg hierarchy capability. Otherwise nothing has changed.
 
+![run dir hierarchy](img/CylcCon2020/IMG-2986.jpg)
+
 - run (and install) command semantics
   - need a separate command for install, avoid confusing compound commands 
     - (however, a "cold start" should always install)
@@ -195,14 +261,15 @@ File Installation (`rose suite-run` migration):
   - `--set` Jinja2 command line parameters should be stored in the install dir
     in a user-readable config file (they are in the DB for restart use, but not
     really visible to users)
-  
+
 NEW run command names (intuitive, good UI icons):
   - `cylc install`
   - `cylc play` (cold start, warm start, restart-from-state-snapshot, un-hold)
   - `cylc stop` (shutdown, pause)
+- deprecate old commands via invisible alias? (for scripted use of them)
+- Rose: drop `rose suite-run` and print a helpful error message if users invoke it.
 
-- Rose: just drop `rose suite-run` and print a helpful error message if users
-  invoke it.
+![Workflow run commands](img/CylcCon2020/IMG-2987.jpg)
 
 Config File Changes
 
@@ -291,7 +358,41 @@ Config File Changes
   - update the config proposal via PR, then
   - OS to document configs with his auto-doc changes
 
-NOTES TBD:
+Back-end Authentication (MH)
+
+- CurveZMQ
+- currently the private key gets copied to job hosts
+  - we should generate key pairs at both ends and transfer the public ones both ways
+    - test for shared FS
+- uses existing ZMQ API to generate the keys
+- client times out if access denied (unfortunately that good from a security perspective)
+    - we could report "connection timed out, this could be due to ..."
+- WFS -> ssh -> job leaves a small window for "man in the middle" attacks
+    - solved pretty well by not authorizing jobs to send anything but 
+      `cylc message` back ("platform authorization")
+- "ssh messaging" needs to be restored on master
+   - do it via ssh tunnel with ZMQ
+- (TW): need CLI-UIS for remote platforms
+   - can we use a Hub API to generate tokens and use those to authenticate?
+- (JR): all messsages might need timestamps
+  - (I think we decided agains this? ... because CurveZMQ protects against replay attacks?)
+
+Authorization
+- need site and user config
+  - user can ramp up authorization levels as far as the site allows
+- groups:
+  - (1) locally (site and user) defined lists
+  - (2) access to Unix OS groups
+  - (3) LDAP groups? (Does the Hub authentication plugin return this info? Probably not?)
+      - or query getent()?
+      - (JR) OS groups would do, as we link OS and LDAP groups
+  - do (1) and (2) initially, (3) etc. after 8.0
+
+- auth config file needs to be `.cylc` format
+
+![authorization config files](img/CylcCon2020/IMG-2994.jpg)
+- 
+
 - (MH) Back-end Authentication 
 - Authorization method and config
 - BOM C7 pen test report relevance to C8?
@@ -307,5 +408,15 @@ NOTES TBD:
   time out after a configurable interval of inactivity (probably a full shift,
   because the UI is often used for no-interaction monitoring for long periods).
   (Belongs in Thursday's security session). (Probably after Cylc 8)
+
+Multi-user gscan
+![multi-user gscan in single page app](img/CylcCon2020/IMG-2996.jpg)
+
+
+What's this? A better network diagram?
+![comms protocols](img/CylcCon2020/IMG-2981.jpg)
+
+To be placed:
+![OS output design](img/CylcCon2020/IMG-2978.jpg)
 
 
