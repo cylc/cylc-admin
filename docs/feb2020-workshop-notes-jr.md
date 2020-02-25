@@ -161,7 +161,9 @@ See https://cylc.github.io/cylc-admin/threats.html
 I'm also writing a document covering the security model in more detail which
 I'll be sending through soon.
 
-Cylc Review – This tool (previously called rose bush) takes cylc job, error and
+## Cylc Review
+
+This tool (previously called rose bush) takes cylc job, error and
 output logs (as well as some other files) and serves them as HTML.
 
 At this point, the goal is to serve historical job logs via the cylc UI just as
