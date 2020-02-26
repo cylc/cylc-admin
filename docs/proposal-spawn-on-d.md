@@ -52,6 +52,11 @@ easier to implement in the future.
   - No stalled workflows due to unspawned waiting tasks downstream of a failed task
 - "Re-flow" sub-graphs of the workflow by simply triggering the top task
   - (automatic partial triggering by the original flow is difficult though)
+- Solves the first-instance problem of task definitions added mid-run
+  - (in SoS users have to add the first instance manually - after which it
+    will spawn its own next-cycle successor - because we can't guess which
+    instance should be the first one; in SoD the right one will just appear on
+    demand)
 
 ## Implementation Overview
 
@@ -249,15 +254,31 @@ We may want various reflow-stop conditions from "run the triggered task only"
 
 ### "cylc insert" not needed
 
-This one is pretty obvious. If you force trigger a task, it gets inserted
-automatically with prerequisites satisfied. (If needed for test purposes we
-could allow the trigger command to manipulate individual prerequisites?)
-Inserting tasks for other reasons does not really make sense in SoD.
+In SoD, a forcibly-triggered task gets inserted automatically with
+prerequisites satisfied. (If needed for test purposes we could allow the
+trigger command to manipulate individual prerequisites?). Inserting tasks for
+other reasons does not really make sense in SoD.
+
+A major SoS use case was manual insertion of the first instance of a new task
+added to the suite definition mid-run. In SoD the first instance will
+automatically appear on demand.
 
 ### "cylc spawn" not needed
 
 This SoS niche command was used to make a task spawn its next-cycle successor,
 usually before removing the original. No analogous command is needed in SoD.
+
+### "cylc remove" not needed?
+
+In SoS removing tasks from the pool will effectively remove them from the
+running workflow because future instances won't be spawned. In SoD there's not
+much in the task pool, and:
+- Removing an active task doesn't make sense (the job is submitted or running
+  already)
+- A removed partially satisfied waiting task would just get spawned again when
+  the next prerequisite gets satisfied (however it would be stuck waiting on
+  the original pre-removal outputs). And it would not prevent future instances
+  getting spawned (tasks don't spawn their own successors on SoD).
 
 ### "cylc reset" not needed
 
