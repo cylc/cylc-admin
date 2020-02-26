@@ -31,7 +31,7 @@ easier to implement in the future.
 - [Implications](#implications)
 - [Future Enhancments](#future-enhancements)
 
-### Advantages of SoD
+## Advantages of SoD
 
 - Dramatic reduction in task pool size (e.g. 10-100x in large workflows)
   - No need to hold many waiting and succeded tasks in addition to the "active" ones
@@ -240,9 +240,64 @@ We may want various reflow-stop conditions from "run the triggered task only"
 
 ## Implications
 
+### Task insertion not needed
+
+This one is pretty obvious. If you force trigger a task, it gets inserted
+automatically with prerequisites satisfied. (If needed for test purposes we
+could allow the trigger command to manipulate individual prerequisites?)
+
 ### Task state reset not needed
 
+Task state reset is used in SoS to forcibly change the state of existing task
+proxies so that dependency negotiation will get a different result (in order
+to, usually, cause a downstream task to run).
+
+SoD does not have "existing task proxies" (much) or dependency negotiation. So
+`cylc reset` functionality should be removed.
+
+However, we should delineate the use cases for reset and make sure SoD has them
+covered:
+
+- SoS: force a bunch of already-finished tasks back to waiting, prior to a reflow
+  - SoD: not needed, reflow is automatic without waiting tasks out front
+- SoS: force a failed task to succeeded to allow a stalled workflow to carry on
+  - SoD: better not to lie about the failure, instead force the downstream
+    tasks to carry on in spite of it
+- Anything else?
+
 ### Submit number?
+
+Retry number increments with automatic retries; submit number increments with
+any retry (automatic or forced). Job log path includes submit number, to avoid
+clobbering older logs.
+
+In SoD retry number is safe as the task proxy doesn't disappear, it goes from
+failed to waiting on a clock trigger (see "tasks with nothing to spawn them"
+above). Submit number is a problem because finished tasks disappear from the
+pool immediately.
+
+Note **this does not work correctly in SoS!** - if you have to insert a task
+before triggering it, the submit number resets to one and the older job logs
+will get clobbered. (This is the "housekeeping" problem mentioned below).
+
+#### Options
+
+Firstly, is submit number ever needed by the workflow or task logic or is it
+only to avoid clobbering job logs? **If the latter, can we just determine submit
+number from the filesystem when the job script is first written to disk?**
+
+Otherwise:
+- Remember submit numbers for all tasks that have triggered so far?
+  - implies the usual housekeeping problem in cycling workflows
+  - only effective before the info gets housekept (any historical task can be
+    triggered, in principle)
+- Ask the DB every time a task is spawned?
+  - no houskeeping, but IO
+- Cache the info in memory for some time, but ask the DB if not found in the
+  cache?
+  - still requires asking the DB at every initial job submit (it won't be in
+    the cache then, and we can't know it is the initial submit) ... which is
+    most of the time
 
 ## Future Enhancements
 
