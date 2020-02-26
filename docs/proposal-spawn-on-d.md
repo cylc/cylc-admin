@@ -2,11 +2,26 @@
 
 **Hilary Oliver**, *December 2019 - February 2020*
 
-Terminology:
+## Table of Contents
+
+- [Terminology](#background)
+- [Background](#background)
+- [Advantages of SoD](#advantages)
+- [Implementation Overview](#implementation-overview)
+- [Details, Choices, and Subtleties](#details-choices-and-subtleties)
+- [Implications](#implications)
+- [Future Enhancments](#future-enhancements)
+
+
+### Terminology
+
 - "upstream" and "downstream" refer to graph relationships
 - "task" is short for "task proxy object"
 - "n=0 window": all tasks the scheduler is currently aware of 
 - "n=M window": all tasks within M edges of the n=0 pool
+
+
+### Background
 
 We first considered replacing task-cycle-based
 [Spawn-On-Submit](spawn-on-submit-history) (SoS)
@@ -22,14 +37,6 @@ implemented easily within the current framework, by simply getting task proxies
 to spawn downstream tasks on demand instead of next-cycle successors on submit.
 This will simplify Cylc internals and will only make future Cylc 9 changes
 easier to implement in the future.
-
-## Table of Contents
-
-- [Advantages of SoD](#advantages)
-- [Implementation Overview](#implementation-overview)
-- [Details, Choices, and Subtleties](#details-choices-and-subtleties)
-- [Implications](#implications)
-- [Future Enhancments](#future-enhancements)
 
 ## Advantages of SoD
 
@@ -240,13 +247,19 @@ We may want various reflow-stop conditions from "run the triggered task only"
 
 ## Implications
 
-### Task insertion not needed
+### "cylc insert" not needed
 
 This one is pretty obvious. If you force trigger a task, it gets inserted
 automatically with prerequisites satisfied. (If needed for test purposes we
 could allow the trigger command to manipulate individual prerequisites?)
+Inserting tasks for other reasons does not really make sense in SoD.
 
-### Task state reset not needed
+### "cylc spawn" not needed
+
+This SoS niche command was used to make a task spawn its next-cycle successor,
+usually before removing the original. No analogous command is needed in SoD.
+
+### "cylc reset" not needed
 
 Task state reset is used in SoS to forcibly change the state of existing task
 proxies so that dependency negotiation will get a different result (in order
@@ -265,6 +278,19 @@ covered:
     tasks to carry on in spite of it
 - Anything else?
 
+
+### Commands that target multiple tasks?
+
+E.g. to force retrigger all tasks `foo*` in cycle points `202303*`.
+
+In SoS this functionality is far from perfect:
+- it only works on tasks that happen to have proxies in the task pool!
+- triggered tasks might "reflow" or not, depending whether downstream tasks
+  happen to have proxies in the pool
+
+In SoD this will be much more sensible, but we'll have to consult the DB to
+match task globs (or take a list of selected tasks from the UI).
+
 ### Submit number?
 
 Retry number increments with automatic retries; submit number increments with
@@ -282,9 +308,10 @@ will get clobbered. (This is the "housekeeping" problem mentioned below).
 
 #### Options
 
-Firstly, is submit number ever needed by the workflow or task logic or is it
-only to avoid clobbering job logs? **If the latter, can we just determine submit
-number from the filesystem when the job script is first written to disk?**
+Firstly, I don't think that submit number (as opposed to retry number) is ever
+needed by workflow or job logic is it?  If its only purpose is to record what
+happened and avoid clobbering job logs then **can we just get the previous
+value from disk, and increment it, when the job script is written?**
 
 Otherwise:
 - Remember submit numbers for all tasks that have triggered so far?
