@@ -23,7 +23,15 @@ to spawn downstream tasks on demand instead of next-cycle successors on submit.
 This will simplify Cylc internals and will only make future Cylc 9 changes
 easier to implement in the future.
 
-### Advantages
+## Table of Contents
+
+- [Advantages of SoD](#advantages)
+- [Implementation Overview](#implementation-overview)
+- [Details, Choices, and Subtleties](#details-choices-and-subtleties)
+- [Implications](#implications)
+- [Future Enhancments](#future-enhancements)
+
+### Advantages of SoD
 
 - Dramatic reduction in task pool size (e.g. 10-100x in large workflows)
   - No need to hold many waiting and succeded tasks in addition to the "active" ones
@@ -229,6 +237,12 @@ to do the same thing in SoS.
 
 We may want various reflow-stop conditions from "run the triggered task only"
 (no reflow) to "stop the reflow at cycle point x (or task y...)".
+
+## Implications
+
+### Task state reset not needed
+
+### Submit number?
 
 ## Future Enhancements
 
