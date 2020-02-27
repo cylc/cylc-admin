@@ -213,42 +213,56 @@ response to xtrigger events, suicide triggers wouldn't be needed here either).
 
 ### REFLOW
 
-In SoD the workflow will naturally flow on from manually (re-)triggered tasks
-just like the original flow. This seems like a very powerful feature, e.g.
-re-run whole sub-graphs without any complex setting up required, but with great
-power comes great responsibility!
+Re-flow means triggering a finite partial re-run of some sub-graph of the
+workflow, or a full re-run from some earlier task or tasks in the workflow. 
 
-It is easy and safe to reflow an isolated sub-graph from the top, BUT what
-if the reflowing sub-graph is not isolated from the original flow (i.e.
-it has some dependencies that cannot be satisfied within the reflow)? Should
-tasks in the reflow be partially triggered by outputs from the original flow?
-(which would require DB queries)
-- If so, how do we determine if each reflowed task needs to wait to be
-  satisfied by yet-to-materialise reflow outputs or immediately use outputs
-  from the original flow? (i.e. does the reflowing graph touch the upstream
-  outputs or not?)
-  - How can we know if the reflow has infected the whole workflow so that we
-    can stop checking for this?
+## Reflow in SoS
 
-We'll need a "flow number" that gets passed to downstream tasks at spawning,
-in order to distinguish one (re)flow from another.
+- A restricted form of reflow will occur automatically in SoS if you
+  (re-)insert and trigger a task with only previous-instance dependence
+  (`foo[-P1] => foo`). 
+- Otherwise it won't work without complicated manual placement of downstream 
+  task proxies and/or state reset of still-existing ones. (And it is near
+  impossible to get this right without using the graph view).
 
-#### Reflow proposal:
+## Reflow in SoD
 
-First implement SoD reflow without automatic use of outputs from the original
-flow. The lack of this feature, until we figure it out, should not be a blocker
-because we can't do it in SoS either! (In fact reflow is not possible at all in
-SoS, in general, without complex manual intervention to insert waiting tasks
-throughout the graph).
+In SoD the workflow naturally reflows from any (re-)triggered task.
 
-So, tasks with prerequisites outside flow will be stuck as waiting until the user
-intervenes - but this is simpler than the corresponding intervention required
-to do the same thing in SoS.
-- The UI will need to make it clear why a task is still waiting, however, if
-  the view window extends to upstream tasks from the original flow
+It is easy and safe to retrigger an isolated sub-graph, or the whole workflow,
+from points that flow to all downstream tasks.
 
-We may want various reflow-stop conditions from "run the triggered task only"
-(no reflow) to "stop the reflow at cycle point x (or task y...)".
+But what if some tasks have some prequisites that cannot be satisfied within
+the reflow?
+
+Reflowing tasks will not automatically be satisfied by the previous flow
+because those task proxies are gone.
+
+INITIALLY we should:
+- support connection to the previous flow by manual intervention
+  - click on upstream tasks (note in Sod these won't have proxies in the pool)
+    to spawn downstream based on specific (or all) outputs (this will allow
+    pre-reflow setup all at once)
+  - and/or click on waiting tasks to trigger now and/or force-satisfy
+    specific prerequisites
+- we need to solve the [submit number problem](#submit-number), but that goes
+  for SoS too
+- The UI will need to make it clear why a task is stuck waiting, as the upstream
+  off-reflow will appear as finished (the problem is, they finished *before*
+  the reflow was triggered)
+  - mark recently-active tasks? e.g. a badge that fades from most recent to old?
+
+FUTURE ENHANCEMENT
+- We may want to allow automatic satisfication of reflowed tasks by previous
+  flow tasks that are outside of the reflow graph
+- (This is not a blocker for initial implementation - we can't do it in SoS!)
+- Requires determining which prerequisites will come (eventually, if not
+  immediately) from the reflow and which can only be taken from the previous
+  flow - a graph traversal problem, potentially difficult?
+- (Also: how to know if the reflow has infected the whole workflow so that we
+   can stop checking for this?)
+- This probably requires implementing a "flow number" that is passed to
+  downstream tasks on spawning.
 
 ## Implications
 
@@ -322,7 +336,7 @@ In SoD the only task-targeting control commands left are:
   - future tasks: do we need to allow this beyond the n=1 window? (not possible
     the future when the upcoming grapy may be determined dynamically)
 
-### Submit number?
+### Submit number
 
 Retry number increments with automatic retries; submit number increments with
 any retry (automatic or forced). Job log path includes submit number, to avoid
@@ -331,31 +345,20 @@ clobbering older logs.
 In SoD retry number is safe as the task proxy doesn't disappear, it goes from
 failed to waiting on a clock trigger (see "tasks with nothing to spawn them"
 above). Submit number is a problem because finished tasks disappear from the
-pool immediately.
+pool immediately (so the task proxy can't store it).
 
-Note **this does not work correctly in SoS!** - if you have to insert a task
-before triggering it, the submit number resets to one and the older job logs
-will get clobbered. (This is the "housekeeping" problem mentioned below).
+Note **this does not work correctly in SoS!**. Inserted tasks get the right
+submit numbers via DB look-up, but their spawned next-cycle instances (which
+are needed if you want to achieve reflow) start at submit number one again and
+clobber the old jobs logs.
 
-#### Options
+To get this right (in SoS or SoD) we would need to either:
+- look up submit number every time a task is spawned, OR
+- **get it from the job log dir before writing the job script?**
 
-Firstly, is submit number ever needed by workflow or job logic is it?  If its
-only purpose is to record what happened and avoid clobbering job logs then
-**can we just get the previous value from disk, and increment it, when the job
-script is written?**
-
-Otherwise:
-- Remember submit numbers for all tasks that have triggered so far?
-  - implies the usual housekeeping problem in cycling workflows
-  - only effective before the info gets housekept (any historical task can be
-    triggered, in principle)
-- Ask the DB every time a task is spawned?
-  - no houskeeping, but IO
-- Cache the info in memory for some time, but ask the DB if not found in the
-  cache?
-  - still requires asking the DB at every initial job submit (it won't be in
-    the cache then, and we can't know it is the initial submit) ... which is
-    most of the time
+A completely in-memory solution is not feasible without remembering the entire
+run history (and that's what the DB is for). Using the log directory may be
+best - it's simple, and we have to go to disk at that point anyway.
 
 ### Restart
 
