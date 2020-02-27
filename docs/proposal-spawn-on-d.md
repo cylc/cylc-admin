@@ -268,7 +268,7 @@ automatically appear on demand.
 This SoS niche command was used to make a task spawn its next-cycle successor,
 usually before removing the original. No analogous command is needed in SoD.
 
-### "cylc remove" not needed?
+### "cylc remove" not needed
 
 In SoS removing tasks from the pool will effectively remove them from the
 running workflow because future instances won't be spawned. In SoD there's not
@@ -339,10 +339,10 @@ will get clobbered. (This is the "housekeeping" problem mentioned below).
 
 #### Options
 
-Firstly, I don't think that submit number (as opposed to retry number) is ever
-needed by workflow or job logic is it?  If its only purpose is to record what
-happened and avoid clobbering job logs then **can we just get the previous
-value from disk, and increment it, when the job script is written?**
+Firstly, is submit number ever needed by workflow or job logic is it?  If its
+only purpose is to record what happened and avoid clobbering job logs then
+**can we just get the previous value from disk, and increment it, when the job
+script is written?**
 
 Otherwise:
 - Remember submit numbers for all tasks that have triggered so far?
@@ -356,6 +356,14 @@ Otherwise:
   - still requires asking the DB at every initial job submit (it won't be in
     the cache then, and we can't know it is the initial submit) ... which is
     most of the time
+
+### Restart
+
+In SoS we store gross task state in the DB and rely on dependency negotiation to
+(re-)satisfy prerequisites of waiting tasks at start-up. In SoD prerequisites are
+satisfied by upstream tasks at the moment of output completion (and upstream
+tasks might be gone by shutdown) so we'll need to store task prerequisites
+in the DB.
 
 ## Future Enhancements
 
