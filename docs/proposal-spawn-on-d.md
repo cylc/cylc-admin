@@ -300,17 +300,27 @@ covered:
 - Anything else?
 
 
-### Commands that target multiple tasks?
+### Commands that target multiple tasks
 
-E.g. to force retrigger all tasks `foo*` in cycle points `202303*`.
+E.g. to retrigger all tasks `foo*` in cycle points `202303*`.
 
-In SoS this functionality is far from perfect:
-- it only works on tasks that happen to have proxies in the task pool!
-- triggered tasks might "reflow" or not, depending whether downstream tasks
-  happen to have proxies in the pool
+In SoS this functionality is far from perfect: it only affects the task pool!
+And reflow might occur or not, depending on what waiting tasks happen to exist
+in the pool.
 
-In SoD this will be much more sensible, but we'll have to consult the DB to
-match task globs (or take a list of selected tasks from the UI).
+In SoD the only task-targeting control commands left are:
+- `poll` and `kill`
+  - easy, these only need to look at active tasks (in the SoD pool)
+- `hold`, `release` (do we still need to support these for individual tasks?)
+  - `hold` applies to future tasks, so keep globs in memory and check
+    them when tasks get spawned? (so held tasks will be waiting in the pool)
+  - `release` - applies to held tasks, so need to look at the pool, and tidy
+    the recorded hold globs list
+- `trigger`
+  - historical tasks: just check they exist and are on-sequence, then insert
+    and trigger (no need to check the DB unless for submit number - see above)
+  - future tasks: do we need to allow this beyond the n=1 window? (not possible
+    the future when the upcoming grapy may be determined dynamically)
 
 ### Submit number?
 
