@@ -277,12 +277,14 @@ A major SoS use case was manual insertion of the first instance of a new task
 added to the suite definition mid-run. In SoD the first instance will
 automatically appear on demand.
 
-### "cylc spawn" not needed
+### "cylc spawn" needs to be repurposed
 
-This SoS niche command was used to make a task spawn its next-cycle successor,
-usually before removing the original. No analogous command is needed in SoD.
+In SoS this made a task - in the task pool - spawn its next-cycle successor.
 
-### "cylc remove" not needed
+In SoD we need a command to spawn the children of specific outputs in target
+tasks.
+
+### "cylc remove" STILL needed
 
 In SoS removing tasks from the pool will effectively remove them from the
 running workflow because future instances won't be spawned. In SoD there's not
@@ -293,6 +295,7 @@ much in the task pool, and:
   the next prerequisite gets satisfied (however it would be stuck waiting on
   the original pre-removal outputs). And it would not prevent future instances
   getting spawned (tasks don't spawn their own successors on SoD).
+- BUT needed to remove rare stuck waiting tasks.
 
 ### "cylc reset" not needed
 
@@ -313,6 +316,23 @@ covered:
     tasks to carry on in spite of it
 - Anything else?
 
+### CLI task globs?
+
+#### SoS
+
+Globbing on name and cycle point SoS to match instances in the task pool:
+- spawn, poll, kill, remove, reset, trigger
+
+Globbing on name only, for a given cycle point:
+- insert
+
+#### SoD
+
+Globbing on name and cycle point SoS to match instances in the task pool:
+- poll, kill
+
+Globbing on name only, for a given cycle point:
+- spawn, trigger
 
 ### Commands that target multiple tasks
 
