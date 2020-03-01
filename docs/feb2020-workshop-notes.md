@@ -156,7 +156,7 @@ Data Provision
 - Graph View
   - Cytoscape not good for our needs (canvas vs svg, display engine)
   - Dagre layout engine is needed
-  - but writing our own display engine should be hard (OS had a POC ready in one day)
+  - but writing our own display engine not hard (OS had a POC ready in one day)
 
 - BK debugging demo:
   - front end: browser dev tools, including Vue extension
@@ -184,8 +184,8 @@ Spawn-on-Demand (HO)
   - (JR) if needed, use existing disk caching or in-memory DB (redis) systems for this
 - Can't let suite stalls result in shutdown because no active tasks left in the pool!
   - watch out for failed tasks that are not a graph leaf node
-  - so: don't remove tasks whose outputs were not handled - i.e. they did not spawn
-      (conditionals are difficult again?)
+  - so: don't remove tasks whose outputs were not handled? - i.e. they did not
+    spawn (conditionals are difficult again?)
 - Need a battery of examples to clearly demonstrate expected behaviours (HO to start this)
 - (TW): consider two tasks waiting on different xtriggers; if one gets
   satisfied it means the other never will and needs to be removed from the
@@ -208,12 +208,14 @@ Spawn-on-Demand (HO)
     satisfied within the reflow or not?)
   - initially may have to disallow reflow (retriggering just runs the one task)
     or require manual triggering of tasks with off-flow prerequisites
-   ![reflow with off-flow prerequisites](img/CylcCon2020/IMG-2984.jpg)
+
+![reflow with off-flow prerequisites](img/CylcCon2020/IMG-2984.jpg)
+
 - (MH) interesting idea on representing tasks as edges that connect task event nodes.
     - looks somewhat promising but difficult to see how to handle multiple
       outputs and conditional triggers. Investigate further for Cylc 9?
- ![MH graph representation](img/CylcCon2020/IMG-2995.jpg)
 
+![MH graph representation](img/CylcCon2020/IMG-2995.jpg)
 
 Asyncio and coroutines (OS)
 - we should make an event-driven system where coroutines process queued task events
@@ -248,28 +250,28 @@ File Installation (`rose suite-run` migration):
   task, for visibility (otherwise pre-detach ties up the terminal, and
   post-detach is hard to show users what's happening).
 
-- New "run1, run2" structure:
-  - new run for any "cold start", for safety and provenance
-  - "in-place warm start" use case requires option to copy or mv data dirs from
-    prev run
-  - might want to compress logs in old runs
-  - NN symlink to latest run
-  - NEW: first under cylc-run dir should be the suite source name (with
-    location link inside it) - the source is a template for multiple suites,
-    which can each have multiple runs
-    - this is just to impose a clearer convention - it uses the existing cylc
-      reg hierarchy capability. Otherwise nothing has changed.
+New "run1, run2" structure:
+- new run for any "cold start", for safety and provenance
+- "in-place warm start" use case requires option to copy or mv data dirs from
+  prev run
+- might want to compress logs in old runs
+- NN symlink to latest run
+- NEW: first under cylc-run dir should be the suite source name (with
+  location link inside it) - the source is a template for multiple suites,
+  which can each have multiple runs
+  - this is just to impose a clearer convention - it uses the existing cylc
+    reg hierarchy capability. Otherwise nothing has changed.
 
 ![run dir hierarchy](img/CylcCon2020/IMG-2986.jpg)
 
-- run (and install) command semantics
-  - need a separate command for install, avoid confusing compound commands 
-    - (however, a "cold start" should always install)
-  - NEW (actually, discussed in Exeter, but we forgot!) use git to automatically 
-   manage the installed dir - detect and describe changes, checkout to install, etc.
-  - `--set` Jinja2 command line parameters should be stored in the install dir
-    in a user-readable config file (they are in the DB for restart use, but not
-    really visible to users)
+Run (and install) command semantics
+- need a separate command for install, avoid confusing compound commands 
+  - (however, a "cold start" should always install)
+- NEW (actually, discussed in Exeter, but we forgot!) use git to automatically 
+ manage the installed dir - detect and describe changes, checkout to install, etc.
+- `--set` Jinja2 command line parameters should be stored in the install dir
+  in a user-readable config file (they are in the DB for restart use, but not
+  really visible to users)
 
 NEW run command names (intuitive, good UI icons):
   - `cylc install`
@@ -280,12 +282,12 @@ NEW run command names (intuitive, good UI icons):
 
 ![Workflow run commands](img/CylcCon2020/IMG-2987.jpg)
 
-Config File Changes
+Config File names agreed:
+- `flow.cylc`
+- `global.cylc`
+- (and `flow-tests.rc`?)
 
-- File Names agreed:
-  - `flow.cylc`
-  - `global.cylc`
-
+Config Item changes:
 - (DM) let's not bother deprecating global config changes
 
 - need ability to configure site global conf location by `CYLC_CONF_PATH` for
@@ -403,14 +405,10 @@ Authorization
 
 UIS Sub-services
 - (OS) scan would be faster by parsing OS process listings
-
-- 
-
 - (MH) Back-end Authentication 
 - Authorization method and config
 - BOM C7 pen test report relevance to C8?
 - consider and doucment BOM threat modeling points
-
 
 ## Thursday
 
