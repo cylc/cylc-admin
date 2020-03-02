@@ -2,9 +2,11 @@
 
 **Hilary Oliver**, *December 2019 - February 2020*
 
+# !WARNING: THIS IS A WIP - COME BACK LATER!
+
 ## Table of Contents
 
-- [Terminology](#background)
+- [Terminology](#terminology)
 - [Background](#background)
 - [Advantages of SoD](#advantages)
 - [Implementation Overview](#implementation-overview)
@@ -17,9 +19,8 @@
 
 - "upstream" and "downstream" refer to graph relationships
 - "task" is short for "task proxy object"
-- "n=0 window": all tasks the scheduler is currently aware of 
-- "n=M window": all tasks within M edges of the n=0 pool
-
+- "n=0 window": tasks the scheduler is currently aware of (the "task pool")
+- "n=M window": tasks within M edges of the n=0 pool
 
 ### Background
 
@@ -55,41 +56,54 @@ easier to implement in the future.
 - Solves the first-instance problem of task definitions added mid-run
   - (in SoS users have to add the first instance manually - after which it
     will spawn its own next-cycle successor - because we can't guess which
-    instance should be the first one; in SoD the right one will just appear on
+    instance should be the first one; in SoD the right one will appear on
     demand)
 
 ## Implementation Overview
 
-Details and subtleties are discussed below, but the SoD algorithm is
-essentially as simple as this:
+During graph parsing, record exaclty who depends on each task output. Then:
+1. At start-up auto-spawn tasks with no one upstream to do it for them,
+   and continue to do this as the workflow evolves
+1. As completed outputs are reported, spawn (if not already spawned) downstream
+   tasks that depend on them, and update their prerequisites directly
+   - tasks with multiple prerequisites are handled by partially-satisfied
+     waiting tasks (potentially requiring suicide triggers or automatica
+     housekeeping - but much less than in SoS)
+   - tasks with conditional prerequisites 
+1. Remove finished tasks (succeeded or failed) so long as doing so won't empty
+   the task pool
 
-1. Record the downstream tasks that depend on each upstream task output
-   - Available at graph parsing but not used in SoS
-1. At start-up auto-spawn tasks with nothing upstream to spawn them
-   - And continue to do this as the workflow evolves
-1. As tasks complete outputs, spawn (if not already spawned) the downstream
-    tasks that depend on them
-   - And update their prerequisites directly
-1. Remove finished tasks immedidately, so long as doing so won't empty the task pool
+### Consequences
 
-## Details, Choices, and Subtleties
+The "active" task pool (n=0) contains:
+- actual active tasks: preparing, submitted, running
+- spawned tasks that are waiting on the rest of their prerequisites
+- spawned tasks that are waiting on external triggers
 
-### Spawning on upstream outputs
+If the workflow stalls, not emptying the task pool keeps the n=0 window
+centered on the most recent activity. To go beyond that users need to widen
+the window, which is not the scheduler's problem.
+
+
+
+## Details
+
+### Spawning on outputs
 
 Tasks can have multiple prerequisites that get completed at different times, so
 we have to either:
-- spawn on upstream outputs and manage waiting tasks with partially satisfied
-  prerequisites.
-- OR manage prerequisites separately and only spawn a task when all of its
-  prerequisites are completely satisfied.
+- Spawn on upstream outputs and manage waiting tasks with partially satisfied
+  prerequisites
+- OR manage prerequisites separately and only spawn tasks when all of their
+  prerequisites are completely satisfied
 
-Spawning on outputs is easier in the current framework, because:
-- tasks already know how to evaluate satisfaction of their own prerequisites
-- this makes it easier to expose partially satisfied prerequisites to users
+Spawning on outputs is better, at least as a first step, because tasks already
+know how to evaluate satisfaction of their own prerequisites; and any tasks
+that get stuck partially-satisfied will be exposed.
 
-(And the memory cost of keeping a few whole task proxies - as opposed to just
-the prerequisites and associated methods - around for a bit longer than
-strictly necessary is very low).
+(The cost of keeping a few whole task proxies - as opposed to just
+prerequisites and associated methods - for a bit longer than strictly
+necessary is very low).
 
 ### Partially satisfied waiting tasks
 
@@ -108,7 +122,10 @@ main pool. We can figure out later which ones can be removed automatically.
 Possibly: waiting tasks can be removed if:
 - all of their upstream tasks have *finished*
   - (upstream tasks should update their finished status in downstream tasks?)
+    CHECK EXISTENCE of downstream?
 - all active tasks have moved on to future cycle points?
+
+What about multiple prereqs, include normal and conditional in same task?
 
 ### Avoiding Conditional-Triggered Reflow
 
@@ -120,14 +137,17 @@ If `C` triggers off of of `A` we need to avoid spawning `C` again if
 
 So: keep finished conditionally-triggered tasks in the pool until
 - all of their upstream tasks have *finished*
+    CHECK EXISTENCE of downstream?
 - all active tasks have moved on to future cycle points?
 
-(Same as for housekeeping partially satisfied waiting tasks, above)
+(Same as for housekeeping partially satisfied waiting tasks, above?)
 
 (restrict to conditional prerequisites, or make it universal for convenience?)
 
 (If cycle point based housekeeping is not valid in general we could cache the
 infor for some arbitrary period, and query the DB if it is not in the cache?)
+
+What about multiple prereqs, include normal and conditional in same task?
 
 ### Finished task removal and scheduler shutdown
 
@@ -203,13 +223,6 @@ xtrigger `x`, and `bar` determines that `x` will never be satisfied, `bar`
 would need to suicide the waiting `foo`. (Not however this is an artifact of
 auto-spawning xtriggered tasks - if these tasks were also spawned on demand in
 response to xtrigger events, suicide triggers wouldn't be needed here either).
-
-### What's in the n=0 Window?
-
-- current active tasks: preparing, submitted, running
-    - or the most recent active tasks, if the workflow has stalled
-- waiting tasks with partially satisfied prerequisites
-- waiting tasks that are waiting on xtriggers
 
 ### REFLOW
 
@@ -387,6 +400,11 @@ In SoS we store gross task state in the DB and rely on dependency negotiation to
 satisfied by upstream tasks at the moment of output completion (and upstream
 tasks might be gone by shutdown) so we'll need to store task prerequisites
 in the DB.
+
+### Failed tasks
+
+   - (We can choose to leave failed tasks in the pool in lieu of better failure
+     notification, but they aren't needed by the scheduler)
 
 ## Future Enhancements
 
