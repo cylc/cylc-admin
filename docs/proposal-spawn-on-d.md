@@ -294,8 +294,10 @@ straightforward:
   - don't reflow at all (run the retriggered task alone)
   - stop the reflow at cycle point X
   - stop the reflow at a list of task IDs
-  - don't reflow if the original flow is still running? (is there a valid use
-    case for multiple active flow-fronts at the same time?)
+  - don't reflow if the original flow is still running? (are there valid use
+    cases for multiple active flow-fronts at the same time?  It is safe so long
+    as [submit numbers](#submit-number) are handled properly... if one front
+    catches up with another, tasks won't spawn on top of another with the same ID)
 
 *Retrigging a non-bottleneck task will cause a stalled reflow* without manual
 intervention, because previous-flow outputs are not automatically available
@@ -327,9 +329,10 @@ easier to do.
 *TODO: the UI will need to make it clear why a task is stuck waiting, as off-reflow
 parents will appear as finished in the n>0 window (they finished before
 the reflow was triggered). Can we mark recently-active tasks? Or flow number?*
-(Note we have a similar problem in SoS really: previous-flow task outputs will
-not be used automatically unless those tasks happen to still be present in the task
-pool - and users do not generally understand why they will or will not be present).
+(Note we actually have a similar-but-worse problem in SoS: previous-flow task
+outputs will not be used automatically unless those tasks happen to still be
+present in the task pool - and users do not generally understand what
+determines that presence).
 
 ## Submit number
 
@@ -423,8 +426,8 @@ In SoD we need to glob on:
 
 ### Restart
 
-In SoS we only store gross task state in the DB infer prerequisite status from
-that on restart (then rely on dependency negotiation to (re-)satisfy
+In SoS we only store gross task state in the DB, and infer prerequisite status
+from that on restart (then rely on dependency negotiation to (re-)satisfy
 prerequisites of waiting tasks at start-up). For SoD we'll need to store actual
 prerequisite status in the DB, not just task state. But that's easy to do.
 
