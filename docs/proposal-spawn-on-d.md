@@ -317,8 +317,8 @@ intervention, because previous-flow outputs are not automatically available
   - If they can't, query the database for previous-flow outputs (and: how to
     know when/if we can stop doing this?)
 - But I'm not convinced it is really needed, and in any case lack of this
-  should be a blocker for SoD 
-  - As-is this proposal is still a massive improvement on SoS reflow (less
+  should not be a blocker for SoD 
+  - SoD reflow is a massive improvement on SoS reflow as-is (less
     intervention is needed, and it is straightfoward and consistent)
 
 Semantically, SoD reflow as described here is really just a generalisation of
