@@ -315,6 +315,11 @@ intervention, because previous-flow outputs are not automatically available
   - As-is this is still a massive improvement on SoS reflow! (less intervention
     is needed, and it is straightfoward and consistent)
 
+Semantically, SoD reflow as described here is really just a generalisation of
+"retriggering tasks within the same flow". This is not really fundamentally
+different than what we have currently in SoS, it just works better and is
+easier to do.
+
 *TODO: the UI will need to make it clear why a task is stuck waiting, as off-reflow
 parents will appear as finished in the n>0 window (they finished *before*
 the reflow was triggered). Can we mark recently-active tasks? Or flow number?*
