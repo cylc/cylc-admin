@@ -98,12 +98,12 @@ most recently active tasks, i.e. it represents *what is currently happening* or
 (if stalled) *what happened most recently*.
 
 The definition of "active" has been extended slightly to include:
-- [active waiting tasks](#active-waiting-tasks) (those with partially
-  satisified prerequisites)
-- [active finished tasks](#active-finished-tasks) (those with some unfinished
-  conditional parents)
+- [active waiting tasks](#active-waiting-tasks) (tasks with at least one, but
+  not all, prerequisites satisfied)
+- [active finished tasks](#active-finished-tasks) (finished tasks that depend
+  conditionally on some unfinished parents)
 
-But these constitute vastly fewer waiting and finished tasks than in SoS.
+But these constitute vastly fewer `waiting` and `finished` tasks than in SoS.
 
 (The task pool does not **need** to retain failed tasks. However we might
 choose to retain them until we have implemented better failure notification
