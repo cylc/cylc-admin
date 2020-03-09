@@ -23,7 +23,7 @@
 
 ## Introduction
 
-*Companion POC Pull Request: https://github.com/cylc/cylc-flow/pull/3474*
+Companion POC PR [cylc-flow#3474](https://github.com/cylc/cylc-flow/pull/3474).
 
 (To be superceded and re-described by a new PR shortly).
 
