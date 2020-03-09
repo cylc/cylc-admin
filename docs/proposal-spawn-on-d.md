@@ -325,8 +325,11 @@ different than what we have currently in SoS, it just works better and is
 easier to do.
 
 *TODO: the UI will need to make it clear why a task is stuck waiting, as off-reflow
-parents will appear as finished in the n>0 window (they finished *before*
+parents will appear as finished in the n>0 window (they finished before
 the reflow was triggered). Can we mark recently-active tasks? Or flow number?*
+(Note we have a similar problem in SoS really: previous-flow task outputs will
+not be used automatically unless those tasks happen to still be present in the task
+pool - and users do not generally understand why they will or will not be present).
 
 ## Submit number
 
