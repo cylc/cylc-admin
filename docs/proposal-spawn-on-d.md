@@ -84,10 +84,10 @@ as soon as its first prerequisite is satisfied, or only when all of them are
 satisfied? - SoD can be made to work either way, but the former happens to be
 more straightforward, at least initially.
 
-The proposed implementation requires some housekeeping of information
-associated with partially completed and conditional prerequisites (below) but
-it turns out that can be done entirely in memory (unless/until we need
-automatic use of previous-flow outputs - below).
+SoD requires housekeeping (below) of (tasks with) partially completed
+prerequisites and finished tasks with conditional prerequisites, but
+that can be done entirely in memory (unless/until we want automatic use of
+previous-flow outputs - below).
 
 ## Implementation Details
 
