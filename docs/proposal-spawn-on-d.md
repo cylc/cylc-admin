@@ -144,6 +144,9 @@ determined alternate paths).
 
 Fortunately this doesn't really matter! I propose:
 
+- (As described above) do not remove finished tasks if doing so would empty the
+  task pool. This indicates a stall, and keeps the task pool focused on what
+  happened just before the stall.
 - If the workflow stalls - finished or not - shut down on a timeout
   - the timeout allows intervention if the worklfow is actively monitored
   - otherwise the user can intervene later, after restarting the workflow
@@ -306,14 +309,15 @@ intervention, because previous-flow outputs are not automatically available
     its unsatisfied prerequisite
 
 **Automatic use of previous-flow outputs** is a possible future enhancement.
-- But it may be difficult
+- It may be difficult
   - Graph traversal is required to determine whether prerequisites can be
     satisfied within the new flow or not
-  - If not, we have to query the database for previous-flow outputs
-  - (and how to know when/if we can stop doing this?)
-- The lack of this feature should be be a blocker for SoD 
-  - As-is this is still a massive improvement on SoS reflow! (less intervention
-    is needed, and it is straightfoward and consistent)
+  - If they can't, query the database for previous-flow outputs (and: how to
+    know when/if we can stop doing this?)
+- But I'm not convinced it is really needed, and in any case lack of this
+  should be a blocker for SoD 
+  - As-is this proposal is still a massive improvement on SoS reflow (less
+    intervention is needed, and it is straightfoward and consistent)
 
 Semantically, SoD reflow as described here is really just a generalisation of
 "retriggering tasks within the same flow". This is not really fundamentally
