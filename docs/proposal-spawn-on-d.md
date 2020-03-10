@@ -106,8 +106,9 @@ The definition of "active" has been extended slightly to include:
 
 But these constitute vastly fewer `waiting` and `finished` tasks than in SoS.
 
-(The task pool does not **need** to retain failed tasks. However we might
-choose to retain them until we have implemented better failure notification
+(The task pool does not **need** to retain failed tasks - they can be
+auto-inserted and retriggered later regardless. However we could choose to
+retain them until we have implemented better failure notification
 and/or the UI has access to n>0 windows)
 
 The task pool might not contain "tasks of interest" such as those that caused
