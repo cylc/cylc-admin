@@ -70,10 +70,10 @@ the graph). Then:
    and continue to do this as the workflow evolves
 1. As outputs are completed, spawn (if not already spawned) children and update
    their prerequisites directly
-   - see [active waiting tasks](#active-waiting-tasks), below
+   - see [Active waiting tasks](#active-waiting-tasks), below
 1. Remove finished tasks (succeeded or failed) when all of their parents have
    finished, unless that would empty the task pool (which implies a stall)
-   - see [active finished tasks](#active-finished-tasks), below
+   - see [Active finished tasks](#active-finished-tasks), below
 1. If the workflow stalls, shut down after a configurable timeout
    - see [What is in the task pool](#what-is-in-the-task-pool) and [Scheduler
      shutdown](#scheduler-shutdown), below
@@ -99,7 +99,8 @@ most recently active tasks, i.e. it represents *what is currently happening* or
 
 The definition of "active" has been extended slightly to include:
 - [active waiting tasks](#active-waiting-tasks) (tasks with at least one, but
-  not all, prerequisites satisfied)
+  not all, prerequisites satisfied; and - for now - tasks waiting on external
+  triggers)
 - [active finished tasks](#active-finished-tasks) (finished tasks that depend
   conditionally on some unfinished parents)
 
@@ -178,6 +179,12 @@ Spawning earlier is more straightforward, at least initially, because:
 - (And the additional cost of keeping a few waiting tasks a bit longer than
   strictly necessary is very low).
 
+Note that children have to be spawned and their "parent finished" status
+updated whenever a parent *finishes*, even if the child doesn't depend
+on the particular final output achieved by that parent. In the example above,
+if `A` fails we spawn C (to remember that `A` finished even if `A` has gone
+once `B` finishes).
+
 See also [Tasks with no parents to spawn
 them](tasks-with-no-parents-to-spawn-them)
 
@@ -224,7 +231,7 @@ way, short of intervention, that the status of their parents can change:
 Tasks with no prerequisites at all, and those that depend only on xtriggers -
 including clock triggers - need to be auto-spawned out to the runahead limit.
 
-In future we shouuld spawn xtriggered-tasks on demand too, in response to
+In future we should spawn xtriggered-tasks on demand too, in response to
 outputs/events emitted by xtrigger functions, but for the moment auto-spawning
 them as active waiting tasks is easy to do and makes it easy to expose what's
 going on to users.
