@@ -66,27 +66,28 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 Get task proxies to record who depends on each of their outputs (according to
 the graph). Then:
 1. At start-up auto-spawn tasks with no one upstream to do it for them,
-   and continue to do this as the workflow evolves
+   and continue to do this as the workflow evolves (to the runahead limit)
 1. As outputs are completed, spawn (if not already spawned) children and update
    their prerequisites directly
    - see [Active waiting tasks](#active-waiting-tasks), below
-1. Remove finished tasks (succeeded or failed) when all of their parents have
-   finished, unless that would empty the task pool (which implies a stall)
+1. Remove finished tasks when all of their parents have finished, unless that
+    would empty the task pool (which implies a stall)
    - see [Active finished tasks](#active-finished-tasks), below
 1. If the workflow stalls, shut down after a configurable timeout
    - see [What is in the task pool](#what-is-in-the-task-pool) and [Scheduler
      shutdown](#scheduler-shutdown), below
 
-Details are discussed below because some aspects of this implementation are
-choices that are not fundamental to the SoD concept. E.g. is a task "on demand"
-as soon as its first prerequisite is satisfied, or only when all of them are
-satisfied? - SoD can be made to work either way, but the former happens to be
-more straightforward, at least initially.
+Details are discussed below. Some aspects of this implementation are not
+fundamental to the SoD concept. E.g. is a task "on demand" as soon as its first
+prerequisite is satisfied, or only when all of them are satisfied? - SoD can be
+made to work either way, but the former happens to be more straightforward, at
+least initially.
 
-SoD requires housekeeping (below) of (tasks with) partially completed
-prerequisites and finished tasks with conditional prerequisites, but
-that can be done entirely in memory (unless/until we want automatic use of
-previous-flow outputs - below).
+SoD requires housekeeping (below) of tasks with partially satisfied
+prerequisites (in order to determine when they are fully satisfied) and
+finished tasks with conditional prerequisites (to prevent conditional reflow).
+But this can be done entirely in memory (so long as we don't have automatic use
+of previous-flow outputs, below).
 
 ## Implementation Details
 
@@ -119,7 +120,7 @@ cycle.
 
 This is fine! The scheduler's job is to manage active tasks, not to maintain an
 awareness of what happened in the (chronological, or graph) past. To see beyond
-the task pool users just need to widen the window (and watch for important
+the task pool users just need to widen the view window (and watch for important
 events) - the UI Server's problem.
 
 ### Scheduler shutdown
@@ -133,15 +134,14 @@ all tasks are spawned ahead as waiting without regard for what is "demanded" by
 the graph. If the workflow has completed there will be nothing left to run (no
 waiting tasks left in the pool) otherwise it is a premature stall.
 
-In SoD tasks can be removed immediately once finished and there are no wholly
-unsatisfied waiting tasks, so there will often be nothing waiting ahead to
-show whether or not there is more to do. In fact *there is no foolproof way to
-automatically distinguish premature stall from workflow completion.* In both
-stalled and active situations success or failure can be handled or not, or
-expected or not, or possibly handled by custom outputs which might be
-sequential or mutually exclusive; and we can't even know if every
-task in every cycle point is supposed to execute (there might be dynamically
-determined alternate paths).
+In SoD there are no waiting tasks (no wholly unsatisfied ones, at least) so
+there will often be nothing waiting ahead to show whether or not there is more
+to do. In fact *there is no foolproof way to automatically distinguish
+premature stall from workflow completion.* In both stalled and active
+situations success or failure can be handled or not, or expected or not, or
+possibly handled by custom outputs which might be sequential or mutually
+exclusive; and we can't even know if every task in every cycle point is
+supposed to execute (there might be dynamically determined alternate paths).
 
 Fortunately this doesn't really matter! I propose:
 
