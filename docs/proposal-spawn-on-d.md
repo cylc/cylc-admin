@@ -83,11 +83,15 @@ prerequisite is satisfied, or only when all of them are satisfied? - SoD can be
 made to work either way, but the former happens to be more straightforward, at
 least initially.
 
-SoD requires housekeeping (below) of tasks with partially satisfied
-prerequisites (in order to determine when they are fully satisfied) and
-finished tasks with conditional prerequisites (to prevent conditional reflow).
-But this can be done entirely in memory (so long as we don't have automatic use
-of previous-flow outputs, below).
+In this implementation, tasks with partially satisfied prerequisites have to be
+retained, until they are fully satisfied; and finished tasks with conditional
+prerequisites have to be retained until their parents are all finished, to prevent
+conditional reflow. And these tasks need housekeeping because it  is possible
+that they'll never be fully satisfied, or their parents will never all finish
+(Note this same information would have to be tracked and housekept in any SoD
+implementation, whether or not it is retained inside task proxy objects).
+This can be done entirely in memory, so long as we don't have automatic use
+of previous-flow outputs (below).
 
 ## Implementation Details
 
