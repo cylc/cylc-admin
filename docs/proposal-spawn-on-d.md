@@ -52,7 +52,8 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 ### Advantages
 
 - **Dramatically smaller task pool**
-- **No need for dynamic dependency matching** (update prerequisites directly)
+- **No need for dynamic dependency matching** (the spawner can update the
+  spawnees prerequisites directly)
 - **An easily understood graph-based "window on the workflow"**
 - **Suicide triggers not needed for alternate path branching**
 - **Task instances can run out of (cycle point) order**
