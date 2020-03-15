@@ -75,7 +75,7 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 1. (Tasks with prerequisites all satisfied can submit their jobs, as usual)
 1. As tasks finish, spawn any multi-parent children (if not already spawned) and
       update their
-      [parent-is-finished-status](spawning-and-parent-is-finished-status)
+      [parent-is-finished status](spawning-and-parent-is-finished-status)
       directly
 1. Housekeep the task pool:
    1. Remove waiting tasks if their parents have finished
@@ -129,10 +129,10 @@ them](tasks-with-no-parents-to-spawn-them)
 
 #### Housekeeping waiting tasks
 
-Waiting tasks can be removed if their parents have all finished (because at
-that point their parents can't help them anymore). Above, if `A` succeeded, and
-`B` failed (and was handled!), both parents can be removed as finished, and the
-waiting `C` can be removed parents finished).
+Waiting tasks can be removed if their parents have all finished, because at
+that point they can no longer automatically satisfy the remaining
+prerequisites. Note that "finished" means succeeded OR [failed but
+handled](#failed-tasks).
 
 ### Auto-spawning tasks with no parents
 
@@ -143,29 +143,6 @@ In future we should spawn xtriggered-tasks on demand too, in response to
 outputs/events emitted by xtrigger functions, but for the moment auto-spawning
 them as waiting tasks is easy to do and makes it easy to expose what's
 going on to users.
-
-### Spawning and parent-is-finished status
-
-Housekeeping of [waiting](#waiting-tasks) and [finished](#finished-tasks) tasks
-requires tasks knowing when parents are finished. A child with multiple parents
-has to know about all parents, even if one parent finished earlier without
-spawning it:
-
-```
-A:fail => X
-A & B => C
-```
-Here, if `A` fails without spawning `C`, then when `B` spawns `C` later on, `C`
-will only know that `B` finished. 
-
-To handle this, when a task finishes we can spawn any remaining unspawned
-children with multiple parents, and update their parent-is-finished status. Here,
-`A` failing will spawn both `X` and `C`, then `C` will be removed (parents
-finished) once `B` succeeds.
-
-Note this does not result in unsatisfiable (stuck) waiting tasks regardless of
-what outputs `A` is supposed to generate. Housekeeping depends only on parents
-being finished or not, not on specific parent outputs:
 
 ### Finished tasks
 
@@ -195,6 +172,28 @@ will never show up. Failure recovery branching is of this type too.
 
 These finished tasks can be removed if the task pool has moved on to a cycle 
 point beyond which nothing short of intervention could trigger their parents.
+
+ Note that "finished" means succeeded OR [failed but handled](#failed-tasks).
+
+### Spawning on finished
+
+Housekeeping of [waiting](#waiting-tasks) and [finished](#finished-tasks) tasks
+as described above requires children to know when their parents are finished.
+This requires spawning on finished as well as on outputs, because parents can
+finish without spawning depending on which outputs were completed.
+
+```
+A:fail => X
+A & B => C
+```
+Here, if `A` fails without spawning `C`, then when `B` spawns `C` later on, `C`
+will only know that `B` finished. But if `A` spawns both `X` and `C` when it
+finishes, and updates their parent-is-finished status, `C` can be removed
+(parents finished) once `B` succeeds.
+
+Note this does not result in unsatisfiable (stuck) waiting tasks regardless of
+what outputs `A` is supposed to generate. Housekeeping depends only on parents
+being finished or not, not on specific parent outputs:
 
 ### Failed tasks
 
