@@ -8,19 +8,23 @@
   - [Background](#background)
   - [Advantages](#advantages)
   - [Terminology](#terminology)
-- [Overview](#overview)
-- [Discussion](#discussion)
+- [Implementation overview](#implementation-overview)
+- [Discussion of details](#discussion-of-details)
   - [Use of task proxies](#use-of-task-proxies)
-  - [Spawning waiting tasks on outputs](#spawning-waiting-tasks-on-outputs)
-  - [Auto-spawning tasks with no parents](#auto-spawning-tasks-with-no-parents)
-  - [Spawning and parent-is-finished status](#spawning-and-parent-is-finished-status)
-  - [Finished tasks](#finished-tasks)
+  - [Spawning tasks with no parents](#spawning-tasks-with-no-parents)
+  - [Spawning on task outputs](#spawning-on-task-outputs)
+  - [Keeping finished tasks to prevent conditional reflow](#keeping-finished-tasks-to-prevent-conditional-reflow)
+  - [Spawning on task completion](#spawning-on-task-completion)
   - [Failed tasks](#failed-tasks)
   - [Stall and shutdown](#stall-and-shutdown)
   - [Suicide triggers not needed](#suicide-triggers-not-needed)
   - [Intervention and reflow](#intervention-and-reflow)
+     - [Reflow in SoS](#reflow-in-sos)
+     - [Reflow in SoD](#reflow-in-sod)
   - [Submit number](#submit-number)
   - [CLI implications](#cli-implications)
+  - [Succeeded tasks](#succeeded-tasks)
+- [Notes](#notes)
 - [Future enhancments](#future-enhancements)
 
 ## Introduction
@@ -61,180 +65,248 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 - *n=0 window*: tasks that anchor the current view (by default, the task pool)
 - *n=M window*: view of tasks within M graph edges of the n=0 window
 - *finished*: means *succeeded*, OR *failed* *with ":fail" handled*
+- *reflow*: when the workflow flows on from a manually triggered task
 
-## Overview
+## Implementation overview
 
 1. Get tasks to record (from the graph) the children that depend on each of
       their outputs 
 1. Continually [auto-spawn tasks with no
       parents](#auto-spawn-tasks-with-no-parents) to the runahead limit
 1. (Tasks with no prerequisites can submit their jobs, as usual)
-1. As outputs are completed [spawn as waiting
-    tasks](#spawning-waiting-tasks-on-outputs) any children that depend on them
+1. As outputs are completed [spawn waiting
+     children](#spawning-waiting-tasks-on-outputs) that depend on them
     (if not already spawned) and update their prerequisites directly
 1. (Tasks with prerequisites all satisfied can submit their jobs, as usual)
-1. As tasks finish, spawn any multi-parent children (if not already spawned) and
-      update their
-      [parent-is-finished status](spawning-and-parent-is-finished-status)
-      directly
-1. Housekeep the task pool:
-   1. Remove waiting tasks if their parents have finished
-      - see [Waiting tasks](#waiting-tasks)
-   1. Remove finished tasks if their parents have finished, *or* if the
-   pool has moved beyond any missing parents
-      - see [Finished tasks](#finished-tasks) and [Failed tasks](#failed-tasks)
-1. Shut down (completed) if stalled with no failed tasks present
-   - see [What is in the task pool](#what-is-in-the-task-pool) and [Scheduler
-     shutdown](#scheduler-shutdown), below
+1. As tasks finish, spawn remaining children (if not already spawned) and
+      update their [parent-is-finished
+      status](spawning-and-parent-is-finished-status) directly
+1. [Remove waiting and finished tasks](#housekeeping) if their parents have
+    finished *or* the pool has moved beyond the point it can affect them
+1. [Shut down](#scheduler-shutdown) if stalled with no failed tasks present
 
-## Discussion
+## Discussion of details
 
 ### Use of task proxies
 
-The proposed implementation uses waiting task proxies, which appear "on demand"
-when the first output they depend on is completed, to track prerequisite
-satisfaction (below).
+The implementation proposed here uses waiting task proxies, which appear "on
+demand" when the first output they depend on is completed, to track
+prerequisite satisfaction. It also keeps finished task proxies in the
+pool until their parents are all finished, to prevent "conditional reflow".
 
-It also keeps finished task proxies in the pool until their parents are all
-finished, to prevent "conditional reflow" (below).
+So the task pool contains:
+- Active tasks (preparing, submitted, running) 
+- Waiting tasks with at least one prerequisite satisfied (and/or unsatisfied
+  xtriggers)
+- Finished tasks (succeeded and failed) that still have some unfinished
+  conditional parents
+- [unhandled failed tasks](#failed-tasks) and [unhandled succeeded
+  tasks](#succeeded-tasks)
 
-It would be possible to implement SoD without any waiting or finished tasks.
-The scheduler could keep track of disembodied prerequisite data, and only spawn
+This constitutes vastly fewer `waiting` and `finished` tasks than in SoS.
+
+It would be possible to implement SoD without any waiting or finished tasks:
+the scheduler could keep track of disembodied prerequisite data, only spawning
 tasks that are ready to run; and similarly it could separately keep track of
 who finished.
 
-However the same information has to be tracked and housekept either way, but
-using task proxies is simpler (with current Cylc internals at least). Tasks
-already know how to track and evaluate their own prerequisites, and the cost of
+However the same information has to be tracked and housekept either way, and
+using task proxies is simpler - at least with current Cylc internals.
+Prerequisites are associated with particular tasks after all, and task proxies
+already know how to track and evaluate their own prerequisites. The cost of
 keeping a few whole tasks a little longer than strictly necessary is very low.
-Having these tasks in the task pool also makes it easier to see what is
-happening.
+And having these tasks in the pool makes it easy to expose what is going on to
+users (otherwise prerequisite data has to be sent to the UIS and connected 
+to the right abstract tasks there).
 
+### Spawning tasks with no parents
 
-### Spawning waiting tasks on outputs
+Tasks with no prerequisites at all, and those that depend only on xtriggers,
+need to be auto-spawned out to the runahead limit (they have no parents to do
+it for them).
 
-When an output gets completed, the scheduler should spawn as [waiting
-tasks](#waiting-tasks) any children that depend on that output, if they are
-not already spawned, and update their prerequisites directly.
+However, see [future enhancements](#future-enhancements) (below) for plans to
+spawn on xtrigger events.
+
+### Spawning on task outputs
+
+First, see [use of task proxies](#use-of-task-proxies) (above) for
+justification of using waiting task proxies to track satisfaction of
+prerequisites.
+
+When a task output gets completed the scheduler should spawn (if not already
+spawned) children of that output in the waiting state and update their
+prerequisites directly. Note this only creates waiting tasks between generation
+of the first and last outputs dependended on, for tasks with multiple parents.
 
 ```
 A & B => C
 ```
-If `A` and `B` finish at different times `C` will be spawned on the first
-relevant output (`A:succeeded`, say) and remain as waiting until all
-of its prerequisites are satisfied (`B:succeeded`).
+If `A` finishes before `B`, `C` will be spawned on `A:succeeded` and will
+remain as waiting until `B` finishes.
 
-See also [Tasks with no parents to spawn
-them](tasks-with-no-parents-to-spawn-them)
+### Keeping finished tasks to prevent conditional reflow
 
-#### Housekeeping waiting tasks
+First, see [use of task proxies](#use-of-task-proxies) (above) for
+justification of using finished task proxies to prevent conditional reflow.
 
-Waiting tasks can be removed if their parents have all finished, because at
-that point they can no longer automatically satisfy the remaining
-prerequisites. Note that "finished" means succeeded OR [failed but
-handled](#failed-tasks).
-
-### Auto-spawning tasks with no parents
-
-Tasks with no prerequisites at all, and those that depend only on xtriggers -
-including clock triggers - need to be auto-spawned out to the runahead limit.
-
-In future we should spawn xtriggered-tasks on demand too, in response to
-outputs/events emitted by xtrigger functions, but for the moment auto-spawning
-them as waiting tasks is easy to do and makes it easy to expose what's
-going on to users.
-
-### Finished tasks
+Conditional prerequisites require keeping some finished tasks in the pool,
+to prevent unintended reflow:
 
 ```
 A | B => C
 ```
-If `C` triggers off of `A` we need to avoid spawning `C` again if `B` runs
-later, after `C` has already finished and disappeared. To avoid this
-"conditional reflow" we have to keep finished tasks until reflow is no longer
-possible.
+If `C` triggers off of `A:succeeded` we need to avoid spawning `C` again if `B`
+runs after `C` has finished and been removed from the pool. To avoid this we
+can keep finished tasks in the pool until there is no danger of automatic
+reflow (a task will not be spawned if it already exists in the pool).
 
-#### Housekeeping finished tasks
+### Spawning on task completion
 
-Finished tasks can be removed if their parents have finished (at which point
-there is no danger of reflow).
-
-This doesn't clean up all finished tasks, however. At alternate branch joins,
-parents may never show up:
-```
-A:out1 => post1
-A:out2 => post2
-post1 | post2 => finish
-```
-Cylc cannot know if the `out1` and `out2` outputs of `A` are mutually exclusive
-or not. If they are, `finish` will trigger off of one of them, but the other
-will never show up. Failure recovery branching is of this type too.
-
-These finished tasks can be removed if the task pool has moved on to a cycle 
-point beyond which nothing short of intervention could trigger their parents.
-
- Note that "finished" means succeeded OR [failed but handled](#failed-tasks).
-
-### Spawning on finished
-
-Housekeeping of [waiting](#waiting-tasks) and [finished](#finished-tasks) tasks
-as described above requires children to know when their parents are finished.
-This requires spawning on finished as well as on outputs, because parents can
-finish without spawning depending on which outputs were completed.
+[Housekeeping](#housekeeping-waiting-and-finished-tasks) (below) relies on
+children knowing when their parents are finished (a waiting task can never
+be satisfied automatically if its parents are finished). This requires, for
+children with multiple parents, spawning on parent completion as well as on
+outputs, but only to update their parent-is-finished status (not
+prerequisites):
 
 ```
 A:fail => X
 A & B => C
 ```
-Here, if `A` fails without spawning `C`, then when `B` spawns `C` later on, `C`
-will only know that `B` finished. But if `A` spawns both `X` and `C` when it
-finishes, and updates their parent-is-finished status, `C` can be removed
-(parents finished) once `B` succeeds.
+Here `A:fail` needs to spawn `C` as well as `X` so that `C` exists and
+remembers that `A` finished when `B` finishes later. Then `C` can be
+removed (all parents finished).
 
-Note this does not result in unsatisfiable (stuck) waiting tasks regardless of
-what outputs `A` is supposed to generate. Housekeeping depends only on parents
-being finished or not, not on specific parent outputs:
+Note that spawning all children in this way does not create a problem even for
+mutually exclusive outputs:
+
+```
+A:out1 => B
+A:out2 => C
+```
+Here, if `A` generates output `:out1` (say) both `B` and `C` will be spawned
+when `A` finishes, but only `B` will run (prerequisites satisfied). The waiting
+`C` can then be removed immediately (parents finished).
+
+### Housekeeping waiting and finished tasks
+
+Tasks with only one parent will run as soon as they are spawned, and can
+be removed as soon as they are finished.
+
+But tasks with multiple parents may spend some time waiting on the rest of
+their prerequisites, and as finished (to prevent conditional reflow).
+
+**Waiting tasks can be removed if all of their parents have finished.**
+(Parents that are finished can no longer automatically satisfy anyone's
+prerequisites; if retriggered after that, users need to be aware of reflow).
+
+**Finished tasks can be removed if all of their parents have finished.** 
+(Parents that are finished can no longer spawn any children and cause reflow;
+if retriggered after that, users need to be aware of reflow).
+
+However, it is not quite quite enough to wait for all parents to finish,
+because it is possible for parents to be stuck as waiting or to never be
+spawned at all, due to upstream failures or alternate path choices:
+
+```
+A:out1 => post1
+A:out2 => post2
+post1 | post2 => plot
+```
+Here the intention is probably that either one or the other of the outputs
+`out1` and `out2` will be generated, so either `post1` or `post2` will run, and
+`plot` will trigger of whichever `post` happens to run. But Cylc cannot
+know if `out1` and `out2` are mutually exclusive or not. It is possible that
+they could both be generated (and both paths will run), so we have to keep
+`plot` around in the finished state to prevent possible conditional reflow.
+
+Alternate branching like this won't stop the workflow from flowing on,
+however, so we can remove finished tasks like `plot` once the task pool has
+moved on to a cycle point beyond which nothing short of intervention could
+trigger their "missing" parents.
+
+Stuck waiting tasks are a little less straightforward as they can be caused by 
+upstream failures.
+
+```
+x => B
+A & B => C
+```
+If `x` fails, `B` will be spawned (on `x` finished) but will be stuck as
+waiting on `B` to succeed, so `C` will be stuck as waiting once `A`
+is finished. But retriggering `x` will cause `B` to run, and then `C` - so no
+problem here.
+
+```
+x => y => B
+A & B => C
+```
+If `x` fails, `B` will not be spawned, so `C` will be stuck as waiting once `A`
+is finished.  But retriggering `x` will cause `y` and then `B`, and hence `C`
+to run - so no problem here either.
+
+But a badly handled upstream failure can potentially cause orphaned waiting
+tasks:
+```
+[scheduling]
+   cycling mode = integer
+   initial cycle point = 1
+   final cycle point = 5
+   [[graph]]
+       P1 = """x:fail => alert
+               x => B
+               A & B => C"""
+[runtime]
+   [[root]]
+       script = sleep $(( 5 + RANDOM % 5 ))
+   [[x]]
+       script = """
+   if (( CYLC_TASK_CYCLE_POINT == 1 && CYLC_TASK_SUBMIT_NUMBER == 1 )); then
+      false
+   fi"""
+```
+When `x.1` fails `B.1` is spawned (on `x.1` finished), but `x.1` gets removed
+as finished (the failure was handled). `B.1` gets removed (parents finished)
+but `C.1` will be stuck as waiting because not all of its parents finished.
+This is essentially a workflow design error: the handled failure does not
+result in the workflow continuing. However, we can still remove such orphaned
+waiting tasks once the pool moves beyond the point where anyone could possibly
+trigger them (in the example, once `C.1` is the only task remaining in cycle
+point 1 there is no point in retaining it).
 
 ### Failed tasks
 
-Technically, we don't need to retain failed tasks in the pool: they have
-already served their purpose in the workflow, and visibility and retriggering
+Technically we don't need to retain failed tasks in the pool: they have already
+served their logical purpose in the workflow, and visibility and retriggering
 don't depend on presence in the pool (just watch notifications and/or widen the
-view beyond the pool). However...
+view beyond the pool).
 
-Failed tasks handled by a `:fail` trigger, which implies the failure was not
-unexpected, can be removed as *finished* just like succeeded ones.
+Failed tasks can be removed immediately if handled by a `:fail` trigger (which
+implies the failure was *expected by the workflow*). 
 
-Failed tasks NOT handled by a `:fail` trigger, which implies something went
-unexpectedly wrong, will:
-- be kept in the task pool, and
-- considered to be *not finished*
+Failed tasks that are not handled (which implies the failure was *not expected
+by the workflow*), however, will be kept in the task pool and considered
+*not finished* for [housekeeping](#housekeeping) purposes.
 
-This has the following advantages:
-- Visibility in the default n=0 view
-  - Users don't have to go looking for failures if they missed a notification
-- It supports simple retriggering of failed tasks without the complications of
-  general reflow (namely off-flow dependence of downstream tasks)
-  - (Children waiting on success of the failed task, spawned on *finish* as
-    described above, are kept in the pool until their parents are finished)
+This makes unhandled failed tasks stay visible in the default n=0 view.
 
-### Task pool content
+And it supports the typical "retrigger a failed task" use case without the
+complications of reflow:
 
-So the task pool contains:
-- active tasks (preparing, submitted, running) 
-- [waiting tasks](#waiting-tasks) with one or more prerequisites (but not all
-  of them) satisfied, and/or unsatisfied external triggers
-- [finished tasks](#finished-tasks) (succeeded and failed) that still have some
-  unfinished conditional parents
-- [unhandled failed tasks](#failed-tasks)
+```
+A & B => C
+```
+If `A` fails it will [spawn](#spawn-on-task-completion) `C` as waiting. Both
+`A` and `C` will remain in the pool after `B` completes (`A` because its
+failure was not handled, and `C` because its parents did not all finish). Then
+if the user retriggers `A` and it succeeds, `C` can run becuase it remembers
+that `B` finished.  If we did not keep `A` and `C` in the pool, the user could
+still retrigger `A`, but its success would respawn `C` which would not remember
+that `B` had finished in "the previous flow". So the proposed implementation
+supports the failed task retriggering use case without requiring further
+intervention downstream.
 
-Notes:
-- This constitutes vastly fewer `waiting` and `finished` tasks than in SoS
-- The pool might not contain tasks from the highest cycle point reached (e.g.
-  if a user-triggered [reflow](#reflow) is still running when the original flow finishes)
-  - This is fine; the scheduler's job is to manage active tasks, not to
-    maintain an awareness of the past. To see beyond the task pool users just
-    need to widen the view window (and watch for important events.
 
 ### Stall and shutdown
 
@@ -251,10 +323,10 @@ In SoD there may be no tasks waiting ahead to show there is more to do, but we
 can detect workflow completion as follows:
 
 - If the workflow has NOT stalled,
-   - Not completed (obviously)
+   - Then it has not completed (obviously)
 - If the worklfow has stalled,
-   - Failed tasks (and waiting children) present: premature stall
-   - No failed tasks present: workflow completed
+   - With unhandled failed tasks present: premature stall
+   - With no unhandled failed tasks present: workflow completed
 
 At stall we can choose to keep the most recent active tasks in the pool, or to
 empty the pool (apart from unhandled failed tasks). Keeping recent active tasks
@@ -265,12 +337,22 @@ We can (and already do) shut down on a configurable timeout on premature stall.
 There's no point in keeping a stalled scheduler alive if it isn't doing
 anything, so long as we can easily display and restart stopped workflows.
 
-Note that a workflow final cycle point isn't much use in determining completion
+Note that final cycle point isn't much use in determining completion
 before it happens:
 - It is possible to have no graph recurrence sections that reach the final
   cycle point
 - Cylc can't know if every task valid in the final cycle point is actually
   expected to run there, because alternate paths are possible
+
+Note that bad failure handling, which does not cause the workflow to continue,
+will cause a premature shutdown:
+```
+A:fail => email_me
+A => B => C = archive
+```
+Here, if `A` fails the workflow will shut down as completed with `email_me`
+succeeded. But, that is what the graph logic says to do! If `A` fails, there is
+no path to normal completion.
 
 ### Suicide triggers not needed
 
@@ -494,6 +576,63 @@ Also need to auto-spawn tasks with no prerequisites again, like at cold start.
 
 Similarly for reload, if parentless task defs were added.
 
+### Succeeded tasks
+
+If a task fails unhandled (i.e. without a `fail` trigger) we consider it
+unfinished, and keep it in the task pool to support easy retriggering (above).
+
+By analogy if a task succeeds without a `:succeeded` trigger, should we also
+consider it unfinished and keep it in the pool (presuming that it was
+"expected to fail")?
+
+Failure by definition implies the task failed to do what it was designed to do.
+But it is possible for us to expect a task to fail, and to build the workflow
+around that expectation (that's what `:fail` triggers are for).
+
+Similarly, success implies the task succeeded in doing what it was designed to
+do. But it is possible for us to expect a task not to succeed, and for the
+workflow to be built around that expectation.
+
+If a task generates multiple outputs, failure can occur at any point during
+execution, so any of the outputs (apart from `:succeeded`) could be generated
+before failure.
+
+Similarly success implies only that the `:failed` output was not generated,
+because multiple internal outputs can be mutually exclusive (e.g. to drive
+alternate paths).
+
+So it seems there is no fundamental difference between `:fail` and `:succeed`
+in terms of workflow logic, and we should really treat unhandled success
+and failure in the same way.
+
+But there may be a difference in practical terms: *success is probably assumed
+in cases where internal outputs are used, and failure handling probably always
+assumes that no internal outputs were generated before the failure??*
+```
+A:out1 => B1
+A:out2 => B2
+ # ...
+```
+We can't expect this to be written:
+```
+A:out1 & A => B1
+A:out2 & A => B2
+ # ...
+```
+because then `B1` etc. have to wait until A succeeds before running.
+
+**TODO: should success be considered handled if any non-fail output is
+handled?**
+
+## Notes
+
+The task pool might not contain tasks from the highest cycle point reached
+(e.g.  if a user-triggered [reflow](#reflow) is still running when the original
+flow finishes)
+  - This is fine; the scheduler's job is to manage active tasks, not to
+    maintain an awareness of the past. To see beyond the task pool users just
+    need to widen the view window (and watch for important events.
+
 ## Future Enhancements
 
 For Cylc 9: [cylc/cylc-flow#3304](https://github.com/cylc/cylc-flow/issues/3304)
@@ -502,5 +641,6 @@ Several easy wins may be worthwhile before Cylc 9:
 - Refactor the task pool to avoid (most) iteration over tasks.
 - Refactor prerequisite and output handling, which remains largely as designed
   for SoS dependency negotation
+- Consider not [using waiting and finished task proxies](#use-of-task-proxies)
 - Extend SoD to clock- and external-triggers: tasks should be spawned in
   response to trigger events (depends on xtriggers as main-loop coroutines)
