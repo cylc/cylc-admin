@@ -48,7 +48,8 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 
 ### Advantages
 
-- **Efficiency: a dramatically smaller task pool** (few waiting and finished tasks)
+- **Efficiency: a dramatically smaller task pool** (few waiting and finished
+  tasks) that does not increase in size if spread over multiple cycle points
 - **No need for dynamic dependency matching** (parents update child prerequisites on spawning)
 - **An easily-understood graph-based "window on the workflow"**
 - **Suicide triggers are not needed for alternate path branching**
@@ -81,7 +82,8 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 1. As tasks finish, spawn remaining children (if not already spawned) and
       update their [parent-is-finished
       status](spawning-and-parent-is-finished-status) directly
-1. [Remove waiting and finished tasks](#housekeeping) if their parents have
+1. [Remove waiting tasks](#housekeeping) if their parents have finished
+1. [Remove finished tasks](#housekeeping) if their parents have
     finished *or* the pool has moved beyond the point it can affect them
 1. [Shut down](#scheduler-shutdown) if stalled with no failed tasks present
 
@@ -178,16 +180,16 @@ Here `A:fail` needs to spawn `C` as well as `X` so that `C` exists and
 remembers that `A` finished when `B` finishes later. Then `C` can be
 removed (all parents finished).
 
-Note that spawning all children in this way does not create a problem even for
-mutually exclusive outputs:
+Note that spawning all children in this way does not create a problem even
+at the branching of mutually exclusive alternate paths:
 
 ```
 A:out1 => B
 A:out2 => C
 ```
-Here, if `A` generates output `:out1` (say) both `B` and `C` will be spawned
-when `A` finishes, but only `B` will run (prerequisites satisfied). The waiting
-`C` can then be removed immediately (parents finished).
+Here, if `A` generates output `:out1` (say) and spawns `B` as a result, `C`
+will be spawned as well when `A` finishes. But `C` can then be removed
+immediately (parents finished).
 
 ### Housekeeping waiting and finished tasks
 
@@ -205,29 +207,34 @@ prerequisites; if retriggered after that, users need to be aware of reflow).
 (Parents that are finished can no longer spawn any children and cause reflow;
 if retriggered after that, users need to be aware of reflow).
 
-However, it is not quite quite enough to wait for all parents to finish,
-because it is possible for parents to be stuck as waiting or to never be
-spawned at all, due to upstream failures or alternate path choices:
+For finished tasks at the end of mutually exclusive alternate paths it is not
+quite enough to wait for all parents to finish however, because in that case
+some parents should not be spawned at all - but there is no way for Cylc to
+know if the paths are mutually exclusive or not:
 
 ```
 A:out1 => post1
 A:out2 => post2
 post1 | post2 => plot
 ```
-Here the intention is probably that either one or the other of the outputs
-`out1` and `out2` will be generated, so either `post1` or `post2` will run, and
-`plot` will trigger of whichever `post` happens to run. But Cylc cannot
-know if `out1` and `out2` are mutually exclusive or not. It is possible that
-they could both be generated (and both paths will run), so we have to keep
-`plot` around in the finished state to prevent possible conditional reflow.
+Here if `out1` and `out2` are mutually exclusive, only one of `post1` or
+`post2` will be spawned, but `plot` has to be kept around in the finished 
+in case the other path runs.
 
-Alternate branching like this won't stop the workflow from flowing on,
-however, so we can remove finished tasks like `plot` once the task pool has
-moved on to a cycle point beyond which nothing short of intervention could
-trigger their "missing" parents.
+Alternate branching like this won't stop the workflow however, so we can remove
+finished tasks like `plot` once the task pool has moved on to a cycle point
+beyond which nothing short of intervention could trigger their "missing"
+parents.
 
-Stuck waiting tasks are a little less straightforward as they can be caused by 
-upstream failures.
+Options:
+- Use graph traversal could to find the branching task (`A` above). If that
+  task is finished we can remove `plot` because the other path cannot be
+  spawned. 
+- SIMPLE but blunt: cycle point housekeeping - if no active tasks exist anymore
+  in cycles that can affect this cycle, the finished task can be removed.
+
+Stuck waiting tasks (**I think**) are only a symptom of bigger problems 
+upstream that will stall the suite, so they do not need housekeeping:
 
 ```
 x => B
@@ -236,7 +243,7 @@ A & B => C
 If `x` fails, `B` will be spawned (on `x` finished) but will be stuck as
 waiting on `B` to succeed, so `C` will be stuck as waiting once `A`
 is finished. But retriggering `x` will cause `B` to run, and then `C` - so no
-problem here.
+problem here (no stuck waiting task).
 
 ```
 x => y => B
@@ -244,10 +251,10 @@ A & B => C
 ```
 If `x` fails, `B` will not be spawned, so `C` will be stuck as waiting once `A`
 is finished.  But retriggering `x` will cause `y` and then `B`, and hence `C`
-to run - so no problem here either.
+to run - so no problem here either (no stuck waiting task).
 
-But a badly handled upstream failure can potentially cause orphaned waiting
-tasks:
+But a *handled* upstream failure that does not fix the workflow can potentially
+cause orphaned waiting tasks:
 ```
 [scheduling]
    cycling mode = integer
@@ -270,10 +277,14 @@ When `x.1` fails `B.1` is spawned (on `x.1` finished), but `x.1` gets removed
 as finished (the failure was handled). `B.1` gets removed (parents finished)
 but `C.1` will be stuck as waiting because not all of its parents finished.
 This is essentially a workflow design error: the handled failure does not
-result in the workflow continuing. However, we can still remove such orphaned
-waiting tasks once the pool moves beyond the point where anyone could possibly
-trigger them (in the example, once `C.1` is the only task remaining in cycle
-point 1 there is no point in retaining it).
+result in the workflow continuing.
+
+We *could* still remove such orphaned waiting tasks *if* the pool moves beyond
+the point where anyone could possibly trigger them (in the example, once `C.1`
+is the only task remaining in cycle point 1 there is no point in retaining it)
+but (a) as argued above there's not much point; and (b) we don't want reflow
+tasks that are waiting on an off-flow output to be cleaned up by cycle point
+housekeeping (however, we could just turn off this housekeeping for reflows).
 
 ### Failed tasks
 
@@ -491,15 +502,13 @@ In SoD, retry number is still safe because a retrying task will revert to
 waiting (it will not disappear from the pool... until we re-spawn retrying
 tasks on clock events).
 
-Submit number always starts at one in the original flow, and increments safely
-for automatic retries. 
-
-For any manual triggering *and subsequent reflow* we have to look up submit
-number in the DB in case the task already ran earlier.
+Submit number always starts at 1 in the original flow, and increments safely
+for automatic retries. It is only for manual triggering *and subsequent reflow*
+that we have to look it up in the DB in case the task already ran earlier.
 
 TODO - if a reflow takes over the whole workflow, can we stop lookup at the DB
 for submit number? (or will this naturally happen when the reflow catches up to 
-the original flow - if that doesn't happen, it is still "the reflow").
+the original flow ... if that doesn't happen, it is still "the reflow").
 
 ## CLI implications
 
@@ -550,6 +559,9 @@ pool. Finished tasks may be removed immediately. Failed tasks are just
 historical information, and pretending they succeeded is unnecessary - better
 force downstream tasks to carry on despite the upstream failure: use
 `cylc spawn` (to become `cylc set-outputs-completed`?).
+
+(Note I'm proposing `cylc spawn` - possibly renamed - as a way to force
+downstream tasks to carry on as if certain outputs had been generated.)
 
 ### CLI task globbing:
 
@@ -637,10 +649,16 @@ flow finishes)
 
 For Cylc 9: [cylc/cylc-flow#3304](https://github.com/cylc/cylc-flow/issues/3304)
 
-Several easy wins may be worthwhile before Cylc 9:
-- Refactor the task pool to avoid (most) iteration over tasks.
-- Refactor prerequisite and output handling, which remains largely as designed
-  for SoS dependency negotation
+Follow-on changes may (or may not) be worthwhile before Cylc 9:
+- Refactor the task pool (which remains largely as for SoS) to avoid (most)
+  iteration over tasks?
+- Refactor prerequisite and output handling (which remains largely as for SoS)
 - Consider not [using waiting and finished task proxies](#use-of-task-proxies)
 - Extend SoD to clock- and external-triggers: tasks should be spawned in
   response to trigger events (depends on xtriggers as main-loop coroutines)
+- Consider supporting automatic use of previous flow outputs. This may be a
+  difficult graph traversal problem, but as Oliver noted: it can probably be
+  done once at the start of the reflow; it could also help us show users
+  graphically the consequences of their intended reflow
+- Consider using graph traversal for better housekeeping of finished tasks at
+  the base of alternate paths.
