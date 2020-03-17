@@ -151,6 +151,7 @@ them done before then:
   - Probably requires dagre layout + custom display engine
   - Current window, and n edges around selected tasks by request
 - Dot view (concise view of spread over cycle points)
+- Flat table view (to allow sorting by job parameters such as submit time)
 - Selection sharing/linking between views
 - Display command progress (not just "command queued")
 - Consider load balancing with multiple UI Servers (just use current `cylc run`
@@ -164,18 +165,20 @@ them done before then:
 - New Urwid `cylc monitor`: if performant for big workflows
   - (Need to address Tim W's objection to this)
   - add control functionality
-- Multi-user gscan (this goes beyond multi-user Hub functionality, above)
+- Multi-user gscan (this goes beyond the cross-user functionality above)
 - Cylc Hub as an entry point plugin of the UIS package (just J-Hub, but needs
   to pick up our config file automatically)
 - Minimal install for job platforms
 
 ### For Cylc 8.1+
 
-- Finish off remaining main items, including [If possible for Cylc
-  8.0](if-possible-for-cylc-8.0) (above)
+- Finish off remaining main items, including [Nice to have for Cylc
+  8.0](nice-to-have-for-cylc-8.0) (above)
 - Other workflow views (Gantt, Quilt, ...)
 - Allow starting the UI in read-only mode with deliberate escalation required
   for execute and read-write mode
+- ...
+- Begin Cylc 9 development
 
 ## Tentative development timeline
 
@@ -209,7 +212,7 @@ flexible depending on availability.
   - `cylc review` decision - integration or contingency? (OS)
   - review and upgrade all documentation and training material (ALL)
 - September 2020:
-  - preview release on Conda Forge, encourage heavy testing
+  - preview release on Conda Forge, encourage heavy testing :tada:
 - October 2020-March 2021:
   - address feedback, bugs, performance, stability (ALL)
   - nice-to-have features, esp. the graph view
