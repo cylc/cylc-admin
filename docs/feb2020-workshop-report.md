@@ -59,7 +59,7 @@ security have not been addressed; and we haven't implemented fine-grained
 authorization yet. For details of what remains to be done, see [Prioritization
 of remaining tasks](#prioritization-of-remaining-tasks).
 
-*We are aiming to have a near-complete preview release of Cylc 8 ready for heavy
+*We are aiming to have a major preview release of Cylc 8 ready for widespread
 testing in September of this year, and to officially release cylc-8.0 in
 the first quarter of 2021.*
 
