@@ -190,9 +190,9 @@ leading the development, but others may also be involved, and we have to be
 flexible depending on availability.
 
 - March 2020:
-  - spawn-on-demand decision (HO, DM, OS)
-  - a flat shared UI data store decision (OS, BK)
+  - flat shared UI data store decision (OS, BK)
 - April 2020:
+  - spawn-on-demand decision (HO, DM, OS)
   - performant tree view with virtual scrolling (BK)
   - incremental data update (DS)
   - complete spawn-on-demand, if agreed, e.g. adapt the test battery (HO)
@@ -204,14 +204,14 @@ flexible depending on availability.
   - authorization at the UI Server (HO)
   - thoroughly document security (JR)
 - July 2020:
-  - `rose suite-run` migration (TP, OS)
   - UI Server access to historical data within the view window (DS)
   - cross-user functionality (BK, OS)
 - August 2020:
+  - `rose suite-run` migration (TP, OS)
   - new run command semantics and run directory structure (HO)
   - `cylc review` decision - integration or contingency? (OS)
-  - review and upgrade all documentation and training material (ALL)
 - September 2020:
+  - review and upgrade all documentation and training material (ALL)
   - preview release on Conda Forge, encourage heavy testing :tada:
 - October 2020-March 2021:
   - address feedback, bugs, performance, stability (ALL)
