@@ -17,9 +17,9 @@ IS-ENES3 for funding travel for some participants.
 - [Executive summary](#executive-summary)
 - [Progress to date](#progress-to-date)
 - [Prioritization of remaining tasks](#prioritization-of-remaining-tasks)
-  - [Essential for Cylc 8.0](#essential-for-cylc-8)
-  - [Nice to have for Cylc 8.0](#nice-to-have-for-cylc-8)
-  - [For Cylc-8.1+](#for-cylc-8.1+)
+  - [Essential for Cylc 8.0](#essential-for-cylc-80)
+  - [Nice to have for Cylc 8.0](#nice-to-have-for-cylc-80)
+  - [Cylc-8.1](#cylc-81)
 - [Tentative development timeline](#tentative-development-timeline)
 
 ## Goal and topics
@@ -170,10 +170,10 @@ them done before then:
   to pick up our config file automatically)
 - Minimal install for job platforms
 
-### For Cylc 8.1+
+### Cylc 8.1
 
-- Finish off remaining main items, including [Nice to have for Cylc
-  8.0](nice-to-have-for-cylc-8.0) (above)
+- Finish off remaining main Cylc 8 items, including [Nice to have for Cylc
+  8.0](nice-to-have-for-cylc-80) (above)
 - Other workflow views (Gantt, Quilt, ...)
 - Allow starting the UI in read-only mode with deliberate escalation required
   for execute and read-write mode
@@ -182,12 +182,12 @@ them done before then:
 
 ## Tentative development timeline
 
-The following are tentative endpoints to aim for, for the major tasks. (Some
-smaller tasks are not listed here as they can be fitted in around the bigger
-ones - see the list above for them). Many of these items are already in
-progress or have at least been planned in advance. Initials added for those
-leading the development, but others may also be involved, and we have to be
-flexible depending on availability.
+The following are endpoints to aim for, for the major tasks. (Smaller
+tasks above are not listed here as they can be fitted in around the bigger
+ones as time allows). Many of these items are already in progress or have at
+least been planned in advance. Initials have been given for those leading the
+development, but others may also be involved, and we have to be flexible
+depending on availability.
 
 - March 2020:
   - flat shared UI data store decision (OS, BK)
