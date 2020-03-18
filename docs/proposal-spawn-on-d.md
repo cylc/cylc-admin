@@ -102,8 +102,8 @@ So the task pool contains:
   xtriggers)
 - Finished tasks (succeeded and failed) that still have some unfinished
   conditional parents
-- [unhandled failed tasks](#failed-tasks) and [unhandled succeeded
-  tasks](#succeeded-tasks)
+- [unhandled failed tasks](#failed-tasks) (and maybe [unhandled succeeded
+  tasks](#succeeded-tasks)?)
 
 This constitutes vastly fewer `waiting` and `finished` tasks than in SoS.
 
