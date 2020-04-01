@@ -9,7 +9,7 @@ and partially address
 * Introduce configuration and logic to recognise compute platforms in place of
   task hosts. This will resolve a number of issues.
   * In particular, this allows a compute cluster which can be accessed via
-    multiple login nodes (hosts) to be treated as logical unit.
+    multiple login nodes (hosts) to be treated as a logical unit.
   * We will be able to configure multiple platforms which share the same hosts
     (including `localhost`).
 
@@ -42,7 +42,7 @@ and partially address
 * Note: it will **not** be possible to specify the platform as an environment
   variable in the same way as we can currently specify remote hosts as an
   environment variable (e.g. `platform = $ROSE_ORIG_HOST`).
-  * Unclear why we need this given the Jinja2 variables can be used?
+  * Unclear why we need this given that Jinja2 variables can be used?
   * Using `$ROSE_ORIG_HOST` relies on Rose specifying extra options to set this
     in `[cylc][environment]` which we should avoid if possible.
 
@@ -144,7 +144,7 @@ section for a job. They refer to the example platforms shown above.
 * The host used will be chosen at random.
 
 `platform = hpc-bg`
-* The platform used will be chosen at random ("hpcl1" or "hpcl2").
+* The platform used will be chosen at random ("hpcl1-bg" or "hpcl2-bg").
 
 `platform = $(rose host-select linux)`
 * No checking can be performed at validation so if the command does not return a
@@ -235,30 +235,159 @@ suite-run functionality:
      before the first set of jobs is submitted to each platform after suite
      start-up or on suite reload. This system needs to be extended to other
      items of the suite.
-   * Consider whether we can make this work on a filesystem rather than a
-     platform basis?
-     * Configure the id of the filesystem used on a particular platform
-       (defaults to the platform name).
-     * If multiple platforms share the same root filesystem then use a common
-       id.
-     * Would need to consider the case where the root filesystem is shared but
-       log, work or share differ.
+   * We will modify this to work on a target / filesystem basis rather than a
+     platform basis.
+     * Configure the id of the target used on a particular platform
+       (`install target`: defaults to the platform name).
+     * If multiple platforms share the same root filesystems then use a common
+       `install target`.
+     * Note that, when we add we support for separate client keys, these will
+       now be per `install target` rather than per platform.
+     * Cylc 7 creates a `.service/uuid` file to detect whether a remote host
+       shares the same filesystem as the scheduler host - we can remove this
+       functionality. Instead we should check for the existence of a client key
+       and fail the remote-init if one is found for a different `install target`
+       (different targets used within the same workflow should not share the
+       same workflow directory).
+   * Currently, the files which need to be installed are transferred as a tar
+     file via stdin. This has the advantage that the remote init can be done as
+     a single ssh. We will change the installation to use rsync which will
+     require a second ssh but this will be better for installing more files and
+     allow the logging to report which files have been changed after a reload.
+     * If we change cylc to re-use ssh connections by default (using
+       `ControlPersist`) then this will avoid the ssh overhead (and will
+       benefit other ssh connections as well).
+     * We will probably need a third ssh connection for transferring the client
+       public key.
+   * The remote installation will exclude particular files/directories.
+     * We will use the `--delete` rsync option so we need to make sure the
+       exclude pattern includes anything which could be created on the remote
+       platform (e.g. keys).
+     * Items to exclude: `log/ share/ work/` + various files / directories in
+       `.service/`.
+     * Does this need to be configurable? (i.e. configure additional items to
+       exclude)? If so, per site and/or per workflow?
 
-2. Support for moving the share, work & log directories to different locations
-   with optional symlinks to the root directory. Similarly support for moving
-   the root directory with symlink to the `cylc-run` directory.
+2. Support moving some directories to different locations with symlinks to the
+   original location.
+   * New platform settings:
+     * `root run directory` (default: `$HOME/cylc-run`):
+       * The root directory where all run directories can be discovered.
+       * Note that the root run directory for `localhost` is particularly
+         important since this is where Cylc will look for all running/installed
+         suites.
+       * Warning: any change to this setting will break any workflows which are
+         running or which you might want to restart. Changes to any of the other
+         root directory settings are only applied when a workflow is installed
+         (or first run on a target). Therefore, changes to these other settings
+         have no affect on running or restarting workflows.
+     * `root workflow directory` (default: `none`):
+       Specifies the root directory where the workflow run directories are
+       created. If specified, the workflow run directory will be created in
+       `<root workflow directory>/<workflow-name>` and a symbolic link will be
+       created from `<root run directory>/<workflow-name>`. If not specified the
+       workflow run directory will be created in
+       `<root run directory>/<workflow-name>`. All the workflow files and the
+       `.service` directory get installed into this directory.
+     * `root log directory` (default: `none`):
+       Specifies the root directory where log directories are created. If
+       specified the workflow log directory will be created in
+       `<root log directory>/<workflow-name>/log` and a symbolic link will be
+       created from `<root run directory>/<workflow-name>/log`. If not specified
+       the workflow log directory will be created in
+       `<root run directory>/<workflow-name>/log`.
+     * `root share directory` (default: `none`):
+       Specifies the root directory where share directories are created. If
+       specified the workflow share directory will be created in
+       `<root share directory>/<workflow-name>/share` and a symbolic link will
+       be created from `<root run directory>/<workflow-name>/share`. If not
+       specified the workflow share directory will be created in
+       `<root run directory>/<workflow-name>/share`.
+     * `root share-cycle directory` (default: `none`):
+       Specifies the root directory where share/cycle directories are created.
+       If specified the workflow share/cycle directory will be created in
+       `<root work directory>/<workflow-name>/share/cycle` and a symbolic link
+       will be created from `<root run directory>/<workflow-name>/share/cycle`.
+       If not specified the workflow share/cycle directory will be created in
+       `<root run directory>/<workflow-name>/share/cycle`.
+     * `root work directory` (default: `none`):
+       Specifies the root directory where work directories are created. If
+       specified the workflow work directory will be created in
+       `<root work directory>/<workflow-name>/work` and a symbolic link will be
+       created from `<root run directory>/<workflow-name>/work`. If not
+       specified the workflow work directory will be created in
+       `<root run directory>/<workflow-name>/work`.
+   * What happens if you want to be able to have some workflows which use
+     different root directory configurations on the same "platform"? For
+     example, you might have some workflows where you want the root workflow
+     directory on $HOME and others in $DATADIR.
+     * For platforms other than localhost the answer is to create separate
+       platforms and then choose the appropriate platform in the workflow.
+     * For localhost it is more complicated since there is only one localhost
+       platform and the settings are applied earlier at workflow install or
+       startup time (rather than prior to first job submission). We will need a
+       way to override some of the root directory settings (not
+       `root run directory`) for localhost, e.g. on the command line.
+   * What environment variables can be used in these settings?
+     * Cylc currently only allows `$HOME` or `$USER` in the
+       [run and work directory settings](https://cylc.github.io/doc/built-sphinx/appendices/site-user-config-ref.html#hosts-host-run-directory).
+       With Rose you can use any variable which is available when the
+       remote-init command is invoked on the remote platform. Should we adopt a
+       similar approach for Cylc?
+     * Rose also provides the option of using the login shell for remote
+       commands (which may give access to more environment variables). Should we
+       add similar support to Cylc for sites that allow it?
+   * Any platforms which use the same target must use the same root directories
+     and owner settings.
+     * In order to reduce duplication (and configuration errors) we will support
+       platform inheritance so that you can define a platform based on an
+       existing platform.
+       * Note: `inherit` will imply using the same `install target`.
+     * Do we need comms method to be the same as well?
+   * Note that these new settings replace the existing Cylc `run directory` and
+     `work directory` settings.
+
+Example platform configurations:
+```ini
+[platforms]
+    [[localhost]]
+        root log directory = $DATADIR
+        root share directory = $DATADIR
+        root share-cycle directory = $SCRATCH
+        root work directory = $SCRATCH
+    [[desktop\d\d|laptop\d\d]] # Long version
+        install target = localhost
+        root log directory = $DATADIR
+        root share directory = $DATADIR
+        root share-cycle directory = $SCRATCH
+        root work directory = $SCRATCH
+    [[desktop\d\d|laptop\d\d]] # Short version using inherit
+        inherit = localhost
+    [[sugar]]
+        inherit = localhost
+        hosts = localhost
+        batch system = slurm
+    [[hpc]]
+        hosts = hpcl1, hpcl2
+        retrieve job logs = True
+        batch system = pbs
+        root run directory = $DATADIR
+        root share-cycle directory = $SCRATCH
+        root work directory = $SCRATCH
+    [[hpcl1-bg]]
+        inherit = hpc
+        hosts = hpcl1
+        batch system = background
+    [[hpcl2-bg]]
+        inherit = hpcl1-bg
+        hosts = hpcl2
+```
 
 ## Further enhancements
 
 There are a number of ideas for enhancements (some of which are referenced in
 [cylc-flow #2199](https://github.com/cylc/cylc-flow/issues/2199)) which we will
 not attempt to address in the initial implementation. These include:
-
-* Specify whether the root filesystem on a platform is shared with the workflow
-  server. Currently it is assumed to be separate so installation is attempted on
-  all remote hosts. There is logic to detect that it is shared but it would be
-  more efficient to configure this. Note: already covered if we install on a
-  filesystem basis as discussed above.
 
 * Define default directives for all jobs on a platform.
 
@@ -296,16 +425,6 @@ not attempt to address in the initial implementation. These include:
 
 * Support the use of string substitution to derive the host from the platform
   name (discussed above).
-
-* Support platform inheritance so that you can define a platform based on an
-   existing platform to reduce duplication. e.g.
-```ini
-[platforms]
-    [[hpcl1-bg]]
-        inherit = hpc
-        hosts = hpcl1
-        batch system = background
-```
 
 Note that these are just ideas for possible enhancements - no assumptions are
 made at this stage as to which ones are worth implementing.
