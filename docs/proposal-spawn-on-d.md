@@ -166,13 +166,14 @@ its next instance (to the runahead pool) and mark the absolute dependence as
 satisfied. This works because in SoD even the first child does not appear in
 the pool until the associated dependence is already satisfied. 
 
-Note the absolute parent gets removed from the pool as normal once finished.
+We could choose to keep absolute parent in the n=0 pool or not, once finished.
 
-Retriggering a finished absolute parent causes it to respawn its first child
-(normal reflow). This is the right thing to do under SoD (it's what the graph
-says!) but we may want to provide an option to change the first child spawned
-to a current cycle rather than going back to the start (use case: retrigger a
-start-up task that rebuilds a model or whatever).
+Retriggering a finished absolute parent causes it to respawn its first child,
+then subsequent children as normal (i.e. reflow). This is the right thing to do
+under SoD (it's what the graph says!) but we may want to provide an option to
+change the first child spawned to a current cycle rather than going back to the
+start (use case: retrigger a start-up task that rebuilds a model or whatever,
+but don't re-run old cycles).
 
 ### Spawning on task outputs
 
