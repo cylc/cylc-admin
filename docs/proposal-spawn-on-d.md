@@ -12,6 +12,7 @@
 - [Discussion of details](#discussion-of-details)
   - [Use of task proxies](#use-of-task-proxies)
   - [Spawning tasks with no parents](#spawning-tasks-with-no-parents)
+  - [Absolute dependence](#absolute-dependence)
   - [Spawning on task outputs](#spawning-on-task-outputs)
   - [Keeping finished tasks to prevent conditional reflow](#keeping-finished-tasks-to-prevent-conditional-reflow)
   - [Spawning on task completion](#spawning-on-task-completion)
@@ -73,7 +74,7 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 1. Get tasks to record (from the graph) the children that depend on each of
       their outputs 
 1. Continually [auto-spawn tasks with no
-      parents](#auto-spawn-tasks-with-no-parents) to the runahead limit
+      parents](#spawning-tasks-with-no-parents) to the runahead limit
 1. (Tasks with no prerequisites can submit their jobs, as usual)
 1. As outputs are completed [spawn waiting
      children](#spawning-waiting-tasks-on-outputs) that depend on them
@@ -123,12 +124,55 @@ to the right abstract tasks there).
 
 ### Spawning tasks with no parents
 
-Tasks with no prerequisites at all, and those that depend only on xtriggers,
+Tasks with no task prerequisites, and those that depend (only?) on xtriggers,
 need to be auto-spawned out to the runahead limit (they have no parents to do
-it for them).
+it for them).  I'll call these "orphans".
 
-However, see [future enhancements](#future-enhancements) (below) for plans to
-spawn on xtrigger events.
+**Implementation:** at start-up auto-spawn the first orphan instances into the
+runahead pool. Subsequently, whenever releasing orphans from the runahead
+pool auto-spawn their next instance (into the runahead pool).
+
+See [future enhancements](#future-enhancements) (below) for plans to spawn on
+xtrigger events.
+
+### Absolute dependence
+
+Simplest example:
+```
+R1 = "start"
+P1 = "start[^] => foo"
+```
+(Note without the first line above the scheduler will stall on master with
+foo unsatisfied, and will shut down immediately (nothing to do) under SoD
+because `start` is not defined on any sequence and `foo` never gets spawned.) 
+
+Here, start should run in the first cycle point, after which all `foo.n` can 
+run (out to the runahead limit).
+
+
+A slightly more difficult case:
+```
+...
+      R1/2 = "start"
+      P1 = "start[2] => foo"
+```
+Here, `foo.1,2,3,...` should trigger off of `start.2`.j
+
+**Implementation:** during graph parsing identify tasks with absolute-offset
+parents. When an absolute parent finishes *spawn the child at the first cycle
+point of the sequence.* (Above, `start.2` should spawn `foo.1`, not `foo.2`).
+Then whenever an absolute child is released from the runahead pool auto-spawn
+its next instance (to the runahead pool) and mark the absolute dependence as
+satisfied. This works because in SoD even the first child does not appear in
+the pool until the associated dependence is already satisfied. 
+
+Note the absolute parent gets removed from the pool as normal once finished.
+
+Retriggering a finished absolute parent causes it to respawn its first child
+(normal reflow). This is the right thing to do under SoD (it's what the graph
+says!) but we may want to provide an option to change the first child spawned
+to a current cycle rather than going back to the start (use case: retrigger a
+start-up task that rebuilds a model or whatever).
 
 ### Spawning on task outputs
 
