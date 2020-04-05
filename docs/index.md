@@ -65,6 +65,9 @@ Guides for developers, and therefore slightly separate to main documentation
 
 Meeting agendas and notes.
 
+- April 2020 
+  - [Notes](meetings/vc-april-2020.md)
+
 - March 2020 
   - [Agenda](meetings/vc-march-2020-agenda.md)
 
