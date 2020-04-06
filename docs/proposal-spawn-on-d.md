@@ -83,9 +83,10 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 1. As tasks finish, spawn remaining children (if not already spawned) and
       update their [parent-is-finished
       status](spawning-and-parent-is-finished-status) directly
-1. [Remove waiting tasks](#housekeeping) if their parents have finished
-1. [Remove finished tasks](#housekeeping) if their parents have
-    finished *or* the pool has moved beyond the point it can affect them
+1. [Remove waiting tasks](#housekeeping-waiting-and-finished-tasks) if their
+parents have finished
+1. [Remove finished tasks](#housekeeping-waiting-and-finished-tasks) if their
+parents have finished *or* the pool has moved beyond the point it can affect them
 1. [Shut down](#scheduler-shutdown) if stalled with no failed tasks present
 
 ## Discussion of details
@@ -278,25 +279,26 @@ Options:
 - SIMPLE but blunt: cycle point housekeeping - if no active tasks exist anymore
   in cycles that can affect this cycle, the finished task can be removed.
 
+#### Stuck waiting tasks
+
 Stuck waiting tasks (**I think**) are only a symptom of bigger problems 
-upstream that will stall the suite, so they do not need housekeeping:
+upstream that *should* stall the suite, so they do not need housekeeping:
 
 ```
 x => B
 A & B => C
 ```
-If `x` fails, `B` will be spawned (on `x` finished) but will be stuck as
-waiting on `B` to succeed, so `C` will be stuck as waiting once `A`
-is finished. But retriggering `x` will cause `B` to run, and then `C` - so no
-problem here (no stuck waiting task).
+If `x` fails, `B` will be spawned (on `x` finished) but once `A` is finished
+`C` will be stuck as waiting on `B` to succeed. But retriggering `x` will cause
+`B` to run, and then `C` - so no problem here (no stuck waiting task).
 
 ```
 x => y => B
 A & B => C
 ```
-If `x` fails, `B` will not be spawned, so `C` will be stuck as waiting once `A`
-is finished.  But retriggering `x` will cause `y` and then `B`, and hence `C`
-to run - so no problem here either (no stuck waiting task).
+If `x` fails, `B` will not be spawned, so `C` will be stuck as waiting on `B`
+once `A` is finished.  But retriggering `x` will cause `y` and then `B`, and
+hence `C`, to run - so no problem here either (no stuck waiting task).
 
 But a *handled* upstream failure that does not fix the workflow can potentially
 cause orphaned waiting tasks:
