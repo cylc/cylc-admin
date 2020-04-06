@@ -50,7 +50,7 @@ and partially address
 
 ```ini
 [platforms]
-    [[desktop\d\d|laptop\d\d]]
+    [[desktop\d\d,laptop\d\d]]
         # hosts = platform name (default)
         # Note: "desktop01" and "desktop02" are both valid and distinct platforms
     [[sugar]]
@@ -235,11 +235,11 @@ suite-run functionality:
      before the first set of jobs is submitted to each platform after suite
      start-up or on suite reload. This system needs to be extended to other
      items of the suite.
-   * We will modify this to work on a target / filesystem basis rather than a
+   * We will modify this to work on an install target basis rather than a
      platform basis.
      * Configure the id of the target used on a particular platform
        (`install target`: defaults to the platform name).
-     * If multiple platforms share the same root filesystems then use a common
+     * If multiple platforms share the same filesystems then use a common
        `install target`.
      * Note that, when we add we support for separate client keys, these will
        now be per `install target` rather than per platform.
@@ -248,7 +248,7 @@ suite-run functionality:
        functionality. Instead we should check for the existence of a client key
        and fail the remote-init if one is found for a different `install target`
        (different targets used within the same workflow should not share the
-       same workflow directory).
+       same run directory).
    * Currently, the files which need to be installed are transferred as a tar
      file via stdin. This has the advantage that the remote init can be done as
      a single ssh. We will change the installation to use rsync which will
@@ -259,75 +259,87 @@ suite-run functionality:
        benefit other ssh connections as well).
      * We will probably need a third ssh connection for transferring the client
        public key.
-   * The remote installation will exclude particular files/directories.
-     * We will use the `--delete` rsync option so we need to make sure the
-       exclude pattern includes anything which could be created on the remote
-       platform (e.g. keys).
-     * Items to exclude: `log/ share/ work/` + various files / directories in
-       `.service/`.
+   * The remote installation will include particular files/directories.
+     * Items to include:
+       `.service/server.key .service/contact app/ bin/ etc/ lib/`.
+     * We will use the `--delete` rsync option so that any files removed from
+       from installed directories also get removed from the install targets on
+       reload/restart.
      * Does this need to be configurable? (i.e. configure additional items to
-       exclude)? If so, per site and/or per workflow?
+       include)? If so, global and/or workflow level?
+       * Is there any reason why workflow designers can't just stick to the list
+         of supported directories for files that need to be installed?
+       * Are there many existing Rose suites which rely on other directories
+         being installed? A quick search implies there are quite a few suites
+         using a wide range of sub-directories such as `python`, `util`, `data`
+         (although it is not clear how many of these would need to be installed
+         on remote platforms).
+       * Proposal: we allow the include list to be configurable at the global
+         level (to cater for old suites which need this) but encourage users to
+         adapt their workflows to use the supported directories and, therefore,
+         don't allow this to be configured at the suite level.
+     * The alternative is to use exclude rather than include and make sure we
+       exclude any file / directories which are generated at run time or target
+       specific (`log/ share/ work/` + various files / directories in
+       `.service/`).
+       * There are some suites around which write to top level directories (not
+         sure if this is deliberate) - exclude would be very bad in these cases.
+         Therefore, include is the safer option.
 
 2. Support moving some directories to different locations with symlinks to the
    original location.
    * New platform settings:
-     * `root run directory` (default: `$HOME/cylc-run`):
-       * The root directory where all run directories can be discovered.
-       * Note that the root run directory for `localhost` is particularly
-         important since this is where Cylc will look for all running/installed
-         suites.
-       * Warning: any change to this setting will break any workflows which are
-         running or which you might want to restart. Changes to any of the other
-         root directory settings are only applied when a workflow is installed
-         (or first run on a target). Therefore, changes to these other settings
-         have no affect on running or restarting workflows.
-     * `root workflow directory` (default: `none`):
-       Specifies the root directory where the workflow run directories are
+     * `[symlink dir]run` (default: `none`):
+       Specifies the directory where the workflow run directories are
        created. If specified, the workflow run directory will be created in
-       `<root workflow directory>/<workflow-name>` and a symbolic link will be
-       created from `<root run directory>/<workflow-name>`. If not specified the
+       `<run dir>/<workflow-name>` and a symbolic link will be
+       created from `$HOME/cylc-run/<workflow-name>`. If not specified the
        workflow run directory will be created in
-       `<root run directory>/<workflow-name>`. All the workflow files and the
+       `$HOME/cylc-run/<workflow-name>`. All the workflow files and the
        `.service` directory get installed into this directory.
-     * `root log directory` (default: `none`):
-       Specifies the root directory where log directories are created. If
+     * `[symlink dir]log` (default: `none`):
+       Specifies the directory where log directories are created. If
        specified the workflow log directory will be created in
-       `<root log directory>/<workflow-name>/log` and a symbolic link will be
-       created from `<root run directory>/<workflow-name>/log`. If not specified
+       `<log dir>/<workflow-name>/log` and a symbolic link will be
+       created from `$HOME/cylc-run/<workflow-name>/log`. If not specified
        the workflow log directory will be created in
-       `<root run directory>/<workflow-name>/log`.
-     * `root share directory` (default: `none`):
-       Specifies the root directory where share directories are created. If
+       `$HOME/cylc-run/<workflow-name>/log`.
+     * `[symlink dir]share` (default: `none`):
+       Specifies the directory where share directories are created. If
        specified the workflow share directory will be created in
-       `<root share directory>/<workflow-name>/share` and a symbolic link will
-       be created from `<root run directory>/<workflow-name>/share`. If not
+       `<share dir>/<workflow-name>/share` and a symbolic link will
+       be created from `<$HOME/cylc-run/<workflow-name>/share`. If not
        specified the workflow share directory will be created in
-       `<root run directory>/<workflow-name>/share`.
-     * `root share-cycle directory` (default: `none`):
-       Specifies the root directory where share/cycle directories are created.
+       `$HOME/cylc-run/<workflow-name>/share`.
+     * `[symlink dir]share/cycle` (default: `none`):
+       Specifies the directory where share/cycle directories are created.
        If specified the workflow share/cycle directory will be created in
-       `<root work directory>/<workflow-name>/share/cycle` and a symbolic link
-       will be created from `<root run directory>/<workflow-name>/share/cycle`.
+       `<share/cycle dir>/<workflow-name>/share/cycle` and a symbolic link
+       will be created from `$HOME/cylc-run/<workflow-name>/share/cycle`.
        If not specified the workflow share/cycle directory will be created in
-       `<root run directory>/<workflow-name>/share/cycle`.
-     * `root work directory` (default: `none`):
-       Specifies the root directory where work directories are created. If
+       `$HOME/cylc-run/<workflow-name>/share/cycle`.
+     * `[symlink dir]work` (default: `none`):
+       Specifies the directory where work directories are created. If
        specified the workflow work directory will be created in
-       `<root work directory>/<workflow-name>/work` and a symbolic link will be
-       created from `<root run directory>/<workflow-name>/work`. If not
+       `<work dir>/<workflow-name>/work` and a symbolic link will be
+       created from `$HOME/cylc-run/<workflow-name>/work`. If not
        specified the workflow work directory will be created in
-       `<root run directory>/<workflow-name>/work`.
+       `$HOME/cylc-run/<workflow-name>/work`.
    * What happens if you want to be able to have some workflows which use
-     different root directory configurations on the same "platform"? For
-     example, you might have some workflows where you want the root workflow
-     directory on $HOME and others in $DATADIR.
+     different directory configurations on the same "platform"? For
+     example, you might have some workflows where you want the run
+     directory on $HOME and others on $DATADIR.
      * For platforms other than localhost the answer is to create separate
        platforms and then choose the appropriate platform in the workflow.
      * For localhost it is more complicated since there is only one localhost
-       platform and the settings are applied earlier at workflow install or
+       platform and the settings are applied earlier; at workflow install or
        startup time (rather than prior to first job submission). We will need a
-       way to override some of the root directory settings (not
-       `root run directory`) for localhost, e.g. on the command line.
+       way to override the directory settings for localhost, e.g. on the command
+       line.
+       * Cylc 8 already has a way to
+         [symlink individual run directories](https://github.com/cylc/cylc-flow/pull/2935).
+         The interface may change but this proposal will still support this
+         functionality.
    * What environment variables can be used in these settings?
      * Cylc currently only allows `$HOME` or `$USER` in the
        [run and work directory settings](https://cylc.github.io/doc/built-sphinx/appendices/site-user-config-ref.html#hosts-host-run-directory).
@@ -337,13 +349,21 @@ suite-run functionality:
      * Rose also provides the option of using the login shell for remote
        commands (which may give access to more environment variables). Should we
        add similar support to Cylc for sites that allow it?
-   * Any platforms which use the same target must use the same root directories
-     and owner settings.
+   * Any platforms which use the same target must use the same symlink
+     directories.
      * In order to reduce duplication (and configuration errors) we will support
        platform inheritance so that you can define a platform based on an
        existing platform.
        * Note: `inherit` will imply using the same `install target`.
      * Do we need comms method to be the same as well?
+   * The `[symlink dir]` settings are only applied when a workflow is installed
+     (or first run on a target). Therefore, changes to these settings have no
+     affect on running or restarting workflows.
+   * At the moment this proposal does not provide any way to relocate the
+     top level `$HOME/cylc-run` directory (which you can do currently via the
+     existing Cylc `run directory` setting). The assumption is that it is
+     sufficient to provide a way to move the run directory and there is no
+     reason not to use `$HOME/cylc-run`.
    * Note that these new settings replace the existing Cylc `run directory` and
      `work directory` settings.
 
@@ -351,17 +371,19 @@ Example platform configurations:
 ```ini
 [platforms]
     [[localhost]]
-        root log directory = $DATADIR
-        root share directory = $DATADIR
-        root share-cycle directory = $SCRATCH
-        root work directory = $SCRATCH
-    [[desktop\d\d|laptop\d\d]] # Long version
+        [[[symlink dir]]]
+            log = $DATADIR
+            share = $DATADIR
+            share/cycle = $SCRATCH
+            work = $SCRATCH
+    [[desktop\d\d,laptop\d\d]] # Long version
         install target = localhost
-        root log directory = $DATADIR
-        root share directory = $DATADIR
-        root share-cycle directory = $SCRATCH
-        root work directory = $SCRATCH
-    [[desktop\d\d|laptop\d\d]] # Short version using inherit
+        [[[symlink dir]]]
+            log = $DATADIR
+            share = $DATADIR
+            share/cycle = $SCRATCH
+            work = $SCRATCH
+    [[desktop\d\d,laptop\d\d]] # Short version using inherit
         inherit = localhost
     [[sugar]]
         inherit = localhost
@@ -371,9 +393,10 @@ Example platform configurations:
         hosts = hpcl1, hpcl2
         retrieve job logs = True
         batch system = pbs
-        root run directory = $DATADIR
-        root share-cycle directory = $SCRATCH
-        root work directory = $SCRATCH
+        [[[symlink dir]]]
+            run = $DATADIR
+            share/cycle = $SCRATCH
+            work = $SCRATCH
     [[hpcl1-bg]]
         inherit = hpc
         hosts = hpcl1
