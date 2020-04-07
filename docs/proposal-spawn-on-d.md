@@ -114,14 +114,14 @@ the scheduler could keep track of disembodied prerequisite data, only spawning
 tasks that are ready to run; and similarly it could separately keep track of
 who finished.
 
-However the same information has to be tracked and housekept either way, and
-using task proxies is simpler - at least with current Cylc internals.
-Prerequisites are associated with particular tasks after all, and task proxies
-already know how to track and evaluate their own prerequisites. The cost of
-keeping a few whole tasks a little longer than strictly necessary is very low.
-And having these tasks in the pool makes it easy to expose what is going on to
-users (otherwise prerequisite data has to be sent to the UIS and connected 
-to the right abstract tasks there).
+However the same information has to be tracked and housekept either way (and
+associated with the abstract tasks that they belong to) and using task proxies
+is much simpler with current Cylc internals: prerequisites are associated with
+particular tasks after all, and task proxies already know how to track and
+evaluate their own prerequisites. Also, the cost of keeping a few whole tasks a
+little longer than strictly necessary is very low.  And having these tasks in
+the pool makes it easy to expose what is going on to users (otherwise
+prerequisite data has to be sent to the UIS and connected to the right abstract tasks there).
 
 ### Spawning tasks with no parents
 
