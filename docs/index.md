@@ -7,6 +7,7 @@
 - Summary Notes
   - [Hilary](feb2020-workshop-notes)
   - [Jacinta](feb2020-workshop-notes-jr)
+- [Report](feb2020-workshop-report)
 
 ## Dec 2018 Development Workshop (Melbourne)
 - [Agenda](dec-workshop-agenda)
@@ -71,7 +72,7 @@ Meeting agendas and notes.
 - March 2020 
   - [Agenda](meetings/vc-march-2020-agenda.md)
 
-- Februrary 2020 Workshop (links coming...)
+- Februrary 2020 Workshop (see above)
 
 - 17 December 2019
   - [OS NIWA initial meeting](meetings/dm-os-ho-17Dec2019.md)
