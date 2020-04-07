@@ -75,7 +75,8 @@ As of February 2020:
   projects on GitHub (primarily because the UI is no longer Python based)
 - Our new communications platforms Riot (developer chat and video
   conferencing) and Discourse (mail forum) are proving effective
-- Web UI design settled after extensive consultation with users
+- Web UI design settled after consultation with users (we anticipate
+  more feedback during user testing)
 - Packaging and installation is done, with `pip` for Python
    components and `conda` (via Conda Forge) for the full system
 - Major Cylc 8 components and connections implemented and working (but not
@@ -103,7 +104,7 @@ As of February 2020:
 (First read the [Executive summary](#executive-summary).)
 
 The following items were thoroughly discussed, and problems worked out, in the
-workshop. Now they just need to implemented or completed.
+workshop. Now they just need to be implemented or completed.
 
 ### Essential for Cylc 8.0
 
@@ -207,8 +208,8 @@ depending on availability.
   - UI Server access to historical data within the view window (DS)
   - cross-user functionality (BK, OS)
 - August 2020:
-  - `rose suite-run` migration (TP, OS)
-  - new run command semantics and run directory structure (HO)
+  - `rose suite-run` migration (TP, OS) including new run command semantics and
+    run directory structure (HO)
   - `cylc review` decision - integration or contingency? (OS)
 - September 2020:
   - review and upgrade all documentation and training material (ALL)
