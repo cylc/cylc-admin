@@ -62,11 +62,19 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 ### Terminology
 
 - *parent* and *child*: up- and down-stream graph relationships
-- *task*: short for *task proxy object*
-- *task pool*: just the "active tasks" the scheduler is currently aware of
-- *n=0 window*: tasks that anchor the current view (by default, the task pool)
-- *n=M window*: view of tasks within M graph edges of the n=0 window
-- *finished*: means *succeeded*, OR *failed* *with ":fail" handled*
+- *task*: an abstract node in the workflow graph
+- *task proxy*: an object in the scheduler program that represents a particular
+  task instance
+- active *task pool*: a list of task proxies representing "active tasks" that
+  the scheduler is currently aware of
+- *runahead pool*: a list of task proxies that have been spawned (created)
+  already but are held back from the active pool because their cycle points are
+  ahead of the current "runahead limit" (tasks are initially spawned into the
+  runahead pool then released as the workflow moves forward)
+- *n=0 window*: tasks that anchor the current view (by default, the content of
+  the active task pool)
+- *n=M window*: tasks within M graph edges of the those in the n=0 window
+- *finished*: means *succeeded*, OR *failed* with ":fail" handled
 - *reflow*: when the workflow flows on from a manually triggered task
 
 ## Implementation overview
