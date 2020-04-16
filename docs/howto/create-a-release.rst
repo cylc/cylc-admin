@@ -141,10 +141,12 @@ at the top of the file.
 - If you updated the version, set the build number back to 0.
 - If you did not update the version, increase the build number.
 - If the conda package contains a source URL, check that it is evaluated
-correctly after the version is replaced, and update the ``sha256`` value.
+correctly using the Jinja variables, and update the ``sha256`` value
+(you can get this value from PYPI, or use some tool like ``sha256sum``).
 - Check requirements (we may have changed setup.py, or package.json, etc.
 ensure we are up to date).
-- Ensure the test commands are still valid
+- Ensure the test commands are still valid (i.e. they can be executed
+successfully)
 - Check if you need to change summary, description, or any other field.
 - Create a branch in your clone, commit, and push to your fork. Wait
 for the feedback of the Conda Forge CI bots.
