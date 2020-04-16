@@ -180,23 +180,21 @@ and then activate it ``conda activate cylc1``. Then to build and install
 locally:
 
 .. code-block:: bash
-    # Where $CONDA_FORGE_REPOSITORY could be, for example,
-    # cylc-uiserver-feedstock.
-    cd $CONDA_FORGE_REPOSITORY
 
-    # Your package should not be listed!
-    conda list
-
-    # This will take some minutes and print useful information.
-    conda build recipe/
-
-    # The following command will install the locally created package. Before
-    # installing it will ask you to confirm. Scroll up and search the
-    # package name. The right-side column must show a location like
-    # .../anaconda3/conda-bld/linux-64::cylc-uiserver-0.1-py37_1.
-    # This confirms you are installing the local build. Here $PACKAGE_NAME
-    # could be something like cylc-uiserver.
-    conda install $PACKAGE_NAME
+   # Where $CONDA_FORGE_REPOSITORY could be, for example,
+   # cylc-uiserver-feedstock.
+   cd $CONDA_FORGE_REPOSITORY
+   # Your package should not be listed!
+   conda list
+   # This will take some minutes and print useful information.
+   conda build recipe/
+   # The following command will install the locally created package. Before
+   # installing it will ask you to confirm. Scroll up and search the
+   # package name. The right-side column must show a location like
+   # .../anaconda3/conda-bld/linux-64::cylc-uiserver-0.1-py37_1.
+   # This confirms you are installing the local build. Here $PACKAGE_NAME
+   # could be something like cylc-uiserver.
+   conda install $PACKAGE_NAME
 
 At this point you should be good to go. Test the package with commands
 such as ``which $PACKAGE_NAME``, or ``$PACKAGE_NAME --version``, etc.
