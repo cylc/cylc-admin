@@ -169,11 +169,12 @@ configured to avoid automatically upload the package. Open you ``~/.condarc``
 and check that you have something similar to:
 
 .. code-block:: yaml
-    channels:
-      - defaults
-      - conda-forge
-    ssl_verify: true
-    anaconda_upload: false
+
+   channels:
+     - defaults
+     - conda-forge
+   ssl_verify: true
+   anaconda_upload: false
 
 Now create a Conda environment for your tests, e.g.: ``conda create -n cylc1``,
 and then activate it ``conda activate cylc1``. Then to build and install
