@@ -141,8 +141,9 @@ at the top of the file.
 - If you updated the version, set the build number back to 0.
 - If you did not update the version, increase the build number.
 - If the conda package contains a source URL, check that it is evaluated
-correctly using the Jinja variables, and update the ``sha256`` value
-(you can get this value from PYPI, or use some tool like ``sha256sum``).
+correctly by manually replacing the Jinja variables, and trying this out
+in a browser. Then update the ``sha256`` value (you can get this value
+from PYPI, or use some tool like ``sha256sum``).
 - Check requirements (we may have changed setup.py, or package.json, etc.
 ensure we are up to date).
 - Ensure the test commands are still valid (i.e. they can be executed
