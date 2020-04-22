@@ -214,9 +214,9 @@ It has been seven months since the
 And a lot of work has been done so far. Our changelog contains the most significant
 improvements and bug fixes.
 
-- https://github.com/cylc/cylc-flow/blob/master/CHANGES.md
-- https://github.com/cylc/cylc-uiserver/blob/master/CHANGES.md
-- https://github.com/cylc/cylc-ui/blob/master/CHANGES.md
+- [https://github.com/cylc/cylc-flow/blob/master/CHANGES.md](https://github.com/cylc/cylc-flow/blob/master/CHANGES.md)
+- [https://github.com/cylc/cylc-uiserver/blob/master/CHANGES.md](https://github.com/cylc/cylc-uiserver/blob/master/CHANGES.md)
+- [https://github.com/cylc/cylc-ui/blob/master/CHANGES.md](https://github.com/cylc/cylc-ui/blob/master/CHANGES.md)
 
 The following list highlights some new features since the previous
 alpha 1 release.
