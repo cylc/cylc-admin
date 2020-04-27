@@ -18,13 +18,13 @@
   - [Spawning on task completion](#spawning-on-task-completion)
   - [Failed tasks](#failed-tasks)
   - [Stall and shutdown](#stall-and-shutdown)
-  - [Suicide triggers not needed](#suicide-triggers-not-needed)
+  - [Suicide triggers mostly not needed](#suicide-triggers-mostly-not-needed)
   - [Intervention and reflow](#intervention-and-reflow)
      - [Reflow in SoS](#reflow-in-sos)
      - [Reflow in SoD](#reflow-in-sod)
   - [Submit number](#submit-number)
   - [CLI implications](#cli-implications)
-  - [Succeeded tasks](#succeeded-tasks)
+  - [Succeeded vs failed tasks](#succeeded-vs-failed-tasks)
 - [Notes](#notes)
 - [Future enhancments](#future-enhancements)
 
@@ -56,46 +56,51 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 - **Suicide triggers are not needed for alternate path branching**
 - **Instances of the same task can run out of cycle point order**
 - **No unnecessary stalling** (in SoS, caused by unspawned tasks downstream of a failed task)
-- **Achieve "re-flow" by simply re-triggering a task**
+- **Achieve "reflow" by simply re-triggering a task**
 - **No need to manually insert the first instance of newly defined tasks** on restart or reload
 
 ### Terminology
 
-- *parent* and *child*: up- and down-stream graph relationships
-- *task*: an abstract node in the workflow graph
+- *parent* and *child*: up- and down-stream graph relationships (not runtime inheritance!)
+- *task*: an abstract node in the workflow graph (task name at a particular cycle point)
 - *task proxy*: an object in the scheduler program that represents a particular
-  task instance
-- active *task pool*: a list of task proxies representing "active tasks" that
+  task instance (task name at a particular cycle point)
+- *task pool*: a list of task proxies representing "active tasks" that
   the scheduler is currently aware of
-- *runahead pool*: a list of task proxies that have been spawned (created)
-  already but are held back from the active pool because their cycle points are
-  ahead of the current "runahead limit" (tasks are initially spawned into the
-  runahead pool then released as the workflow moves forward)
+- *runahead pool*: task proxies that have been spawned (created) already but
+  are beyond the current runahead limit, or beyond the (non-final) stop point.
+  All tasks are initially spawned into the runahead pool then released to the
+  main pool as the worklow (and the runahead limit) moves foreward.
 - *n=0 window*: tasks that anchor the current view (by default, the content of
   the active task pool)
 - *n=M window*: tasks within M graph edges of the those in the n=0 window
-- *finished*: means *succeeded*, OR *failed* with ":fail" handled
-- *reflow*: when the workflow flows on from a manually triggered task
+- *finished*: means *succeeded*, OR *failed* with ":fail" handled. An unhandled
+  failed task is consider to be "not finished"
+- *reflow*: when the workflow flows on according to the graph, from a manually
+  triggered task
 
 ## Implementation overview
 
-1. Get tasks to record (from the graph) the children that depend on each of
-      their outputs 
-1. Continually [auto-spawn tasks with no
-      parents](#spawning-tasks-with-no-parents) to the runahead limit
-1. (Tasks with no prerequisites can submit their jobs, as usual)
-1. As outputs are completed [spawn waiting
+1. During graph parsing, record (in parent task definitions) the children that
+     depend on each output
+1. At start-up, spawn the first instance of any [task with no
+        parents](#spawning-tasks-with-no-parents) to the runahead pool 
+    - Then whenever such a task is released from the runahead pool, spawn its
+      next instance (into the runahead pool)
+1. Tasks with all prerequisites satisfied (in the main task pool) can submit
+      their jobs
+1. As task job outputs are completed [spawn
      children](#spawning-waiting-tasks-on-outputs) that depend on them
     (if not already spawned) and update their prerequisites directly
-1. (Tasks with prerequisites all satisfied can submit their jobs, as usual)
-1. As tasks finish, spawn remaining children (if not already spawned) and
+1. As tasks finish, spawn any remaining children (if not already spawned) and
       update their [parent-is-finished
       status](spawning-and-parent-is-finished-status) directly
-1. [Remove waiting tasks](#housekeeping-waiting-and-finished-tasks) if their
-parents have finished
-1. [Remove finished tasks](#housekeeping-waiting-and-finished-tasks) if their
-parents have finished *or* the pool has moved beyond the point it can affect them
-1. [Shut down](#scheduler-shutdown) if stalled with no failed tasks present
+1. [Remove waiting tasks](#housekeeping-waiting-and-finished-tasks) if all of
+      their parents have finished
+1. [Remove finished tasks](#housekeeping-waiting-and-finished-tasks) if all of
+      their parents have finished *or* if the pool has moved beyond the point
+      it can affect them
+1. [Shut down](#stall-and-shutdown) if stalled with no failed tasks present
 
 ## Discussion of details
 
@@ -193,7 +198,7 @@ prerequisites.
 When a task output gets completed the scheduler should spawn (if not already
 spawned) children of that output in the waiting state and update their
 prerequisites directly. Note this only creates waiting tasks between generation
-of the first and last outputs dependended on, for tasks with multiple parents.
+of the first and last outputs depended on, for tasks with multiple parents.
 
 ```
 A & B => C
@@ -273,7 +278,9 @@ post1 | post2 => plot
 ```
 Here if `out1` and `out2` are mutually exclusive, only one of `post1` or
 `post2` will be spawned, but `plot` has to be kept around in the finished 
-in case the other path runs.
+in case the other path runs. (Actually the other `post` will also be spawned
+when `A` finishes but it will immediately be cleaned up as a waiting task whose
+parents are all finished).
 
 Alternate branching like this won't stop the workflow however, so we can remove
 finished tasks like `plot` once the task pool has moved on to a cycle point
@@ -281,7 +288,7 @@ beyond which nothing short of intervention could trigger their "missing"
 parents.
 
 Options:
-- Use graph traversal could to find the branching task (`A` above). If that
+- Use graph traversal to find the branching task (`A` above). If that
   task is finished we can remove `plot` because the other path cannot be
   spawned. 
 - SIMPLE but blunt: cycle point housekeeping - if no active tasks exist anymore
@@ -366,7 +373,7 @@ A & B => C
 If `A` fails it will [spawn](#spawn-on-task-completion) `C` as waiting. Both
 `A` and `C` will remain in the pool after `B` completes (`A` because its
 failure was not handled, and `C` because its parents did not all finish). Then
-if the user retriggers `A` and it succeeds, `C` can run becuase it remembers
+if the user retriggers `A` and it succeeds, `C` can run because it remembers
 that `B` finished.  If we did not keep `A` and `C` in the pool, the user could
 still retrigger `A`, but its success would respawn `C` which would not remember
 that `B` had finished in "the previous flow". So the proposed implementation
@@ -385,14 +392,16 @@ all tasks are spawned ahead as waiting without regard for what is "demanded" by
 the graph. If the workflow has completed there will be no waiting tasks left in
 the pool, otherwise the stall is premature.
 
-In SoD there may be no tasks waiting ahead to show there is more to do, but we
-can detect workflow completion as follows:
+In SoD there may be no tasks waiting ahead (on the "intended path") to show
+there is more to do, but we can detect workflow completion as follows:
 
 - If the workflow has NOT stalled,
    - Then it has not completed (obviously)
-- If the worklfow has stalled,
-   - With unhandled failed tasks present: premature stall
-   - With no unhandled failed tasks present: workflow completed
+- If the workflow has stalled,
+   - No unhandled failed tasks present and all waiting tasks beyond the stop
+     point (and in the runahead pool): workflow completed
+   - Otherwise (unhandled failed tasks and or stuck waiting tasks present):
+     premature stall
 
 At stall we can choose to keep the most recent active tasks in the pool, or to
 empty the pool (apart from unhandled failed tasks). Keeping recent active tasks
@@ -411,16 +420,35 @@ before it happens:
   expected to run there, because alternate paths are possible
 
 Note that bad failure handling, which does not cause the workflow to continue,
-will cause a premature shutdown:
+will cause an (arguably!) premature shutdown:
 ```
 A:fail => email_me
 A => B => C = archive
 ```
 Here, if `A` fails the workflow will shut down as completed with `email_me`
-succeeded. But, that is what the graph logic says to do! If `A` fails, there is
-no path to normal completion.
+succeeded. **But, that is what the graph logic says to do!** If `A` fails,
+there is no path to (the supposedly-intended) completion.
 
-### Suicide triggers not needed
+#### Spawning and stop points
+
+**Stopping prior to the final cycle point:** 
+At any shut down prior to the final cycle point (e.g. stop now, or stop at
+cycle point P, etc.) the scheduler shuts down with the task pool as-is, which
+may include waiting tasks in the runahead ahead pool beyond the stop point.
+This allows a restart to carry on as normal, beyond the stop point.
+
+**Stopping at the final cycle point:**
+The workflow final cycle point represents the end of the graph. All graph
+recurrence expressions end here so in general it is not possible to say what
+the "next" instance of task should be beyond the final point. When the
+scheduler shuts down at the final cycle point the task pool will therefore
+represent only the very last things happened before shutdown - i.e. the very
+last task(s) to complete. It is not possible to carry on beyond this point
+with a restart. To go beyond the original final cycle point users would need to
+change the final cycle point in the workflow definition and warm start at the 
+next point.
+
+### Suicide triggers mostly not needed
 
 Suicide triggers are no longer needed for workflow branching. 
 ```
@@ -442,17 +470,20 @@ removed by housekeeping (above) once both A and X are finished.
 @xtrigger2 => B
 ```
 
-Tim W's edge case: `B` triggers and determines that `xtrigger1` can never be
+Tim W's case: `B` triggers and determines that `xtrigger1` can never be
 satisfied, so we need to remove the waiting `A` (the two xtriggers are watching
-two mutually exclusive data directories for a new file). This is (?) the only
-remaining case for suicide triggers, and even this will go away once we are
-spawning xtriggered-tasks "on demand" too in response to xtrigger outputs.
-For the moment we can either keep suicide triggers to support this use case, or
-perhaps suggest a workaround: `B` calls `cylc remove A`.
+two mutually exclusive data directories for a new file). This is arguably a
+remaining valid case for suicide triggers (although this will go away once we
+are spawning xtriggered-tasks "on demand" too in response to xtrigger outputs).
+
+In any case there is no harm in keeping suicide triggers for backward
+compatibility and in case they are needed for a few edge cases like this. See
+also [stuck waiting tasks](#stuck-waiting-tasks): "a *handled* upstream failure
+that does not fix the workflow can potentially cause orphaned waiting tasks".
 
 ## Intervention and reflow
 
-Re-flow means having the workflow continue to "flow on" according to the graph
+Reflow means having the workflow continue to "flow on" according to the graph
 from a manually re-triggered task.
 
 ### Reflow in SoS
@@ -492,53 +523,61 @@ intervention, because previous-flow outputs are not automatically available
   - OR trigger `qux.2` after `baz.2` finishes, to make it run despite
     its unsatisfied prerequisite
 
-We will need optional reflow restrictions, based on a "flow number" passed down
-on spawning events?:
-- initially at least, allow only one reflow at a time (tasks will either be
-  part of the reflow or not)
-- by default, don't reflow at all - just run the retriggered task alone
-- stop the reflow at cycle point X
-- stop the reflow at a list of task IDs (to do less than a whole cycle)
+### Reflow restrictions
 
-Notes:
-- Need to be able to cancel a reflow
-- Need to clearly document what to expect
-- At the moment, if the reflow catches up to the main flow a task will not get
-spawned if it was already spawned by the main flow (and the existing one will
-get its prerequisites updated)
-  - this is probably the right thing to do if the existing task is active already
-    (if you don't want it to run, kill it); but what if the existing one is
-    finished (still in the pool because its parents aren't finished)? Should
-    it to run again in this case?
+Out of the box any re-triggered task will automatically lead to reflow, and
+this could result in multiple flows at once in different parts of the graph.
+This seems dangerous, so we will (initially at least) restrict reflow:
 
-**Automatic use of previous-flow outputs** is a possible future enhancement, but:
-- It may be difficult
-  - Graph traversal is required to determine whether prerequisites can be
-    satisfied within the new flow or not
-  - If they can't, query the database for previous-flow outputs (and: how to
-    know when/if we can stop doing this?)
-- It could be dangerous, and anyway isn't really needed!
-  - SoD reflow is a massive improvement on SoS reflow as-is: less
-    intervention (usually very little is needed) and it is more straightfoward
-    and consistent
-- We should provide an option to ignore dependence on pre-reflow cycle points
+- Don't reflow by default: just run the retriggered task and stop
+- Allow only one reflow at a time: tasks will be part of the one reflow, or not
+    - So the scheduler needs to know if there is a current reflow
+    - Task proxies need to know if they are part of a reflow or not: a **task
+      reflow flag** can be passed along at spawning events.
+- Stop the reflow:
+    - at cycle point P
+    - at a list of task IDs (allows less than a whole cycle)
+    - (note some reflows will peter out naturally)
 
-Semantically, reflow as described here is really just a generalisation of
-"retriggering tasks within the same flow". This is not really fundamentally
-different than what we have currently in SoS, it just works better and is
-easier to do.
+We also need:
+- to be able to cancel a reflow
+- (to document what to expect)
+
+If a reflow catches up to the main flow new reflow tasks will not get spawned
+if they are already in the task pool (but the existing task's prerequisites
+will be updated, unless we prevent that). If the existing task is:
+  - waiting: run it as normal when its prerequisites are met
+  - submitted, running, or finished: leave it alone
+(Note we can always tell if a task is part of the reflow or not because of the
+task reflow flag, above)
+
+**Automatic use of off-reflow outputs?** This is possible in principle but we
+have decided against it as difficult and dangerous. Also, it is really not
+necessary. SoD reflow is a big improvement on SoS even without this (less
+intervention needed, and it is straightfoward and consistent).
 
 Note that retriggering of unhandled failed tasks (still in the pool) does not
 cause reflow.
 
-*TODO: the UI will need to make it clear why a task with off-flow dependence is
-stuck waiting, as off-reflow parents will appear as finished in the n>0 window.
-Do we need to mark scheduler task pool members to distinuish them?*
-
 (Note we actually have a similar-but-worse problem in SoS: previous-flow task
 outputs will not be used automatically unless those tasks happen to still be
 present in the task pool - and users do not generally understand what
-determines that presence).
+determines whether or not those tasks will still be present).
+
+(For the record, in case we ever reconsider automatic use of off-reflow
+outputs, graph traversal would be required to determine whether or not an
+unsatisfied prerequisite can be satisfied later within the reflow or not, and
+if not, to go the the database. As Oliver noted: this could probably be worked
+out once at the start of the reflow; it could also help us show users
+graphically the consequences of their intended reflow).
+
+#### Infinite reflow?
+
+TODO: if a reflow can become the main flow (e.g. trigger a reflow behind the
+main flow but let it go on forever), how do we stop identifying the ongoing
+flow as a reflow and start identifying it as the main flow? If it goes beyond
+the original flow it becomes the main flow? (Note this may affect how we
+determine [submit number](#submit-number).
 
 ## Submit number
 
@@ -554,16 +593,18 @@ the right submit number from the DB, but their spawned next-cycle successors
 start at submit number 1 again.
 
 In SoD, retry number is still safe because a retrying task will revert to
-waiting (it will not disappear from the pool... until we re-spawn retrying
-tasks on clock events).
+waiting (it will not disappear from the pool... unless we start re-spawning
+retrying tasks in response to clock events, that is).
 
-Submit number always starts at 1 in the original flow, and increments safely
-for automatic retries. It is only for manual triggering *and subsequent reflow*
-that we have to look it up in the DB in case the task already ran earlier.
-
-TODO - if a reflow takes over the whole workflow, can we stop lookup at the DB
-for submit number? (or will this naturally happen when the reflow catches up to 
-the original flow ... if that doesn't happen, it is still "the reflow").
+Unfortunately we cannot assume that submit number always starts at 1 in the
+original flow (and so only look at the DB during a reflow) because it would be
+possible (if we allow it??) to trigger a reflow beyond the front of the main
+flow, before resuming the main flow. If so, options are (TODO):
+- Always look up submit number in the DB when a new task is spawned?
+  - (Foolproof, and I doubt this would be a significant performance problem)
+- Assume 1 if not a reflow, but double check the log directory when the job
+  file is written?
+  - (log file housekeeping could break this check)
 
 ## CLI implications
 
@@ -575,8 +616,11 @@ In SoD, a re-triggered task will get inserted automatically with prerequisites
 satisfied. Inserting tasks for other reasons does not really make sense in SoD.
 
 A major SoS use case was manual insertion of the first instance of a new task
-added to the suite definition mid-run. In SoD the correct first instance will
-automatically appear on demand.
+added to the suite definition mid-run. In SoD the correct first instance of any
+task with parents will automatically appear on demand. However, we will still
+need to manually insert the first instance of newly-defined parentless tasks.
+See
+[reload-and-restart-after-graph-changes](#reload-and-restart-after-graph-changes)
 
 ### "cylc spawn" repurposed
 
@@ -586,8 +630,7 @@ next-cycle successors.
 In SoD this should spawn the children of specified outputs of abstract tasks
 in order to set up reflow from a non-bottleneck task (see above).
 
-TODO - consider changing the name of the command for users,
-to `cylc set-outputs-completed` or similar?
+TODO - consider changing the name of the command, `cylc spawn-on-outputs`?
 
 ### "cylc remove" still needed
 
@@ -598,8 +641,8 @@ In SoD there's not much in the task pool to "remove" and
 - removing active tasks doesn't make sense (the job is already active)
 - removing waiting tasks will not stop future instances of the task
   appearing on demand
-- but we can still keep the command to allow occasional removal of waiting and
-  finished tasks if necessary (to preempt housekeeping?)
+- TODO: but we can still keep the command to allow occasional removal of stuck
+  waiting and finished tasks if necessary
 
 ### "cylc reset" not needed
 
@@ -631,74 +674,84 @@ In SoD we need to glob on:
   - `poll`, `kill`
 - name only, for a given cycle point, to match abstract tasks:
   - `spawn`, `trigger`
+- actually trigger needs both kinds of globbing: we might still want to
+  re-trigger multiple unhandled failed tasks at once (i.e. match in the task
+  pool) for instance.
 
 ### Restart
 
-In SoS we only store gross task state in the DB, and infer prerequisite status
-from that on restart (then rely on dependency negotiation to (re-)satisfy
-prerequisites of waiting tasks at start-up). For SoD we'll need to store actual
-prerequisite status in the DB, not just task state. But that's easy to do.
+In SoS we only store gross task state in the DB, infer prerequisite status
+from that on restart and then rely on dependency negotiation to (re-)satisfy
+prerequisites of waiting tasks at start-up.
 
-Also need to auto-spawn tasks with no prerequisites again, like at cold start.
+In SoD we no longer have dependency negotation so we need to store the full
+prerequisite-satisfaction status of tasks in the DB, not just the gross task
+state. More precisely, task pool snapshots need to list:
+- the prerequisite components (upstream outputs) completed so far
+- the parent_finished status populated so far
 
-Similarly for reload, if parentless task defs were added.
+### Reload and Restart after graph changes
 
-### Succeeded tasks
+This gets much better under SoD but is still a little difficult. If new task
+definitions are added, they will automatically be spawned on demand so long as
+existing tasks are their parents in the graph. But if they have no parents we
+will still have to insert the first instance at the desired cycle point.
+(TODO: however I think `cylc trigger` with auto-insert is sufficient here, no
+need to keep the insert command).
+
+### Succeeded vs failed tasks
 
 If a task fails unhandled (i.e. without a `fail` trigger) we consider it
 unfinished, and keep it in the task pool to support easy retriggering (above).
-
-By analogy if a task succeeds without a `:succeeded` trigger, should we also
-consider it unfinished and keep it in the pool (presuming that it was
-"expected to fail")?
 
 Failure by definition implies the task failed to do what it was designed to do.
 But it is possible for us to expect a task to fail, and to build the workflow
 around that expectation (that's what `:fail` triggers are for).
 
-Similarly, success implies the task succeeded in doing what it was designed to
-do. But it is possible for us to expect a task not to succeed, and for the
-workflow to be built around that expectation.
+By analogy if a task succeeds without a `:succeeded` trigger, should we also
+consider it unfinished and keep it in the pool (presuming that it was
+"expected to fail")?
 
-If a task generates multiple outputs, failure can occur at any point during
-execution, so any of the outputs (apart from `:succeeded`) could be generated
-before failure.
+NO! Consider `A => B` (or just `B`).  If `B` is at the end of the workflow we
+should still presume that it is expected to succeed even though no other task 
+depends on its success.
 
-Similarly success implies only that the `:failed` output was not generated,
-because multiple internal outputs can be mutually exclusive (e.g. to drive
-alternate paths).
+So we should treat success and failure differently in the following sense: an
+unhandled failed task is kept in the pool as "unfinished", but a unhandled
+succeeded task is considered to have finished successfully and can be removed. 
 
-So it seems there is no fundamental difference between `:fail` and `:succeed`
-in terms of workflow logic, and we should really treat unhandled success
-and failure in the same way.
+## UI Issues
 
-But there may be a difference in practical terms: *success is probably assumed
-in cases where internal outputs are used, and failure handling probably always
-assumes that no internal outputs were generated before the failure??*
-```
-A:out1 => B1
-A:out2 => B2
- # ...
-```
-We can't expect this to be written:
-```
-A:out1 & A => B1
-A:out2 & A => B2
- # ...
-```
-because then `B1` etc. have to wait until A succeeds before running.
+Approaching a stop point:
 
-**TODO: should success be considered handled if any non-fail output is
-handled?**
+- If the workflow is told to shut down before the final cycle point (i.e.
+  before the end of the graph) there may be some waiting tasks held back in the
+  runahead pool because they are beyond the stop point even though they have all
+  prerequisites satisfied.  TODO: do we need the UI to make this clear?
+  Probably not (other than making the approaching scheduler stop point clear) -
+  it isn't really any different from waiting satisfied tasks held back because
+  they are beyond the runahead limit. 
 
-## Notes
+Graph isolates:
 
-The task pool might not contain tasks from the highest cycle point reached
-(e.g.  if a user-triggered [reflow](#reflow) is still running when the original
-flow finishes)
-  - This is fine; the scheduler's job is to manage active tasks, not to
-    maintain an awareness of the past. To see beyond the task pool users just
-    need to widen the view window (and watch for important events.
+- Expanding the n-distance window will not reveal tasks that are not connected
+  (via the graph) to the n=0 tasks. Nasty example: cycling workflows with no
+  inter-cycle dependencies.
+- TODO: how should the UI make these easily discoverable?
+  - Provide and "n-max" window that includes whole cycle points?
+  - Or is searching or filtering by name sufficient?
+
+Reflow:
+
+- TODO: We'll need to distinguish between reflow and main-flow in the UI
+  so that it is clear to users why a task with off-reflow dependence is stuck
+  waiting, because off-reflow parents will still appear as finished if the n=0
+  window is expanded to n=1. Simply distinguishing reflow from main flow will
+  should be sufficient because it will be relatively easy to explain the
+  problem to users (compared to SoS)
+
+- TODO: Allow selecting part of the graph, or particular tasks, to define the
+  bounds of a reflow?
 
 ## Future Enhancements
 
@@ -709,11 +762,8 @@ Follow-on changes may (or may not) be worthwhile before Cylc 9:
   iteration over tasks?
 - Refactor prerequisite and output handling (which remains largely as for SoS)
 - Consider not [using waiting and finished task proxies](#use-of-task-proxies)
+  to track partially-satisfied prerequisites and prevent conditional reflow.
 - Extend SoD to clock- and external-triggers: tasks should be spawned in
   response to trigger events (depends on xtriggers as main-loop coroutines)
-- Consider supporting automatic use of previous flow outputs. This may be a
-  difficult graph traversal problem, but as Oliver noted: it can probably be
-  done once at the start of the reflow; it could also help us show users
-  graphically the consequences of their intended reflow
 - Consider using graph traversal for better housekeeping of finished tasks at
   the base of alternate paths.
