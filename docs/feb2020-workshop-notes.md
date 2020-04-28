@@ -290,7 +290,7 @@ Config File names agreed:
 Config Item changes:
 - (DM) let's not bother deprecating global config changes
 
-- need ability to configure site global conf location by `CYLC_CONF_PATH` for
+- need ability to configure site global conf location by `CYLC_SITE_CONF_PATH` for
   cylc installations with no `/etc` access.  Default to `/etc` though.
 
 - agreed on the conf dir hierachy in the proposal (need version sub-dirs)
