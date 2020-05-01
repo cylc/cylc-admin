@@ -19,9 +19,11 @@
   - [Failed tasks](#failed-tasks)
   - [Stall and shutdown](#stall-and-shutdown)
   - [Suicide triggers mostly not needed](#suicide-triggers-mostly-not-needed)
-  - [Intervention and reflow](#intervention-and-reflow)
+  - [Reflow](#intervention-and-reflow)
      - [Reflow in SoS](#reflow-in-sos)
      - [Reflow in SoD](#reflow-in-sod)
+     - [Reflow restrictions](#reflow-restrictions)
+     - [Reflow TBD](#reflow-tbd)
   - [Submit number](#submit-number)
   - [CLI implications](#cli-implications)
   - [Succeeded vs failed tasks](#succeeded-vs-failed-tasks)
@@ -481,7 +483,7 @@ compatibility and in case they are needed for a few edge cases like this. See
 also [stuck waiting tasks](#stuck-waiting-tasks): "a *handled* upstream failure
 that does not fix the workflow can potentially cause orphaned waiting tasks".
 
-## Intervention and reflow
+## Reflow
 
 Reflow means having the workflow continue to "flow on" according to the graph
 from a manually re-triggered task.
@@ -571,7 +573,11 @@ if not, to go the the database. As Oliver noted: this could probably be worked
 out once at the start of the reflow; it could also help us show users
 graphically the consequences of their intended reflow).
 
-#### Infinite reflow?
+### Reflow TBD
+
+TODO: Do we always need to identify a reflow as a reflow (i.e. set the reflow
+flag)? E.g. if you trigger a reflow without specifying any stop point for it?
+(Submit number)?
 
 TODO: if a reflow can become the main flow (e.g. trigger a reflow behind the
 main flow but let it go on forever), how do we stop identifying the ongoing
