@@ -72,7 +72,7 @@ and usage, and will make Cylc 9 changes easier to implement in the future.
 - *runahead pool*: task proxies that have been spawned (created) already but
   are beyond the current runahead limit, or beyond the (non-final) stop point.
   All tasks are initially spawned into the runahead pool then released to the
-  main pool as the worklow (and the runahead limit) moves foreward.
+  main pool as the workflow (and the runahead limit) moves forward.
 - *n=0 window*: tasks that anchor the current view (by default, the content of
   the active task pool)
 - *n=M window*: tasks within M graph edges of the those in the n=0 window
@@ -119,8 +119,7 @@ So the task pool contains:
   xtriggers)
 - Finished tasks (succeeded and failed) that still have some unfinished
   conditional parents
-- [unhandled failed tasks](#failed-tasks) (and maybe [unhandled succeeded
-  tasks](#succeeded-tasks)?)
+- [unhandled failed tasks](#failed-tasks)
 
 This constitutes vastly fewer `waiting` and `finished` tasks than in SoS.
 
@@ -280,9 +279,9 @@ post1 | post2 => plot
 ```
 Here if `out1` and `out2` are mutually exclusive, only one of `post1` or
 `post2` will be spawned, but `plot` has to be kept around in the finished 
-in case the other path runs. (Actually the other `post` will also be spawned
-when `A` finishes but it will immediately be cleaned up as a waiting task whose
-parents are all finished).
+state in case the other path runs. (Actually the other `post` will also be
+spawned when `A` finishes but it will immediately be cleaned up as a waiting
+task whose parents are all finished).
 
 Alternate branching like this won't stop the workflow however, so we can remove
 finished tasks like `plot` once the task pool has moved on to a cycle point
@@ -539,7 +538,8 @@ This seems dangerous, so we will (initially at least) restrict reflow:
 - Stop the reflow:
     - at cycle point P
     - at a list of task IDs (allows less than a whole cycle)
-    - (note some reflows will peter out naturally)
+    - (note some reflows will peter out naturally - at which point we can
+      detect there are no tasks present with the reflow flag)
 
 We also need:
 - to be able to cancel a reflow
@@ -583,7 +583,7 @@ TODO: if a reflow can become the main flow (e.g. trigger a reflow behind the
 main flow but let it go on forever), how do we stop identifying the ongoing
 flow as a reflow and start identifying it as the main flow? If it goes beyond
 the original flow it becomes the main flow? (Note this may affect how we
-determine [submit number](#submit-number).
+determine [submit number](#submit-number)).
 
 ## Submit number
 
@@ -701,9 +701,12 @@ state. More precisely, task pool snapshots need to list:
 This gets much better under SoD but is still a little difficult. If new task
 definitions are added, they will automatically be spawned on demand so long as
 existing tasks are their parents in the graph. But if they have no parents we
-will still have to insert the first instance at the desired cycle point.
+*may* still have to insert the first instance at the desired cycle point.
 (TODO: however I think `cylc trigger` with auto-insert is sufficient here, no
-need to keep the insert command).
+need to keep the `cylc insert` command).
+TODO: we should consider automatically adding such tasks at some sensible cycle
+point - e.g. the nearest valid point for the task relative to the current
+oldest or newest point, or to the current runhead limit.
 
 ### Succeeded vs failed tasks
 
@@ -723,7 +726,7 @@ should still presume that it is expected to succeed even though no other task
 depends on its success.
 
 So we should treat success and failure differently in the following sense: an
-unhandled failed task is kept in the pool as "unfinished", but a unhandled
+unhandled failed task is kept in the pool as "unfinished", but an unhandled
 succeeded task is considered to have finished successfully and can be removed. 
 
 ## UI Issues
