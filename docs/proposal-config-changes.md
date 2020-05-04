@@ -1,29 +1,31 @@
 # Proposal - changes to global and workflow configs
 
 These notes mainly address [cylc-flow #3422](https://github.com/cylc/cylc-flow/issues/3422).
+They have been updated to reflect the discussion at
+[CylcCon 2020](https://cylc.github.io/cylc-admin/feb2020-workshop-notes#wednesday).
 
 ## General points
 
 ### Terminology
    * We should remove all references to `suite` in the settings (partly because
      we're trying stop referring to "suites" and partly because some affected
-     settings are actually referring to the workflow server which is unclear).
-     * Note: "suite" is referred to through-out the code, tests and
-       documentation.
-   * **NOTE** "server" changed to "scheduler" below in light of the recent
-     component name decision - *we still need to check each instance carefully*
+     settings are actually referring to the workflow scheduler which is unclear).
+   * We will refer to the process which controls the workflow as the "scheduler"
+    (previously referred to as either "daemon", "server" or "service").
+   * **NOTE**: The old terminology is still used through-out the code, tests and
+     documentation - these will need to be updated (not urgent).
 
 ### Deprecation
    * The global config will be changing drastically for the platforms support.
      Furthermore, it doesn't affect most end users.
-     * Proposal: Don't support any deprecated or obsolete settings in the global
+     * Decision: Don't support any deprecated or obsolete settings in the global
        config.
    * For the workflow config the code to support deprecated and obsolete settings
      isn't complicated so there is no big overhead for us. On the other hand we
      don't want users using old syntax for too long. Some settings only became
      deprecated or obsolete very recently - it seems harsh to remove support for
      these.
-     * Proposal: Remove everything from 7.6.0 (Feb 2018) and before. That will
+     * Decision: Remove everything from 7.6.0 (Feb 2018) and before. That will
        just leaves things from 7.8.x.
 
 ### Config file naming
@@ -33,43 +35,31 @@ See [cylc-flow #3170](https://github.com/cylc/cylc-flow/issues/3170).
      [suite_files.py](https://github.com/cylc/cylc-flow/blob/master/cylc/flow/suite_files.py#L123)).
      Since we're trying to move away from referring to "suites" we should change
      this (with backwards compatibility).
-     * Proposal: `flow.rc` or `cylc-flow.rc`
+     * Decision: `flow.cylc`
    * Global
      * Currently `flow.rc` (specified in
        [globalcfg.py](https://github.com/cylc/cylc-flow/blob/master/cylc/flow/cfgspec/globalcfg.py#L325)).
-       * Proposal: `config.rc`?
-     * Read from `/etc/cylc/flow/8.0a1/flow.rc` and
-       `~/.cylc/cylc/flow/8.0a1/flow.rc` unless `$CYLC_CONF_PATH` set in which
-       case it is read only from this path.
-     * We need the ability to override where the site (and user) config file is read from,
-       e.g. by setting `$CYLC_SITE_CONF_PATH`?
-     * Should we include the version in the path? Users should not have to
-       create a new config file every time we deploy a new version. Perhaps
-       major version only (with backwards compatibility assumed for minor
-       versions)?
-
-
-OS comment:
-> I think going version specific makes the upgrade process unnecessarily
-> difficult, particularly for independent installations.
-> We might be able to reduce the pain by being less specific e.g:
->```
->~/
->  `-/.cylc/
->      `- flow/
->         |- 8/
->         |  `- flow.rc
->         |- 8.0/
->         |  `- flow.rc
->          `- 8.0.1/
->             `- flow.rc,
->```
+       * Decision: change to `global.cylc`
+     * Both the site and user config may consist of a number of files. For
+       example, for release 8.0.1 the following config files will be read in (if
+       they exist) in order from least specific to most specific:
+       * `<config-dir>/flow/global.cylc`
+       * `<config-dir>/flow/8/global.cylc`
+       * `<config-dir>/flow/8.0/global.cylc`
+       * `<config-dir>/flow/8.0.1/global.cylc`
+     * The user config dir will `~/.cylc`.
+     * The site config dir will defined by the environment variable
+       `$CYLC_SITE_CONF_PATH` (defaults to `/etc/cylc` if not defined). See
+       [cylc-flow #3167](https://github.com/cylc/cylc-flow/issues/3167).
+     * If `$CYLC_CONF_PATH` is set then the global config is read from
+       `$CYLC_CONF_PATH/global.cylc` (ignoring the site and user configs) - this
+       is existing functionality which is used for testing.
 
 *******************************************************************************
 
-## Proposed global config changes
+## Agreed global config changes
 
-These are proposed changes to the
+These are agreed changes to the
 [specification currently on master](https://github.com/cylc/cylc-flow/blob/master/cylc/flow/cfgspec/globalcfg.py#L37).
 
 ### `[authentication]` -> obsolete
@@ -88,15 +78,10 @@ name. See
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r333229597).
 
-### `[cylc]task event mail interval` -> `[scheduler][mail]task event interval`
+### `[cylc]task event mail interval` -> `[scheduler][mail]task event batch interval`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r332937797).
-
-### `[cylc][scheduler][environment]` <- new
-
-We can define handlers in the global config but not configure the handler
-environment - this doesn't make sense.
 
 ### `[cylc]health check interval` -> `[scheduler]health check interval`
 
@@ -137,43 +122,82 @@ notification or to want to retry it (unlikely to succeed on retry if it fails).
 (If we do decide to keep this setting, surely it should apply to scheduler events
 as well and should be moved into the `[scheduler][mail]` section.)
 
-### `[suite servers]` -> `[scheduler platforms]`
+### `[suite servers]` -> `[scheduler]`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r332985001).
-Would `[scheduler hosts]` be better or `[scheduler][hosts]`?
 Difficult to plan for the future methods (e.g. running via kubernetes?).
+* `[suite servers]auto restart delay` -> `[scheduler]auto restart delay`
+* `[suite servers]run hosts` -> `[scheduler][run hosts]available`
+* `[suite servers]condemned hosts` -> `[scheduler][run hosts]condemned`
+* `[suite servers]run ports` -> `[scheduler][run hosts]ports`
+* `[suite servers]ranking` -> `[scheduler][run hosts]ranking`
 
-Note: alternative proposal later in this document.
-
-### `[suite host self-identification]` -> `[scheduler platforms][host self-identification]`
+### `[suite host self-identification]` -> `[scheduler][host self-identification]`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r333243416).
 
-### `[job platforms][]task communication method` -> `[job platforms][]communication method`
+### `[job platforms]` -> `[platforms]`
+
+Agreed at CylcCon.
+
+### `[job platforms][]task communication method` -> `[platforms][]communication method`
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r332814930).
 
+### `[cylc]UTC mode` -> `[scheduler]UTC mode`
+
+Matches workflow config change.
+
+### `[editors]`
+
+Discussed at CylcCon. Agreed to keep these settings but discourage their use.
+Also, change them to use to `$EDITOR` & `$GEDITOR` if set (otherwise use current
+defaults).
+
+### `disable interactive command prompts` -> obsolete
+
+Agreed at CylcCon to remove support for interactive prompts (and remove the
+`--force` option in the affected commands). If there is a requirement for this
+in the future it would be better to support it via a `--interactive` option.
+
+### `[test battery]` -> obsolete
+
+Now in `global-tests.cylc` (but need to check this).
+
+### `[job platforms][]batch system` -> `[platforms][]job runner`
+
+This name makes more sense when using `background` and, hopefully, will fit
+better with possible future methods (e.g. `kubernetes`?).
+
+### `[job platforms][]batch submit command template` -> `[platforms][]job runner command template`
+
+Matches previous change. However, we should open an issue to consider removing
+this (inconsistent as no poll and kill templates) but leave for now as it is
+used in the test battery.
+
+### `[job platforms][]task event handler retry delays` -> obsolete
+
+Discussed at CylcCon - no requirement for this.
+
+### `[job platforms][]scp command` -> obsolete
+
+No longer used. Also remove the `cylc [util] scp-transfer` command.
+
 ### Updated global config
 
-Below is shown the global config as it will be if all the proposed changes are
-agreed (not including deprecated settings):
+Below is shown the global config as it will be after all the agreed changes have
+been made:
 ```python
 SPEC = {
-    'disable interactive command prompts': [VDR.V_BOOLEAN, True],
-    'cylc': {
-        'UTC mode': [VDR.V_BOOLEAN],
-    },
     'scheduler': {
+        'UTC mode': [VDR.V_BOOLEAN],
         'health check interval': [VDR.V_INTERVAL, DurationFloat(600)],
         'process pool size': [VDR.V_INTEGER, 4],
         'process pool timeout': [VDR.V_INTERVAL, DurationFloat(600)],
         'run directory rolling archive length': [VDR.V_INTEGER, -1],
-        'environment': {
-            '__MANY__': [VDR.V_STRING],
-        },
         'events': {
             'handlers': [VDR.V_STRING_LIST],
             'handler events': [VDR.V_STRING_LIST],
@@ -195,27 +219,23 @@ SPEC = {
             'smtp': [VDR.V_STRING],
             'to': [VDR.V_STRING],
             'footer': [VDR.V_STRING],
-            'task event interval': [VDR.V_INTERVAL, DurationFloat(300)],
+            'task event batch interval': [VDR.V_INTERVAL, DurationFloat(300)],
         },
         'logging': {
             'rolling archive length': [VDR.V_INTEGER, 5],
             'maximum size in bytes': [VDR.V_INTEGER, 1000000],
         },
-    },
-    'scheduler platforms': {
-        'run hosts': [VDR.V_SPACELESS_STRING_LIST],
-        'run ports': [VDR.V_INTEGER_LIST, list(range(43001, 43101))],
-        'condemned hosts': [VDR.V_ABSOLUTE_HOST_LIST],
         'auto restart delay': [VDR.V_INTERVAL],
-        'run host select': {
-            'rank': [VDR.V_STRING, 'random', 'load:1', 'load:5', 'load:15',
-                     'memory', 'disk-space'],
-            'thresholds': [VDR.V_STRING],
-        },
         'host self-identification': {
             'method': [VDR.V_STRING, 'name', 'address', 'hardwired'],
             'target': [VDR.V_STRING, 'google.com'],
             'host': [VDR.V_STRING],
+        },
+        'run hosts': {
+            'available': [VDR.V_SPACELESS_STRING_LIST],
+            'condemned': [VDR.V_ABSOLUTE_HOST_LIST],
+            'ports': [VDR.V_INTEGER_LIST, list(range(43001, 43101))],
+            'ranking': [VDR.V_STRING],
         },
     },
     'editors': {
@@ -225,10 +245,10 @@ SPEC = {
     'monitor': {
         'sort order': [VDR.V_STRING, 'definition', 'alphanumeric'],
     },
-    'job platforms': {
+    'platforms': {
         '__MANY__': {
-            'batch system': [VDR.V_STRING, 'background'],
-            'batch submit command template': [VDR.V_STRING],
+            'job runner': [VDR.V_STRING, 'background'],
+            'job runner command template': [VDR.V_STRING],
             'shell': [VDR.V_STRING, '/bin/bash'],
             'run directory': [VDR.V_STRING, '$HOME/cylc-run'],
             'work directory': [VDR.V_STRING, '$HOME/cylc-run'],
@@ -239,8 +259,6 @@ SPEC = {
             'submission retry delays': [VDR.V_INTERVAL_LIST, None],
             'execution polling intervals': [VDR.V_INTERVAL_LIST],
             'execution time limit polling intervals': [VDR.V_INTERVAL_LIST],
-            'scp command': [
-                VDR.V_STRING, 'scp -oBatchMode=yes -oConnectTimeout=10'],
             'ssh command': [
                 VDR.V_STRING, 'ssh -oBatchMode=yes -oConnectTimeout=10'],
             'use login shell': [VDR.V_BOOLEAN, True],
@@ -252,7 +270,6 @@ SPEC = {
             'retrieve job logs command': [VDR.V_STRING, 'rsync -a'],
             'retrieve job logs max size': [VDR.V_STRING],
             'retrieve job logs retry delays': [VDR.V_INTERVAL_LIST],
-            'task event handler retry delays': [VDR.V_INTERVAL_LIST],
             'tail command template': [
                 VDR.V_STRING, 'tail -n +1 -F %(filename)s'],
             'err tailer': [VDR.V_STRING],
@@ -278,29 +295,14 @@ SPEC = {
         'mail to': [VDR.V_STRING],
         'submission timeout': [VDR.V_INTERVAL],
     },
-    'test battery': {
-        'remote host with shared fs': [VDR.V_STRING],
-        'remote host': [VDR.V_STRING],
-        'remote owner': [VDR.V_STRING],
-        'batch systems': {
-            '__MANY__': {
-                'host': [VDR.V_STRING],
-                'out viewer': [VDR.V_STRING],
-                'err viewer': [VDR.V_STRING],
-                'directives': {
-                    '__MANY__': [VDR.V_STRING],
-                },
-            },
-        },
-    },
 }
 ```
 
 *******************************************************************************
 
-## Proposed workflow config changes
+## Agreed workflow config changes
 
-These are proposed changes to the
+These are agreed changes to the
 [specification currently on master](https://github.com/cylc/cylc-flow/blob/master/cylc/flow/cfgspec/suite.py#L42).
 
 ### `[cylc]force run mode` & `required run mode` -> obsolete
@@ -338,7 +340,9 @@ Note this is different to what was proposed in the discussion (above).
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r332811653).
 
-Question: don't we also need `stop after cycle point`?
+### `[scheduling]stop after cycle point` <- new
+
+Discussed at CylcCon.
 
 ### `[scheduling][special tasks]exclude at start-up` & `include at start-up` -> obsolete
 
@@ -392,25 +396,49 @@ Matches global config change to `[task events]mail retry delays`.
 See
 [discussion](https://github.com/cylc/cylc-flow/issues/3404#issuecomment-540190164).
 
-### `[scheduler][events]abort if any task fails` -> `[scheduler][events]abort if any unexpected task fails`
+### `[scheduler][events]abort if any task fails`  -> obsolete
 
-See change above (different name proposed).
+Make command line option instead (discussed at CylcCon).
 
-### `[cylc][environment]` -> `[scheduler][environment]`
+### `[cylc][environment]` -> obsolete
 
-Makes sense to move this.
-
-Rename to `handler environment`?
-(think this was proposed but can't find discussion)
+Discussed at CylcCon.
 
 ### `[cylc]health check interval` -> `[scheduler]health check interval`
 
 Matches global config change.
 
+### `[cylc]` time settings -> `[scheduler]`
+
+This covers `UTC mode`, `cycle point format`,
+`cycle point num expanded year digits` and `cycle point time zone` (discussed at
+CylcCon).
+
+### `[cylc][simulation]disable suite event handlers` -> obsolete
+
+Agreed at CylcCon to move this and make it positive. However, now proposing to
+remove it and automatically disable event handlers in simulation and dummy
+modes. It's easy to test event handlers, if you need to, in a real test suite
+written for that purpose and there's no obvious use case for this when running
+a real suite in simulation or dummy mode.
+
+### `[runtime][]extra log files` -> obsolete
+
+Instead provide access to all files found in the job log dir in the new UI. See
+[discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r334219315).
+
+### Empty string defaults
+
+Where default values are currently defined as empty strings, these will be
+replaced with `None`. See
+[discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r324183612).
+
+Note: there are no empty string defaults in the global config.
+
 ### Updated workflow config
 
-Below is shown the workflow config as it will be if all the proposed changes are
-agreed (not including deprecated settings):
+Below is shown the workflow config as it will be after all the agreed changes
+have been made (not including deprecated settings):
 ```python
 SPEC = {
     'meta': {
@@ -421,19 +449,16 @@ SPEC = {
         '__MANY__': [VDR.V_STRING, ''],
     },
     'cylc': {
-        'UTC mode': [VDR.V_BOOLEAN, False],
-        'cycle point format': [VDR.V_CYCLE_POINT_FORMAT],
-        'cycle point num expanded year digits': [VDR.V_INTEGER, 0],
-        'cycle point time zone': [VDR.V_CYCLE_POINT_TIME_ZONE],
         'simulation': {
             'disable suite event handlers': [VDR.V_BOOLEAN, True],
         },
     },
     'scheduler': {
+        'UTC mode': [VDR.V_BOOLEAN, False],
+        'cycle point format': [VDR.V_CYCLE_POINT_FORMAT],
+        'cycle point num expanded year digits': [VDR.V_INTEGER, 0],
+        'cycle point time zone': [VDR.V_CYCLE_POINT_TIME_ZONE],
         'health check interval': [VDR.V_INTERVAL],
-        'environment': {
-            '__MANY__': [VDR.V_STRING],
-        },
         'events': {
             'handlers': [VDR.V_STRING_LIST, None],
             'handler events': [VDR.V_STRING_LIST, None],
@@ -451,7 +476,6 @@ SPEC = {
             'abort if timeout handler fails': [VDR.V_BOOLEAN],
             'abort if inactivity handler fails': [VDR.V_BOOLEAN],
             'abort if stalled handler fails': [VDR.V_BOOLEAN],
-            'abort if any unexpected task fails': [VDR.V_BOOLEAN],
             'abort on stalled': [VDR.V_BOOLEAN],
             'abort on timeout': [VDR.V_BOOLEAN],
             'abort on inactivity': [VDR.V_BOOLEAN],
@@ -477,6 +501,7 @@ SPEC = {
         'initial cycle point constraints': [VDR.V_STRING_LIST],
         'final cycle point constraints': [VDR.V_STRING_LIST],
         'hold after cycle point': [VDR.V_CYCLE_POINT],
+        'stop after cycle point': [VDR.V_CYCLE_POINT],
         'cycling mode': (
             [VDR.V_STRING, Calendar.MODE_GREGORIAN] +
             list(Calendar.MODES) + ["integer"]),
@@ -517,7 +542,6 @@ SPEC = {
             'pre-script': [VDR.V_STRING],
             'script': [VDR.V_STRING],
             'post-script': [VDR.V_STRING],
-            'extra log files': [VDR.V_STRING_LIST],
             'work sub-directory': [VDR.V_STRING],
             'execution polling intervals': [VDR.V_INTERVAL_LIST, None],
             'execution retry delays': [VDR.V_INTERVAL_LIST, None],
@@ -599,52 +623,10 @@ SPEC = {
 
 Possible changes not currently included in this proposal.
 
-### `[scheduler platforms]` alternative proposal
-
-```python
-SPEC = {
-    'scheduler': {
-        'auto restart delay': [VDR.V_INTERVAL],
-        'host self-identification': {
-            'method': [VDR.V_STRING, 'name', 'address', 'hardwired'],
-            'target': [VDR.V_STRING, 'google.com'],
-            'host': [VDR.V_STRING],
-        },
-        'run hosts': {
-            'available': [VDR.V_SPACELESS_STRING_LIST],
-            'condemned': [VDR.V_ABSOLUTE_HOST_LIST],
-            'ports': [VDR.V_INTEGER_LIST, list(range(43001, 43101))],
-            'selection': {
-                'rank': [VDR.V_STRING, 'random', 'load:1', 'load:5', 'load:15',
-                         'memory', 'disk-space'],
-                'thresholds': [VDR.V_STRING],
-            },
-        },
-    },
-```
-
 ### Separate client config file
 
 See
 [discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r324181769).
-
-### `[cylc]`
-
-Rename (global and workflow config)? See
-[discussion](https://github.com/cylc/cylc-flow/pull/3348#issuecomment-541482565).
-Many settings have moved so we should look at the remaining settings in this
-section to see where they would fit best.
-
-### `[editors]`
-
-Do we still need these? Should they default to `$EDITOR` & `$GEDITOR` rather
-than have fixed defaults?
-
-### Use `None` as default value rather than empty string where appropriate
-
-See
-[discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r324183612).
-This would apply to the workflow config as well.
 
 ### `[cylc]UTC mode`
 
@@ -653,61 +635,21 @@ Does it make sense to be able to set `UTC mode` globally but not
 Which makes more sense to set globally?
 See [cylc-flow#2324](https://github.com/cylc/cylc-flow/issues/2324).
 
-### `disable interactive command prompts`
-
-Does anyone use this? It seems dangerous to rely on it being set (or not).
-Should we make this obsolete and replace the `--force` option in the affected
-commands with a new `--interactive` option (which would be a useful thing to
-add anyway).
-
-### `[job platforms][]batch system`
-
-This is not a good name when using `background` and may not fit well with
-possible future method (e.g. `kubernetes`?). Change to `job runner` or
-`run method`?
-
-### `[job platforms][]batch submit command template`
-
-Is this really needed? If so rename? Also need equivalents for poll & kill?
-
 ### `[job platforms][]work directory`
 
 Poor name (contains work & share). It is likely this setting will be replaced
 (or re-defined) as part of the work to support rose suite-run functionality for
 sym-linking to different file-systems (also `run directory`).
 
-### `[job platforms][]task event handler retry delays`
-
-Do we really need a platform setting for this?
-
-### `[job platforms][]scp command`
-
-No longer used?
-
-Note: setting not used by `cylc [util] scp-transfer` - do we need this command?
-
-### `[platform groups]` -> `[job platform groups]`
-
-For consistency?
-
 ### `[task events]` -> `[runtime][root][events]`
 
 Do we want global and workflow config names to match where applicable?
-
-### `[test battery]`
-
-This was made obsolete in the (aborted) unified config branch. Not clear why?
 
 *******************************************************************************
 
 ## Potential workflow config changes
 
 Possible changes not currently included in this proposal.
-
-### `[runtime][]extra log files`
-
-Currently used with gcylc but will it be needed for the new UI? See
-[discussion](https://github.com/cylc/cylc-flow/pull/3348#discussion_r334219315).
 
 ### `[scheduling]spawn to max active cycle points`
 
