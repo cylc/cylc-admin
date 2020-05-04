@@ -1,6 +1,9 @@
 
-## Working Practices
-- [project communication and collaboration platforms](project-collab.md)
+
+## Cylc 8 Release Docs
+
+- [Cylc 8 Conda and PYPI Release Instructions](howto/create-a-release)
+- [Cylc-8.0a2 User Instructions](TBD)
 
 ## February 2020 Development Workshop (Wellington)
 - [Agenda](feb2020-workshop-agenda)
@@ -58,9 +61,9 @@ Guides for developers, and therefore slightly separate to main documentation
 ## Misc
 - [BOM threat modelling notes](threats.md)
 
-## (Old) Cylc-8 Pre-planning
-- [GUI Replacement Options](gui-replacement-options)
-- [Tentative Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED
+## Working Practices
+- [project communication and collaboration platforms](project-collab.md)
+
 
 ## Video Conferences
 
@@ -114,10 +117,13 @@ Meeting agendas and notes.
   - [Notes](meetings/vc-feb-2019-summary.md)
 
 
+## Old Stuff
 
+[Left-over actions](meetings/left-over-actions.md)
 
+### Cylc-8 Pre-planning
+- [GUI Replacement Options](gui-replacement-options) - OUTDATED
+- [Tentative Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED
 
-
-[LEFT-OVER ACTIONS](meetings/left-over-actions.md)
 
 
