@@ -414,13 +414,13 @@ This covers `UTC mode`, `cycle point format`,
 `cycle point num expanded year digits` and `cycle point time zone` (discussed at
 CylcCon).
 
-### `[cylc][simulation]disable suite event handlers` -> ???
+### `[cylc][simulation]disable suite event handlers` -> obsolete
 
-Agreed at CylcCon to move this and make it positive.
-Notes suggest `[scheduling]use suite event handlers`.
-However current setting only applies to simulation and dummy mode (and defaults to true) -
-we don't need this setting for real workflows do we (and we want these handles disabled by default in simulation and dummy mode)?.
-How about `[scheduler][events]enable simulation handlers`?
+Agreed at CylcCon to move this and make it positive. However, now proposing to
+remove it and automatically disable event handlers in simulation and dummy
+modes. It's easy to test event handlers, if you need to, in a real test suite
+written for that purpose and there's no obvious use case for this when running
+a real suite in simulation or dummy mode.
 
 ### `[runtime][]extra log files` -> obsolete
 
