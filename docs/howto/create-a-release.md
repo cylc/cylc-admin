@@ -1,47 +1,44 @@
-###########################
-Creating a release for Cylc
-###########################
+# Creating a release for Cylc
 
+## Before you start (First time)
 
-Before you start (First time)
-=============================
-* Create a GPG key for verification on Github: `Instructions <https://help.github.com/en/articles/generating-a-new-gpg-key>`_
-  At step 3 I had to use ``gpg --default-key rsa4096 --gen-key``.
+- Create a GPG key for verification on Github:
+  [Instructions](https://help.github.com/en/articles/generating-a-new-gpg-key)
+  At step 3 I had to use `gpg --default-key rsa4096 --gen-key`.
 
-* `Share this key locally with git, as well as Github: <https://help.github.com/en/articles/telling-git-about-your-signing-key>`_
+- [Share this key locally with git, as well as
+  Github](https://help.github.com/en/articles/telling-git-about-your-signing-key)
 
-* Create a PyPI account for yourself if you don't already have one.
-  `Sign up page <https://pypi.org/account/register/>`_
+- Create a PyPI account for yourself if you don't already have one.
+  [Sign up page](https://pypi.org/account/register/).
   Get an owner to add you as a maintainer or owner.
 
 
-Create pre-release Pull requests
-================================
+## Create pre-release Pull requests
 
-* Ensure that version numbers are consistent. These are likely to be set in
-  files such as  ``cylc-flow/cylc/flow/__init__`` or ``__version__.py`` and
-  ``setup.py`` files, usually at the top level of a repository.
-* Examine Pull Requests made since the last release for:
-  * cylc-flow
-  * cylc-conda
-  * cylc-ui
-  * cylc-uiserver
-* Add to ``CHANGES.md`` text in each repository.
-* Check the ``CONTRIBUTING.md``. Ensure that all contributors are listed.
-  You can do this using Github, or locally with ``git shortlog -sn``
-* Create PRs for any changes you have made and have these reviewed and merged
+- Ensure that version numbers are consistent. These are likely to be set in
+  files such as  `cylc-flow/cylc/flow/__init__` or `__version__.py` and
+  `setup.py` files, usually at the top level of a repository.
+- Examine Pull Requests made since the last release for:
+  - cylc-flow
+  - cylc-conda
+  - cylc-ui
+  - cylc-uiserver
+- Add to `CHANGES.md` text in each repository.
+- Check the `CONTRIBUTING.md`. Ensure that all contributors are listed.
+  You can do this using Github, or locally with `git shortlog -sn`
+- Create PRs for any changes you have made and have these reviewed and merged
   to master.
-* Make sure any other Pending PR's for the milestone are merged or closed.
+- Make sure any other Pending PR's for the milestone are merged or closed.
 
-Test the build
-==============
+## Test the build
 
-* Check locally that you have the updated version of master. Ensure that you
+- Check locally that you have the updated version of master. Ensure that you
   local copy is up to date, and that it has the correct tags attached.
-* Use ``git log`` to ensure that you have the correct version and tag.
-* Check that you can buid your distribution locally:
+- Use `git log` to ensure that you have the correct version and tag.
+- Check that you can buid your distribution locally:
 
-.. code-block:: bash
+```bash
 
    cd my/repository/
 
@@ -54,12 +51,11 @@ Test the build
 
    # Tidy up
    rm -r dist
+```
 
+## Tag the version
 
-Tag the version
-===============
-
-.. code-block:: bash
+```bash
 
     # Examine previous tags using
     git tag -ln
@@ -69,23 +65,22 @@ Tag the version
 
     # Push tags:
     git push --tags upstream <tag_name>
+```
 
-Create a release on Github
-==========================
+## Create a release on Github
 
-* On Github navigate to the repository for which you are creating a release
+- On Github navigate to the repository for which you are creating a release
   for and click on the relases tab. You should see your tag at the top.
-* [Optional] You may wish to open the edit page of a previous release in a
+- [Optional] You may wish to open the edit page of a previous release in a
   new tab so that you can copy and paste its data.
-* Click "Draft a new release" button.
-* Add your tag to the release. Edit the other fields to give appropriate
+- Click "Draft a new release" button.
+- Add your tag to the release. Edit the other fields to give appropriate
   information.
 
 
-Upload build to PyPI
-====================
+## Upload build to PyPI
 
-.. code-block:: bash
+```bash
 
     # Build your distribution inside the repository folder this time
     cd my/repository
@@ -99,11 +94,11 @@ Upload build to PyPI
     # Upload your build to PyPI. n.b. This will not work if your build has the
     # same version number as one already on PyPI.
     twine upload dist/*
+```
 
 Check PyPI for your upload.
 
-Upload to Conda
-===============
+## Upload to Conda
 
 NOTE: the GitHub and PYPI releases are prerequisites for releasing to
 Conda Forge!
@@ -119,7 +114,7 @@ A may have multiple dependants, but no dependency to other modules).
 For example, Cylc UI Server depends on Cylc Flow. So unless you are
 releasing only Cylc UI Server, you should release Cylc Flow first.
 
-* On GitHub, navigate to the project repository on GitHub, e.g.
+On GitHub, navigate to the project repository on GitHub, e.g.
 
 - https://github.com/conda-forge/metomi-isodatetime-feedstock
 - https://github.com/conda-forge/cylc-uiserver-feedstock
@@ -129,7 +124,7 @@ releasing only Cylc UI Server, you should release Cylc Flow first.
 
 On each of these repositories, the release process should be pretty
 much the same. Your work will be mainly (if not exclusive) on
-the ``recipe/meta.yaml`` file.
+the `recipe/meta.yaml` file.
 
 This is a possible order of action:
 
@@ -142,8 +137,8 @@ at the top of the file.
 - If you did not update the version, increase the build number.
 - If the conda package contains a source URL, check that it is evaluated
 correctly by manually replacing the Jinja variables, and trying this out
-in a browser. Then update the ``sha256`` value (you can get this value
-from PYPI, or use some tool like ``sha256sum``).
+in a browser. Then update the `sha256` value (you can get this value
+from PYPI, or use some tool like `sha256sum`).
 - Check requirements (we may have changed setup.py, or package.json, etc.
 ensure we are up to date).
 - Ensure the test commands are still valid (i.e. they can be executed
@@ -168,22 +163,23 @@ have issues (as I experienced during the first releases) it may take days.
 So keep that in mind before announcing the Conda packages.
 
 To test packages locally, first you should make sure that Conda is
-configured to avoid automatically upload the package. Open you ``~/.condarc``
+configured to avoid automatically upload the package. Open your `~/.condarc`
 and check that you have something similar to:
 
-.. code-block:: yaml
+```yaml
 
    channels:
      - defaults
      - conda-forge
    ssl_verify: true
    anaconda_upload: false
+```
 
-Now create a Conda environment for your tests, e.g.: ``conda create -n cylc1``,
-and then activate it ``conda activate cylc1``. Then to build and install
+Now create a Conda environment for your tests, e.g.: `conda create -n cylc1`,
+and then activate it `conda activate cylc1`. Then to build and install
 locally:
 
-.. code-block:: bash
+```bash
 
    # Where $CONDA_FORGE_REPOSITORY could be, for example,
    # cylc-uiserver-feedstock.
@@ -199,9 +195,10 @@ locally:
    # This confirms you are installing the local build. Here $PACKAGE_NAME
    # could be something like cylc-uiserver.
    conda install $PACKAGE_NAME
+```
 
 At this point you should be good to go. Test the package with commands
-such as ``which $PACKAGE_NAME``, or ``$PACKAGE_NAME --version``, etc.
+such as `which $PACKAGE_NAME`, or `$PACKAGE_NAME --version`, etc.
 Of if you are testing the metapackage, try running the complete system
 with a workflow and the UI or tui, and check if there is nothing wrong.
 
@@ -213,6 +210,6 @@ To undo a release, you will have to liaise with the maintainers via Gitter
 or Github. Or, alternatively, bump up the build number +1, and release it
 again.
 
-Announce on Riot and Discourse?
-===============================
-Bask in the glory of having created a release, if appropriate.
+## Announce on Riot and Discourse?
+
+Bask in the glory of having created a release.
