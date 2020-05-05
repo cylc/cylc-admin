@@ -67,13 +67,16 @@ Guides for developers, and therefore slightly separate to main documentation
 
 ## Video Conferences
 
-Meeting agendas and notes.
+Project meetings.
+
+- May 2020 
+  - [Agenda and Notes](meetings/vc-may-2020.md)
 
 - April 2020 
-  - [Notes](meetings/vc-april-2020.md)
+  - [Agenda and Notes](meetings/vc-april-2020.md)
 
 - March 2020 
-  - [Agenda](meetings/vc-march-2020-agenda.md)
+  - [Agenda and Notes](meetings/vc-march-2020-agenda.md)
 
 - Februrary 2020 Workshop (see above)
 
