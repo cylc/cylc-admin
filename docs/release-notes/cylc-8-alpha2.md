@@ -183,36 +183,34 @@ separation" nicely)*:
 
 ## Current Limitations
 
-**Cylc-8.0a1 is an early full-system Cylc 8 preview release**
+Cylc-8.0a2 is a preview release with:
+- A **Python 3** scheduler and CLI - fully functional
+- A new web UI, still in progress, but usable
+- A new terminal UI program `cylc tui`
 
-- It has a fully functional Python 3 workflow service and CLI that can run existing Cylc workflows
-
-**BUT:**
-
-- It is not production-ready yet
-  * Use the latest cylc-7.8 release in production
+It can run existing Cylc-7 workflows. However:
+- It is not production-ready yet. In production, please use:
+  - the latest cylc-7.9 release - with Python 2.7
+  - the lastest cylc-7.8 release - with Python 2.6
 - Do not use it where security is a concern
-- The UI includes a prototype "tree view" with no control capability
-  * we are working on other views, and controls
-- Data update in the UI is via WebSockets now, but there is still
-a delay of 5 seconds (now server-side instead of client-side polling),
-and monolithic
-  * future releases will use incremental update (deltas) and remove
-  the polling by an event-based approach
-- In Cylc 8 users may see more than what is in the task pool
-  * Users familiar with Cylc 7 may see tasks that have finished still
-  being displayed in the Cylc UI (web or terminal). This might
-  change in future releases
-- Remote tasks/jobs is still work-in-progress due to architecture
-and code changes
+  - we are still working on Cylc 8 and have not yet fully
+    tested or documented its security characteristics
+- The web UI includes "tree" and "graph" views, but note that:
+  - it is not yet driven by efficient incremental data updates
+  - it does not yet have virtual scrolling for large workflow performance
+  - the graph view is a POC only and is likely to be replaced
+  - control functionality is available from a temporary "mutation view" but is
+    not yet integrated with the views
+  - the task content displayed is different from Cylc 7. For instance, there
+    is an explicit separation between "tasks" and "jobs" now.
 - We are still working on the documentation for Cylc 8, stay tuned
 
-## What's new
+## What's new since Cylc-8.0a1?
 
 It has been seven months since the
 [previous Cylc 8 alpha release](https://cylc.discourse.group/t/cylc-8-0a1-preview-release-via-conda/149).
-And a lot of work has been done so far. Our changelog contains the most significant
-improvements and bug fixes.
+And a lot of work has been done so far. Our changelog contains the most
+significant improvements and bug fixes.
 
 - [https://github.com/cylc/cylc-flow/blob/master/CHANGES.md](https://github.com/cylc/cylc-flow/blob/master/CHANGES.md)
 - [https://github.com/cylc/cylc-uiserver/blob/master/CHANGES.md](https://github.com/cylc/cylc-uiserver/blob/master/CHANGES.md)
