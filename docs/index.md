@@ -67,7 +67,7 @@ Guides for developers, and therefore slightly separate to main documentation
 
 ## Video Conferences
 
-Project meetings.
+Project meetings:
 
 - May 2020 
   - [Agenda and Notes](meetings/vc-may-2020.md)

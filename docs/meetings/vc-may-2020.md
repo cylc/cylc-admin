@@ -1,17 +1,17 @@
 # Cylc Project VC 5 May 2020
 
-## Progress in the last month
+## Admin
 
+Cylc-7
 - 7.8.5 and 7.9.0 released
   - (7.9.0 by copying 7.8.5 and cherry-picking the Jinja2 patch)
 
-## 8.0a2
-
+Cylc-8.0a2
 - Conda Forge ready to go
 - BK's release HowTo (for devs) merged to cylc-admin
 - BK's user instructions merged to cylc-admin
   - To be posted to the web site and Discource 
-- (Make the release before Platforms changes go in)
+- (Make the release before Platforms changes go in - any day now)
 
 ## Spawn on Demand
 
