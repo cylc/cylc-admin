@@ -34,9 +34,9 @@ HO
    - Reviewers (OS? DS? others?)
 
 Notes:
-- *HO to update PR with remaining TODO items*
-- *HO to update proposal UI section: need to show users outputs that have been
-  "reset" by the spawn command*
+- *~~HO to update PR with remaining TODO items~~ DONE*
+- *~~HO to update proposal UI section: need to show users outputs that have been
+  "reset" by the spawn command~~ DONE*
 
 ## Back-end: delta updates
 
