@@ -745,6 +745,20 @@ Reflow:
 - Allow selecting part of the graph, or particular tasks, to define the
   bounds of a reflow?
 
+Task Outputs:
+- The SoD analogue of "task state reset" in SoS, is to tell a task to spawn
+  graph-children of particular outputs. E.g. If a task failed but we want to
+  the workflow to carry on as if it succeeded, in SoS we would reset the failed
+  to succeeded and dependency matching would result in triggering of downstream
+  tasks that depend on its success.  Changing a failed task to succeeded isn't
+  ideal because it hides the fact that it actually succeeded, but at least the
+  change to succeeded is obvious to users. For SoD we would leave the task as
+  failed (changing its state to succeeded wouldn't have any effect) but tell it
+  to spawn based on the `:succeeded` output even though it failed. This is more
+  elegant, but we need to make what happened obvious to users by getting the UI
+  to display the state of individual outputs (in the workshop we considered UI
+  design for custom outputs - can use the same for standard outputs?)
+
 ## Future Enhancements
 
 For Cylc 9: [cylc/cylc-flow#3304](https://github.com/cylc/cylc-flow/issues/3304)
