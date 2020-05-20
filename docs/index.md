@@ -2,10 +2,9 @@
 
 ## Cylc 8 Developer Docs
 
-- [Getting Started](howto/environment)
+- [Getting Started](howto/cylc-ui)
 - [Cylc-8.0a2 Release Notes](release-notes/cylc-8-alpha2)
 - [Cylc 8 Conda and PYPI Release Instructions](howto/create-a-release)
-- [Create a Release](howto/create-a-release)
 
 ## February 2020 Development Workshop (Wellington)
 - [Agenda](feb2020-workshop-agenda)
