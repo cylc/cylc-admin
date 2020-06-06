@@ -14,7 +14,6 @@
   - [Spawning tasks with no parents](#spawning-tasks-with-no-parents)
   - [Absolute dependence](#absolute-dependence)
   - [Spawning on task outputs](#spawning-on-task-outputs)
-  - [Keeping finished tasks to prevent conditional reflow](#keeping-finished-tasks-to-prevent-conditional-reflow)
   - [Spawning on task completion](#spawning-on-task-completion)
   - [Failed tasks](#failed-tasks)
   - [Stall and shutdown](#stall-and-shutdown)
@@ -43,7 +42,7 @@ with graph-based Spawn-On-Demand (SoD) back in
 [cylc/cylc-flow#993](https://github.com/cylc/cylc-flow/issues/993).
 The ultimate event-driven solution might look something like 
 [cylc/cylc-flow#3304](https://github.com/cylc/cylc-flow/issues/3304)
-but that requires significant refactoring and is slated for Cylc 9.
+but that requires major refactoring for Cylc 9.
 
 However, SoD itself can actually be implemented quite easily now, within the
 current framework, by simply getting task proxies to spawn children on demand
@@ -54,25 +53,25 @@ changes easier to implement in the future.
 ### Advantages
 
 - **Efficiency: a dramatically smaller task pool** that does not increase in
-     size if spread over multiple cycle points
+     size with spread over cycle points
 - **No need for dynamic dependency matching** - parents update child
      prerequisites directly at spawning time
 - **An easily-understood graph-based "window on the workflow"**
 - **Suicide triggers not needed for alternate path branching**
 - **Task instances can run out of cycle point order**
-   - no stalling because of unspawned tasks downstream of a failed task)
+   - no stalling because of unspawned tasks downstream of a failed task
 - **Achieve "reflow" by simply re-triggering a task**
 - **No need to manually insert the first instance of newly-defined tasks** on
-  restart or reload (unless perhaps they have no parents)
+  restart or reload (unless they have no parents)
 
 ### Terminology
 
-- **parent** and **child**: up- and down-stream graph relationships (not runtime inheritance!)
+- **parent** and **child**: graph relationships, parents spawn children on
+  demand. (Not runtime inheritance!)
 - **task**: an abstract node in the workflow graph (task name at a particular cycle point)
-- **task proxy**: an object in the scheduler program that represents a particular
-  task instance (task name at a particular cycle point)
-- **task pool**: task proxies representing "active tasks" that
-  the scheduler is currently aware of
+- **task proxy**: an object in the scheduler program representing a particular
+  task that the scheduler is currently aware of
+- **task pool**: pool of current "active" task proxies
 - **runahead pool**: task proxies that have been spawned (created) already but
   are beyond the current runahead limit, or beyond the (non-final) stop point.
   All tasks are initially spawned into the runahead pool then released to the
@@ -80,8 +79,9 @@ changes easier to implement in the future.
 - **n=0 window**: tasks that anchor the current view (by default, the content of
   the active task pool)
 - **n=M window**: tasks within M graph edges of the those in the n=0 window
-- **finished**: means *succeeded*, OR *failed* with ":fail" handled. An
-  unhandled failed task is consider to be "not finished"
+- **finished**: means *succeeded*, OR *failed* with the *:fail* trigger
+  handled. An unhandled failed task is retained in the task pool as "not
+  finished"
 - **reflow**: when the workflow flows on according to the graph, from a
   manually triggered task
 
@@ -96,87 +96,87 @@ changes easier to implement in the future.
 1. Tasks with all prerequisites satisfied (in the main task pool) can submit
       their jobs
 1. As task job outputs are completed [spawn
-     children](#spawning-on-task-outputs) that depend on them
+     children](#spawning-on-task-outputs) that depend on those outputs
     (if not already spawned) and update their prerequisites directly
-1. As tasks finish, [spawn remaining children](#spawning-on-task-completion)
-      and update their *parent-finished* status (needed for housekeeping)
-1. [Housekeep waiting and finished tasks](#housekeeping-waiting-and-finished-tasks):
+1. As tasks finish (i.e. succeeded, handled-failed, and expired)
+   - [spawn remaining children](#spawning-on-task-completion) and update their
+     *parent-finished* status (needed for housekeeping)
+   - Remove them from the pool
+1. [Housekeep stuck waiting tasks](#housekeeping-stuck-waiting-tasks):
    - Remove waiting tasks if all of their parents have finished
-   - Remove finished tasks if all of their parents have finished OR the pool
-     has moved beyond the point it can affect them
-1. [Shut down](#stall-and-shutdown) if stalled with no (unhandled) failed tasks
-      present
+1. [Shut down](#stall-and-shutdown) if stalled with no unfinished tasks present
 
 ## Discussion of details
 
-### Use of task proxies
+### Use of waiting task proxies
 
 The implementation proposed here uses waiting task proxies, which appear "on
 demand" when the first output they depend on is completed, to track
-prerequisite satisfaction. It also keeps finished task proxies in the
-pool until their parents are all finished, to prevent "conditional reflow".
+prerequisite satisfaction.
 
 So the task pool contains:
 - Active tasks (preparing, submitted, running) 
 - Waiting tasks with at least one prerequisite satisfied (and/or unsatisfied
   xtriggers) - these can be considered "active" in the sense that *their
   prerequisites are in the process of becoming satisfied*.
-- Finished tasks (succeeded and failed) that still have some unfinished
-  conditional parents
+   - This constitutes vastly fewer `waiting` tasks than in SoS.
 - [unhandled failed tasks](#failed-tasks)
 
-These constitute vastly fewer `waiting` and `finished` tasks than in SoS.
-
-It would be possible to implement SoD without these waiting or finished tasks:
-the scheduler could keep track of disembodied prerequisite data and only spawn
-tasks that are ready to run; and it could separately track finished tasks for
-conditional reflow prevention. But the same information has to be tracked and
-housekept either way, and using task proxies is much simpler because:
-- Partially satisfied prerequisites have to be associated with the same tasks
-  anyway (in the scheduler and the UI!)
-- Our task proxies already know how to track and evaluate their own
-  prerequisites
+It would be possible to implement SoD without waiting: the scheduler could keep
+track of disembodied prerequisite data and only spawn tasks that are ready to
+run. But the same information has to be tracked and housekept either way, and
+using task proxies is much simpler because partially satisfied prerequisites
+have to be associated with the same tasks anyway (in the scheduler and the UI)
+and our task proxies already know how to track and evaluate their own
+prerequisites.
 
 Further, users will see the same thing either way in n>=1 windows: waiting
 tasks with partially satisfied prerequisites (in the approach of this proposal
 those are backed by task proxies in the pool, in the other approach they would
-be abstract tasks that we have to attach the prerequisite data to).
+be abstract tasks that we have to attach the separate prerequisite data to).
+
+*ASIDE: I originally also proposed keeping finished task proxies in the
+pool as well until their parents are all finished, to prevent "conditional
+reflow" (in `A | B => C` if `B` runs after `C` has already triggered off of `A`
+and finished, we need to avoid triggering `B` again off of `B`). However,
+an alternative to storing the fact that `C` already ran in memory and
+housekeeping that information, is to ask the run database if `C` already ran,
+before spawning it. As it turns out, we have to ask the database for submit
+number at spawn time, and that gives us the same information (did `C` already
+run?).
 
 ### Spawning tasks with no parents
 
-Tasks with no task prerequisites, and those that depend (only?) on xtriggers,
-need to be auto-spawned out to the runahead limit (they have no parents to do
-it for them).  I'll call these "orphans".
+Tasks with no task prerequisites, and those that depend only on xtriggers,
+need to be auto-spawned because they have no parents to do it for them.
 
-**Implementation:** at start-up auto-spawn the first orphan instances into the
-runahead pool. Subsequently, whenever releasing orphans from the runahead
-pool auto-spawn their next instance (into the runahead pool).
+**Implementation:** at start-up auto-spawn the first instances of these tasks
+into the runahead pool. Subsequently, whenever releasing one of these from the
+runahead pool, auto-spawn its next instance (into the runahead pool).
 
 See [future enhancements](#future-enhancements) (below) for plans to spawn on
 xtrigger events.
 
 ### Absolute dependence
 
-Simplest example:
+Here, start should run in the first cycle point, after which all `foo.n` can 
+run (out to the runahead limit):
 ```
 R1 = "start"
 P1 = "start[^] => foo"
 ```
-(Note without the first line above the scheduler will stall on master with
-foo unsatisfied, and will shut down immediately (nothing to do) under SoD
-because `start` is not defined on any sequence and `foo` never gets spawned.) 
+(Note without the first line above the SoS scheduler will stall with `foo`
+unsatisfied, but the SoD scheduler will shut down immediately with nothing to
+do because `start` is not defined on any sequence and `foo` never gets
+spawned.)
 
-Here, start should run in the first cycle point, after which all `foo.n` can 
-run (out to the runahead limit).
-
-
-A slightly more difficult case:
+A slightly more difficult case: `foo.1,2,3,...` should trigger off of
+`start.2`.
 ```
 ...
       R1/2 = "start"
       P1 = "start[2] => foo"
 ```
-Here, `foo.1,2,3,...` should trigger off of `start.2`.
 
 **Implementation:** during graph parsing identify tasks with absolute-offset
 parents. When an absolute parent finishes *spawn the child at the first cycle
@@ -186,14 +186,14 @@ its next instance (to the runahead pool) and mark the absolute dependence as
 satisfied. This works because in SoD even the first child does not appear in
 the pool until the associated dependence is already satisfied. 
 
-We could choose to keep absolute parent in the n=0 pool or not, once finished.
-
 Retriggering a finished absolute parent causes it to respawn its first child,
 then subsequent children as normal (i.e. reflow). This is the right thing to do
 under SoD (it's what the graph says!) but we may want to provide an option to
 change the first child spawned to a current cycle rather than going back to the
 start (use case: retrigger a start-up task that rebuilds a model or whatever,
-but don't re-run old cycles).
+but don't re-run old cycles). Alternatively, retrigger the parent without
+reflow, then retrigger the first child that you want to run - it will
+auto-spawn forward after that.
 
 ### Spawning on task outputs
 
@@ -212,25 +212,9 @@ A & B => C
 If `A` finishes before `B`, `C` will be spawned on `A:succeeded` and will
 remain as waiting until `B` finishes.
 
-### Keeping finished tasks to prevent conditional reflow
-
-First, see [use of task proxies](#use-of-task-proxies) (above) for
-justification of using finished task proxies to prevent conditional reflow.
-
-Conditional prerequisites require keeping some finished tasks in the pool,
-to prevent unintended reflow:
-
-```
-A | B => C
-```
-If `C` triggers off of `A:succeeded` we need to avoid spawning `C` again if `B`
-runs after `C` has finished and been removed from the pool. To avoid this we
-can keep finished tasks in the pool until there is no danger of automatic
-reflow (a task will not be spawned if it already exists in the pool).
-
 ### Spawning on task completion
 
-[Housekeeping](#housekeeping-waiting-and-finished-tasks) (below) relies on
+[Housekeeping](#housekeeping-stuck-waiting-tasks) (below) relies on
 children knowing when their parents are finished (a waiting task can never
 be satisfied automatically if its parents are finished). This requires, for
 children with multiple parents, spawning on parent completion as well as on
@@ -256,51 +240,13 @@ Here, if `A` generates output `:out1` (say) and spawns `B` as a result, `C`
 will be spawned as well when `A` finishes. But `C` can then be removed
 immediately (parents finished).
 
-### Housekeeping waiting and finished tasks
+### Housekeeping stuck waiting tasks
 
-Tasks with only one parent will run as soon as they are spawned, and can
-be removed as soon as they are finished.
-
-But tasks with multiple parents may spend some time waiting on the rest of
-their prerequisites, and as finished (to prevent conditional reflow).
+Occasionally a waiting task may become unsatisfiable. 
 
 **Waiting tasks can be removed if all of their parents have finished.**
 (Parents that are already finished can no longer satisfy anyone else's
 prerequisites).
-
-**Finished tasks can be removed if all of their parents have finished.** 
-(Parents that are already finished can no longer spawn any children and cause
-reflow).
-
-For finished tasks at the end of mutually exclusive alternate paths it is not
-quite enough to wait for all parents to finish however, because in that case
-some parents should not be spawned at all - but there is no way for Cylc to
-know if the paths are mutually exclusive or not:
-
-```
-A:out1 => post1
-A:out2 => post2
-post1 | post2 => plot
-```
-Here if `out1` and `out2` are mutually exclusive, only one of `post1` or
-`post2` will be spawned, but `plot` has to be kept around in the finished 
-state in case the other path runs. (Actually the other `post` will also be
-spawned when `A` finishes but it will immediately be cleaned up as a waiting
-task whose parents have all finished).
-
-Alternate branching like this won't stop the workflow however, so we can remove
-finished tasks like `plot` once the task pool has moved on to a cycle point
-beyond which nothing short of intervention could trigger their "missing"
-parents.
-
-Options:
-- Use graph traversal to find the branching task (`A` above). If that
-  task is finished we can remove `plot` because the other path cannot be
-  spawned. 
-- SIMPLE but blunt: cycle point housekeeping - if no active tasks exist anymore
-  in cycles that can affect this cycle, the finished task can be removed.
-
-#### Stuck waiting tasks
 
 Stuck waiting tasks (**I think**) are only a symptom of bigger problems 
 upstream that *should* stall the suite, so they do not need housekeeping:
@@ -774,3 +720,23 @@ Follow-on changes may (or may not) be worthwhile before Cylc 9:
   response to trigger events (depends on xtriggers as main-loop coroutines)
 - Consider using graph traversal for better housekeeping of finished tasks at
   the base of alternate paths.
+
+### Preventing conditional reflow
+
+TODO: modify for new DB USE
+
+First, see [use of task proxies](#use-of-task-proxies) (above) for
+justification of using finished task proxies to prevent conditional reflow.
+
+Conditional prerequisites require keeping some finished tasks in the pool,
+to prevent unintended reflow:
+
+```
+A | B => C
+```
+If `C` triggers off of `A:succeeded` we need to avoid spawning `C` again if `B`
+runs after `C` has finished and been removed from the pool. To avoid this we
+can keep finished tasks in the pool until there is no danger of automatic
+reflow (a task will not be spawned if it already exists in the pool).
+
+
