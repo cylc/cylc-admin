@@ -14,7 +14,6 @@
   - [Spawning tasks with no parents](#spawning-tasks-with-no-parents)
   - [Absolute dependence](#absolute-dependence)
   - [Spawning on task outputs](#spawning-on-task-outputs)
-  - [Spawning on task completion](#spawning-on-task-completion)
   - [Failed tasks](#failed-tasks)
   - [Stall and shutdown](#stall-and-shutdown)
   - [Spawning and stop points](#spawning-and-stop-points)
@@ -44,30 +43,27 @@ The ultimate event-driven solution might look something like
 [cylc/cylc-flow#3304](https://github.com/cylc/cylc-flow/issues/3304)
 but that requires major refactoring for Cylc 9.
 
-However, SoD itself can actually be implemented quite easily now, within the
-current framework, by simply getting task proxies to spawn children on demand
-instead of next-cycle successors on submit. In addition to the major advantages
-below this will simplify internals and usage, and it will only make Cylc 9
-changes easier to implement in the future.
+However, the SoD concept is actually orthogonal to many of our other plans and
+can be implemented aleady by simply having task proxies spawn graph-based
+children on demand instead of next-cycle successors on submit. This will
+simplify Cylc internals and usage and it will only make other Cylc 9 plans
+easier to implement in the future.
 
 ### Advantages
 
-- **Efficiency: a dramatically smaller task pool** that does not increase in
-     size with spread over cycle points
-- **No need for dynamic dependency matching** - parents update child
-     prerequisites directly at spawning time
+- **A dramatically smaller task pool** unaffected by spread over cycle points
 - **An easily-understood graph-based "window on the workflow"**
-- **Suicide triggers not needed for alternate path branching**
 - **Task instances can run out of cycle point order**
-   - no stalling because of unspawned tasks downstream of a failed task
-- **Achieve "reflow" by simply re-triggering a task**
-- **No need to manually insert the first instance of newly-defined tasks** on
-  restart or reload (unless they have no parents)
+   - no stalling due to unspawned tasks downstream of a failure
+- **Achieve ongoing "reflow" by simply re-triggering a task**
+- **No need for dynamic dependency matching** - update prerequisites directly on spawning
+- **No need for suicide triggers in alternate path branching**
+- **No need for manual insertion of first newly-defined tasks** (unless they have no parents)
 
 ### Terminology
 
-- **parent** and **child**: graph relationships, parents spawn children on
-  demand. (Not runtime inheritance!)
+- **parent** and **child** tasks: upstream and downstream graph relationships.
+  (Not runtime inheritance!)
 - **task**: an abstract node in the workflow graph (task name at a particular cycle point)
 - **task proxy**: an object in the scheduler program representing a particular
   task that the scheduler is currently aware of
@@ -85,81 +81,206 @@ changes easier to implement in the future.
 - **reflow**: when the workflow flows on according to the graph, from a
   manually triggered task
 
-## Implementation overview
+## Implementation Overview
 
-1. During graph parsing, record (in parent task definitions) the children that
-     depend on each output
-1. At start-up, spawn the first instance of any [task with no
-        parents](#spawning-tasks-with-no-parents) to the runahead pool 
-    - Then whenever such a task is released from the runahead pool, spawn its
-      next instance (into the runahead pool)
-1. Tasks with all prerequisites satisfied (in the main task pool) can submit
-      their jobs
-1. As task job outputs are completed [spawn
-     children](#spawning-on-task-outputs) that depend on those outputs
-    (if not already spawned) and update their prerequisites directly
-1. As tasks finish (i.e. succeeded, handled-failed, and expired)
-   - [spawn remaining children](#spawning-on-task-completion) and update their
-     *parent-finished* status (needed for housekeeping)
-   - Remove them from the pool
-1. [Housekeep stuck waiting tasks](#housekeeping-stuck-waiting-tasks):
-   - Remove waiting tasks if all of their parents have finished
+Spawn-on-demand could conceivably be implemented using dumb tasks that know
+nothing but their own job config and outputs, and a scheduler that continually
+evaluates task outputs and prerequisites in light of the graph, to determine
+what comes next. But that would involve massive refactoring, maybe for Cylc 9.
+
+This implementation leverages existing Cylc internals: a pool of task proxies
+that know their own prerequisites (logical expressions of parent task outputs)
+and can evaluate them to self-determine readiness to run. The new part here is
+just that *task definitions (constructed during graph parsing) record who
+depends on each of their outputs* so that tasks can spawn their own children
+"on demand". So we still have a self-evolving pool of task proxies (albeit much
+smaller and conceptually simpler than the SoS one) with no graph computation at
+run time:
+
+1. At start-up, submit tasks with no prerequisites:
+1. Then [spawn children on outputs](#spawning-on-task-outputs)
+   (if not already spawned) and update their prerequisites
+   - ([parentless tasks](#spawning-tasks-with-no-parents) self-spawn)
+1. Tasks with satisfied prerequisites can submit their jobs
+1. Remove finished tasks (succeeded, handled-failed, and expired) immediately
 1. [Shut down](#stall-and-shutdown) if stalled with no unfinished tasks present
 
-## Discussion of details
-
-### Use of waiting task proxies
-
-The implementation proposed here uses waiting task proxies, which appear "on
-demand" when the first output they depend on is completed, to track
-prerequisite satisfaction.
-
-So the task pool contains:
+So the SoD task pool contains:
 - Active tasks (preparing, submitted, running) 
-- Waiting tasks with at least one prerequisite satisfied (and/or unsatisfied
-  xtriggers) - these can be considered "active" in the sense that *their
-  prerequisites are in the process of becoming satisfied*.
-   - This constitutes vastly fewer `waiting` tasks than in SoS.
-- [unhandled failed tasks](#failed-tasks)
+- Waiting tasks with AND prerequisites in the process of becoming satisfied
+- [Unfinished (not handled) failed tasks](#failed-tasks)
 
-It would be possible to implement SoD without waiting: the scheduler could keep
-track of disembodied prerequisite data and only spawn tasks that are ready to
-run. But the same information has to be tracked and housekept either way, and
-using task proxies is much simpler because partially satisfied prerequisites
-have to be associated with the same tasks anyway (in the scheduler and the UI)
-and our task proxies already know how to track and evaluate their own
-prerequisites.
+## Details
 
-Further, users will see the same thing either way in n>=1 windows: waiting
-tasks with partially satisfied prerequisites (in the approach of this proposal
-those are backed by task proxies in the pool, in the other approach they would
-be abstract tasks that we have to attach the separate prerequisite data to).
+### Spawning on outputs
 
-*ASIDE: I originally also proposed keeping finished task proxies in the
-pool as well until their parents are all finished, to prevent "conditional
-reflow" (in `A | B => C` if `B` runs after `C` has already triggered off of `A`
-and finished, we need to avoid triggering `B` again off of `B`). However,
-an alternative to storing the fact that `C` already ran in memory and
-housekeeping that information, is to ask the run database if `C` already ran,
-before spawning it. As it turns out, we have to ask the database for submit
-number at spawn time, and that gives us the same information (did `C` already
-run?).
+When to spawn a task is obvious if it only has one parent. Below, B should be
+spawned ready to run when A succeeds:
+```
+A => B
+```
+It's less obvious if the task has an AND trigger because the component outputs
+may be be completed at different times (the parent tasks might not even
+overlap, in run time):
+```
+A & B => C
+```
+If A succeeds first (say), should C be spawned:
+- as soon as A succeeds? - i.e. should we *spawn on outputs*
+  - C will be a **waiting task** until B is done
+- or once both A and B have succeeded? - i.e. should we *spawn on satisfied
+  prerequisites*
+  - C can run immediately once spawned
+
+As it happens **spawning on outputs** is much more straightforward with current
+Cylc internals, because task proxies already know how to incrementally update
+their own prerequisites as the component outputs are completed. Also,
+conceptually, tasks depend on upstream *outputs* so it is reasonable to consider
+them "on demand" at completion of the first output.
+
+Spawning on outputs generates some waiting tasks, when AND prerequisites are
+"in process". This might appear to create a [housekeeping
+problem](#stuck-waiting-tasks) unique to this implementation. However these
+waiting tasks just represent partially-satisfied prerequisites that any
+implementation has to deal with (whether via task proxies or not) and that's
+a non-trivial problem because parent tasks may pass through the task pool at
+different times.
+
+Waiting tasks are not generated in normal path branching use cases, so suicide
+triggers are not needed for that. Below, if A generates output `out1` but not
+`out2`, task C will not be spawned at all:
+```
+A:out1 => B
+A:out2 => C
+```
+
+Notes:
+
+- Use of waiting tasks makes no difference to users: they will see either
+  waiting task proxies with partially satisfied prerequisites, or "waiting"
+  abstract tasks that need to have the same prerequisite information attached.
+
+- We could avoid waiting tasks and in-memory prerequisite management by using
+  the run DB to satisfy prerequisites. But that would require much more
+  frequent DB access than we are comfortable with.
+
+- Upstream tasks are of no use for spawning on satisfied prerequisites: they
+  do not know about other parents (if any), let alone the exact prerequisites,
+  of their children.
+
+- We could choose to use waiting task proxies for convenient prerequisite
+  accounting, but hide them from users. But that would only make the same
+  housekeeping problem less visible.
+
+- "Test-spawn" on every output but delete immediately if prerequisites are not
+  satisfied yet? This won't help as parents that finished earlier won't still
+  be in the pool to check their outputs.
+
+- Prerequisites are by definition n=1 graph edges, so could we keep n=1 in the
+  scheduler datastore (instead of just n=0) and use that to avoid spawning
+  waiting tasks? No, because the required n=1 edges do not exist before the
+  task is spawned, and earlier parents may have dropped out of n=1 too.
+
+- (Letting stuck waiting tasks stall the workflow is a choice).
+
+### Stuck waiting tasks
+
+Can tasks get stuck in the waiting state, and if so, is automatic housekeeping
+desirable and feasible?
+
+Waiting tasks are [only generated](#spawning-on-outputs) when AND prerequisites
+are in the process of being satisfied: 
+```
+A & B => C
+```
+Above, C will not be spawned until A (say) succeeds. Then there are only two
+ways for it to end up stuck as waiting: either B did not run yet, or B ran
+and failed (with B:fail handled, or not).
+
+*If B did not run, removing C is not desirable:* 
+```
+A & B => C  # (A succeeded, C waiting, B has not run yet)
+```
+If the workflow hasn't stalled then we cannot assume B won't show up later. If
+it has stalled then we know B won't (automatically) show up later, but then our
+stuck C is just a secondary symptom of an upstream problem that stymied the
+path to B, and fixing that could restart the workflow and allow C to run
+(either a failed task blocked the flow, or a workflow design error has put A
+and B on different alternate paths).
+
+*If B failed and B:fail was not handled, removing C is not desirable:* 
+```
+A & B => C  # (A succeeded, C waiting, B failed)
+```
+B is considered not finished (because it wasn't expected to fail) and we
+leave it in the pool to be fixed and retriggered, allowing C to run.
+
+*If B failed and B:fail was handled, removing C **may be** desirable:*
+```
+A & B => C
+B:fail => huh
+```
+If we assume this is not a workflow design error (B:fail was meant to allow the
+workflow to continue at C but it didn't) then we could remove C on grounds that
+it can never automatically run once its parents have all *finished*. However,
+this seems like a very niche case (A is not expected to fail, and B is expected
+to fail sometimes, but C should only run if they both succeed??) that I suggest
+does not warrant complicated in-memory tracking of instantaneous
+parents-finished status (which requires additional spawning on task completion
+as explained in earlier versions of this document). Also, stuck waiting tasks
+are not a problem unless they accumulate in large numbers (niche - ain't gonna
+happen?) or cause the worklfow to stall later. Options:
+- leave this as a final niche case for suicide triggers
+- check the run database to see if waiting task's parents have all finished,
+  - infrequent periodic check via main-loop plugin
+  - once if the workflow stalls with waiting tasks present
+
+Finally, [reflow](#reflow) can also cause stuck waiting tasks (waiting on
+off-flow outputs) but these should not be removed.
+
+### Failed tasks
+
+Technically we don't need to retain failed tasks in the pool: they have already
+served their logical purpose in the workflow, and visibility and retriggering
+don't depend on presence in the pool (just watch notifications and/or widen the
+view beyond the pool).
+
+Failed tasks can be removed immediately if handled by a `:fail` trigger (which
+implies the failure was *expected by the workflow*). 
+
+Failed tasks that are not handled (which implies the failure was *not expected
+by the workflow*), however, will be kept in the task pool and considered
+*not finished* for [housekeeping](#housekeeping) purposes.
+
+This makes unhandled failed tasks stay visible in the default n=0 view, and it
+supports the typical "retrigger a failed task" use case without the
+complications of reflow:
+
+```
+A & B => C
+```
+If `A` fails it will spawn `C` as waiting. Both
+`A` and `C` will remain in the pool after `B` completes (`A` because its
+failure was not handled, and `C` because its parents did not all finish). Then
+if the user retriggers `A` and it succeeds, `C` can run because it remembers
+that `B` finished.  If we did not keep `A` and `C` in the pool, the user could
+still retrigger `A`, but its success would respawn `C` which would not remember
+that `B` had finished in "the previous flow". So the proposed implementation
+supports the failed task retriggering use case without requiring further
+intervention downstream.
 
 ### Spawning tasks with no parents
 
-Tasks with no task prerequisites, and those that depend only on xtriggers,
-need to be auto-spawned because they have no parents to do it for them.
+Tasks with no prerequisites (or which only depend on clock or external
+triggers) need to be auto-spawned.
 
 **Implementation:** at start-up auto-spawn the first instances of these tasks
-into the runahead pool. Subsequently, whenever releasing one of these from the
-runahead pool, auto-spawn its next instance (into the runahead pool).
-
-See [future enhancements](#future-enhancements) (below) for plans to spawn on
-xtrigger events.
+into the runahead pool. Subsequently, whenever releasing one from the runahead
+pool, auto-spawn its next instance (into the runahead pool).
 
 ### Absolute dependence
 
-Here, start should run in the first cycle point, after which all `foo.n` can 
+Below, start should run in the first cycle point, after which all `foo.n` can 
 run (out to the runahead limit):
 ```
 R1 = "start"
@@ -194,142 +315,6 @@ start (use case: retrigger a start-up task that rebuilds a model or whatever,
 but don't re-run old cycles). Alternatively, retrigger the parent without
 reflow, then retrigger the first child that you want to run - it will
 auto-spawn forward after that.
-
-### Spawning on task outputs
-
-First, see [use of task proxies](#use-of-task-proxies) (above) for
-justification of using waiting task proxies to track satisfaction of
-prerequisites.
-
-When a task output gets completed the scheduler should spawn (if not already
-spawned) children of that output in the waiting state and update their
-prerequisites directly. Note this only creates waiting tasks between generation
-of the first and last outputs depended on, for tasks with multiple parents.
-
-```
-A & B => C
-```
-If `A` finishes before `B`, `C` will be spawned on `A:succeeded` and will
-remain as waiting until `B` finishes.
-
-### Spawning on task completion
-
-[Housekeeping](#housekeeping-stuck-waiting-tasks) (below) relies on
-children knowing when their parents are finished (a waiting task can never
-be satisfied automatically if its parents are finished). This requires, for
-children with multiple parents, spawning on parent completion as well as on
-outputs, but only to update their parent-is-finished status (not
-prerequisites):
-
-```
-A:fail => X
-A & B => C
-```
-Here `A:fail` needs to spawn `C` as well as `X` so that `C` exists and
-remembers that `A` finished when `B` finishes later. Then `C` can be
-removed (all parents finished).
-
-Note that spawning all children in this way does not create a problem even
-at the branching of mutually exclusive alternate paths:
-
-```
-A:out1 => B
-A:out2 => C
-```
-Here, if `A` generates output `:out1` (say) and spawns `B` as a result, `C`
-will be spawned as well when `A` finishes. But `C` can then be removed
-immediately (parents finished).
-
-### Housekeeping stuck waiting tasks
-
-Occasionally a waiting task may become unsatisfiable. 
-
-**Waiting tasks can be removed if all of their parents have finished.**
-(Parents that are already finished can no longer satisfy anyone else's
-prerequisites).
-
-Stuck waiting tasks (**I think**) are only a symptom of bigger problems 
-upstream that *should* stall the suite, so they do not need housekeeping:
-
-```
-x => B
-A & B => C
-```
-If `x` fails, `B` will be spawned (on `x` finished) but once `A` is finished
-`C` will be stuck as waiting on `B` to succeed. But retriggering `x` will cause
-`B` to run, and then `C` - so no problem here (no stuck waiting task).
-
-```
-x => y => B
-A & B => C
-```
-If `x` fails, `B` will not be spawned, so `C` will be stuck as waiting on `B`
-once `A` is finished.  But retriggering `x` will cause `y` and then `B`, and
-hence `C`, to run - so no problem here either (no stuck waiting task).
-
-But a *handled* upstream failure that does not fix the workflow can potentially
-cause orphaned waiting tasks:
-```
-[scheduling]
-   cycling mode = integer
-   initial cycle point = 1
-   final cycle point = 5
-   [[graph]]
-       P1 = """x:fail => alert
-               x => B
-               A & B => C"""
-[runtime]
-   [[root]]
-       script = sleep $(( 5 + RANDOM % 5 ))
-   [[x]]
-       script = """
-   if (( CYLC_TASK_CYCLE_POINT == 1 && CYLC_TASK_SUBMIT_NUMBER == 1 )); then
-      false
-   fi"""
-```
-When `x.1` fails `B.1` is spawned (on `x.1` finished), but `x.1` gets removed
-as finished (the failure was handled). `B.1` gets removed (parents finished)
-but `C.1` will be stuck as waiting because not all of its parents finished.
-This is essentially a workflow design error: the handled failure does not
-result in the workflow continuing.
-
-We *could* still remove such orphaned waiting tasks *if* the pool moves beyond
-the point where anyone could possibly trigger them (in the example, once `C.1`
-is the only task remaining in cycle point 1 there is no point in retaining it)
-but (a) as argued above there's not much point; and (b) we don't want reflow
-tasks that are waiting on an off-flow output to be cleaned up by cycle point
-housekeeping (however, we could just turn off this housekeeping for reflows).
-
-### Failed tasks
-
-Technically we don't need to retain failed tasks in the pool: they have already
-served their logical purpose in the workflow, and visibility and retriggering
-don't depend on presence in the pool (just watch notifications and/or widen the
-view beyond the pool).
-
-Failed tasks can be removed immediately if handled by a `:fail` trigger (which
-implies the failure was *expected by the workflow*). 
-
-Failed tasks that are not handled (which implies the failure was *not expected
-by the workflow*), however, will be kept in the task pool and considered
-*not finished* for [housekeeping](#housekeeping) purposes.
-
-This makes unhandled failed tasks stay visible in the default n=0 view, and it
-supports the typical "retrigger a failed task" use case without the
-complications of reflow:
-
-```
-A & B => C
-```
-If `A` fails it will spawn `C` as waiting. Both
-`A` and `C` will remain in the pool after `B` completes (`A` because its
-failure was not handled, and `C` because its parents did not all finish). Then
-if the user retriggers `A` and it succeeds, `C` can run because it remembers
-that `B` finished.  If we did not keep `A` and `C` in the pool, the user could
-still retrigger `A`, but its success would respawn `C` which would not remember
-that `B` had finished in "the previous flow". So the proposed implementation
-supports the failed task retriggering use case without requiring further
-intervention downstream.
 
 
 ### Stall and shutdown
@@ -376,7 +361,7 @@ will cause an (arguably!) premature shutdown:
 A:fail => email_me
 A => B => C = archive
 ```
-Here, if `A` fails the workflow will shut down as completed with `email_me`
+Above, if `A` fails the workflow will shut down as completed with `email_me`
 succeeded. **But, that is what the graph logic says to do!** If `A` fails,
 there is no path to `archive` succeeded.
 
@@ -740,3 +725,12 @@ can keep finished tasks in the pool until there is no danger of automatic
 reflow (a task will not be spawned if it already exists in the pool).
 
 
+*ASIDE: the proposal original kept finished task proxies in the pool as well
+until their parents are all finished, to prevent "conditional
+reflow" (in `A | B => C` if `B` runs after `C` has already triggered off of `A`
+and finished, we need to avoid triggering `B` again off of `B`). However,
+an alternative to storing the fact that `C` already ran in memory and
+housekeeping that information, is to ask the run database if `C` already ran,
+before spawning it. As it turns out, we have to ask the database for submit
+number at spawn time, and that gives us the same information (did `C` already
+run?).
