@@ -65,6 +65,9 @@
 
 Project meetings:
 
+- June 2020 
+  - [Agenda and Notes](meetings/vc-jun-2020.md)
+
 - May 2020 
   - [Agenda and Notes](meetings/vc-may-2020.md)
 
