@@ -658,6 +658,10 @@ graphically the consequences of their intended reflow).
 
 - event-driven task state changes aren't compatible with the way the datastore
   is updated by iterating the task pool once per main loop.
+- ensure that users do not need to know if a task is currently in
+  the task pool, for retriggering etc. (the result should be the
+  same either way; easiest to achieve if we remove all failed tasks
+  immediately...)
 
 ### Possible Future Enhancements
 
