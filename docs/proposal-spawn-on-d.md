@@ -118,7 +118,8 @@ remove satisfied prerequisites to avoid a memory leak, or remove spent task
 proxies that contain the same satisfied prerequisites.
 
 However, we should change later to spawn-when-ready with separate management of
-prerequisites, just because that's cleaner and doesn't invite confusion about
+prerequisites, just because it's cleaner and slightly more efficient (no excess
+task proxy baggage, just the prerequisites) and doesn't invite confusion about
 the implications of waiting task proxies. The scheduler could (e.g.) maintain a
 dict of `(task-id, [prerequisites])`: create a new entry when the first parent
 output of `task-id` is completed, update it with subsequent outputs, and delete
@@ -142,7 +143,7 @@ Here, if `C` triggers off of `A` first, we need to stop it spawning again when
 to stop this because `C` could be finished and gone before `B` completes.
 
 We can prevent this "conditional reflow" very simply, by spawning only if the
-database says that task was not previously spawned in this flow. This requires
+database says the task was not previously spawned in this flow. This requires
 an extra DB query for every late output in a conditional trigger (where late
 means the downstream task has finished and gone before the next parent output
 is generated). It has no impact on AND triggers where the task will
@@ -155,18 +156,19 @@ reflow](#possible-in-memory-preventon-of-conditional-reflow).
 
 ### Prerequisite housekeeping?
 
-The minimum housekeeping requirement, if tracking partially satisfied
-prerequisites in memory, is to delete prerequisites (or waiting tasks for
-spawn-on-outputs) once they are satisfied, to avoid a memory leak.
+The minimum housekeeping requirement is to delete partially satisified
+prerequisites once satisfied (or for spawn-on-outputs, reset the waiting
+tasks that contain those prerequisites, to ready) then remove task proxies once
+finished.
 
 The more interesting question is: can prerequisites get stuck forever as
 partially satisfied (or stuck waiting tasks for spawn-on-outputs), and if so
 what should we do about that?
 
-(Note this is not a SoD-specific problem. It is even worse in SoS which has
-loads of wholly unsatisfied waiting tasks in addition to those actively
-becoming satisfied. There we force users to clean them all up with suicide
-triggers, or else let them stall the workflow.)
+*Note this is not a SoD-specific problem. It is even worse in SoS where have to
+worry about tasks gettings stuck wholly unsatisfied as well. There we force
+users to clean them all up with suicide triggers, or else let them stall the
+workflow.*
 
 We have provisionally decided not to attempt automatic removal of stuck
 prerequisites on grounds that *partial completion of the requirements for a
@@ -194,9 +196,9 @@ off-flow outputs, but these should not be removed.
 ### Spawning parentless tasks
 
 Tasks with no prerequisites (or which only depend on clock or external
-triggers) need to be auto-spawned: at start-up auto-spawn the first instances
-into the runahead pool; then whenever one is released from the
-runahead pool, spawn its next instance (into the runahead pool).
+triggers) need to be auto-spawned, because they have no parents to "demand"
+them. At start-up we auto-spawn the first instances of these tasks, then
+whenever one is released from the runahead pool, spawn its next instance.
 
 (In future, we may want to spawn tasks "on demand" in response to external
 trigger events too, but for now a waiting task with an xtrigger is fine).
