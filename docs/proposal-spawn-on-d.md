@@ -417,6 +417,9 @@ single character label.
   pretending they succeeded is unnecessary - better force downstream tasks to
   carry on despite the upstream failure (with `cylc spawn`, above).
 
+- `cylc reflow` - tentative new command for managing reflows, so far just
+  supports canceling a reflow.
+
 ### CLI task globbing:
 
 In SoS we glob on:
@@ -531,7 +534,7 @@ need for prerequisite housekeeping, but at the cost of a lot more DB access for
 tasks with many parents. 
 
 **Can we use the datastore to satisfy prerequisites?** Prerequisites are n=1
-edges, so could we keep n=1 in the scheduler datastore and use that check
+edges, so could we keep n=1 in the scheduler datastore and use that to check
 prerequisites before spawning? The answer is no because the as-yet-unspawned
 child task is n=1 from the parent that just generated the output, but all the
 other parents have to be checked as well to resolve its prerequisites, and they
@@ -652,7 +655,7 @@ determines whether or not those tasks will still be present).
 (For the record, in case we ever reconsider automatic use of off-reflow
 outputs, graph traversal would be required to determine whether or not an
 unsatisfied prerequisite can be satisfied later within the reflow or not, and
-if not, to go the the database. As Oliver noted: this could probably be worked
+if not, to go the database. As Oliver noted: this could probably be worked
 out once at the start of the reflow; it could also help us show users
 graphically the consequences of their intended reflow).
 
@@ -660,10 +663,21 @@ graphically the consequences of their intended reflow).
 
 - event-driven task state changes aren't compatible with the way the datastore
   is updated by iterating the task pool once per main loop.
-- ensure that users do not need to know if a task is currently in
-  the task pool, for retriggering etc. (the result should be the
-  same either way; easiest to achieve if we remove all failed tasks
-  immediately...)
+
+- retrigger vs reflow is a clear distinction when the target task is 
+  in front of or behind the origin flow, but what about retriggering a failed
+  task? Presumably that should result in the original flow continuing
+  (if the retriggered task succeeds and satisfies downstream prerequisites)
+  even if the user did not use `cylc trigger --reflow`?
+
+- (related) the result of retriggering should be the same regardless of whether
+  or not the target task was already in the pool, otherwise users will
+  still need to understand the task pool. This could matter for handled (not in
+  pool) vs unhandled failed (in pool) tasks - which I'm suggesting we treat
+  equally and remove them all; and partially-satisfied (in pool) vs wholly
+  unsatisfied (not) waiting tasks - but note the former should really only be
+  treated as embodied prerequisites - see [spawn-on-outputs or
+    spawn-when-ready?](#spawn-on-outputs-or-spawn-when-ready).
 
 ### Possible Future Enhancements
 
