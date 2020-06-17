@@ -11,7 +11,7 @@
 - [Implementation details](#implementation-details)
   - [Spawn-on-outputs or
     spawn-when-ready?](#spawn-on-outputs-or-spawn-when-ready)
-  - [Preventing conditional reflow](#prevent-conditional-reflow)
+  - [Preventing conditional reflow](#preventing-conditional-reflow)
   - [Prerequisite housekeeping?](#prerequisite-housekeeping)
   - [Spawning parentless tasks](#spawning-parentless-tasks)
   - [Absolute dependence](#absolute-dependence)
@@ -30,13 +30,13 @@
   - [Possible in-memory conditional reflow
     prevention](#possible-in-memory-conditional-reflow-prevention)
   - [Can we use the database or datastore to satisfy
-     prerequisites?](#can-we-use-the-database-or-datastore-to-satisfy-prerequisites?)
+     prerequisites?](#can-we-use-the-database-or-datastore-to-satisfy-prerequisites)
   - [Possible stuck-prerequisite housekeeping](#possible-stuck-prerequisite-housekeeping)
   - [Better failed task handling](#better-failed-task-handling)
   - [Better workflow completion handling](#better-workflow-completion-handling)
   - [Automatic use of off-flow outputs?](#automatic-use-of-off-flow-outputs)
   - [TODO](#todo)
-  - [Future enhancments](#future-enhancements)
+  - [Possible future enhancments](#possible-future-enhancements)
   - [Terminology](#terminology)
 
 ## Introduction
@@ -152,7 +152,7 @@ remain in the pool until it runs, and a spawn-time DB query is needed to get
 
 It seems unlikely this extra DB access will be a problem, but see [possible
 in-memory prevention of conditional
-reflow](#possible-in-memory-preventon-of-conditional-reflow).
+reflow](#possible-in-memory-conditional-reflow-prevention).
 
 ### Prerequisite housekeeping?
 
@@ -188,7 +188,7 @@ while others were not. That could mean:
 
 If any of the above do prove problematic we could leave this as a remaining
 niche case for suicide triggers, or consider [possible stuck-prerequisite
-houskeeping](#possible-stuck-prerequisite-housekeeping).
+housekeeping](#possible-stuck-prerequisite-housekeeping).
 
 Note that [reflow](#reflow) can also generate tasks that are stuck waiting on
 off-flow outputs, but these should not be removed.
@@ -502,7 +502,7 @@ A simpler in-memory solution is feasible though: maintain (e.g.) a dict of
 `(spawned-task-id, [list of unfinished parents])`. Create a new entry when the
 first parent finishes, and update it on subsequent parent completions. Remove
 the entry once the list of unfinished parents is empty. This dict would also
-have to be stored in the DB for restarts. Some tricky houskeeeping might be
+have to be stored in the DB for restarts. Some tricky housekeeping might be
 needed though: what to do with dict entries that get "stuck" because one or
 more parents never run at all. That could happen after upstream failures, in
 which case fixing the failure might fix the problem, but it could also happen
@@ -543,10 +543,10 @@ into n=2 from the DB again when the next parent shows up. So this would work,
 but with back-door use of the DB as long term memory. Plus *we want to keep
 only n=0 in the scheduler datastore if possible*.
 
-### Possible stuck-prerequisite houskeeping
+### Possible stuck-prerequisite housekeeping
 
 We have provisionally decided not do to automatic housekeeping of stuck
-prerequisites - see [above](#prerequisite-houskeeping).
+prerequisites - see [above](#prerequisite-housekeeping).
 
 If we change our minds about this, we could potentially remove partially
 satisfied prerequisites (spawn-on-ready) or waiting tasks (spawn-on-outputs)
@@ -582,7 +582,7 @@ consistent workflow completion handling (below).
 
 ### Better workflow completion handling?
 
-Completion and shutdown handling as described ([above](#workflow-completion))
+Completion and shutdown handling as described ([above](#workflow-stop))
 leaves a bit to be desired.
 
 In SoD the following workflow will complete and shut down after running only
