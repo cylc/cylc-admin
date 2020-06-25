@@ -37,9 +37,10 @@
 - [Task State Name Rationalization](proposal-state-names.md)
 
 - [Component Naming](proposal-component-names.md)
-- [Suite Evolution: Spawn-on-demand](proposal-spawn-on-d.md)
+- [Spawn-on-demand](proposal-spawn-on-d.md)
 - [Multi-user and cylc-flow](proposal-multi-user-approach.md)
 - [Subscription Model](proposal-subscriptions.md)
+- [Cylc UI Data Model](proposal-cylc-ui-data-model.md)
 
 ## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)
