@@ -1,5 +1,8 @@
 # Cylc UI Data Model
 
+See also the closely related [subscription model](proposal-subscriptions.md)
+
+Views state the data they require to function in something akin to a manifest:
 ```
 taskProxies = [
     'id',
@@ -18,6 +21,8 @@ The workflow component (which is the mount point for the "cylc views") takes
 this manifest and issues a subscription on behalf of the view. Ideally this
 would involve subscription merging but if you separate the data from the query
 with a nice shiny interface what goes on under the hood doesn't really matter.
+
+Done!
 
 At the moment this all happens via the gquery (bad pun on graphql / jquery)
 file which I put in back in the early days. Each view is registered and can
