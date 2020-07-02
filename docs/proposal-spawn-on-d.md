@@ -661,23 +661,43 @@ graphically the consequences of their intended reflow).
 
 ### TODO
 
-- event-driven task state changes aren't compatible with the way the datastore
-  is updated by iterating the task pool once per main loop.
+Follow-up changes needed in `cylc/cylc-flow`:
 
-- retrigger vs reflow is a clear distinction when the target task is 
-  in front of or behind the origin flow, but what about retriggering a failed
-  task? Presumably that should result in the original flow continuing
-  (if the retriggered task succeeds and satisfies downstream prerequisites)
-  even if the user did not use `cylc trigger --reflow`?
+- "Hold" currently means to hold back *waiting task proxies*. In SoD we can
+  still hold a suite, but holding individual tasks is impossible except for
+  partially satisfied waiting tasks.
+  - Do we really need the concept of individual task hold?
+  If we do, options include:
+  - (maybe) holding an active task causes its spawned children to be held?
+  - (probably) allow users to target any task, which will require the scheduler 
+    to check a list of tasks-to-hold at spawn time
 
-- (related) the result of retriggering should be the same regardless of whether
-  or not the target task was already in the pool, otherwise users will
-  still need to understand the task pool. This could matter for handled (not in
-  pool) vs unhandled failed (in pool) tasks - which I'm suggesting we treat
-  equally and remove them all; and partially-satisfied (in pool) vs wholly
-  unsatisfied (not) waiting tasks - but note the former should really only be
-  treated as embodied prerequisites - see [spawn-on-outputs or
+- Event-driven removal of finished tasks is not compatible with the way the
+  datastore is updated by iterating the task pool once per main loop (so we
+  miss final status changes).
+
+- Generally ensure that users do not need to understand the "task pool"
+  anymore, beyond the distinction between active and not-active tasks.
+  - e.g. no more glob-matching of the task pool on task state (`cylc trigger`
+    already converted over to targetting any task)
+  - the result of retriggering should be the same regardless of whether or not
+    the target task is already in the pool. This could matter for handled (not
+    in pool) vs unhandled failed (in pool) tasks - which I'm suggesting we
+    treat equally and remove them all; and partially-satisfied (in pool) vs
+    wholly unsatisfied (not) waiting tasks - but note the former should really
+    only be treated as embodied prerequisites - see [spawn-on-outputs or
     spawn-when-ready?](#spawn-on-outputs-or-spawn-when-ready).
+
+- The retrigger vs reflow distinction is clear when the target task is well in
+  front of or behind the original flow, but what about retriggering a failed
+  task? Presumably that should result in the original flow continuing (if the
+  retriggered task succeeds and satisfies downstream prerequisites) even if the
+  user did not use `cylc trigger --reflow`?
+
+- Other ways of stopping a reflow? (at a cycle point, or at a list of task
+  IDs?)
+
+- (Edit-run has been removed, but that needs to be re-implemented via UI + UIS)
 
 ### Possible Future Enhancements
 
@@ -688,8 +708,7 @@ Follow-on changes that may or may not be worthwhile before Cylc 9:
   matching methods)
 - Extend SoD to clock- and external-triggers: tasks could be spawned in
   response to trigger events (depends on xtriggers as main-loop coroutines)
-- Other ways of stopping a reflow or telling it when to stop later on
-  (at a cycle point, or at a list of task IDs?)
+- (Consider all "possible" Appendix items above)
 
 ### Terminology
 
