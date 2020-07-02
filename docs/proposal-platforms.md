@@ -69,7 +69,10 @@ and partially address
         retrieve job logs = True
         batch system = background
 [platform aliases]
-    hpc-bg = hpcl1-bg, hpcl2-bg
+    [[hpc-bg]]
+        platforms = hpcl1-bg, hpcl2-bg
+        # other config(s) to be added here for load balancing etc
+
 ```
 
 Note:
