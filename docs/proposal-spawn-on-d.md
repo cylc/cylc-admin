@@ -672,6 +672,21 @@ Follow-up changes needed in `cylc/cylc-flow`:
   - (probably) allow users to target any task, which will require the scheduler 
     to check a list of tasks-to-hold at spawn time
 
+- Consider if current flow label management is sufficient, and allow users to
+  associate metadata with flow labels so they can keep track more easily.
+ 
+- Flow stop is currently implemented as `cylc stop --flow=LABEL`. Consider
+  better integrating this other stop functionality; and also hold etc. From Oliver:
+  > Consider a way to pull flow name into the generic identification system in
+  > the guise of:
+  >
+  > ```
+   $ cylc hold <workflow> <cylc>
+   $ cylc hold <workflow> <task>.<cycle>
+   $ cylc hold <workflow> <task>.<cycle>^<flow>
+   $ cylc hold <workflow> ^<flow>
+```
+
 - Event-driven removal of finished tasks is not compatible with the way the
   datastore is updated by iterating the task pool once per main loop (so we
   miss final status changes).
