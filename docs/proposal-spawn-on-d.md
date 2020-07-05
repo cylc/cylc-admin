@@ -714,6 +714,11 @@ Follow-up changes needed in `cylc/cylc-flow`:
 
 - (Edit-run has been removed, but that needs to be re-implemented via UI + UIS)
 
+- In storing satisfied prerequisite status in the DB task pool table, OS is not
+  happy that "the keys to a JSON dictionary are themselves JSON" and suggests
+  "This should be converted into its own DB table pre-8.0.0." - search for
+  "satisfied" in `cylc/flow/suite_db_mgr.py` and `cylc/flow/task_pool.py`. 
+
 ### Possible Future Enhancements
 
 Follow-on changes that may or may not be worthwhile before Cylc 9:
