@@ -1,4 +1,4 @@
-# Cylc Project VC 5 May 2020
+# Cylc Project VC 5? June 2020
 
 *(Meeting notes in italics)*
 
@@ -57,15 +57,15 @@ Current status:
 - All advertised advantages have proved to be true
 - New functionality seems to work nicely: trigger with and without reflow, flow
   merge, flow stop
-  - maybe not completely done, but we can refine *new functionality* later
- 
+  - we can refine *new functionality* later
+
+Decided:
 - *DM: Keep agree fail handling for now*
 - *Need a follow-up meeting with DM and OS to go through the details*
 
 ## Back-end: delta updates
 
 DS 
-
 - a few changes since last month, but mainly just waiting on HO review (sorry)
 - (OS and BK have had a good poke around - what's the verdict?)
  
@@ -87,7 +87,7 @@ BK
 - *TP: platforms changes very close - 1 week? test batter has been trouble; may
   not be fully functional at first merge, e.g. cylc-7 compat*
 - *RD: isodatetime efficiency changes (OS: lru_cache; then make data classes
-  hashable and therefore cacheable*
+  hashable and therefore cacheable*)
 - *MH stripping out `cylc submit` and `cylc jobscript` and tests that use
   them*
 - *key generation changes are good to go (private keys don't travel now)*

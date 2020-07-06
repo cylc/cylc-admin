@@ -11,48 +11,54 @@ Cylc-7
 Cylc-8.0a2
 - UI and conda meta-package still to do? 
 
+Current cylc-flow PRs
+- quick triage?
+
 BOM
-- Jacinta to rejoin us soon :tada:
+- HO had a catch-up meeting with JR; she should be able to join us soon :tada:
 
 ## Cylc 8 MVP
 - [Development timeline from the mid-Feb
   workshop](https://cylc.github.io/cylc-admin/feb2020-workshop-report#tentative-development-timeline)
 - We really need to:
-  - get delta tree in? [AlMOST]
-  - get Spawn-on-demand in [ALMOST]
-  - get platforms in [ALMOST]
-  - get performant tree view done [BK says pretty easy?]
+  - delta tree in? [AlMOST]
+  - Spawn-on-demand in [ALMOST]
+  - platforms in [ALMOST]
+  - infinite tree done [BK hopes pretty easy?]
   - THEN focus entirely on the ESSENTIALS for 8.0
 
 ## Spawn on Demand
 
 HO
-
-- Latest proposal and implementation agreed by DM and OS
+- Had a meeting on this DM, OS, HO
+- Latest proposal and implementation agreed
 - Functional tests for reflow added
-- hundreds of conflicts to resolve post integration tests merge :grimace:
+- NOW: hundreds of conflicts to resolve post integration tests merge :grimace:
 
 ## Back-end: delta updates
 
 DS on leave (may attend?), but:
-
 - delta PRs now merged
 - next: post-SoD n-distance windowing
  
 ## UI
 
 BK
-
 - data model "essentials" clarified and agreed
 - delta tree status?
 - next: infinite tree
 
-## Platforms etc.
+## Platforms and suite installation etc.
 
 UK team
+- Initial platforms PR ready to go?
+- `rose suite-run` work underway or about to start? 
+- other?
 
 ## AOB?
 
+- Any side-meetings needed?
+
 ## Next Meeting?
 
-- TP to arrange for early July?
+- TP to arrange for early August?
