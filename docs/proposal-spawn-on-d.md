@@ -663,6 +663,9 @@ graphically the consequences of their intended reflow).
 
 Follow-up changes needed in `cylc/cylc-flow`:
 
+- Consider re-instating (most of?) the pre-SoD `cylc insert` functional tests
+  as `cylc trigger` tests.
+
 - "Hold" currently means to hold back *waiting task proxies*. In SoD we can
   still hold a suite, but holding individual tasks is impossible except for
   partially satisfied waiting tasks.
