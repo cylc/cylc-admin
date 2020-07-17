@@ -107,7 +107,7 @@ Need to resolve disagreement on the model:
 - Do we need to choose coding styles?
    - (only PEP8 so far)
    - Python Docstring Conventions - would be nice to have one that works
-     with most tools (i.e. sphinx, vim syntax hightlight, IDE, napoleon,
+     with most tools (i.e. sphinx, vim syntax highlight, IDE, napoleon,
      etc)
    - Should we use [Black](https://github.com/ambv/black)?
 

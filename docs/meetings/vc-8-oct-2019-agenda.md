@@ -51,7 +51,7 @@ Update on:
 - Cytoscape vs D3 etc
 - prospects for custom node icons etc.
 
-*MR: Cytoscape probably best in most respects, e.g. dynamic graphs and partical
+*MR: Cytoscape probably best in most respects, e.g. dynamic graphs and practical
 updates; "El Grapho" faster?*
 
 *DM and OS: don't forget "cylc graph"; data provision to UI of static graph.*

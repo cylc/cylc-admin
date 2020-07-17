@@ -25,7 +25,7 @@ before they are needed) BUT:
 - Tasks can't run out of cycle-point order
 - The successors of a failed tasks can run (tasks spawn before failing) but
   those of tasks waiting downstream of a failed task can't, which stalls the
-  worklow
+  workflow
 - The task pool has to include at least one cycle-point instance of *every
   task*, and more if there are multiple active cycle points.
  - this is overkill - a lot of tasks are created in the waiting state long

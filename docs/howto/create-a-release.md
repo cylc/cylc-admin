@@ -36,7 +36,7 @@
 - Check locally that you have the updated version of master. Ensure that you
   local copy is up to date, and that it has the correct tags attached.
 - Use `git log` to ensure that you have the correct version and tag.
-- Check that you can buid your distribution locally:
+- Check that you can build your distribution locally:
 
 ```bash
 
@@ -70,7 +70,7 @@
 ## Create a release on Github
 
 - On Github navigate to the repository for which you are creating a release
-  for and click on the relases tab. You should see your tag at the top.
+  for and click on the releases tab. You should see your tag at the top.
 - [Optional] You may wish to open the edit page of a previous release in a
   new tab so that you can copy and paste its data.
 - Click "Draft a new release" button.

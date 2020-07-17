@@ -61,7 +61,7 @@ These forms have been distinguished as options:
   token, after a set *time period* is up;
 * **event-based/driven "one-time" tokens**: "single-use" tokens that are
   *created* & *deleted* to cover the duration of set *events*, only being
-  vaild for one such event instance.
+  valid for one such event instance.
 
 
 ### The old (Cylc 7) approach
@@ -98,7 +98,7 @@ least, to change, or which otherwise necessitate changes, as follows:
     the file system is not shared so it is not possible) not use the
     file system;
   * not preclude (later implementation of) fine-grained authorisation for
-    control capacbility, which is not possible with the Cylc 7
+    control capability, which is not possible with the Cylc 7
     authentication model.
 
 
@@ -206,7 +206,7 @@ rest) for the problem outlined in 'The Problem' section above.
   video conference on 08.08.19 (UK date).
 * 19.08.19: amendments made in response to some general feedback by DM & to
   adapt the proposal to the new context & plan relating to overarching
-  WFS security, i.e. also considering the network commuications.
+  WFS security, i.e. also considering the network communications.
 
 
 ### Case-by-case outline

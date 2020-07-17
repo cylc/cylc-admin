@@ -16,7 +16,7 @@ the top we can actually halve the number of abstract task states from 8 to 4.
 | `submit-failed`   | `submit-failed`     | job submitted but did not execute |
 | `running`         | `running`           | job started, but did not finish yet |
 | `succeeded`       | `run-succeeded`     | job finished successfully    |
-| `failed`          | `run-failed`        | job finished unsuccesfully   |
+| `failed`          | `run-failed`        | job finished unsuccessfully   |
 
 Notes:
 - Prefixes `run-` and `submit-` added to disambiguate and make consistent
@@ -64,7 +64,7 @@ Problems:
 
 | NEW name      | meaning                                             |
 |----           | ---                                                 |
-| `waiting`     | (formerly `waiting`, `queued`, and `runahead`) waiting on **all** prequisites |
+| `waiting`     | (formerly `waiting`, `queued`, and `runahead`) waiting on **all** prerequisites |
 | `preparing`   | (formerly `ready`) all prerequisites met; preparing for job submission |
 | `expired`     | (unchanged) waited too long, do not bother to submit    |
 

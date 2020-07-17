@@ -47,7 +47,7 @@ have not been updated yet ... "suite daemon", "suite server program",
  - [Subscription Model](proposal-subscriptions.md)
  - Spawn-on-Demand (workflow evolution)
      - [Proposal](proposal-spawn-on-d.md)
-     - [POC implentation PR](https://github.com/cylc/cylc-flow/pull/3474)
+     - [POC implementation PR](https://github.com/cylc/cylc-flow/pull/3474)
  - Security
      - [BOM threat modelling notes](threats.md)
      - Cylc 7 Pen Test Report - by email

@@ -27,7 +27,7 @@ just instituted over much of the world :grimace:)
 - Get it done before the Platforms changes go in
 - How to document use (and meaning of alpha status) for users who install by
   conda?
-  - Cylc web site and Discource 
+  - Cylc web site and Discourse 
 
 ## Spawn on Demand
 
@@ -45,8 +45,8 @@ just instituted over much of the world :grimace:)
 - OS good idea to simplify the test battery by providing a utility to fake the
   DB task pool table to any state, and take the scheduler there directly via
   restart.
-- Some discusionn on a "universal delimiter" for suite/task IDs.  DS's new ID
-  form is good (heirarchy) but can't be used on the command line (the delimiter
+- Some discussion on a "universal delimiter" for suite/task IDs.  DS's new ID
+  form is good (hierarchy) but can't be used on the command line (the delimiter
   is the shell pipe character).  More thought needed.
 - Agreed to get rid of the "task owner" concept in Cylc, used to run jobs on
   other user accounts

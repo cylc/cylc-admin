@@ -18,7 +18,7 @@ These are:
 
 ## Usage of GUIs & GUI vs CLI comments
 #### Table
-| cylc...| All the time | Most Days | Most Weeks | Infreqently | Never|Honestly, I didn't know it existed |
+| cylc...| All the time | Most Days | Most Weeks | Infrequently | Never|Honestly, I didn't know it existed |
 | --- | --- | --- | --- | --- | --- |--|
 |gui (gcylc)|16|4||2|||
 |gscan|8|1| |6|6||
@@ -46,12 +46,12 @@ These are:
 
 ### Usage of Cylc GUI
 #### Are there common gotchas in the cylc guis?
-* [I find it confusing that] task states are ordererd opposite in Gcylc and
+* [I find it confusing that] task states are ordered opposite in Gcylc and
   Gscan
 * Controls that behave unexpectedly
   * All the time on state and name
   * Could it filter differently for different views?
-* Triggering task inheritance sometimes does wierd things
+* Triggering task inheritance sometimes does weird things
 
 #### Are there capabilities in the Cylc GUI's that made your life easier whe you found out about them?
 * Simulation mode
@@ -64,11 +64,11 @@ These are:
 
 #### Do you use task filtering? If you do, what do you use it for?
 
-#### Do you use hierachically named suites?
-* What are hierachically named suites?
+#### Do you use hierarchically named suites?
+* What are hierarchically named suites?
   * Those that know what they are don't use them [at least in this room, if you
     read this on Sharepoint and disagree...].
-  * A user who does use hierachically named suites contacted us later
+  * A user who does use hierarchically named suites contacted us later
     saying that he likes them and would appreciate more controls, 
     both in the GUI and CLI.
 * Not many of us [use them] but seems useful.
@@ -89,10 +89,10 @@ These are:
 ---
 
 ### Appearance & Usability
-#### Do you have issues with GUI perfomance (question implied from answers)?
+#### Do you have issues with GUI performance (question implied from answers)?
 * Slow start up with complex graphs.
 * Occasional gui/gscan dropouts.
-* Suite and/or GUI dissapears
+* Suite and/or GUI disappears
 * Scrolling through large graphs/lists cna be slow/freeze
 * Viewing job log files sometimes fails repeatedly.
 
@@ -138,10 +138,10 @@ These are:
 * --- asked if there would still be a colour blind theme. Was
   told that there would be a colour blind safe theme.
 * Nesting suites are a "monster of jinja2". 👹
-* Would be good to fiter suites by cycle.
+* Would be good to filter suites by cycle.
 * More control of graph view, esp without a mouse 🖱️
 * Can we stagger Alignment of task names in graph view:
-* Can we filter by tasks prequesite to a given task?
+* Can we filter by tasks prerequisite to a given task?
 * Can we focus on tasks < N links from task?
 * Can we have interfaces with other software such as NIWA's Paraview?
   Talk to NIWA contacts to see if this is possible. What about Jupyter

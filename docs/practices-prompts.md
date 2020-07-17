@@ -9,7 +9,7 @@
 _NB. for future thoughts on this general topic:_
 
 - There are many established & tried-and-tested
-  methodologies e.g. flavours of Agile & common tradiational approaches we
+  methodologies e.g. flavours of Agile & common traditional approaches we
   can take inspiration & learn from.
 - We are not tied to any one, therefore free to 'pick-and-choose' practices
   that work well for us.
@@ -22,7 +22,7 @@ _NB. for future thoughts on this general topic:_
 1. How do we assign tasks to a specific team member?
   - We should aim to distribute work/tasks by topic to:
     - minimise silo-ing of knowledge;
-    - accomodate everyone's strengths & weaknesses & preferences;
+    - accommodate everyone's strengths & weaknesses & preferences;
     but...
     - not overwhelm/over-burden anyone, given the range of new technologies
       & theory etc. to learn to use effectively & adapt to.
@@ -36,7 +36,7 @@ _NB. for future thoughts on this general topic:_
     thoroughness, e.g. 'sanity check', 'functionality', 'good enough'
     (where it is not clear exactly what is needed e.g. UI elements)?
   - iii. could we make use of joint e.g. pair reviews to maximise knowledge
-    sharing? Would that consititute one or multiple (e.g. for pairs two)
+    sharing? Would that constitute one or multiple (e.g. for pairs two)
     GitHub reviews?
 
 
@@ -57,7 +57,7 @@ platform freezing & then the Python 2 EOL, so we need to understand if we
 are at least roughly on-track.
 
 2. Retrospectives &/or progress reviews:
-   - i. How often (or upon achievment of what milestones) to have these?
+   - i. How often (or upon achievement of what milestones) to have these?
    - ii. What format should these be in (e.g. discussion or formal document)?
    - iii. How to 'measure' progress?
      - time & effort estimates are notoriously difficult in the software
@@ -155,7 +155,7 @@ Wider team not co-located, & the majority working under towo flipped timezones.
   - Almost round-the-(UTC)-clock development / eyes on the codebase; want
     to leverage this to streamline hand-over for review & testing stages...
   - ...not allow to be a drawback via adding out-of-hours waiting time or via
-    miscommuication.
+    miscommunication.
   - we should also aim to benefit from the different software environments
     e.g. OSs & software stacks at each site for testing purposes.
 
@@ -193,4 +193,4 @@ Critical i.e. operational users must to be able to smoothly change over to
 using the new GUI from the old.
 
 3. Can we provide guidance &/or training in the later stages, before the
-   official vesion release, to (at least) these users?
+   official version release, to (at least) these users?

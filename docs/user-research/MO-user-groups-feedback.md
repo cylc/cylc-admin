@@ -72,7 +72,7 @@
   sure users are informed of any deprecations.]
 
 * RR: A new UI is good, but I actually prefer the command line, e.g. because
-  I can explicitly see & use the whole "plehtora of options". Will I still
+  I can explicitly see & use the whole "plethora of options". Will I still
   be able to interact with my suites purely by command, as I can do now? [We
   said yes, but stressed that we are not neglecting the CLI for the new UI,
   in fact we have plans including a wide-ranging "CLI refactor" Issue
@@ -101,7 +101,7 @@
 * MB: Will you still be able to have multiple instances open, like multiple
   windows for the old GUIs? I guess it would be multiple tabs now? [We
   confirmed that multiple tabs would be the browser equivalent, & that the UI
-  will work across mutliple tabs, but explained how we are trying to reduce
+  will work across multiple tabs, but explained how we are trying to reduce
   the need for multiple (and especially large numbers of) tabs with the
   multi-view panelling system, which aims to show users as much information
   as they could want to see, all within a single tab.
@@ -211,7 +211,7 @@ non-UI Cylc matter (which is of relevance to future Python API work):
   to the right audience, else it would be too specialised or simplistic. [We
   said we agree.]
 * ??: It could also be helpful to include answers to frequently asked
-  questions (FAQs) via a dedicated page or in a sutiable component. [We said
+  questions (FAQs) via a dedicated page or in a suitable component. [We said
   we thought that was a good idea, & we would consider it, though that
   something of that nature might be better placed in the documentation.]
 
