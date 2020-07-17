@@ -194,7 +194,7 @@ locally:
    # .../anaconda3/conda-bld/linux-64::cylc-uiserver-0.1-py37_1.
    # This confirms you are installing the local build. Here $PACKAGE_NAME
    # could be something like cylc-uiserver.
-   conda install $PACKAGE_NAME
+   conda install --use-local $PACKAGE_NAME
 ```
 
 At this point you should be good to go. Test the package with commands
