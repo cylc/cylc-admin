@@ -263,8 +263,9 @@ suite-run functionality:
      * We will probably need a third ssh connection for transferring the client
        public key.
    * The remote installation will include particular files/directories.
-     * Items to include:
-       `.service/server.key .service/contact app/ bin/ etc/ lib/`.
+     * Items to include: `.service/server.key app/ bin/ etc/ lib/`. Note that
+       `.service/contact` is not included since we may need to be able to modify
+       this file on remote hosts depending on the comms method.
      * We will use the `--delete` rsync option so that any files removed from
        from installed directories also get removed from the install targets on
        reload/restart.
@@ -277,10 +278,33 @@ suite-run functionality:
          using a wide range of sub-directories such as `python`, `util`, `data`
          (although it is not clear how many of these would need to be installed
          on remote platforms).
-       * Proposal: we allow the include list to be configurable at the global
-         level (to cater for old suites which need this) but encourage users to
-         adapt their workflows to use the supported directories and, therefore,
-         don't allow this to be configured at the suite level.
+       * If we allow global configuration this is likely to lead to portability
+         issues where a suite only works if you modify your global config. If
+         additional items need to be installed it's better to force these to be
+         configured in the suite. Note that this will require changes to some
+         Cylc 7 suites in order for them to work at Cylc 8.
+       * Hopefully it should be fine to install the same files to all install
+         targets. If there are cases where this is an issue we can recommend the
+         use of install tasks as a workaround.
+       * Proposal:
+         * Install the same items to all install targets.
+         * Allow the installation items to be configured at the suite level via
+           ones of the following ways:
+           * A new setting `[scheduler]install` with a default value of
+             `app bin etc lib` (the items in `.service` are always installed).
+             Note that if we want to be able to support copying top level files
+             as well as directories then we would need to do something like
+             `app/ bin/ etc/ lib/ extra-dir-to-copy/ extra-file-to-copy`.
+           * The alternative is to support the use of an extra file
+             `.rsync-filter` where you can specify rsync filter rules. All we
+             would need to do in Cylc is use the rsync option
+             `--filter=': .rsync-filter'`. To configure an additional directory
+             "data" to be copied you would simply create the file
+             `.rsync-filter` in the top level directory and add the line
+             `+ /data/***`. We can document a simple example but refer users who
+             want to do anything complicated to the rsync man page. Advantages:
+             a) gives users access to the full power of rsync filters;
+             b) this file can be added to cylc 7 suites without breaking them.
      * The alternative is to use exclude rather than include and make sure we
        exclude any file / directories which are generated at run time or target
        specific (`log/ share/ work/` + various files / directories in
