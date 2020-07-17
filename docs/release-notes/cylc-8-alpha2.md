@@ -23,7 +23,7 @@ improve future releases.
   + [Testing the installation](#testing-the-installation)
   + [Usage](#usage)
 * [Current Limitations](#current-limitations)
-* [What's new](#whats-new)
+* [What's new](#whats-new-since-cylc-80a1)
 
 ## Installation instruction
 
@@ -191,7 +191,7 @@ Cylc-8.0a2 is a preview release with:
 It can run existing Cylc-7 workflows. However:
 - It is not production-ready yet. In production, please use:
   - the latest cylc-7.9 release - with Python 2.7
-  - the lastest cylc-7.8 release - with Python 2.6
+  - the latest cylc-7.8 release - with Python 2.6
 - Do not use it where security is a concern
   - we are still working on Cylc 8 and have not yet fully
     tested or documented its security characteristics

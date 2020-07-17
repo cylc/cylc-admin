@@ -29,7 +29,7 @@ Decision: one-time token per command:
 - then client deletes it when done.
 
 ## UIS - WFS
-- need encrypytion
+- need encryption
 - initial connection is authenticated just like clients (passphrase at the
   moment
 - one-time token will be longer-lived, but that doesn't matter if comms are

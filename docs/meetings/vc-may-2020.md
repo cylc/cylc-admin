@@ -16,7 +16,7 @@ Cylc-8.0a2
 - Conda Forge ready to go
 - BK's release HowTo (for devs) merged to cylc-admin
 - BK's user instructions merged to cylc-admin
-  - To be posted to the web site and Discource 
+  - To be posted to the web site and Discourse 
 - (Make the release before Platforms changes go in - any day now)
 
 Notes:
@@ -28,7 +28,7 @@ Notes:
 HO
 - Absolute dependence solved and implemented
 - Proposal document finished and comprehensive
-- All unit and funcitonal tests passing on Travis
+- All unit and functional tests passing on Travis
 - PR branch ready for review
    - HO: what remaining details need polishing?
    - Reviewers (OS? DS? others?)

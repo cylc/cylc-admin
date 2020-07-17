@@ -24,7 +24,7 @@ workflow.
 
 **ACTION: Martin to put WIP code on GitHub and make it available to others** - DONE
 
-Ascyncio in WS: not done yet, but not on the critical path (can be done later).
+Asyncio in WS: not done yet, but not on the critical path (can be done later).
 Oliver has concerns about what it means to put the ZMQ server in the same event
 loop.
 
@@ -44,7 +44,7 @@ New name for server program and repository: "cylc-flow", `cylc-flow.rc` (Sadie)
 with pytest.**
 
 Workflow definition: We decided not to consider supporting YAML any time soon.
-We will have to support parsec/suite.rc for the forseeable future, and the
+We will have to support parsec/suite.rc for the foreseeable future, and the
 future Python API will likely make YAML + templating unnecessary. 
 
 **Next Meeting?** - UK team have limited availability throughout April, and Hilary

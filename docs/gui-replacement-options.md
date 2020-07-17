@@ -49,7 +49,7 @@ not work for an in-browser web GUI.
 - __Electron native desktop web apps__
   - chromium browser display engine with node.js wrapper
   - __pros__
-    - architecturally, a straightfoward replacement for current GUIs
+    - architecturally, a straightforward replacement for current GUIs
     - the node.js wrapper could still read the filesystem and scan ports
     - is "web technology"
   - __cons__

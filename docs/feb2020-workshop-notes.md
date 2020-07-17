@@ -103,7 +103,7 @@ Data Provision
 - what data is kept in each data store?
   - longer term the scheduler data store should become *the* scheduler state,
     so we should keep the full n=1 window, for all available data, there
-  - currently the UIS mirrors the full scheculer data store, but each
+  - currently the UIS mirrors the full scheduler data store, but each
     subscription topic is incrementally updated as content changes
   - OS: the plan was to have the UIS data store only populated according to
     the UI subscriptions.  We can still look at this as next steps, but:
@@ -146,7 +146,7 @@ Data Provision
 
 - User Preferences:
   - TODO: can the Hub DB or our own Hub Service + DB store user preferences?  
-  - authentiated users don't necessarily have an account on the back end, so we
+  - authenticated users don't necessarily have an account on the back end, so we
     should store prefs at the Hub (slightly more general than browser cookies).
   - Prefs export/input functionality for easy switch to other hubs?
   - named profiles might be needed, to associate different prefs with different
@@ -176,7 +176,7 @@ Spawn-on-Demand (HO)
 - `cylc monitor` needs to go via UIS and direct to WFS (Workflow Scheduler).
   Direct will see on n=0 (active tasks)
 - Need an "n-max" setting that will populate entire cycle points in the UI
-- Can treat succeded and failed states equally (in SoD, remove them
+- Can treat succeeded and failed states equally (in SoD, remove them
   immediately) - but we can choose (optionally?) to keep them until dismissed,
   at least until the UI has better ways to alert users to failed tasks
   - a list of failed tasks? Have to be able to retrigger from the alerting list
@@ -200,7 +200,7 @@ Spawn-on-Demand (HO)
 - (OS) "task pool" no longer a good term? (HO not so sure... now it's just a pool of active tasks.
 - (OS) TaskProxy should be renamed Job? (the Proxy class has been gutted, no
   longer doing retry logic etc.)
-- Can we unifiy outputs and prerequisites/triggers?
+- Can we unify outputs and prerequisites/triggers?
 - Reflow could be super-useful (just trigger the top task of the tree to re-run)
   - HO: need a "flow ID" passed along via the on-demand spawning mechanism
   - hard to support partial triggering by tasks from the original flow (have to
@@ -293,7 +293,7 @@ Config Item changes:
 - need ability to configure site global conf location by `CYLC_SITE_CONF_PATH` for
   cylc installations with no `/etc` access.  Default to `/etc` though.
 
-- agreed on the conf dir hierachy in the proposal (need version sub-dirs)
+- agreed on the conf dir hierarchy in the proposal (need version sub-dirs)
 
 - agreed on the "alternative" scheduler platform config proposal
 
@@ -336,7 +336,7 @@ Config Item changes:
 - `[editors]` - discourage use and make it default to `$EDITOR` and `$GEDITOR`
   (and to `vi` if those vars aren't set).
 
-- agreed to use None as config default instead of emtpy string, to allow us to
+- agreed to use None as config default instead of empty string, to allow us to
   distinguish "set to nothing" from "not set"
 
 - `disable interactive command prompts` - remove command prompts
@@ -385,8 +385,8 @@ Back-end Authentication (MH)
    - do it via ssh tunnel with ZMQ
 - (TW): need CLI-UIS for remote platforms
    - can we use a Hub API to generate tokens and use those to authenticate?
-- (JR): all messsages might need timestamps
-  - (I think we decided agains this? ... because CurveZMQ protects against replay attacks?)
+- (JR): all messages might need timestamps
+  - (I think we decided against this? ... because CurveZMQ protects against replay attacks?)
 
 Authorization
 - need site and user config
@@ -408,7 +408,7 @@ UIS Sub-services
 - (MH) Back-end Authentication 
 - Authorization method and config
 - BOM C7 pen test report relevance to C8?
-- consider and doucment BOM threat modeling points
+- consider and document BOM threat modeling points
 
 ## Thursday
 
@@ -483,7 +483,7 @@ Versioning, packaging, and deployment
 - DM: main users of the conda metapackage will be individuals not sites
 - UI dist size is not too bad now
 - Deployment by Docker?
-  - should be useable just like a conda Cylc installation
+  - should be usable just like a conda Cylc installation
   - OK for the central wrapper
   - only local background jobs different (they'll run inside the container)
 - `cylc hub` should be an entry point plugin supplied by the UIS package
@@ -506,7 +506,7 @@ Alpha-2 release
 UIS back compat?
 - OK unless we increment the API version
 - forward compat not possible
-- spawn lastest UIS version by default
+- spawn latest UIS version by default
 - could force auto-shutdown-and-restart (on timeout?) ... maybe not popular
 
 UI datastore

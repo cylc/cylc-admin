@@ -128,13 +128,13 @@ Roadmap](cylc-8-roadmap) - and the other references above - for more detail.
   - Software testing, packaging and distribution
   - Scheduler prediction tool
   - Cylc packaging via `setup.py`
-  - (Begin afernoon topics, if possible)
+  - (Begin afternoon topics, if possible)
 
 - __Afternoon__
   - (BoM Cylc user feedback and discussion - if needed)
   - Deficiencies, feature requests, problem solving
   - A presentation or two, if called for
-    - e.g. the Brussels Worklfow Workshop Cylc and Rose keynote presentation?
+    - e.g. the Brussels Workflow Workshop Cylc and Rose keynote presentation?
   - Demo: Cylc with Docker (Bruno)
 
 ### Thursday

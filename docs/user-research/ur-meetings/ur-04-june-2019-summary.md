@@ -62,7 +62,7 @@ After discussion on how to best record UR findings, agree to:
    * MS asked whether there could be sensitive information to take care with
      sharing given that the information will be openly-viewable on GitHub. From
      that agreed to use initials for individual user names, & remember or record
-     in personal notes who they refer to for potential clashes in intials.
+     in personal notes who they refer to for potential clashes in initials.
 10) Agreed there should be two main UR records in the GitHub repo:
     * document(s) summarising each user interaction/meeting, &;
     * a document containing the overall "pool" of data and insights. 

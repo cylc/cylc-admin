@@ -41,8 +41,8 @@ __Packaging and ALPHA-1 RELEASE - 10 min__
   - version naming?
     - need an uber-project name and version number?
 - what do we want to get into the release
-  - a funtioning tree view with job data available - yes?
-  - incremental UIS udpate - no?
+  - a functioning tree view with job data available - yes?
+  - incremental UIS update - no?
   - websocket and subscriptions - no?
 
 

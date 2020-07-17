@@ -135,7 +135,7 @@ workshop. Now they just need to be implemented or completed.
   - If spawn-on-demand: n-distance window, with n=0 as the scheduler pool
   - (plus option to show whole cycles in SoS or SoD)
 - `cylc review` (Rose Bush) functionality:
-  - contingency: make the old Python 2.7 system compatibile with Cylc 8
+  - contingency: make the old Python 2.7 system compatible with Cylc 8
   - preferably: integrate with the new UI (but must be as convenient to use
       as the old system for historical data)
 - Review User Guide and tutorials for Cylc 8 

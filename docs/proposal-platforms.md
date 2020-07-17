@@ -433,9 +433,9 @@ not attempt to address in the initial implementation. These include:
   implemented for selecting the workflow server host.
   * Since we are not running resource intensive commands on these hosts it's not
     clear whether this functionality is really needed?
-  * Note that we can't simply use the existing funtionality for the random host
+  * Note that we can't simply use the existing functionality for the random host
     selection since we need to try each host in turn until the job submission
-    suceeeds (rather than choose a single host to attempt the job submission).
+    succeeds (rather than choose a single host to attempt the job submission).
 
 * If a platform alias has a list of platforms, support other methods for choosing
   which platform to use (rather than just random).

@@ -156,7 +156,7 @@ https://steelkiwi.com/blog/top-10-python-web-frameworks-to-learn/):
     1. Incremental updates – can we send only what’s changed?
 1. Lists of nodes and edges (or just edges, with full nodes at each end?)?
     1. (probably can't use a nested tree structure based on runtime
-       inheritance - it would be useful for collapsible familiy views,
+       inheritance - it would be useful for collapsible family views,
        but the dependency graph can't be encoded in this form).  
 1. display "ghost nodes" in all views - i.e. hide the "task pool" from users
 
@@ -195,7 +195,7 @@ https://www.howtographql.com/react-relay/8-pagination/).
 
 ### Transition Period
 
-1. Users must continue to use the old GUI while we developg the new one 
+1. Users must continue to use the old GUI while we developing the new one 
   1. Evolve the old GUI along with the new suite API?
   1. Or support the old API as-is concurrently with the new?
   1. Or develop the cylc-8 separately on a new branch?

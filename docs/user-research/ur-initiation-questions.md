@@ -97,7 +97,7 @@ Shorthands used throughout:
   [bias by inclination & availability](https://measuringu.com/random-sample/)).
 * Users cannot join in with something they are not aware of, so *advertising*
   for UR participation is crucial.
-* We cannot, like specialised UX or private firms etc, offer renumeration
+* We cannot, like specialised UX or private firms etc, offer remuneration
   for feedback, but that is not to say we cannot be creative to offer
   *non-monetary* incentives.
 
@@ -270,7 +270,7 @@ Shorthands used throughout:
   taken from their day-to-day work on their laptop, as shared on the screens,
   & describing some brief background & how they use C&R to go about solving it.
 * As well as the above, invite & encourage *random pieces of user feedback*,
-  via the usual channels but also by setting up & advertisting a form for that
+  via the usual channels but also by setting up & advertising a form for that
   purpose only. Users may think of something important to convey during their
   day-to-day work, & this would allow them to note it down easily at the
   time, where it otherwise may be forgotten.
@@ -284,13 +284,13 @@ Shorthands used throughout:
   including information that could be very useful.
 * However, the context in which it was said is really important. For example,
   a user might have conveyed a more negative opinion than they really hold
-  at a stressful instance (a deadline or when encourntering a bug) or have
+  at a stressful instance (a deadline or when encountering a bug) or have
   made a comment about an aspect of C &/ R that has since been
   modified so that it is no longer applicable.
 
 #### My proposals:
 
-* Consider signifcant past feedback only where it is evidenced visibly,
+* Consider significant past feedback only where it is evidenced visibly,
   (typically in writing) & not just recalled from someone's memory, & only
   where there is enough background evidenced to provide context to record.
 * To uncover & expose useful feedback conveyed in the past in this way,

@@ -61,7 +61,7 @@ Entity-in-the-middle attacks
 
   - no anon access in Cylc 8 (must authenticate)
   - Hub is ignorant of suite state
-  - traffice through hub is HTTPS
+  - traffic through hub is HTTPS
 
 > As an attacker I want to execute my own suite/arbitrary code on HPC
 

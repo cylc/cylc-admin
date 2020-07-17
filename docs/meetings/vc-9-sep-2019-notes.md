@@ -19,7 +19,7 @@ __Packaging and ALPHA-1 RELEASE__
 - "full system" alpha-1 release by end of month, needed for Met Office team
   key deliverable
 - Need:
-  - a funtioning tree view with job data available 
+  - a functioning tree view with job data available 
 - Omit from alpha-1?:
   - n-distance window
   - incremental UIS update from WFS
@@ -56,7 +56,7 @@ __cylc-flow.rc__
 - TP: coming along well but not hooked up/functional yet
 
 __Task status naming__
-- HO: do not group "queued" and "ready" into "submitting" as "queueud" is
+- HO: do not group "queued" and "ready" into "submitting" as "queued" is
   important to users (they configure the queues)
 - also: "queued" never fails, but "ready" can in many ways
 - change name "ready" to "preparing"

@@ -87,7 +87,7 @@ it is commonly used in scientific modeling and HPC contexts, See below for detai
 [Similarity with Jupyter Hub](#similarity-with-jupyterhub)).
 
 We hope to use JupyterHub "out of the box" for the Hub and Proxy components of
-the new archtitecture. Our back-end components are very different from Jupyter
+the new architecture. Our back-end components are very different from Jupyter
 Notebook, but some of the technologies involved remain relevant.
 
 
@@ -110,7 +110,7 @@ Detail:
   - A single point of access for users.
   - The only process that listens on a public interface.
   - Implemented with
-    [jupyterhub/configuable-http-proxy](https://github.com/jupyterhub/configurable-http-proxy)
+    [jupyterhub/configurable-http-proxy](https://github.com/jupyterhub/configurable-http-proxy)
     - ([Node.js](https://nodejs.org/); wraps
     [node-http-proxy](https://github.com/nodejitsu/node-http-proxy)).
 - Hub Authenticator: calls out to host or site identity management, with plugins for:

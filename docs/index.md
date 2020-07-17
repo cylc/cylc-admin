@@ -81,7 +81,7 @@ Project meetings:
 - March 2020 
   - [Agenda and Notes](meetings/vc-march-2020-agenda.md)
 
-- Februrary 2020 Workshop (see above)
+- February 2020 Workshop (see above)
 
 - 17 December 2019
   - [OS NIWA initial meeting](meetings/dm-os-ho-17Dec2019.md)

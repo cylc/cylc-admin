@@ -102,7 +102,7 @@ Much the same as the previous but for the database.
 
 The database stores the host and batch_system, we would need to upgrade
 This could be done towards the end, you might need to put off upgrading
-the DB but instead upgrade the information comming out of the database.
+the DB but instead upgrade the information coming out of the database.
 
 This function will need unit testing but will not be wired into cylc as part of
 this ticket.

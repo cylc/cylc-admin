@@ -55,7 +55,7 @@ It is likely that most users will continue to have these set by site admins.
 
 #### 2.2 `[suite run platforms]`
 This is the dictionary key formerly known as ``[suite servers]``. Changed only
-for the purpose of keeping the name "platforms" conistent. This is expected to
+for the purpose of keeping the name "platforms" consistent. This is expected to
 be set only by system administrators. It should include the former top-level
 section `[[suite host self-identification]]`.
 
@@ -132,7 +132,7 @@ The `job platform` to use will be set for a task in the top level of the
 
 #### 3.2 Legacy `[runtime][TASK][job]` & `[runtime][TASK][remote]` behaviour
 
-All the items in `[runtime][TASK][remote]` will be deprecated in favour of equivelent
+All the items in `[runtime][TASK][remote]` will be deprecated in favour of equivalent
 items in a `job platform`. The following items from `[runtime][TASK][job]` will also
 be deprecated in favour of items in `[job platforms]`:
 - `batch system`
@@ -142,7 +142,7 @@ be deprecated in favour of items in `[job platforms]`:
 
 
 `[runtime][TASK][remote]hosts` will be deprecated but we need to ensure that 
-we can handle deprecated useage in a sophisticated way. For back compatibility 
+we can handle deprecated usage in a sophisticated way. For back compatibility 
 if host `host` is a login node defined in `[job platforms]` then that job 
 will use that platform. If a user wishes to over-ride this they can over-ride the
 `[job-platforms][[PLATFORM]]` section.
@@ -155,7 +155,7 @@ strategies:
 3. Raise an error and stop everything dead.
 
 ### 4. Locking down global settings
-There should be a mechanism by which system administators can lock global
+There should be a mechanism by which system administrators can lock global
 settings for their sites. This should probably be a `lock=True/False` switches
 within those settings that we wish to make lockable. If unset these will
 default to `False`. If set to `True` a user who tries to over-ride that setting
