@@ -286,32 +286,44 @@ suite-run functionality:
        * Hopefully it should be fine to install the same files to all install
          targets. If there are cases where this is an issue we can recommend the
          use of install tasks as a workaround.
+       * `rose suite-run` currently installs everything other than a set list of
+         exclusions. However, it has been known for suites to write to top level
+         directories (possibly not deliberate) so this is not a good default
+         behaviour (especially with the `--delete` rsync option).
        * Proposal:
          * Install the same items to all install targets.
          * Allow the installation items to be configured at the suite level via
-           ones of the following ways:
-           * A new setting `[scheduler]install` with a default value of
-             `app bin etc lib` (the items in `.service` are always installed).
-             Note that if we want to be able to support copying top level files
-             as well as directories then we would need to do something like
-             `app/ bin/ etc/ lib/ extra-dir-to-copy/ extra-file-to-copy`.
-           * The alternative is to support the use of an extra file
-             `.rsync-filter` where you can specify rsync filter rules. All we
-             would need to do in Cylc is use the rsync option
-             `--filter=': .rsync-filter'`. To configure an additional directory
+           either of the following methods:
+           * A new setting `[scheduler]install` (with a default value of None)
+             where you can specify extra top level directories and files to be
+             installed, e.g. `extra-dir-to-copy/ extra-file-to-copy`
+             (directories must have a trailing slash). Patterns are allowed (as
+             defined by rsync), e.g `*/ *` would mimic the current
+             `rose suite-run` behaviour.
+           * Create an extra file in the suite directory named
+             `.rsync-filter` where you can specify rsync filter rules. For
+             example, to configure an additional directory
              "data" to be copied you would simply create the file
              `.rsync-filter` in the top level directory and add the line
              `+ /data/***`. We can document a simple example but refer users who
-             want to do anything complicated to the rsync man page. Advantages:
+             want to do anything complicated to the
+             [rsync man page](https://linux.die.net/man/1/rsync). Advantages:
              a) gives users access to the full power of rsync filters;
              b) this file can be added to cylc 7 suites without breaking them.
-     * The alternative is to use exclude rather than include and make sure we
-       exclude any file / directories which are generated at run time or target
-       specific (`log/ share/ work/` + various files / directories in
-       `.service/`).
-       * There are some suites around which write to top level directories (not
-         sure if this is deliberate) - exclude would be very bad in these cases.
-         Therefore, include is the safer option.
+         * The rsync filter options will be applied in the following order (note
+           that the first matching pattern is acted on):
+           * Include files required by cylc:
+             `--include='/.service/' --include='/.service/server.key'`
+           * Exclude directories which should never be copied:
+             `--exclude='.service/***' --exclude='log' --exclude='share' --exclude='work'`
+           * Apply any rules define in an `.rsync-filter` file:
+             `--filter=': .rsync-filter'`
+           * Add the standard set of directories:
+             `--include='/app/***' --include='/bin/***' --include='/etc/***' --include='/lib/***'`
+           * Add any extra items defined in the `[scheduler]install` suite
+             setting. Note that any items ending in `/` will have `***` added to
+             the pattern (which matches everything in the directory).
+           * Exclude everything else: `--exclude='*'`
 
 2. Support moving some directories to different locations with symlinks to the
    original location.
