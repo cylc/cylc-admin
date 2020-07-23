@@ -114,6 +114,8 @@ A may have multiple dependants, but no dependency to other modules).
 For example, Cylc UI Server depends on Cylc Flow. So unless you are
 releasing only Cylc UI Server, you should release Cylc Flow first.
 
+### Prepare the Conda Releases
+
 On GitHub, navigate to the project repository on GitHub, e.g.
 
 - https://github.com/conda-forge/metomi-isodatetime-feedstock
@@ -162,6 +164,8 @@ to show in Conda Forge. For example, if Azure or GitHub infrastructure
 have issues (as I experienced during the first releases) it may take days.
 So keep that in mind before announcing the Conda packages.
 
+### Testing the Packages
+
 To test packages locally, first you should make sure that Conda is
 configured to avoid automatically upload the package. Open your `~/.condarc`
 and check that you have something similar to:
@@ -202,13 +206,61 @@ such as `which $PACKAGE_NAME`, or `$PACKAGE_NAME --version`, etc.
 Of if you are testing the metapackage, try running the complete system
 with a workflow and the UI or tui, and check if there is nothing wrong.
 
+### Troubleshooting Conda Forge issues
+
+#### Issues building or installing the package locally with `conda-build` and `conda install
+
 If you found problems while testing locally, try troubleshooting locally,
 and either mark the pull request as draft, and close it. Merging the pull
 request will create a release.
 
+#### Marking a release as invalid or broken
+
 To undo a release, you will have to liaise with the maintainers via Gitter
 or Github. Or, alternatively, bump up the build number +1, and release it
 again.
+
+#### `conda-install` is picking the wrong version or build of a package
+
+If `conda install cylc` returns the incorrect build number, it could be
+an issue that is very difficult to debug (a posteriori).
+
+If you are sure that you have your new version or build available from
+Anaconda.org, and that `conda install --dry-run $package` should
+work, then you could have hit a bug in either `conda` client or in
+Conda Forge repository data.
+
+You can try the following:
+
+- Debug the issue increasing the logging of the `conda install` command
+- Check with the Conda devs in their [Gitter channel](https://gitter.im/conda/conda)
+- Publish new builds of your artefacts (just increase build number in a PR)
+- Finally, if none of the previous worked, you can set the build string in
+the Cylc metapackage
+
+Conda documentation has details about their [package math specification](https://docs.conda.io/projects/conda-build/en/latest/resources/package-spec.html#package-match-specifications).
+Basically, there are three parts, where the last one is optional.
+
+- A match specification is a space-separated string of 1, 2, or 3 parts:
+- The first part is always the exact name of the package.
+- The second part refers to the version and may contain special characters (BUT... further down)
+    * When there are 3 parts, the second part must be the exact version.
+- The third part is always the exact build string.
+
+So you will have to specify the exact version, and use a glob expression
+for the build number. For example, from our alpha2 release:
+
+```yarml
+run:
+  - python
+  - cylc-flow 8.0a2 *_3
+  - cylc-uiserver 0.2 *_2
+```
+
+In the example above, we are specifying the packages and versions we want.
+Plus, we also give it a pattern to the build string, so conda will match
+`cylc-flow-8.0a2-py37_2`, or ``cylc-flow-8.0a2-py38_2`, or
+`cylc-flow-8.0a2-py37h2387c_2` (all valid build strings).
 
 ## Announce on Riot and Discourse?
 
