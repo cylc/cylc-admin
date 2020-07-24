@@ -223,7 +223,19 @@ again.
 #### `conda-install` is picking the wrong version or build of a package
 
 If `conda install cylc` returns the incorrect build number, it could be
-an issue that is very difficult to debug (a posteriori).
+an issue that is very difficult to debug (a posteriori). In fact it may not even be a bug:
+
+Question to conda Gitter channel: (@hjoliver Jul 21 17:23):
+> I have a conda metapackage just published to conda-forge, which (on conda install) does not install the latest build numbers of several of our component packages. The conda docs cite bug fixes as a primary use case for incrementing build numbers, in which case I would have thought the environment solver should never select older builds? If I install the component packages directly, I do get the latest builds, but not via the metapackage. Anyone know what's going on here?
+
+Replies:
+> @wolfv:  
+@hjoliver this article describes how the conda solver works: https://www.anaconda.com/blog/understanding-and-improving-condas-performance. It specifically says that build numbers are only maximized for explicit specs
+
+> @jjhelmus: 
+@hjoliver changes to the build number can also occur when a package is built against a different version of a library which is incompatible with earlier version. For example, one build of python 3.7.7 might be compiled against libffi 3.2 while the next build number against libffi 3.3. Depending on what other packages are installed in the environment it may not be possible to install the package with the largest built number. In the example if cffi is only available as a package built against libffi 3.2 then the older build of python 3.7.7 would be required.
+
+Interpretation: build number is treated much like version number, if not pinned down exactly conda can choose an older build if that works best for solving all the dependencies in the system. Conda would presumably(?) choose the newest build if it does not affect dependencies; we may just need to check what happens if dependencies get changed by a new build. 
 
 If you are sure that you have your new version or build available from
 Anaconda.org, and that `conda install --dry-run $package` should
