@@ -274,6 +274,6 @@ Plus, we also give it a pattern to the build string, so conda will match
 `cylc-flow-8.0a2-py37_2`, or ``cylc-flow-8.0a2-py38_2`, or
 `cylc-flow-8.0a2-py37h2387c_2` (all valid build strings).
 
-## Announce on Riot and Discourse?
+## Announce on Element and Discourse?
 
 Bask in the glory of having created a release.
