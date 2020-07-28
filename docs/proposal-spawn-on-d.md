@@ -216,8 +216,8 @@ spawn an infinite number of children (`bar.1,2,3,...`), which obviously is not
 feasible.
 
 (Note without the first line above `start` is not defined on any sequence, so
-with SoS the scheduler will stall with `foo` unsatisfied, but with SoD it will
-shut down immediately with nothing to do because and `foo` never gets spawned.)
+with SoS the scheduler will stall with `bar` unsatisfied, but with SoD it will
+shut down immediately with nothing to do because and `bar` never gets spawned.)
 
 Worse, `bar` could also have other non-absolute triggers, and it could be
 those that spawn initial instances of `bar` before `start` is finished:
