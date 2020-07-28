@@ -217,7 +217,7 @@ feasible.
 
 (Note without the first line above `start` is not defined on any sequence, so
 with SoS the scheduler will stall with `bar` unsatisfied, but with SoD it will
-shut down immediately with nothing to do because and `bar` never gets spawned.)
+shut down immediately with nothing to do because `bar` never gets spawned.)
 
 Worse, `bar` could also have other non-absolute triggers, and it could be
 those that spawn initial instances of `bar` before `start` is finished:
@@ -252,13 +252,15 @@ tasks with no non-absolute triggers to spawn them on demand).
 #### Retriggering
 
 Retriggering a finished absolute parent (with `--reflow`) will cause it to
-respawn its first child, then subsequent children as normal - that's what the
-graph says. But we may want to provide an option to change the first child
-spawned to a current cycle rather than going back to the start (use case:
+respawn its first child, and then spawn subsequent children as normal (spawn
+next instance on release from the runahead pool as described above)  - that's
+what the graph says. But we may want to provide an option to change the first
+child spawned to a current cycle rather than going back to the start (use case:
 retrigger a start-up task that rebuilds a model or whatever, but don't re-run
 old cycles). Alternatively, simply retrigger the absolute parent without
-reflow, then retrigger with reflow the first child that you want to continue
-from.
+reflow (this will run only the parent), then retrigger with reflow the first
+child that you want to continue from (this will trigger the targeted child,
+and that will spawn the next instance on release from the runahead pool, etc.).
 
 ### Failed task handling
 
