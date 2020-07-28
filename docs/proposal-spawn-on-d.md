@@ -232,7 +232,7 @@ before `start.2` is done. This suggests we might need to do repeated checking
 of unsatisfied absolute triggers until they become satisfied. However, it turns
 out that's not necessary...
 
-#### Implementation:
+#### Absolute trigger implementation:
 
 1. Whenever an absolute output (e.g. `start.2:succeed` above) is completed the
 scheduler should:
@@ -316,7 +316,7 @@ to xtrigger outputs).
 We will keep suicide triggers for backward compatibility, and in case they are
 still useful for rare edge cases like this.
 
-#### Implementation
+#### Suicide trigger implementation
 
 Suicide triggers are just like normal triggers except for what happens once
 they are satisfied (i.e. the task gets removed instead of submitting). In
@@ -725,8 +725,8 @@ graphically the consequences of their intended reflow).
 Follow-up changes needed in `cylc/cylc-flow`:
 
 - Consider the clarity and usefulness of all SoD log messages. Messages about
-[not spawning suicide-triggered tasks](#back-compat-implementation) have been
-noted as confusing. Move most to DEBUG level?
+  [not spawning suicide-triggered tasks](#suicide-trigger-implementation) have
+  been noted as confusing. Move most to DEBUG level?
 
 - Don't auto-spawn all tasks with an absolute trigger, just those that *only*
   have absolute triggers (auto-spawning them all isn't really a problem, but it
