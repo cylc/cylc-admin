@@ -29,7 +29,7 @@ skipped if the correct remote settings have not been included in
 
 You may find the following idiom useful in a `flow-test.rc` file:
 
-``` {.sourceCode .}
+```
 #!jinja2
 # You only have to change 1 line:
 {% set MYTESTBRANCH = False %}
@@ -130,7 +130,7 @@ In many cases you may get a test in the form
 may be instructive to add a `--debug` switch and examine the stderr
 thus:
 
-``` {.sourceCode .bash}
+```bash
 run_ok ${TEST_NAME} cylc validate --debug "${SUITE_NAME}"
 cat ${TEST_NAME}.stderr >&2
 cat ${TEST_NAME}.stdout >&2
@@ -199,7 +199,7 @@ Further Reading
 
 If you see code that looks like this:
 
-``` {.sourceCode .bash}
+```bash
 cat >'hello.py' <<'__HELLO_PY__'
 print("Hello World")
 __HELLO_PY__
