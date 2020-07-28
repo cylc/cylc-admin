@@ -732,6 +732,9 @@ Follow-up changes needed in `cylc/cylc-flow`:
   have absolute triggers (auto-spawning them all isn't really a problem, but it
   is less "on demand" than it could be).
 
+- Change to event-driven triggering (easy: see TODO at the end of
+  task_pool:spawn_on_ouput)
+
 - Consider re-instating (most of?) the pre-SoD `cylc insert` functional tests
   as `cylc trigger` tests.
 
