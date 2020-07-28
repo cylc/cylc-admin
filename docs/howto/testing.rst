@@ -6,7 +6,6 @@ Running and debugging Cylc Tests
 How to run tests
 ================
 
-
 All tests are in the folder ``cylc-flow/tests``. Instructions
 here, unless stated otherwise assume that you are working from
 your cylc-flow repo dir.
@@ -27,6 +26,36 @@ Functional Tests
 (this replaces `cylc test-battery`)
 
 ``etc/bin/run-functional-tests``
+
+``flow-test.rc``
+================
+
+Many tests rely on an alternative user config file called ``flow-tests.rc``
+usually found at ``~/.cylc/flow/<cylc-version>/flow-tests.rc``.
+``flow-tests.rc`` is used instead of ``flow.rc`` for tests.
+
+Many tests (especially those which rely on non-local computers which vary
+from developer to developer) use the ``skip_all`` function from ``test_header``
+and will return a message saying all tests have been skipped if the correct
+remote settings have not been included in ``flow-tests.rc``.
+
+You may find the following idiom useful in a ``flow-test.rc`` file:
+
+.. code::
+
+   #!jinja2
+   # You only have to change 1 line:
+   {% set MYTESTBRANCH = False %}
+
+   {% if MYTESTBRANCH == True %}
+      [settings]
+         [[for]]
+            your = test branch
+   {% elif %}
+      [settings]
+         [[for]]
+            master = branch
+   {% endif %}
 
 
 =========================================================
@@ -150,6 +179,12 @@ These are:
    # or
    import pdb; pdb.set_trace()
    # at Python < 3.7
+
+Alternatively you may find that you can run the suite from your test.
+Functional tests of form ``path/to/test.t`` often come with a suite in the
+ form ``path/to/test/suite.rc``. You will need to remember to manually
+ provide any environment variables the workflow needs, and may need to alter 
+ your ``flow.rc`` to match ``flow-tests.rc``.
 
 
 Traps for the unwary
