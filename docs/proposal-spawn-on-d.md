@@ -205,22 +205,51 @@ trigger events too, but for now a waiting task with an xtrigger is fine).
 
 ### Absolute dependence
 
-Here `foo.1,2,3,...` should trigger off of `start.2`:
+At first glance this is not a great fit for the spawn-on-demand model: 
 ```
 ...
       R1/2 = "start"
-      P1 = "start[2] => foo"
+      P1 = "start[2] => bar"
 ```
+Above, with no final cycle point a single event (`start.2 succeeded`) should
+spawn an infinite number of children (`bar.1,2,3,...`), which obviously is not
+feasible.
+
 (Note without the first line above `start` is not defined on any sequence, so
 with SoS the scheduler will stall with `foo` unsatisfied, but with SoD it will
 shut down immediately with nothing to do because and `foo` never gets spawned.)
 
-So: when an absolute parent finishes *spawn its children at the first cycle
-point of the sequence.* Above, `start.2` should spawn `foo.1`, not `foo.2`.
-Then whenever an absolute child is released from the runahead pool, spawn
-its next instance (to the runahead pool) and mark the absolute dependence as
-satisfied. This works because even the first child does not get spawned
-until the associated dependence is already satisfied. 
+Worse, `bar` could also have other non-absolute triggers, and it could be
+those that spawn initial instances of `bar` before `start` is finished:
+```
+...
+      R1/2 = "start"
+      P1 = "start[2] & foo => bar"
+```
+Above, if `foo` runs 3x (say) faster than `start` then roughly speaking the
+first three instances of `foo` will spawn the first three instances of `bar`
+before `start.2` is done. This suggests we might need to do repeated checking
+of unsatisfied absolute triggers until they become satisfied. However, it turns
+out that's not necessary...
+
+#### Implementation:
+
+1. Whenever an absolute output (e.g. `start.2:succeed` above) is completed the
+scheduler should:
+   - Remember it forever, via a list held by the task pool module and an
+    associated DB table (to load the data again on restart).
+   - Spawn (if not already spawned) the first downstream child (`bar.1` above)
+    **and** update the prerequisites of potentially multiple subsequent
+    children already in the pool due to spawning by others (e.g. `foo` above).
+2. Whenever a task with an absolute trigger (`bar` above) is spawned, check to
+see if the trigger is already satisfied. If it is, satisfy it. If it isn't then
+it will be satisfied later when the absolute parent finishes and updates all
+child instances present in the pool as described just above. 
+3. Whenever a task with an absolute trigger is released from the runahead
+pool spawn its next instance (strictly speaking this is only necessary for
+tasks with no non-absolute triggers to spawn them on demand).
+
+#### Retriggering
 
 Retriggering a finished absolute parent (with `--reflow`) will cause it to
 respawn its first child, then subsequent children as normal - that's what the
@@ -287,7 +316,7 @@ to xtrigger outputs).
 We will keep suicide triggers for backward compatibility, and in case they are
 still useful for rare edge cases like this.
 
-#### back-compat implementation
+#### Implementation
 
 Suicide triggers are just like normal triggers except for what happens once
 they are satisfied (i.e. the task gets removed instead of submitting). In
@@ -698,6 +727,10 @@ Follow-up changes needed in `cylc/cylc-flow`:
 - Consider the clarity and usefulness of all SoD log messages. Messages about
 [not spawning suicide-triggered tasks](#back-compat-implementation) have been
 noted as confusing. Move most to DEBUG level?
+
+- Don't auto-spawn all tasks with an absolute trigger, just those that *only*
+  have absolute triggers (auto-spawning them all isn't really a problem, but it
+  is less "on demand" than it could be).
 
 - Consider re-instating (most of?) the pre-SoD `cylc insert` functional tests
   as `cylc trigger` tests.
