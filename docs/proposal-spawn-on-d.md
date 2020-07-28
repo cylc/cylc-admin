@@ -287,6 +287,38 @@ to xtrigger outputs).
 We will keep suicide triggers for backward compatibility, and in case they are
 still useful for rare edge cases like this.
 
+#### back-compat implementation
+
+Suicide triggers are just like normal triggers except for what happens once
+they are satisfied (i.e. the task gets removed instead of submitting). In
+particular, the suicide-triggered task has to keep track of its own
+prerequisites so it knows when it can be removed.
+
+```
+foo & bar => baz 
+```
+Above, if `foo` (say) succeeds before `bar`, then `baz` will be
+spawned (if not already spawned elsewhere) by `foo:succeed` and its
+prerequisites updated, before later being updated again by `bar:succeed`, and
+then it can **run**.
+
+Simliarly for suicide triggers:
+```
+foo & bar => !baz 
+```
+Here, if `foo` (say) succeeds before `bar`, then `baz` will be spawned (if not
+already spawned elsewhere) by `foo:succeed` and its prerequisites updated,
+before later being updated again by `bar:succeed`, and then it can be
+**removed**.
+
+Normally in the case of suicide triggers `baz` will already have been spawned
+earlier, so both `foo` and `bar` will just update its prerequisites and log
+a message about not spawning it again in this flow, and it will be removed once
+both are done. If it was spawned earlier but removed as finished, then only the
+messages will be logged (in this case `baz` doesn't need to track its own
+prerequisites and remove itself once they are satisfied, because it has already
+been removed).
+
 ### Submit number
 
 Submit number should increment linearly with any re-submission, automatic retry
@@ -662,6 +694,10 @@ graphically the consequences of their intended reflow).
 ### TODO
 
 Follow-up changes needed in `cylc/cylc-flow`:
+
+- Consider the clarity and usefulness of all SoD log messages. Messages about
+[not spawning suicide-triggered tasks](#back-compat-implementation) have been
+noted as confusing. Move most to DEBUG level?
 
 - Consider re-instating (most of?) the pre-SoD `cylc insert` functional tests
   as `cylc trigger` tests.
