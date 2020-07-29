@@ -24,6 +24,7 @@ improve future releases.
   + [Usage](#usage)
 * [Current Limitations](#current-limitations)
 * [What's new](#whats-new-since-cylc-80a1)
+* [Task Job Access to Cylc 8](#task-job-access-to-cylc-8)
 
 ## Installation instructions
 
@@ -253,3 +254,34 @@ architecture](https://cylc.github.io/cylc-admin/cylc-8-architecture)
 of Cylc 8, as well as other changes related to porting old GUI
 features to the new Web UI, and many software dependency updates (for latest
 features but also for security).
+
+## Task Job Access to Cylc 8
+
+Cylc task jobs need access to the same Cylc version that their parent
+scheduler is running, e.g. for job status messaging. Users may even need
+to run multiple workflows at once on a system with multiple Cylc releases
+installed, and the task jobs of each need to call the correct Cylc.
+
+Cylc 7 handles this via a wrapper script installed as `cylc` in the user's
+executable search path (`$PATH`). The wrapper intercepts Cylc commands,
+including `cylc message` from task jobs, and uses the environment to
+determine the right Cylc in each case (the scheduler writes `$CYLC_VERSION`, for
+example, to task job scripts).
+
+Cylc 8 will use a similar wrapper (which has to deal with the additional
+complication of Python and conda virtual environments) but we have not yet
+documented this for users.
+
+*For the moment we suggest you do not use a `cylc` wrapper for Cylc 8 testing,
+and run only **local background jobs** because they inherit the scheduler's
+virtual environment and will therefore find the right Cylc directly
+without the help of a wrapper.* However, note the following warning.
+
+**WARNING: if your `.bashrc` (or similar) provides access to a Cylc 7 `cylc`
+wrapper by *prepending* its location to `$PATH`, that wrapper will override
+Cylc 8 virtual environments and your Cylc 8 jobs will therefore be unable to
+communicate status back to the scheduler. If so, disable the Cylc 7 wrapper
+before testing Cylc 8.**
+
+The next Cylc 8 release (alpha-3) will provide a backward-compatible wrapper to
+handle Cylc 7 and 8 together on the same system.
