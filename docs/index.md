@@ -5,6 +5,8 @@
 - [Getting Started](howto/cylc-ui)
 - [Cylc-8.0a2 Release Notes](release-notes/cylc-8-alpha2)
 - [Cylc 8 Conda and PYPI Release Instructions](howto/create-a-release)
+- [Inspecting a suite database](howto/inspect_suite_database.ipynb) (ipynb Python notebook format)
+- [Running Cylc tests](howto/testing.md)
 
 ## February 2020 Development Workshop (Wellington)
 - [Agenda](feb2020-workshop-agenda)
