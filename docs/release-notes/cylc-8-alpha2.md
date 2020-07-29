@@ -1,11 +1,11 @@
 # Cylc 8 alpha2
 
-Date: Q2/2020.
+Date: July 2020.
 
-The second “alpha” preview release of Cylc 8 is available for viewing and
-testing by interested users.
+The second “alpha” preview release of Cylc 8 is available for testing by
+interested users.
 
-**NB: This is not a production-ready release.**
+**NOTE this is not a production-ready release.**
 
 Feel free to reach us at [Discourse](https://cylc.discourse.group/) if you have
 questions, or create issues or pull requests via [GitHub](https://github.com/cylc/),
@@ -25,18 +25,18 @@ improve future releases.
 * [Current Limitations](#current-limitations)
 * [What's new](#whats-new-since-cylc-80a1)
 
-## Installation instruction
+## Installation instructions
 
 The minimum requirements for Cylc 8 are:
 
-- Python 3.7 (not tested on Python 3.8)
-- Linux (some developers experimented with MacOS and FreeBSD,
-but there is no support for those environments yet)
+- Python 3.7 or 3.8
+- Linux (some developers have experimented with MacOS and FreeBSD,
+but there is no official support for those environments yet)
 - A modern web browser if using the Cylc web UI
 
 The Cylc 8 complete system includes:
 
-- cylc-flow-8.0a2 - Python 3 Workflow Service and CLI
+- cylc-flow-8.0a2 - Python 3 Workflow Service, CLI, and terminal UI
 - cylc-uiserver-0.2 - Python 3 UI Server component of the Cylc 8 architecture
 - cylc-ui-0.2 - Vue.js web UI
 - JupyterHub 1.+ - authenticates users and launches their Cylc UI Servers
@@ -44,6 +44,8 @@ The Cylc 8 complete system includes:
 - *(and all software dependencies of the above)*
 
 ### Conda
+
+Use Conda to install the whole Cylc 8 system, including the web UI.
 
 ```bash
 # optional conda environment
@@ -54,14 +56,22 @@ conda activate cylc1
 conda install cylc
 ```
 
-You can review the Conda [cylc metapackage here](https://github.com/conda-forge/cylc-feedstock).
+You can review the Conda [cylc metapackage
+here](https://github.com/conda-forge/cylc-feedstock).
 It will install the required Conda dependencies for Cylc 8, such as Cylc Flow,
-Cylc UI Server, and Cylc UI. Taking care to pick the correct versions.
+Cylc UI Server, and Cylc UI.
 
 ### pip
 
+You can use `pip` to install just the Python parts of Cylc 8.
+
 - `pip install cylc-flow==8.0a2`
 - `pip install cylc-uiserver=0.2`
+
+Workflows can be executed using just the scheduler and CLI or terminal UI, but
+if you want to try to web UI and can't use `conda` (above), you can now install
+the web UI manually:
+
 - Download the 0.2 release of Cylc UI ad unzip in a directory accessible to
 Python (watch out for SELinux)
 - Configure your `jupyterhub_config.py` using this
@@ -90,8 +100,8 @@ jupyterhub \
     --Spawner.cmd="cylc-uiserver"
 ```
 
-Voilà 🎉. Go to http://localhost:8000, log in to the Hub with your
-local user credentials, and enjoy Cylc 8 alpha2!
+Voilà 🎉. Go to h[http://localhost:8000](http://localhost:8000), log in to the
+Hub with your local user credentials, and enjoy Cylc 8 alpha2!
 
 - Start a workflow with the CLI ((\*)a
 good example is shown at the end of this section)
@@ -112,7 +122,8 @@ running workflows.
 ![](./cylc-8-alpha2-assets/02.png)
 
 - In the new workflow view:
-  - add more views to the current UI using the “Add View” button (top right corner)
+  - add more views to the current UI using the “Add View” button (top right
+    corner)
 
 ![](./cylc-8-alpha2-assets/03.png)
 
@@ -125,21 +136,20 @@ running workflows.
 
 ![](./cylc-8-alpha2-assets/05.png)
 
-- in the graph view
-  - **the graph view is experimental, and may show performance degradation for large workflows**
-  - use the bottom left "panzoom" control to change the graph view
-  - click on the graph to move around
+- **NOTE the graph view is experimental and may not be performant for large
+  workflows**
 
 ![](./cylc-8-alpha2-assets/06.png)
 
-- in the mutations view
-  - **this is a proof-of-concept, intended to allow users to control
-  workflows from the Web UI, and will change in future releases**
+- **NOTE the "mutations" view is for control command functionality that is not
+  yet integrated with the main views.**
+  - this is a proof-of-concept, intended to allow users to control
+  workflows from the Web UI, and will change in future releases
   - choose a mutation using the first combo box item
   - fill the required fields (e.g. workflow name)
   - press submit and wait for the confirmation message (e.g. "succeeded", and if you
-  held the workflow, for instance, on the GScan left-side component the workflow icon
-  should now have a different icon)
+  held the workflow, for instance, on the GScan left-side component the
+  workflow icon should now have a different icon)
 
 ![](./cylc-8-alpha2-assets/07.png)
 
@@ -207,17 +217,14 @@ It can run existing Cylc-7 workflows. However:
 
 ## What's new since Cylc-8.0a1?
 
-It has been seven months since the
+A lot has changed since the
 [previous Cylc 8 alpha release](https://cylc.discourse.group/t/cylc-8-0a1-preview-release-via-conda/149).
-And a lot of work has been done so far. Our changelog contains the most
-significant improvements and bug fixes.
 
 - [https://github.com/cylc/cylc-flow/blob/master/CHANGES.md](https://github.com/cylc/cylc-flow/blob/master/CHANGES.md)
 - [https://github.com/cylc/cylc-uiserver/blob/master/CHANGES.md](https://github.com/cylc/cylc-uiserver/blob/master/CHANGES.md)
 - [https://github.com/cylc/cylc-ui/blob/master/CHANGES.md](https://github.com/cylc/cylc-ui/blob/master/CHANGES.md)
 
-The following list highlights some new features since the previous
-alpha 1 release.
+The following list highlights some of the major changes:
 
 - Cylc Flow
   * new terminal UI, `cylc tui my.suite`, a modern and improved version of
@@ -241,6 +248,8 @@ alpha 1 release.
   Cylc Flow. That means users can install Cylc 8 directly from Conda
   Forge with no extra steps required.
 
-We also had several issues fixed related to the [new architecture](https://cylc.github.io/cylc-admin/cylc-8-architecture)
-of Cylc 8, as well as other changes related to the port of the old GUI
-to the new Web UI, and dependency updates (for latest features but also security).
+We have also implemented several fixes related to the [new
+architecture](https://cylc.github.io/cylc-admin/cylc-8-architecture)
+of Cylc 8, as well as other changes related to porting old GUI
+features to the new Web UI, and many software dependency updates (for latest
+features but also for security).
