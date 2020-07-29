@@ -63,7 +63,10 @@ of task proxies with no graph computation at run time.
 
 - A dramatically smaller task pool; size independent of spread over cycle points
 - No dynamic dependency matching (parents updates child prerequisites directly)
+- No (or much less, at least) iteration over the task pool
 - An easily-understood graph-based "window on the workflow"
+- Users should not have to know about the "task pool" and the concepts of task
+  "insert" and "remove" anymore.
 - Task instances can run out of cycle point order
    - no stalling due to unspawned tasks downstream of a failure
 - No need for suicide triggers in alternate path branching
