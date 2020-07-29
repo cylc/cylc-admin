@@ -29,7 +29,10 @@ skipped if the correct remote settings have not been included in
 
 You may find the following idiom useful in a `flow-test.rc` file:
 
+<!-- note added raw tags to prevent Jinja2 being interpreted by Jekyll: -->
+
 ```
+{% raw %}
 #!jinja2
 # You only have to change 1 line:
 {% set MYTESTBRANCH = False %}
@@ -43,6 +46,7 @@ You may find the following idiom useful in a `flow-test.rc` file:
       [[for]]
          master = branch
 {% endif %}
+{% endraw %}
 ```
 
 
