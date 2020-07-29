@@ -392,3 +392,6 @@ in the future?
     - "Jupyter Notebook Kernel" -> "Cylc Workflow Service"
 
 
+## Interfaces And Protocols
+
+![interfaces-and-protocols](img/interfaces-and-protocols.png)
