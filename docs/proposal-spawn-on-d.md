@@ -205,31 +205,62 @@ trigger events too, but for now a waiting task with an xtrigger is fine).
 
 ### Absolute dependence
 
-Here `foo.1,2,3,...` should trigger off of `start.2`:
+At first glance this is not a great fit for the spawn-on-demand model: 
 ```
 ...
       R1/2 = "start"
-      P1 = "start[2] => foo"
+      P1 = "start[2] => bar"
 ```
-(Note without the first line above `start` is not defined on any sequence, so
-with SoS the scheduler will stall with `foo` unsatisfied, but with SoD it will
-shut down immediately with nothing to do because and `foo` never gets spawned.)
+Above, with no final cycle point a single event (`start.2 succeeded`) should
+spawn an infinite number of children (`bar.1,2,3,...`), which obviously is not
+feasible.
 
-So: when an absolute parent finishes *spawn its children at the first cycle
-point of the sequence.* Above, `start.2` should spawn `foo.1`, not `foo.2`.
-Then whenever an absolute child is released from the runahead pool, spawn
-its next instance (to the runahead pool) and mark the absolute dependence as
-satisfied. This works because even the first child does not get spawned
-until the associated dependence is already satisfied. 
+(Note without the first line above `start` is not defined on any sequence, so
+with SoS the scheduler will stall with `bar` unsatisfied, but with SoD it will
+shut down immediately with nothing to do because `bar` never gets spawned.)
+
+Worse, `bar` could also have other non-absolute triggers, and it could be
+those that spawn initial instances of `bar` before `start` is finished:
+```
+...
+      R1/2 = "start"
+      P1 = "start[2] & foo => bar"
+```
+Above, if `foo` runs 3x (say) faster than `start` then roughly speaking the
+first three instances of `foo` will spawn the first three instances of `bar`
+before `start.2` is done. This suggests we might need to do repeated checking
+of unsatisfied absolute triggers until they become satisfied. However, it turns
+out that's not necessary...
+
+#### Absolute trigger implementation:
+
+1. Whenever an absolute output (e.g. `start.2:succeed` above) is completed the
+scheduler should:
+   - Remember it forever, via a list held by the task pool module and an
+    associated DB table (to load the data again on restart).
+   - Spawn (if not already spawned) the first downstream child (`bar.1` above)
+    **and** update the prerequisites of potentially multiple subsequent
+    children already in the pool due to spawning by others (e.g. `foo` above).
+2. Whenever a task with an absolute trigger (`bar` above) is spawned, check to
+see if the trigger is already satisfied. If it is, satisfy it. If it isn't then
+it will be satisfied later when the absolute parent finishes and updates all
+child instances present in the pool as described just above. 
+3. Whenever a task with an absolute trigger is released from the runahead
+pool spawn its next instance (strictly speaking this is only necessary for
+tasks with no non-absolute triggers to spawn them on demand).
+
+#### Retriggering
 
 Retriggering a finished absolute parent (with `--reflow`) will cause it to
-respawn its first child, then subsequent children as normal - that's what the
-graph says. But we may want to provide an option to change the first child
-spawned to a current cycle rather than going back to the start (use case:
+respawn its first child, and then spawn subsequent children as normal (spawn
+next instance on release from the runahead pool as described above)  - that's
+what the graph says. But we may want to provide an option to change the first
+child spawned to a current cycle rather than going back to the start (use case:
 retrigger a start-up task that rebuilds a model or whatever, but don't re-run
 old cycles). Alternatively, simply retrigger the absolute parent without
-reflow, then retrigger with reflow the first child that you want to continue
-from.
+reflow (this will run only the parent), then retrigger with reflow the first
+child that you want to continue from (this will trigger the targeted child,
+and that will spawn the next instance on release from the runahead pool, etc.).
 
 ### Failed task handling
 
@@ -286,6 +317,38 @@ to xtrigger outputs).
 
 We will keep suicide triggers for backward compatibility, and in case they are
 still useful for rare edge cases like this.
+
+#### Suicide trigger implementation
+
+Suicide triggers are just like normal triggers except for what happens once
+they are satisfied (i.e. the task gets removed instead of submitting). In
+particular, the suicide-triggered task has to keep track of its own
+prerequisites so it knows when it can be removed.
+
+```
+foo & bar => baz 
+```
+Above, if `foo` (say) succeeds before `bar`, then `baz` will be
+spawned (if not already spawned elsewhere) by `foo:succeed` and its
+prerequisites updated, before later being updated again by `bar:succeed`, and
+then it can **run**.
+
+Simliarly for suicide triggers:
+```
+foo & bar => !baz 
+```
+Here, if `foo` (say) succeeds before `bar`, then `baz` will be spawned (if not
+already spawned elsewhere) by `foo:succeed` and its prerequisites updated,
+before later being updated again by `bar:succeed`, and then it can be
+**removed**.
+
+Normally in the case of suicide triggers `baz` will already have been spawned
+earlier, so both `foo` and `bar` will just update its prerequisites and log
+a message about not spawning it again in this flow, and it will be removed once
+both are done. If it was spawned earlier but removed as finished, then only the
+messages will be logged (in this case `baz` doesn't need to track its own
+prerequisites and remove itself once they are satisfied, because it has already
+been removed).
 
 ### Submit number
 
@@ -662,6 +725,17 @@ graphically the consequences of their intended reflow).
 ### TODO
 
 Follow-up changes needed in `cylc/cylc-flow`:
+
+- Consider the clarity and usefulness of all SoD log messages. Messages about
+  [not spawning suicide-triggered tasks](#suicide-trigger-implementation) have
+  been noted as confusing. Move most to DEBUG level?
+
+- Don't auto-spawn all tasks with an absolute trigger, just those that *only*
+  have absolute triggers (auto-spawning them all isn't really a problem, but it
+  is less "on demand" than it could be).
+
+- Change to event-driven triggering (easy: see TODO at the end of
+  task_pool:spawn_on_ouput)
 
 - Consider re-instating (most of?) the pre-SoD `cylc insert` functional tests
   as `cylc trigger` tests.
