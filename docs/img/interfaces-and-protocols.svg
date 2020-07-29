@@ -1,0 +1,2571 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:export-ydpi="346.16"
+   inkscape:export-xdpi="346.16"
+   inkscape:export-filename="/Users/oliver/cylc-protocols.png"
+   sodipodi:docname="cylc-protocols.svg"
+   inkscape:version="1.0 (4035a4f, 2020-05-01)"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 1207.9657 944.99408"
+   height="944.99408mm"
+   width="1207.9657mm">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     showguides="false"
+     fit-margin-bottom="2"
+     fit-margin-right="2"
+     fit-margin-left="2"
+     fit-margin-top="2"
+     inkscape:connector-spacing="3"
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:window-height="1120"
+     inkscape:window-width="1792"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="2148.6439"
+     inkscape:cx="2298.6618"
+     inkscape:zoom="0.176125"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(169.3354,122.81571)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <path
+       sodipodi:nodetypes="cc"
+       id="use3728"
+       d="m 467.70822,413.45024 v 30.3427"
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       rx="0"
+       ry="0"
+       y="-120.81571"
+       x="-167.3354"
+       height="940.99408"
+       width="1203.9657"
+       id="rect1774"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.88776;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0"
+       y="6.0336952"
+       x="354.59927"
+       height="40.353706"
+       width="80.92321"
+       id="rect857"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="text837"
+       y="30.017889"
+       x="372.31177"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="30.017889"
+         x="372.31177"
+         id="tspan835"
+         sodipodi:role="line">Scheduler</tspan></text>
+    <rect
+       style="fill:#92e4c2;fill-opacity:1;stroke-width:0.626172"
+       id="rect857-5"
+       width="20.06896"
+       height="18.342594"
+       x="354.59927"
+       y="46.387405"
+       ry="0" />
+    <rect
+       ry="0"
+       y="46.387405"
+       x="374.66827"
+       height="18.342594"
+       width="20.06896"
+       id="rect857-5-3"
+       style="fill:#45d69b;fill-opacity:1;stroke-width:0.626171" />
+    <text
+       id="text903"
+       y="59.302544"
+       x="381.23676"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan905"
+         style="stroke-width:0.264583"
+         y="59.302544"
+         x="381.23676"
+         sodipodi:role="line">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="46.387405"
+       x="394.73724"
+       height="18.342594"
+       width="20.06896"
+       id="use924"
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.85753"
+       id="use928"
+       width="80.275856"
+       height="40.353706"
+       x="354.81509"
+       y="109.6154"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="373.20526"
+       y="133.53345"
+       id="use930"><tspan
+         sodipodi:role="line"
+         id="tspan942"
+         x="373.20526"
+         y="133.53345"
+         style="stroke-width:0.264583">UI Server</tspan></text>
+    <rect
+       ry="0"
+       y="91.272812"
+       x="354.81509"
+       height="18.342594"
+       width="20.06896"
+       id="use956"
+       style="fill:#45d69b;fill-opacity:1;stroke-width:0.626171" />
+    <text
+       id="use958"
+       y="104.18795"
+       x="361.38354"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan962"
+         style="stroke-width:0.264583"
+         y="104.18795"
+         x="361.38354"
+         sodipodi:role="line">Δ</tspan></text>
+    <rect
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use966"
+       width="80.92321"
+       height="40.353706"
+       x="354.81509"
+       y="214.69975"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="385.09747"
+       y="238.57547"
+       id="use968"><tspan
+         sodipodi:role="line"
+         id="tspan972"
+         x="385.09747"
+         y="238.57547"
+         style="stroke-width:0.264583">WUI</tspan></text>
+    <rect
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use976"
+       width="20.06896"
+       height="18.342594"
+       x="354.81509"
+       y="196.35715"
+       ry="0" />
+    <rect
+       ry="0"
+       y="149.9691"
+       x="394.95306"
+       height="18.342594"
+       width="20.06896"
+       id="use980"
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172"
+       id="use984"
+       width="20.06896"
+       height="18.342594"
+       x="415.02203"
+       y="149.9691"
+       ry="0" />
+    <text
+       id="use936-0"
+       y="162.88425"
+       x="421.59045"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan950-6"
+         style="stroke-width:0.264583"
+         y="162.88425"
+         x="421.59045"
+         sodipodi:role="line">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="214.69977"
+       x="449.49695"
+       height="40.353706"
+       width="80.92321"
+       id="use1006"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use1008"
+       y="238.57549"
+       x="482.15271"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="238.57549"
+         x="482.15271"
+         id="tspan1014"
+         sodipodi:role="line">TUI</tspan></text>
+    <rect
+       ry="0"
+       y="196.35716"
+       x="449.49695"
+       height="18.342594"
+       width="20.06896"
+       id="use1010"
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       ry="0"
+       y="196.35715"
+       x="374.88409"
+       height="18.342594"
+       width="20.06896"
+       id="use1020"
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="381.45251"
+       y="209.27229"
+       id="use1022"><tspan
+         sodipodi:role="line"
+         x="381.45251"
+         y="209.27229"
+         style="stroke-width:0.264583"
+         id="tspan1026">Δ</tspan></text>
+    <path
+       id="path1054"
+       d="m 384.18359,64.854636 v 14.020218 h -19.2778 v 12.267695"
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path1056"
+       d="m 425.19273,168.25375 v 13.3192 H 384.8846 v 14.37073"
+       style="fill:none;stroke:#f996b2;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       id="path1062"
+       d="m 404.86341,64.854636 v 12.9687 h 54.67886 V 196.29419"
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use1232"
+       width="80.92321"
+       height="40.353706"
+       x="694.97516"
+       y="6.0336952"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="712.68726"
+       y="30.017889"
+       id="use1234"><tspan
+         sodipodi:role="line"
+         id="tspan1350"
+         x="712.68726"
+         y="30.017889"
+         style="stroke-width:0.264583">Scheduler</tspan></text>
+    <rect
+       ry="0"
+       y="46.387405"
+       x="694.97516"
+       height="18.342594"
+       width="20.06896"
+       id="use1236"
+       style="fill:#92e4c2;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="fill:#45d69b;fill-opacity:1;stroke-width:0.626171"
+       id="use1238"
+       width="20.06896"
+       height="18.342594"
+       x="715.04376"
+       y="46.387405"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="721.61218"
+       y="59.302544"
+       id="use1240"><tspan
+         sodipodi:role="line"
+         x="721.61218"
+         y="59.302544"
+         style="stroke-width:0.264583"
+         id="tspan1358">Δ</tspan></text>
+    <rect
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use1242"
+       width="20.06896"
+       height="18.342594"
+       x="735.11273"
+       y="46.387405"
+       ry="0" />
+    <rect
+       ry="0"
+       y="109.6154"
+       x="695.19098"
+       height="40.353706"
+       width="80.275856"
+       id="use1244"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.85753" />
+    <text
+       id="use1246"
+       y="133.53345"
+       x="713.58075"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="133.53345"
+         x="713.58075"
+         id="tspan1366"
+         sodipodi:role="line">UI Server</tspan></text>
+    <rect
+       style="fill:#45d69b;fill-opacity:1;stroke-width:0.626171"
+       id="use1254"
+       width="20.06896"
+       height="18.342594"
+       x="695.19098"
+       y="91.272812"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="701.75922"
+       y="104.18795"
+       id="use1256"><tspan
+         sodipodi:role="line"
+         x="701.75922"
+         y="104.18795"
+         style="stroke-width:0.264583"
+         id="tspan1380">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="214.69975"
+       x="695.19098"
+       height="40.353706"
+       width="80.92321"
+       id="use1258"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use1260"
+       y="238.57547"
+       x="725.47296"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="238.57547"
+         x="725.47296"
+         id="tspan1386"
+         sodipodi:role="line">WUI</tspan></text>
+    <rect
+       ry="0"
+       y="196.35715"
+       x="695.19098"
+       height="18.342594"
+       width="20.06896"
+       id="use1262"
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use1264"
+       width="20.06896"
+       height="18.342594"
+       x="735.32855"
+       y="149.9691"
+       ry="0" />
+    <rect
+       ry="0"
+       y="149.9691"
+       x="755.39752"
+       height="18.342594"
+       width="20.06896"
+       id="use1266"
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="761.96594"
+       y="162.88425"
+       id="use1268"><tspan
+         sodipodi:role="line"
+         x="761.96594"
+         y="162.88425"
+         style="stroke-width:0.264583"
+         id="tspan1396">Δ</tspan></text>
+    <rect
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use1270"
+       width="80.92321"
+       height="40.353706"
+       x="789.87195"
+       y="214.69977"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="822.52771"
+       y="238.57549"
+       id="use1272"><tspan
+         sodipodi:role="line"
+         id="tspan1402"
+         x="822.52771"
+         y="238.57549"
+         style="stroke-width:0.264583">TUI</tspan></text>
+    <rect
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use1274"
+       width="20.06896"
+       height="18.342594"
+       x="789.87195"
+       y="196.35716"
+       ry="0" />
+    <rect
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172"
+       id="use1276"
+       width="20.06896"
+       height="18.342594"
+       x="715.25952"
+       y="196.35715"
+       ry="0" />
+    <text
+       id="use1278"
+       y="209.27229"
+       x="721.828"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan1410"
+         style="stroke-width:0.264583"
+         y="209.27229"
+         x="721.828"
+         sodipodi:role="line">Δ</tspan></text>
+    <path
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 724.55898,64.854636 V 78.874854 H 705.28119 V 91.142549"
+       id="use1280" />
+    <path
+       style="fill:none;stroke:#f996b2;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 765.56813,168.25375 v 13.3192 H 725.26 v 14.37073"
+       id="use1282" />
+    <path
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 764.28893,64.854636 v 12.9687 h 54.67885 V 196.29419"
+       id="use1284" />
+    <rect
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172"
+       id="use1524"
+       width="20.06896"
+       height="18.342594"
+       x="809.94092"
+       y="196.35716"
+       ry="0" />
+    <text
+       id="use1526"
+       y="209.27231"
+       x="816.50934"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan1530"
+         style="stroke-width:0.264583"
+         y="209.27231"
+         x="816.50934"
+         sodipodi:role="line">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="46.387405"
+       x="755.1817"
+       height="18.342594"
+       width="20.06896"
+       id="use1534"
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="761.75018"
+       y="59.302551"
+       id="use1536"><tspan
+         sodipodi:role="line"
+         x="761.75018"
+         y="59.302551"
+         style="stroke-width:0.264583"
+         id="tspan1540">Δ</tspan></text>
+    <path
+       sodipodi:nodetypes="cccc"
+       id="use1544"
+       d="m 767.57627,168.25375 v 13.3192 h 49.10077 v 14.37073"
+       style="fill:none;stroke:#f996b2;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0"
+       y="214.69977"
+       x="886.60394"
+       height="40.353706"
+       width="80.92321"
+       id="use1602"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use1604"
+       y="238.57549"
+       x="919.25983"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="238.57549"
+         x="919.25983"
+         id="tspan1614"
+         sodipodi:role="line">CLI</tspan></text>
+    <rect
+       ry="0"
+       y="196.35716"
+       x="886.60394"
+       height="18.342594"
+       width="20.06896"
+       id="use1606"
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       ry="0"
+       y="196.35716"
+       x="906.67297"
+       height="18.342594"
+       width="20.06896"
+       id="use1608"
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="913.24152"
+       y="209.27231"
+       id="use1610"><tspan
+         sodipodi:role="line"
+         x="913.24152"
+         y="209.27231"
+         style="stroke-width:0.264583"
+         id="tspan1622">Δ</tspan></text>
+    <path
+       sodipodi:nodetypes="cccc"
+       id="use1626"
+       d="m 766.93476,64.854636 v 8.735367 H 916.33449 V 196.29419"
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cccc"
+       style="fill:none;stroke:#f996b2;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 769.69295,168.25375 v 11.20253 h 143.82164 v 16.4874"
+       id="use1630" />
+    <text
+       id="text1636"
+       y="-20.67157"
+       x="360.57501"
+       style="font-weight:300;font-size:22.4766px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.561915"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.561915"
+         y="-20.67157"
+         x="360.57501"
+         id="tspan1634"
+         sodipodi:role="line">8.0a2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:22.4766px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.561915"
+       x="692.65948"
+       y="-20.67157"
+       id="use1650"><tspan
+         sodipodi:role="line"
+         id="tspan1652"
+         x="692.65948"
+         y="-20.67157"
+         style="stroke-width:0.561915">8.0.0</tspan></text>
+    <rect
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use1656"
+       width="80.92321"
+       height="40.353706"
+       x="109.07908"
+       y="6.0336952"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="126.79154"
+       y="30.017889"
+       id="use1658"><tspan
+         sodipodi:role="line"
+         id="tspan1708"
+         x="126.79154"
+         y="30.017889"
+         style="stroke-width:0.264583">Scheduler</tspan></text>
+    <rect
+       ry="0"
+       y="46.387405"
+       x="109.07908"
+       height="18.342594"
+       width="20.06896"
+       id="use1660"
+       style="fill:#92e4c2;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="fill:#45d69b;fill-opacity:1;stroke-width:0.626171"
+       id="use1662"
+       width="20.06896"
+       height="18.342594"
+       x="129.14801"
+       y="46.387405"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="135.71646"
+       y="59.302544"
+       id="use1664"><tspan
+         sodipodi:role="line"
+         x="135.71646"
+         y="59.302544"
+         style="stroke-width:0.264583"
+         id="tspan1716">Δ</tspan></text>
+    <rect
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use1666"
+       width="20.06896"
+       height="18.342594"
+       x="149.21701"
+       y="46.387405"
+       ry="0" />
+    <rect
+       ry="0"
+       y="109.6154"
+       x="109.29487"
+       height="40.353706"
+       width="80.275856"
+       id="use1668"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.85753" />
+    <text
+       id="use1670"
+       y="133.53345"
+       x="127.68501"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="133.53345"
+         x="127.68501"
+         id="tspan1724"
+         sodipodi:role="line">UI Server</tspan></text>
+    <rect
+       style="fill:#45d69b;fill-opacity:1;stroke-width:0.626171"
+       id="use1672"
+       width="20.06896"
+       height="18.342594"
+       x="109.29487"
+       y="91.272812"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="115.86332"
+       y="104.18795"
+       id="use1674"><tspan
+         sodipodi:role="line"
+         x="115.86332"
+         y="104.18795"
+         style="stroke-width:0.264583"
+         id="tspan1730">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="214.69975"
+       x="109.29487"
+       height="40.353706"
+       width="80.92321"
+       id="use1676"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use1678"
+       y="238.57547"
+       x="139.57724"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="238.57547"
+         x="139.57724"
+         id="tspan1736"
+         sodipodi:role="line">WUI</tspan></text>
+    <rect
+       ry="0"
+       y="196.35715"
+       x="109.29487"
+       height="18.342594"
+       width="20.06896"
+       id="use1680"
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use1682"
+       width="20.06896"
+       height="18.342594"
+       x="167.42445"
+       y="149.9691"
+       ry="0" />
+    <path
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 138.66299,64.854636 v 14.020218 h -19.2778 v 12.267695"
+       id="use1698" />
+    <path
+       sodipodi:nodetypes="cccc"
+       style="fill:none;stroke:#f996b2;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 179.67213,168.25375 v 13.3192 h -57.24147 v 14.37073"
+       id="use1700" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:22.4766px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.561915"
+       x="115.05476"
+       y="-20.67157"
+       id="use1704"><tspan
+         sodipodi:role="line"
+         id="tspan1770"
+         x="115.05476"
+         y="-20.67157"
+         style="stroke-width:0.561915">8.0a1</tspan></text>
+    <use
+       transform="translate(-337.39129)"
+       height="100%"
+       width="100%"
+       id="use1780"
+       xlink:href="#use1602"
+       y="0"
+       x="0" />
+    <use
+       transform="translate(-337.39129)"
+       height="100%"
+       width="100%"
+       id="use1782"
+       xlink:href="#use1604"
+       y="0"
+       x="0" />
+    <rect
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172"
+       id="use1790"
+       width="20.06896"
+       height="18.342594"
+       x="549.21277"
+       y="196.35718"
+       ry="0" />
+    <rect
+       ry="0"
+       y="46.387405"
+       x="414.80621"
+       height="18.342594"
+       width="20.06896"
+       id="use1794"
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172" />
+    <path
+       sodipodi:nodetypes="cccc"
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 423.38424,64.854636 v 9.7937 H 558.22179 V 196.29419"
+       id="use1798" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1806"
+       xlink:href="#use1790"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1808"
+       xlink:href="#use1794"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1810"
+       xlink:href="#use1798"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1860"
+       xlink:href="#use1780"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1862"
+       xlink:href="#use1782"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1864"
+       xlink:href="#use1790"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1866"
+       xlink:href="#use1806"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1868"
+       xlink:href="#use1808"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1870"
+       xlink:href="#use1810"
+       y="0"
+       x="0" />
+    <rect
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use1894"
+       width="80.92321"
+       height="40.353706"
+       x="215.68007"
+       y="214.69977"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="248.33589"
+       y="238.57549"
+       id="use1896"><tspan
+         sodipodi:role="line"
+         id="tspan1918"
+         x="248.33589"
+         y="238.57549"
+         style="stroke-width:0.264583">CLI</tspan></text>
+    <rect
+       ry="0"
+       y="196.35718"
+       x="215.68007"
+       height="18.342594"
+       width="20.06896"
+       id="use1900"
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172"
+       id="use1902"
+       width="20.06896"
+       height="18.342594"
+       x="169.36528"
+       y="46.387405"
+       ry="0" />
+    <path
+       id="use1904"
+       d="m 178.47251,64.854636 v 9.7937 h 45.85634 V 196.29419"
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:nodetypes="cccc" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1948"
+       xlink:href="#use1656"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1950"
+       xlink:href="#use1658"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1952"
+       xlink:href="#use1660"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1954"
+       xlink:href="#use1662"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1956"
+       xlink:href="#use1664"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1958"
+       xlink:href="#use1666"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1960"
+       xlink:href="#use1668"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1962"
+       xlink:href="#use1670"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1964"
+       xlink:href="#use1672"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1966"
+       xlink:href="#use1674"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1968"
+       xlink:href="#use1676"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1970"
+       xlink:href="#use1678"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1972"
+       xlink:href="#use1680"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1974"
+       xlink:href="#use1682"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1976"
+       xlink:href="#use1698"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1978"
+       xlink:href="#use1700"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1982"
+       xlink:href="#use1894"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1984"
+       xlink:href="#use1896"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1986"
+       xlink:href="#use1900"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1988"
+       xlink:href="#use1902"
+       y="0"
+       x="0" />
+    <use
+       height="100%"
+       width="100%"
+       id="use1990"
+       xlink:href="#use1904"
+       y="0"
+       x="0" />
+    <rect
+       ry="0"
+       y="6.0336952"
+       x="-133.15482"
+       height="40.353706"
+       width="80.92321"
+       id="use2254"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use2256"
+       y="30.017889"
+       x="-115.44235"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="30.017889"
+         x="-115.44235"
+         id="tspan2342"
+         sodipodi:role="line">Scheduler</tspan></text>
+    <rect
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use2274"
+       width="80.92321"
+       height="40.353706"
+       x="-132.93903"
+       y="214.69975"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="-102.65665"
+       y="238.57547"
+       id="use2276"><tspan
+         sodipodi:role="line"
+         id="tspan2370"
+         x="-102.65665"
+         y="238.57547"
+         style="stroke-width:0.264583">WUI</tspan></text>
+    <rect
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172"
+       id="use2278"
+       width="20.06896"
+       height="18.342594"
+       x="-132.93903"
+       y="196.35715"
+       ry="0" />
+    <text
+       id="use2286"
+       y="-20.67157"
+       x="-127.17914"
+       style="font-weight:300;font-size:22.4766px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.561915"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.561915"
+         y="-20.67157"
+         x="-127.17914"
+         id="tspan2382"
+         sodipodi:role="line">7.*</tspan></text>
+    <text
+       id="use2288"
+       y="238.57549"
+       x="6.1020103"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="238.57549"
+         x="6.1020103"
+         id="tspan2386"
+         sodipodi:role="line">CLI</tspan></text>
+    <rect
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172"
+       id="use2290"
+       width="20.06896"
+       height="18.342594"
+       x="-26.553804"
+       y="196.35718"
+       ry="0" />
+    <rect
+       ry="0"
+       y="46.387405"
+       x="-72.868591"
+       height="18.342594"
+       width="20.06896"
+       id="use2292"
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172" />
+    <path
+       sodipodi:nodetypes="cccc"
+       style="fill:none;stroke:#a8dd65;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -63.761372,64.854636 v 9.7937 H -123.98118 V 196.29419"
+       id="use2294" />
+    <rect
+       ry="0"
+       y="6.0336952"
+       x="-133.15482"
+       height="40.353706"
+       width="80.92321"
+       id="use2296"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use2298"
+       y="30.017889"
+       x="-115.44235"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="30.017889"
+         x="-115.44235"
+         id="tspan2398"
+         sodipodi:role="line">Scheduler</tspan></text>
+    <rect
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use2316"
+       width="80.92321"
+       height="40.353706"
+       x="-132.93903"
+       y="214.69975"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="-102.65665"
+       y="238.57547"
+       id="use2318"><tspan
+         sodipodi:role="line"
+         id="tspan2426"
+         x="-102.65665"
+         y="238.57547"
+         style="stroke-width:0.264583">GUI</tspan></text>
+    <rect
+       ry="0"
+       y="214.69977"
+       x="-26.553804"
+       height="40.353706"
+       width="80.92321"
+       id="use2330"
+       style="fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use2332"
+       y="238.57549"
+       x="6.1020103"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="238.57549"
+         x="6.1020103"
+         id="tspan2444"
+         sodipodi:role="line">CLI</tspan></text>
+    <rect
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172"
+       id="use2334"
+       width="20.06896"
+       height="18.342594"
+       x="-26.553804"
+       y="196.35718"
+       ry="0" />
+    <rect
+       ry="0"
+       y="46.387405"
+       x="-72.868591"
+       height="18.342594"
+       width="20.06896"
+       id="use2336"
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172" />
+    <path
+       sodipodi:nodetypes="cccc"
+       style="fill:none;stroke:#a8dd65;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -61.115539,64.854636 v 9.7937 h 43.210507 V 196.29419"
+       id="use2338" />
+    <g
+       transform="translate(1084.814,-70.605631)"
+       id="g3861">
+      <rect
+         ry="0"
+         y="29.256723"
+         x="-117.73088"
+         height="10.94055"
+         width="11.970248"
+         id="use1064"
+         style="fill:#92e4c2;fill-opacity:1;stroke-width:0.373483" />
+      <rect
+         style="fill:#45d69b;fill-opacity:1;stroke-width:0.373483"
+         id="use1066"
+         width="11.970248"
+         height="10.94055"
+         x="-117.73088"
+         y="40.197273"
+         ry="0" />
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.157812"
+         x="-113.81311"
+         y="47.900578"
+         id="use1068"><tspan
+           sodipodi:role="line"
+           x="-113.81311"
+           y="47.900578"
+           style="stroke-width:0.157812"
+           id="tspan1080">Δ</tspan></text>
+      <rect
+         ry="0"
+         y="51.137814"
+         x="-117.73088"
+         height="10.94055"
+         width="11.970248"
+         id="use1070"
+         style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.373483" />
+      <rect
+         style="fill:#9575e1;fill-opacity:1;stroke-width:0.373483"
+         id="use1072"
+         width="11.970248"
+         height="10.94055"
+         x="-117.73088"
+         y="62.078358"
+         ry="0" />
+      <text
+         id="use1074"
+         y="69.781677"
+         x="-113.81311"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.157812"
+         xml:space="preserve"><tspan
+           id="tspan1088"
+           style="stroke-width:0.157812"
+           y="69.781677"
+           x="-113.81311"
+           sodipodi:role="line">Δ</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#26ac75;fill-opacity:1;stroke-width:0.157812"
+         x="-144.32596"
+         y="42.253311"
+         id="text1094"><tspan
+           sodipodi:role="line"
+           id="tspan1092"
+           x="-144.32596"
+           y="42.253311"
+           style="fill:#26ac75;fill-opacity:1;stroke-width:0.157812">Protobuf</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#8059db;fill-opacity:1;stroke-width:0.157812"
+         x="-145.37125"
+         y="64.20472"
+         id="text1098"><tspan
+           sodipodi:role="line"
+           id="tspan1096"
+           x="-145.37125"
+           y="64.20472"
+           style="fill:#8059db;fill-opacity:1;stroke-width:0.157812">GraphQL</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812"
+         x="-102.30468"
+         y="35.768551"
+         id="text1102"><tspan
+           sodipodi:role="line"
+           id="tspan1100"
+           x="-102.30468"
+           y="35.768551"
+           style="fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812">req-rep</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812"
+         x="-102.12163"
+         y="47.831139"
+         id="text1106"><tspan
+           sodipodi:role="line"
+           id="tspan1104"
+           x="-102.12163"
+           y="47.831139"
+           style="fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812">deltas/subs</tspan></text>
+      <text
+         id="use1108"
+         y="57.649647"
+         x="-102.30468"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812"
+         xml:space="preserve"><tspan
+           style="fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812"
+           y="57.649647"
+           x="-102.30468"
+           id="tspan1112"
+           sodipodi:role="line">req-rep</tspan></text>
+      <text
+         id="use1110"
+         y="69.712227"
+         x="-102.12163"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812"
+         xml:space="preserve"><tspan
+           style="fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812"
+           y="69.712227"
+           x="-102.12163"
+           id="tspan1116"
+           sodipodi:role="line">deltas/subs</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:12.7337px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;opacity:0.681481;stroke-width:0.318344"
+         x="-137.31097"
+         y="22.516729"
+         id="text1122"><tspan
+           sodipodi:role="line"
+           id="tspan1598"
+           x="-137.31097"
+           y="22.516729"
+           style="stroke-width:0.318344">Interface</tspan></text>
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use1064"
+         id="use1124"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use1066"
+         id="use1126"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use1068"
+         id="use1128"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use1070"
+         id="use1130"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use1072"
+         id="use1132"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use1074"
+         id="use1134"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#text1094"
+         id="use1136"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#text1098"
+         id="use1138"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#text1102"
+         id="use1140"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#text1106"
+         id="use1142"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use1108"
+         id="use1144"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use1110"
+         id="use1146"
+         width="100%"
+         height="100%" />
+      <text
+         id="use1208"
+         y="104.97549"
+         x="-133.692"
+         style="font-weight:300;font-size:12.7337px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.681481;stroke-width:0.318344"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.318344"
+           y="104.97549"
+           x="-133.692"
+           id="tspan1210"
+           sodipodi:role="line">Protocol</tspan></text>
+      <path
+         style="fill:none;stroke:#f5d163;stroke-width:1.07362;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m -131.80768,124.73677 12.33533,7.12181"
+         id="path1214" />
+      <path
+         id="use1216"
+         d="m -131.80768,138.30864 12.33533,7.1218"
+         style="fill:none;stroke:#f996b2;stroke-width:1.07362;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         id="use1220"
+         y="130.50002"
+         x="-116.24683"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#e6b10f;fill-opacity:1;stroke-width:0.157812"
+         xml:space="preserve"><tspan
+           style="fill:#e6b10f;fill-opacity:1;stroke-width:0.157812"
+           y="130.50002"
+           x="-116.24683"
+           id="tspan1222"
+           sodipodi:role="line">ZMQ/TCP</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#f4376c;fill-opacity:1;stroke-width:0.157812"
+         x="-116.17738"
+         y="144.38731"
+         id="use1226"><tspan
+           sodipodi:role="line"
+           id="tspan1228"
+           x="-116.17738"
+           y="144.38731"
+           style="fill:#f4376c;fill-opacity:1;stroke-width:0.157812">WS</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:12.7337px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.681481;stroke-width:0.318344"
+         x="-146.51631"
+         y="167.48457"
+         id="use1548"><tspan
+           sodipodi:role="line"
+           id="tspan1550"
+           x="-146.51631"
+           y="167.48457"
+           style="stroke-width:0.318344">Components</tspan></text>
+      <rect
+         ry="0"
+         y="181.72318"
+         x="-130.84074"
+         height="17.995583"
+         width="36.087399"
+         id="use1562"
+         style="fill:#87b5e1;fill-opacity:1;stroke-width:0.83169" />
+      <text
+         id="use1564"
+         y="192.37045"
+         x="-120.63201"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:4.71958px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.117989"
+         xml:space="preserve"><tspan
+           sodipodi:role="line"
+           id="tspan1580"
+           x="-120.63201"
+           y="192.37045"
+           style="stroke-width:0.117989">Component</tspan></text>
+      <rect
+         ry="0"
+         y="173.54337"
+         x="-130.84074"
+         height="8.1798105"
+         width="8.9496765"
+         id="use1566"
+         style="fill:#45d69b;fill-opacity:1;stroke-width:0.279238" />
+      <rect
+         style="fill:#45d69b;fill-opacity:1;stroke-width:0.279238"
+         id="use1576"
+         width="8.9496765"
+         height="8.1798105"
+         x="-130.84074"
+         y="199.7749"
+         ry="0" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:4.71958px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.117989"
+         x="-120.84911"
+         y="179.54614"
+         id="use1582"><tspan
+           sodipodi:role="line"
+           id="tspan1588"
+           x="-120.84911"
+           y="179.54614"
+           style="stroke-width:0.117989">Input Interface</tspan></text>
+      <text
+         id="use1590"
+         y="204.61185"
+         x="-120.63201"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:4.71958px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.117989"
+         xml:space="preserve"><tspan
+           sodipodi:role="line"
+           id="tspan1596"
+           x="-120.63201"
+           y="204.61185"
+           style="stroke-width:0.117989">Output Interface</tspan></text>
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#f4f4f4;stroke-width:1.9462;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect1600"
+         width="83.914497"
+         height="210.66956"
+         x="-150.66612"
+         y="7.5631814"
+         ry="10.657513"
+         rx="10.657513" />
+      <rect
+         style="fill:#ee8989;fill-opacity:1;stroke-width:0.373483"
+         id="use1930"
+         width="11.970248"
+         height="10.94055"
+         x="-117.73088"
+         y="72.833664"
+         ry="0" />
+      <text
+         id="use1934"
+         y="76.685478"
+         x="-144.73154"
+         style="font-weight:300;font-size:5.25463px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#ee8989;fill-opacity:1;stroke-width:0.131366"
+         xml:space="preserve"><tspan
+           style="fill:#ee8989;fill-opacity:1;stroke-width:0.131366"
+           y="76.685478"
+           x="-144.73154"
+           id="tspan1936"
+           sodipodi:role="line">Legacy</tspan><tspan
+           style="fill:#ee8989;fill-opacity:1;stroke-width:0.131366"
+           y="83.253769"
+           x="-144.73154"
+           sodipodi:role="line"
+           id="tspan1940">Endpoints</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812"
+         x="-102.30468"
+         y="79.345497"
+         id="use1942"><tspan
+           sodipodi:role="line"
+           id="tspan1944"
+           x="-102.30468"
+           y="79.345497"
+           style="fill:#9a9a9a;fill-opacity:1;stroke-width:0.157812">req-rep</tspan></text>
+      <path
+         id="use2458"
+         d="m -131.80768,110.97835 12.33533,7.12181"
+         style="fill:none;stroke:#a8dd65;stroke-width:1.07362;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         xml:space="preserve"
+         style="font-weight:300;font-size:6.31247px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';fill:#74b127;fill-opacity:1;stroke-width:0.157812"
+         x="-116.24683"
+         y="116.74171"
+         id="use2460"><tspan
+           sodipodi:role="line"
+           id="tspan2464"
+           x="-116.24683"
+           y="116.74171"
+           style="fill:#74b127;fill-opacity:1;stroke-width:0.157812">HTTP(S)</tspan></text>
+    </g>
+    <rect
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626171"
+       id="use1266-4"
+       width="20.06896"
+       height="18.342594"
+       x="715.25995"
+       y="91.272812"
+       ry="0" />
+    <text
+       id="use1268-3"
+       y="104.18796"
+       x="721.82837"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan1396-2"
+         style="stroke-width:0.264583"
+         y="104.18796"
+         x="721.82837"
+         sodipodi:role="line">Δ</tspan></text>
+    <path
+       sodipodi:nodetypes="cccc"
+       id="use1280-6"
+       d="M 761.71364,64.568004 V 78.588223 H 727.61918 V 90.855918"
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       ry="0"
+       y="358.44214"
+       x="-132.59816"
+       height="40.353706"
+       width="80.275497"
+       id="use2504"
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.85752" />
+    <text
+       id="use2506"
+       y="382.42633"
+       x="-114.88607"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="382.42633"
+         x="-114.88607"
+         id="tspan2586"
+         sodipodi:role="line">Scheduler</tspan></text>
+    <rect
+       style="opacity:0.5;fill:#92e4c2;fill-opacity:1;stroke-width:0.626172"
+       id="use2508"
+       width="20.06896"
+       height="18.342594"
+       x="-132.59816"
+       y="398.79584"
+       ry="0" />
+    <rect
+       ry="0"
+       y="398.79584"
+       x="-112.52956"
+       height="18.342594"
+       width="20.06896"
+       id="use2510"
+       style="opacity:0.5;fill:#45d69b;fill-opacity:1;stroke-width:0.626171" />
+    <text
+       id="use2512"
+       y="411.711"
+       x="-105.96114"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan2594"
+         style="stroke-width:0.264583"
+         y="411.711"
+         x="-105.96114"
+         sodipodi:role="line">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="398.79584"
+       x="-92.460587"
+       height="18.342594"
+       width="20.06896"
+       id="use2514"
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use2724"
+       width="80.92321"
+       height="40.353706"
+       x="634.45837"
+       y="507.56201"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       x="667.11407"
+       y="531.43774"
+       id="use2726"><tspan
+         sodipodi:role="line"
+         id="tspan2818"
+         x="667.11407"
+         y="531.43774"
+         style="stroke-width:0.264583">TUI</tspan></text>
+    <rect
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use2728"
+       width="20.06896"
+       height="18.342594"
+       x="634.45837"
+       y="489.21936"
+       ry="0" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#f5d163;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 663.55418,472.37881 v 16.7777"
+       id="use2738" />
+    <rect
+       style="opacity:0.5;fill:#9575e1;fill-opacity:1;stroke-width:0.626172"
+       id="use2740"
+       width="20.06896"
+       height="18.342594"
+       x="654.52734"
+       y="489.21936"
+       ry="0" />
+    <text
+       id="use2742"
+       y="502.13452"
+       x="661.0957"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan2838"
+         style="stroke-width:0.264583"
+         y="502.13452"
+         x="661.0957"
+         sodipodi:role="line">Δ</tspan></text>
+    <path
+       sodipodi:nodetypes="cc"
+       id="use2748"
+       d="m 660.2051,472.16941 v 16.9871"
+       style="fill:none;stroke:#f996b2;stroke-width:3.26167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="0"
+       y="507.56201"
+       x="731.19037"
+       height="40.353706"
+       width="80.92321"
+       id="use2750"
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use2752"
+       y="531.43774"
+       x="763.84625"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="531.43774"
+         x="763.84625"
+         id="tspan2852"
+         sodipodi:role="line">CLI</tspan></text>
+    <rect
+       ry="0"
+       y="489.21936"
+       x="731.19037"
+       height="18.342594"
+       width="20.06896"
+       id="use2754"
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       ry="0"
+       y="489.21936"
+       x="751.2594"
+       height="18.342594"
+       width="20.06896"
+       id="use2756"
+       style="opacity:0.5;fill:#9575e1;fill-opacity:1;stroke-width:0.626172" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       x="757.82794"
+       y="502.13452"
+       id="use2758"><tspan
+         sodipodi:role="line"
+         x="757.82794"
+         y="502.13452"
+         style="stroke-width:0.264583"
+         id="tspan2860">Δ</tspan></text>
+    <path
+       sodipodi:nodetypes="cc"
+       id="use2760"
+       d="m 760.92088,472.79141 v 16.3651"
+       style="fill:none;stroke:#f5d163;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#f996b2;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 757.57181,472.66911 v 16.4874"
+       id="use2762" />
+    <rect
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172"
+       id="use2880"
+       width="20.06896"
+       height="18.342594"
+       x="-72.391624"
+       y="398.79584"
+       ry="0" />
+    <rect
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.85752"
+       id="use3208"
+       width="80.275497"
+       height="40.353706"
+       x="-3.9695611"
+       y="358.44214"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       x="13.742528"
+       y="382.42633"
+       id="use3210"><tspan
+         sodipodi:role="line"
+         id="tspan3224"
+         x="13.742528"
+         y="382.42633"
+         style="stroke-width:0.264583">Scheduler</tspan></text>
+    <rect
+       ry="0"
+       y="398.79584"
+       x="-3.9695611"
+       height="18.342594"
+       width="20.06896"
+       id="use3212"
+       style="opacity:0.5;fill:#92e4c2;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="opacity:0.5;fill:#45d69b;fill-opacity:1;stroke-width:0.626171"
+       id="use3214"
+       width="20.06896"
+       height="18.342594"
+       x="16.099035"
+       y="398.79584"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       x="22.667448"
+       y="411.711"
+       id="use3216"><tspan
+         sodipodi:role="line"
+         x="22.667448"
+         y="411.711"
+         style="stroke-width:0.264583"
+         id="tspan3232">Δ</tspan></text>
+    <rect
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use3218"
+       width="20.06896"
+       height="18.342594"
+       x="36.168011"
+       y="398.79584"
+       ry="0" />
+    <g
+       transform="translate(-23.036645,-95.544365)"
+       id="g3246">
+      <path
+         sodipodi:type="star"
+         style="opacity:1;fill:#6c6c6c;fill-opacity:1;stroke:none;stroke-width:1.8;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path3240"
+         sodipodi:sides="3"
+         sodipodi:cx="0.32444099"
+         sodipodi:cy="480.17349"
+         sodipodi:r1="8.9252491"
+         sodipodi:r2="4.4626245"
+         sodipodi:arg1="0"
+         sodipodi:arg2="1.0471976"
+         inkscape:flatsided="false"
+         inkscape:rounded="0"
+         inkscape:randomized="0"
+         d="m 9.2496901,480.17349 -6.693937,3.86475 -6.6939367,3.86474 0,-7.72949 0,-7.72949 6.693937,3.86475 z"
+         inkscape:transform-center-x="-2.2313112"
+         inkscape:transform-center-y="-7.1251944e-06" />
+      <path
+         sodipodi:nodetypes="cc"
+         style="fill:none;stroke:#6c6c6c;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M -3.6090179,480.17348 H -19.038822"
+         id="path3242" />
+    </g>
+    <text
+       id="text3250"
+       y="508.75281"
+       x="-134.53616"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="508.75281"
+         x="-134.53616"
+         id="tspan3248"
+         sodipodi:role="line">Convert the CLI to GraphQL and remove the legacy</tspan><tspan
+         id="tspan3256"
+         style="stroke-width:0.264583"
+         y="521.98193"
+         x="-134.53616"
+         sodipodi:role="line">REST interface.</tspan></text>
+    <rect
+       ry="0"
+       y="580.90662"
+       x="-133.24588"
+       height="40.353706"
+       width="80.92321"
+       id="use3262"
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use3264"
+       y="604.89087"
+       x="-115.53378"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="604.89087"
+         x="-115.53378"
+         id="tspan3280"
+         sodipodi:role="line">Scheduler</tspan></text>
+    <rect
+       style="opacity:0.5;fill:#92e4c2;fill-opacity:1;stroke-width:0.626172"
+       id="use3266"
+       width="20.06896"
+       height="18.342594"
+       x="-133.24588"
+       y="621.26038"
+       ry="0" />
+    <rect
+       ry="0"
+       y="621.26038"
+       x="-113.17728"
+       height="18.342594"
+       width="20.06896"
+       id="use3268"
+       style="opacity:0.5;fill:#45d69b;fill-opacity:1;stroke-width:0.626171" />
+    <text
+       id="use3270"
+       y="634.17554"
+       x="-106.60886"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan3288"
+         style="stroke-width:0.264583"
+         y="634.17554"
+         x="-106.60886"
+         sodipodi:role="line">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="621.26038"
+       x="-93.108307"
+       height="18.342594"
+       width="20.06896"
+       id="use3272"
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172"
+       id="use3274"
+       width="20.06896"
+       height="18.342594"
+       x="-73.039337"
+       y="621.26038"
+       ry="0" />
+    <text
+       id="use3276"
+       y="634.17554"
+       x="-66.470856"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan3296"
+         style="stroke-width:0.264583"
+         y="634.17554"
+         x="-66.470856"
+         sodipodi:role="line">Δ</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="-134.53616"
+       y="657.73315"
+       id="use3300"><tspan
+         sodipodi:role="line"
+         x="-134.53616"
+         y="657.73315"
+         style="stroke-width:0.264583"
+         id="tspan3304">Implement a GraphQL server at the Scheduler.</tspan><tspan
+         id="tspan3310"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="670.96228"
+         style="stroke-width:0.264583" /><tspan
+         id="tspan3312"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="684.19141"
+         style="stroke-width:0.264583">This is required for providing updates on issued commands</tspan><tspan
+         id="tspan3314"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="697.42053"
+         style="stroke-width:0.264583">to the CLI, WUI and CLI.</tspan><tspan
+         id="tspan3316"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="710.64966"
+         style="stroke-width:0.264583" /><tspan
+         id="tspan3318"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="723.87878"
+         style="stroke-width:0.264583">This is also required for delta updates in TUI (bypassing the</tspan><tspan
+         id="tspan3320"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="737.10791"
+         style="stroke-width:0.264583">UI Server).</tspan><tspan
+         id="tspan3322"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="750.33704"
+         style="stroke-width:0.264583" /><tspan
+         id="tspan3324"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="763.56616"
+         style="stroke-width:0.264583">Running a GraphQL server over ZMQ/TCP is non-standard</tspan><tspan
+         id="tspan3326"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="776.79529"
+         style="stroke-width:0.264583">so this will involve a bit of work to support ZMQ in</tspan><tspan
+         id="tspan3328"
+         sodipodi:role="line"
+         x="-134.53616"
+         y="790.02441"
+         style="stroke-width:0.264583">existing libraries, likely by extending websocket functionality.</tspan></text>
+    <rect
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use3330"
+       width="80.92321"
+       height="40.353706"
+       x="-133.24588"
+       y="444.20972"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       x="-100.59"
+       y="468.08545"
+       id="use3332"><tspan
+         sodipodi:role="line"
+         id="tspan3342"
+         x="-100.59"
+         y="468.08545"
+         style="stroke-width:0.264583">CLI</tspan></text>
+    <rect
+       style="fill:#ee8989;fill-opacity:1;stroke-width:0.626172"
+       id="use3334"
+       width="20.06896"
+       height="18.342594"
+       x="-133.24588"
+       y="425.86713"
+       ry="0" />
+    <rect
+       ry="0"
+       y="358.97064"
+       x="634.43823"
+       height="40.353706"
+       width="80.92321"
+       id="use3354"
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use3356"
+       y="382.84637"
+       x="667.09412"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="382.84637"
+         x="667.09412"
+         id="tspan3366"
+         sodipodi:role="line">CLI</tspan></text>
+    <rect
+       ry="0"
+       y="340.62805"
+       x="634.43823"
+       height="18.342594"
+       width="20.06896"
+       id="use3358"
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       ry="0"
+       y="340.62805"
+       x="654.50726"
+       height="18.342594"
+       width="20.06896"
+       id="use3360"
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="661.07581"
+       y="353.54321"
+       id="use3362"><tspan
+         sodipodi:role="line"
+         x="661.07581"
+         y="353.54321"
+         style="stroke-width:0.264583"
+         id="tspan3374">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="444.20972"
+       x="-3.1757913"
+       height="40.353706"
+       width="80.92321"
+       id="use3378"
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use3380"
+       y="468.08545"
+       x="29.480131"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="468.08545"
+         x="29.480131"
+         id="tspan3386"
+         sodipodi:role="line">CLI</tspan></text>
+    <rect
+       ry="0"
+       y="425.86713"
+       x="-3.1757913"
+       height="18.342594"
+       width="20.06896"
+       id="use3382"
+       style="fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <g
+       id="use3392"
+       transform="translate(-23.036645,-24.875918)">
+      <path
+         inkscape:transform-center-y="-7.1251944e-06"
+         inkscape:transform-center-x="-2.2313112"
+         d="m 9.2496901,480.17349 -6.693937,3.86475 -6.6939367,3.86474 0,-7.72949 0,-7.72949 6.693937,3.86475 z"
+         inkscape:randomized="0"
+         inkscape:rounded="0"
+         inkscape:flatsided="false"
+         sodipodi:arg2="1.0471976"
+         sodipodi:arg1="0"
+         sodipodi:r2="4.4626245"
+         sodipodi:r1="8.9252491"
+         sodipodi:cy="480.17349"
+         sodipodi:cx="0.32444099"
+         sodipodi:sides="3"
+         id="path3394"
+         style="opacity:1;fill:#6c6c6c;fill-opacity:1;stroke:none;stroke-width:1.8;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         sodipodi:type="star" />
+      <path
+         id="path3396"
+         d="M -3.6090179,480.17348 H -19.038822"
+         style="fill:none;stroke:#6c6c6c;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:nodetypes="cc" />
+    </g>
+    <text
+       id="use3400"
+       y="417.24445"
+       x="633.14795"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan3491"
+         style="stroke-width:0.264583"
+         y="417.24445"
+         x="633.14795"
+         sodipodi:role="line">Utilise GraphQL deltas at the CLI and TUI in order to track</tspan><tspan
+         id="tspan3635"
+         style="stroke-width:0.264583"
+         y="430.47357"
+         x="633.14795"
+         sodipodi:role="line">the progress of mutations.</tspan></text>
+    <rect
+       ry="0"
+       y="358.97064"
+       x="728.01532"
+       height="40.353706"
+       width="80.92321"
+       id="use3521"
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use3523"
+       y="382.84637"
+       x="760.6712"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="382.84637"
+         x="760.6712"
+         id="tspan3533"
+         sodipodi:role="line">TUI</tspan></text>
+    <rect
+       ry="0"
+       y="340.62805"
+       x="728.01532"
+       height="18.342594"
+       width="20.06896"
+       id="use3525"
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       ry="0"
+       y="340.62805"
+       x="748.08435"
+       height="18.342594"
+       width="20.06896"
+       id="use3527"
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="754.65289"
+       y="353.54321"
+       id="use3529"><tspan
+         sodipodi:role="line"
+         x="754.65289"
+         y="353.54321"
+         style="stroke-width:0.264583"
+         id="tspan3541">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="358.97064"
+       x="270.80588"
+       height="40.353706"
+       width="80.92321"
+       id="use3545"
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865" />
+    <text
+       id="use3547"
+       y="382.95483"
+       x="288.51797"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="382.95483"
+         x="288.51797"
+         id="tspan3579"
+         sodipodi:role="line">Scheduler</tspan></text>
+    <rect
+       style="opacity:0.5;fill:#92e4c2;fill-opacity:1;stroke-width:0.626172"
+       id="use3549"
+       width="20.06896"
+       height="18.342594"
+       x="270.80588"
+       y="399.32434"
+       ry="0" />
+    <rect
+       ry="0"
+       y="399.32434"
+       x="290.87445"
+       height="18.342594"
+       width="20.06896"
+       id="use3551"
+       style="opacity:0.5;fill:#45d69b;fill-opacity:1;stroke-width:0.626171" />
+    <text
+       id="use3553"
+       y="412.23956"
+       x="297.4429"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan3587"
+         style="stroke-width:0.264583"
+         y="412.23956"
+         x="297.4429"
+         sodipodi:role="line">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="399.32434"
+       x="310.94342"
+       height="18.342594"
+       width="20.06896"
+       id="use3555"
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172" />
+    <rect
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.85753"
+       id="use3557"
+       width="80.275856"
+       height="40.353706"
+       x="271.0217"
+       y="462.55237"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       x="289.41147"
+       y="486.47034"
+       id="use3559"><tspan
+         sodipodi:role="line"
+         id="tspan3595"
+         x="289.41147"
+         y="486.47034"
+         style="stroke-width:0.264583">UI Server</tspan></text>
+    <rect
+       ry="0"
+       y="444.20972"
+       x="271.0217"
+       height="18.342594"
+       width="20.06896"
+       id="use3561"
+       style="opacity:0.5;fill:#45d69b;fill-opacity:1;stroke-width:0.626171" />
+    <text
+       id="use3563"
+       y="457.12488"
+       x="277.58994"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan3601"
+         style="stroke-width:0.264583"
+         y="457.12488"
+         x="277.58994"
+         sodipodi:role="line">Δ</tspan></text>
+    <path
+       id="use3565"
+       d="m 300.38968,417.79174 v 14.0202 h -19.27779 v 12.2677"
+       style="opacity:0.5;fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172"
+       id="use3567"
+       width="20.06896"
+       height="18.342594"
+       x="331.01239"
+       y="399.32434"
+       ry="0" />
+    <text
+       id="use3569"
+       y="412.23956"
+       x="337.58087"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan3609"
+         style="stroke-width:0.264583"
+         y="412.23956"
+         x="337.58087"
+         sodipodi:role="line">Δ</tspan></text>
+    <rect
+       ry="0"
+       y="444.20972"
+       x="291.09067"
+       height="18.342594"
+       width="20.06896"
+       id="use3571"
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626171" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="297.65909"
+       y="457.12488"
+       id="use3573"><tspan
+         sodipodi:role="line"
+         x="297.65909"
+         y="457.12488"
+         style="stroke-width:0.264583"
+         id="tspan3615">Δ</tspan></text>
+    <path
+       style="fill:none;stroke:#f5d163;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 337.54434,417.50504 v 14.0202 h -34.09446 v 12.2677"
+       id="use3575"
+       sodipodi:nodetypes="cccc" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="269.28729"
+       y="521.86914"
+       id="use3621"><tspan
+         sodipodi:role="line"
+         x="269.28729"
+         y="521.86914"
+         style="stroke-width:0.264583"
+         id="tspan3625">Utilise GraphQL deltas at the UIS in order to track the</tspan><tspan
+         id="tspan3631"
+         sodipodi:role="line"
+         x="269.28729"
+         y="535.09827"
+         style="stroke-width:0.264583">progress of mutations in the WUI.</tspan><tspan
+         id="tspan3780"
+         sodipodi:role="line"
+         x="269.28729"
+         y="548.32739"
+         style="stroke-width:0.264583" /><tspan
+         id="tspan3782"
+         sodipodi:role="line"
+         x="269.28729"
+         y="561.55652"
+         style="stroke-width:0.264583">Option 1 (left)</tspan><tspan
+         id="tspan3655"
+         sodipodi:role="line"
+         x="269.28729"
+         y="574.78564"
+         style="stroke-width:0.264583" /><tspan
+         id="tspan3661"
+         sodipodi:role="line"
+         x="269.28729"
+         y="588.01477"
+         style="stroke-width:0.264583">This will either involve multiple connections between the UIS</tspan><tspan
+         id="tspan3659"
+         sodipodi:role="line"
+         x="269.28729"
+         y="601.2439"
+         style="stroke-width:0.264583">and Scheduler, an awkward system of trying to speak two</tspan><tspan
+         id="tspan3670"
+         sodipodi:role="line"
+         x="269.28729"
+         y="614.47302"
+         style="stroke-width:0.264583">different protocols down the same pipe or implementing</tspan><tspan
+         id="tspan3672"
+         sodipodi:role="line"
+         x="269.28729"
+         y="627.70215"
+         style="stroke-width:0.264583">GraphQL functionality in Protobuf.</tspan><tspan
+         id="tspan3784"
+         sodipodi:role="line"
+         x="269.28729"
+         y="640.93127"
+         style="stroke-width:0.264583" /><tspan
+         id="tspan3786"
+         sodipodi:role="line"
+         x="269.28729"
+         y="654.1604"
+         style="stroke-width:0.264583">Option 2 (right)</tspan><tspan
+         id="tspan3674"
+         sodipodi:role="line"
+         x="269.28729"
+         y="667.38953"
+         style="stroke-width:0.264583" /><tspan
+         id="tspan3678"
+         sodipodi:role="line"
+         x="269.28729"
+         y="680.61865"
+         style="stroke-width:0.264583">If this proves to be difficult or ugly we should consider chaning</tspan><tspan
+         id="tspan3682"
+         sodipodi:role="line"
+         x="269.28729"
+         y="693.84778"
+         style="stroke-width:0.264583">the transport between the Scheduler and UIS to GraphQL which</tspan><tspan
+         id="tspan3778"
+         sodipodi:role="line"
+         x="269.28729"
+         y="707.0769"
+         style="stroke-width:0.264583">would simplify the arrangement greatly.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="632.724"
+       y="575.3894"
+       id="use3684"><tspan
+         sodipodi:role="line"
+         x="632.724"
+         y="575.3894"
+         style="stroke-width:0.264583"
+         id="tspan3688">Implement a switching system to allow TUI and the CLI to</tspan><tspan
+         id="tspan3694"
+         sodipodi:role="line"
+         x="632.724"
+         y="588.61853"
+         style="stroke-width:0.264583">either go via websockets (to the UIS) or ZMQ/TCP to go</tspan><tspan
+         id="tspan3696"
+         sodipodi:role="line"
+         x="632.724"
+         y="601.84766"
+         style="stroke-width:0.264583">direct to the Scheduler.</tspan></text>
+    <rect
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.865"
+       id="use3698"
+       width="80.92321"
+       height="40.353706"
+       x="436.65149"
+       y="358.97064"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       x="454.36359"
+       y="382.95483"
+       id="use3700"><tspan
+         sodipodi:role="line"
+         id="tspan3732"
+         x="454.36359"
+         y="382.95483"
+         style="stroke-width:0.264583">Scheduler</tspan></text>
+    <rect
+       style="opacity:0.5;fill:#b9a4e9;fill-opacity:1;stroke-width:0.626172"
+       id="use3708"
+       width="20.06896"
+       height="18.342594"
+       x="436.65149"
+       y="399.32434"
+       ry="0" />
+    <rect
+       ry="0"
+       y="462.55237"
+       x="436.86731"
+       height="40.353706"
+       width="80.275856"
+       id="use3710"
+       style="opacity:0.5;fill:#87b5e1;fill-opacity:1;stroke-width:1.85753" />
+    <text
+       id="use3712"
+       y="486.47034"
+       x="455.25708"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';opacity:0.5;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264583"
+         y="486.47034"
+         x="455.25708"
+         id="tspan3748"
+         sodipodi:role="line">UI Server</tspan></text>
+    <rect
+       ry="0"
+       y="399.32434"
+       x="456.72046"
+       height="18.342594"
+       width="20.06896"
+       id="use3720"
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626172" />
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       x="463.28894"
+       y="412.23956"
+       id="use3722"><tspan
+         sodipodi:role="line"
+         x="463.28894"
+         y="412.23956"
+         style="stroke-width:0.264583"
+         id="tspan3762">Δ</tspan></text>
+    <rect
+       style="fill:#9575e1;fill-opacity:1;stroke-width:0.626171"
+       id="use3724"
+       width="20.06896"
+       height="18.342594"
+       x="456.93628"
+       y="444.20972"
+       ry="0" />
+    <text
+       id="use3726"
+       y="457.12488"
+       x="463.5047"
+       style="font-weight:300;font-size:10.5833px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         id="tspan3768"
+         style="stroke-width:0.264583"
+         y="457.12488"
+         x="463.5047"
+         sodipodi:role="line">Δ</tspan></text>
+    <text
+       id="text3776"
+       y="443.98071"
+       x="369.80988"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:31.6361px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato Bold';fill:#adadad;fill-opacity:1;stroke-width:0.370735"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:31.6361px;font-family:Lato;-inkscape-font-specification:'Lato Bold';fill:#adadad;fill-opacity:1;stroke-width:0.370735"
+         y="443.98071"
+         x="369.80988"
+         id="tspan3774"
+         sodipodi:role="line">OR</tspan></text>
+    <text
+       id="text3790"
+       y="-79.832512"
+       x="-137.01283"
+       style="font-weight:300;font-size:33.6117px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.840293"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.840293"
+         y="-79.832512"
+         x="-137.01283"
+         id="tspan3788"
+         sodipodi:role="line">Development Timeline</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:300;font-size:33.6117px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato, Light';stroke-width:0.840293"
+       x="-137.01283"
+       y="320.47125"
+       id="use3792"><tspan
+         sodipodi:role="line"
+         id="tspan3794"
+         x="-137.01283"
+         y="320.47125"
+         style="stroke-width:0.840293">Remaining Work</tspan></text>
+  </g>
+</svg>
