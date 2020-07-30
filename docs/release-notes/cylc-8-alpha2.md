@@ -1,4 +1,4 @@
-# Cylc 8 alpha2
+# Cylc 8 alpha2 Release Notes
 
 Date: July 2020.
 
