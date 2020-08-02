@@ -1,6 +1,9 @@
-# Proposal: Cylc 8 Spawn-on-Demand
+# Proposal (Accepted): Cylc 8 Spawn-on-Demand
 
 **Hilary Oliver**, *December 2019, and February/March 2020*
+
+**Implementation PR merged July 2020
+[cylc-flow#3515](https://github.com/cylc/cylc-flow/pull/3515)**
 
 ## Table of Contents
 
@@ -41,7 +44,7 @@
 
 ## Introduction
 
-Companion PR [cylc-flow#3515](https://github.com/cylc/cylc-flow/pull/3515).
+Implementation PR [cylc-flow#3515](https://github.com/cylc/cylc-flow/pull/3515).
 
 See below for [terminology](#terminology).
 
