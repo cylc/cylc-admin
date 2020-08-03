@@ -68,6 +68,9 @@
 
 Project meetings:
 
+- August 2020 
+  - [Agenda and Notes](meetings/vc-aug-2020.md)
+
 - July 2020 
   - [Agenda and Notes](meetings/vc-jul-2020.md)
 
@@ -132,6 +135,3 @@ Project meetings:
 ### Cylc-8 Pre-planning
 - [GUI Replacement Options](gui-replacement-options) - OUTDATED
 - [Tentative Cylc-8 Roadmap](cylc-8-roadmap) - OUTDATED
-
-
-
