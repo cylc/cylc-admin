@@ -11,11 +11,23 @@ Cylc-7
 Cylc-8.0a2
 - UI and conda meta-package still to do? 
 
+*TBD soon as possible:*
+- *Need UI and UIS releases*
+- *Builds on conda can be incremented and tested pre-release*
+- *Add OS as "admin" to UIS*
+
+- *Remove MS as contact on security.md (cylc-flow)*
+
 Current cylc-flow PRs
 - quick triage?
 
+*Job script subshell PR: we should get this in soon, but DM needs to review and
+is busy; OS to help TT rebase if necessary*
+
 BOM
 - HO had a catch-up meeting with JR; she should be able to join us soon :tada:
+
+*JR to spin up slowly over next 2 weeks*
 
 ## Cylc 8 MVP
 - [Development timeline from the mid-Feb
@@ -35,11 +47,16 @@ HO
 - Functional tests for reflow added
 - NOW: hundreds of conflicts to resolve post integration tests merge :grimace:
 
+- *SOD needs merge not rebase, so we can review the conflict resolution*
+- *need to think about "flow hold" -what exactly does that mean?*
+
 ## Back-end: delta updates
 
 DS on leave (may attend?), but:
 - delta PRs now merged
 - next: post-SoD n-distance windowing
+
+*(discussed and agreed)*
  
 ## UI
 
@@ -48,12 +65,18 @@ BK
 - delta tree status?
 - next: infinite tree
 
+*(discussed and agreed)*
+
 ## Platforms and suite installation etc.
 
 UK team
 - Initial platforms PR ready to go?
 - `rose suite-run` work underway or about to start? 
 - other?
+
+*(discussed and agreed)*
+
+*RD on isodatetime improvements: classes mutable -> hashing -(next)-> caching*
 
 ## AOB?
 
