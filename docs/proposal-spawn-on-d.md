@@ -257,16 +257,21 @@ tasks with no non-absolute triggers to spawn them on demand).
 
 #### Retriggering
 
-Retriggering a finished absolute parent (with `--reflow`) will cause it to
-respawn its first child, and then spawn subsequent children as normal (spawn
-next instance on release from the runahead pool as described above)  - that's
-what the graph says. But we may want to provide an option to change the first
-child spawned to a current cycle rather than going back to the start (use case:
-retrigger a start-up task that rebuilds a model or whatever, but don't re-run
-old cycles). Alternatively, simply retrigger the absolute parent without
-reflow (this will run only the parent), then retrigger with reflow the first
-child that you want to continue from (this will trigger the targeted child,
-and that will spawn the next instance on release from the runahead pool, etc.).
+Retriggering a finished absolute parent (with `--reflow`) causes it to spawn
+its first child, and subsequent instances of the parent will also continue to
+be spawned as they drop out of the runahead pool as described above.
+
+We may need options to:
+- with `--reflow`, spawn children, but not subsequent parentless or
+  absolute-parented tasks (see TODO list below).
+- specify the first child to be spawned by a retriggered absolute parent rather
+  than going back to the first cycle (use case: retrigger a start-up task that
+  rebuilds a model but does not re-run all the old cycles that depend on the
+  model build, just new ones).  Alternatively, retrigger the absolute parent
+  without reflow, then retrigger (with reflow) the first child that you want
+  the children to continue from
+
+(Added to TODO list below)
 
 ### Failed task handling
 
@@ -732,6 +737,27 @@ graphically the consequences of their intended reflow).
 
 Follow-up changes needed in `cylc/cylc-flow`:
 
+- `cylc spawn` acts like `cylc trigger` on the children instead of the parent,
+  (unless the spawned tasks have other prerequisites that are not satisfied) so
+  it probably needs an explicit `--reflow` option.
+
+- (DM) Do we need to support reflow without continued spawning of parentless or
+  absolute-parented tasks?  Example:
+  ```
+  R1 = start
+  P1 = start[^] => foo => bar & baz => qux
+  ```
+  If I retrigger `foo.6` with `--reflow` it should cause `bar.6` and `baz.6`
+  then `qux.6` to run, but it will also result in `foo.7` being spawned and so
+  on - is that to be expected or not? (Note we an already get restricted
+  child-only reflow by triggering `foo.6` without reflow, and then `cylc spawn
+  foo.6` to spawn the children of `foo.6`).
+
+- Consider allowing users to specify the first child to be spawned by a
+  retriggered absolute parent rather than going back to the first cycle (use
+  case: retrigger a start-up task that rebuilds a model but does not re-run all
+  the old cycles that depend on the model build, just new ones).
+ 
 - Consider the clarity and usefulness of all SoD log messages. Messages about
   [not spawning suicide-triggered tasks](#suicide-trigger-implementation) have
   been noted as confusing. Move most to DEBUG level?
@@ -740,8 +766,9 @@ Follow-up changes needed in `cylc/cylc-flow`:
   have absolute triggers (auto-spawning them all isn't really a problem, but it
   is less "on demand" than it could be).
 
-- Change to event-driven triggering (easy: see TODO at the end of
-  task_pool:spawn_on_ouput)
+- Event-driven triggering: easy (see TODO at the end of
+  `task_pool:spawn_on_ouput`) but need to consider the effect on batched job
+  submission.
 
 - Consider re-instating (most of?) the pre-SoD `cylc insert` functional tests
   as `cylc trigger` tests.
