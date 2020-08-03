@@ -45,7 +45,9 @@ Merged :tada: (One non-trivial problem found and fixed in final review)
 
 Now:
 - Prioritize and address follow-up issues
-- adapt the system to it: n-distance window
+- adapt the system to it:
+  - n-distance window! (historical tasks loaded by UIS from DB)
+  - what else?
 
 ## UI
 - (currently blocked waiting on merge of delta tree PR, but more or less agreed now)
