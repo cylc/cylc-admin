@@ -15,7 +15,7 @@
 
 ## Top priorities
 
-Is alpha-3 by late September feasible? (Probably not!)
+Is first beta release feasible by late September? (Probably not!)
 
 - [Development timeline from 
   workshop](https://cylc.github.io/cylc-admin/feb2020-workshop-report#tentative-development-timeline)
