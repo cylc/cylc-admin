@@ -263,8 +263,9 @@ suite-run functionality:
      * We will probably need a third ssh connection for transferring the client
        public key.
    * The remote installation will include particular files/directories.
-     * Items to include:
-       `.service/server.key .service/contact app/ bin/ etc/ lib/`.
+     * Items to include: `.service/server.key app/ bin/ etc/ lib/`. Note that
+       `.service/contact` is not included since we may need to be able to modify
+       this file on remote hosts depending on the comms method.
      * We will use the `--delete` rsync option so that any files removed from
        from installed directories also get removed from the install targets on
        reload/restart.
@@ -277,17 +278,52 @@ suite-run functionality:
          using a wide range of sub-directories such as `python`, `util`, `data`
          (although it is not clear how many of these would need to be installed
          on remote platforms).
-       * Proposal: we allow the include list to be configurable at the global
-         level (to cater for old suites which need this) but encourage users to
-         adapt their workflows to use the supported directories and, therefore,
-         don't allow this to be configured at the suite level.
-     * The alternative is to use exclude rather than include and make sure we
-       exclude any file / directories which are generated at run time or target
-       specific (`log/ share/ work/` + various files / directories in
-       `.service/`).
-       * There are some suites around which write to top level directories (not
-         sure if this is deliberate) - exclude would be very bad in these cases.
-         Therefore, include is the safer option.
+       * If we allow global configuration this is likely to lead to portability
+         issues where a suite only works if you modify your global config. If
+         additional items need to be installed it's better to force these to be
+         configured in the suite. Note that this will require changes to some
+         Cylc 7 suites in order for them to work at Cylc 8.
+       * Hopefully it should be fine to install the same files to all install
+         targets. If there are cases where this is an issue we can recommend the
+         use of install tasks as a workaround.
+       * `rose suite-run` currently installs everything other than a set list of
+         exclusions. However, it has been known for suites to write to top level
+         directories (possibly not deliberate) so this is not a good default
+         behaviour (especially with the `--delete` rsync option).
+       * Proposal:
+         * Install the same items to all install targets.
+         * Allow the installation items to be configured at the suite level via
+           either of the following methods:
+           * A new setting `[scheduler]install` (with a default value of None)
+             where you can specify extra top level directories and files to be
+             installed, e.g. `extra-dir-to-copy/ extra-file-to-copy`
+             (directories must have a trailing slash). Patterns are allowed (as
+             defined by rsync), e.g `*/ *` would mimic the current
+             `rose suite-run` behaviour.
+           * Create an extra file in the suite directory named
+             `.rsync-filter` where you can specify rsync filter rules. For
+             example, to configure an additional directory
+             "data" to be copied you would simply create the file
+             `.rsync-filter` in the top level directory and add the line
+             `+ /data/***`. We can document a simple example but refer users who
+             want to do anything complicated to the
+             [rsync man page](https://linux.die.net/man/1/rsync). Advantages:
+             a) gives users access to the full power of rsync filters;
+             b) this file can be added to cylc 7 suites without breaking them.
+         * The rsync filter options will be applied in the following order (note
+           that the first matching pattern is acted on):
+           * Include files required by cylc:
+             `--include='/.service/' --include='/.service/server.key'`
+           * Exclude directories which should never be copied:
+             `--exclude='.service/***' --exclude='log' --exclude='share' --exclude='work'`
+           * Apply any rules define in an `.rsync-filter` file:
+             `--filter=': .rsync-filter'`
+           * Add the standard set of directories:
+             `--include='/app/***' --include='/bin/***' --include='/etc/***' --include='/lib/***'`
+           * Add any extra items defined in the `[scheduler]install` suite
+             setting. Note that any items ending in `/` will have `***` added to
+             the pattern (which matches everything in the directory).
+           * Exclude everything else: `--exclude='*'`
 
 2. Support moving some directories to different locations with symlinks to the
    original location.

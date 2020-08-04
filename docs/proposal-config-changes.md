@@ -448,11 +448,6 @@ SPEC = {
         'URL': [VDR.V_STRING, ''],
         '__MANY__': [VDR.V_STRING, ''],
     },
-    'cylc': {
-        'simulation': {
-            'disable suite event handlers': [VDR.V_BOOLEAN, True],
-        },
-    },
     'scheduler': {
         'UTC mode': [VDR.V_BOOLEAN, False],
         'cycle point format': [VDR.V_CYCLE_POINT_FORMAT],
