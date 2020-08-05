@@ -1,4 +1,4 @@
-# Proposal (Accepted): Cylc 8 Spawn-on-Demand
+# Proposal (Accepted and Implemented): Cylc 8 Spawn-on-Demand
 
 **Hilary Oliver**, *December 2019, and February/March 2020*
 
@@ -261,17 +261,8 @@ Retriggering a finished absolute parent (with `--reflow`) causes it to spawn
 its first child, and subsequent instances of the parent will also continue to
 be spawned as they drop out of the runahead pool as described above.
 
-We may need options to:
-- with `--reflow`, spawn children, but not subsequent parentless or
-  absolute-parented tasks (see TODO list below).
-- specify the first child to be spawned by a retriggered absolute parent rather
-  than going back to the first cycle (use case: retrigger a start-up task that
-  rebuilds a model but does not re-run all the old cycles that depend on the
-  model build, just new ones).  Alternatively, retrigger the absolute parent
-  without reflow, then retrigger (with reflow) the first child that you want
-  the children to continue from
-
-(Added to TODO list below)
+- [TODO](#todo) should we always auto-spawn these tasks in a reflow?
+- [TODO](#todo) specify a new first child on retriggering an absolute parent?
 
 ### Failed task handling
 
@@ -735,7 +726,8 @@ graphically the consequences of their intended reflow).
 
 ### TODO
 
-Follow-up changes needed in `cylc/cylc-flow`:
+The following have been transferred to [sod-follow-up Issues in
+cylc-flow](https://github.com/cylc/cylc-flow/labels/sod-follow-up)
 
 - `cylc spawn` acts like `cylc trigger` on the children instead of the parent,
   (unless the spawned tasks have other prerequisites that are not satisfied) so
@@ -756,7 +748,9 @@ Follow-up changes needed in `cylc/cylc-flow`:
 - Consider allowing users to specify the first child to be spawned by a
   retriggered absolute parent rather than going back to the first cycle (use
   case: retrigger a start-up task that rebuilds a model but does not re-run all
-  the old cycles that depend on the model build, just new ones).
+  the old cycles that depend on the model build, just new ones; alternatively,
+  just retrigger the absolute parent without reflow, then retrigger (with
+  reflow) the first child that you want the children to continue from).
  
 - Consider the clarity and usefulness of all SoD log messages. Messages about
   [not spawning suicide-triggered tasks](#suicide-trigger-implementation) have
