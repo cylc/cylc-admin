@@ -50,6 +50,20 @@ You may find the following idiom useful in a `flow-test.rc` file:
 ```
 
 
+Debugging Pytests
+=================
+
+You should first run tests in verbose mode using ``-vv``.
+
+If you wish to use ``breakpoint()`` to investigate failures then you will need
+to add the following to your pytest command ``pytest <path> --dist=no -n0`` to
+turn off the test distribution mode.
+
+>  Pytest's own documetation is well worth a read:
+>  https://docs.pytest.org/en/stable/usage.html
+
+
+
 A brief guide to debugging Rose & Cylc (functional) tests
 =========================================================
 
