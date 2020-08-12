@@ -110,7 +110,7 @@ test files (should) contain:
 
 1.  A description such as
     `# Test validating simple multi-inheritance suites.`
-2.  They will add the functions in the test\_header file to the shell:
+2.  They will add the functions in the test_header file to the shell:
     `. "$(dirname "$0")/test_header"`.
 
     > **hint**
@@ -120,7 +120,7 @@ test files (should) contain:
     > docstring. If you see an unfamiliar command in a test script it
     > may well be defined `test_header`.
 
-3.  The test\_header function `set_test_number 1` which allows the test
+3.  The test_header function `set_test_number 1` which allows the test
     script to tell how many tests to expect.
 4.  One or more testing functions from `test_header`. Common examples
     include `run_ok`, `run_fail`, `cmp_ok`, `grep_ok` and `reftest`.
@@ -156,7 +156,7 @@ cat ${TEST_NAME}.stdout >&2
 
 Many tests also create and run a suite: You can find this in your
 cylc-run folder under the name
-\`cylctb-\<date-time-string\>: Investigating this suite may often point you to the
+`cylctb-<date-time-string>`: Investigating this suite may often point you to the
 cause of failure.
 
 Using Python Debugger
@@ -167,32 +167,29 @@ What you can do is place the following in the test before the cylc or rose
 command you wish to debug:
 
 ```bash
-   DUMPDIR=\$(mktemp -d)
-   echo "Your test setup stuff is at \${DUMPDIR}" \>&2
-   cp -r \* \${DUMPDIR}
-   exit 0
+DUMPDIR=$(mktemp -d)
+echo "Your test setup stuff is at ${DUMPDIR}" >&2
+cp -r * ${DUMPDIR}
+exit 0
 ```
 
 This will dump all the test setup in a temporary directory for you to play with.
 If you want to debug a python program you can add
-Python debug statements
-\<<https://docs.python.org/3/library/pdb.html>\>\_ to
+[Python debug statements](https://docs.python.org/3/library/pdb.html) to
 the code and run it:
 
 These are:
 
 ```python
+# Python ≥ 3.7:
+breakpoint()
 
-   breakpoint()
-   \# at Python ≥ 3.7
-
-   \# or
-   import pdb; pdb.set\_trace()
-   \# at Python \< 3.7
+# or Python < 3.7:
+import pdb; pdb.set_trace()
 ```
 
 Alternatively you may find that you can run the suite from your test.
-Functional tests of form path/to/test.t\` often come with a suite in the
+Functional tests of form `path/to/test.t` often come with a suite in the
 form `path/to/test/suite.rc`. You will need to remember to manually
 provide any environment variables the workflow needs, and may need to
 alter your `flow.rc` to match `flow-tests.rc`.
@@ -202,7 +199,7 @@ Traps for the unwary
 
 #### `grep_ok` vs `comp_ok`
 
-Tests that use comp\_ok generally compare `${TEST_NAME}.stdout` or
+Tests that use `comp_ok` generally compare `${TEST_NAME}.stdout` or
 `${TEST_NAME}.stderr` against either a reference or against `/dev/null`.
 They expect the entire output to be **exactly** the same as the
 reference and are therefore very unforgiving.
