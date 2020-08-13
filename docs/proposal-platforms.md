@@ -316,7 +316,7 @@ suite-run functionality:
              `--include='/.service/' --include='/.service/server.key'`
            * Exclude directories which should never be copied:
              `--exclude='.service/***' --exclude='log' --exclude='share' --exclude='work'`
-           * Apply any rules define in an `.rsync-filter` file:
+           * Apply any rules defined in an `.rsync-filter` file:
              `--filter=': .rsync-filter'`
            * Add the standard set of directories:
              `--include='/app/***' --include='/bin/***' --include='/etc/***' --include='/lib/***'`
@@ -327,8 +327,8 @@ suite-run functionality:
 
 2. Support moving some directories to different locations with symlinks to the
    original location.
-   * New platform settings:
-     * `[symlink dir]run` (default: `none`):
+   * New settings:
+     * `[symlink dirs][<install target>]run` (default: `none`):
        Specifies the directory where the workflow run directories are
        created. If specified, the workflow run directory will be created in
        `<run dir>/<workflow-name>` and a symbolic link will be
@@ -336,28 +336,28 @@ suite-run functionality:
        workflow run directory will be created in
        `$HOME/cylc-run/<workflow-name>`. All the workflow files and the
        `.service` directory get installed into this directory.
-     * `[symlink dir]log` (default: `none`):
+     * `[symlink dirs][<install target>]log` (default: `none`):
        Specifies the directory where log directories are created. If
        specified the workflow log directory will be created in
        `<log dir>/<workflow-name>/log` and a symbolic link will be
        created from `$HOME/cylc-run/<workflow-name>/log`. If not specified
        the workflow log directory will be created in
        `$HOME/cylc-run/<workflow-name>/log`.
-     * `[symlink dir]share` (default: `none`):
+     * `[symlink dirs][<install target>]share` (default: `none`):
        Specifies the directory where share directories are created. If
        specified the workflow share directory will be created in
        `<share dir>/<workflow-name>/share` and a symbolic link will
        be created from `<$HOME/cylc-run/<workflow-name>/share`. If not
        specified the workflow share directory will be created in
        `$HOME/cylc-run/<workflow-name>/share`.
-     * `[symlink dir]share/cycle` (default: `none`):
+     * `[symlink dirs][<install target>]share/cycle` (default: `none`):
        Specifies the directory where share/cycle directories are created.
        If specified the workflow share/cycle directory will be created in
        `<share/cycle dir>/<workflow-name>/share/cycle` and a symbolic link
        will be created from `$HOME/cylc-run/<workflow-name>/share/cycle`.
        If not specified the workflow share/cycle directory will be created in
        `$HOME/cylc-run/<workflow-name>/share/cycle`.
-     * `[symlink dir]work` (default: `none`):
+     * `[symlink dirs][<install target>]work` (default: `none`):
        Specifies the directory where work directories are created. If
        specified the workflow work directory will be created in
        `<work dir>/<workflow-name>/work` and a symbolic link will be
@@ -388,14 +388,23 @@ suite-run functionality:
      * Rose also provides the option of using the login shell for remote
        commands (which may give access to more environment variables). Should we
        add similar support to Cylc for sites that allow it?
-   * Any platforms which use the same target must use the same symlink
-     directories.
-     * In order to reduce duplication (and configuration errors) we will support
-       platform inheritance so that you can define a platform based on an
-       existing platform.
-       * Note: `inherit` will imply using the same `install target`.
-     * Do we need comms method to be the same as well?
-   * The `[symlink dir]` settings are only applied when a workflow is installed
+   * Symlink directories are specified per install target rather than per
+     platform. Any platforms which use the same install target must use the same
+     symlink directories. Note that the assumption is that there are no other
+     settings which need to be defined per install target.
+     * What about comms method? If possible this should be supported per
+       platform. For example you could have a case where HPC login nodes can use
+       a different method compared with the nodes where jobs are run. This
+       implies comms method needs to go back to being specified in the job
+       rather rather than in the contact file.
+     * If we ever find a need to define other settings per install target we
+       should introduce a new `install target` section and move the
+       `[symlink dirs]` section.
+   * In order to reduce duplication (and configuration errors) we will support
+     platform inheritance so that you can define a platform based on an
+     existing platform.
+     * Note: `inherit` will imply using the same `install target`.
+   * The `[symlink dirs]` settings are only applied when a workflow is installed
      (or first run on a target). Therefore, changes to these settings have no
      affect on running or restarting workflows.
    * At the moment this proposal does not provide any way to relocate the
@@ -409,20 +418,12 @@ suite-run functionality:
 Example platform configurations:
 ```ini
 [platforms]
-    [[localhost]]
-        [[[symlink dir]]]
-            log = $DATADIR
-            share = $DATADIR
-            share/cycle = $SCRATCH
-            work = $SCRATCH
-    [[desktop\d\d,laptop\d\d]] # Long version
+    # The localhost platform is defined by default so there is no need to
+    # specify it if it just uses default settings
+    # [[localhost]]
+    [[desktop\d\d,laptop\d\d] # Specify install target
         install target = localhost
-        [[[symlink dir]]]
-            log = $DATADIR
-            share = $DATADIR
-            share/cycle = $SCRATCH
-            work = $SCRATCH
-    [[desktop\d\d,laptop\d\d]] # Short version using inherit
+    [[desktop\d\d,laptop\d\d]] # Equivalent using inherit
         inherit = localhost
     [[sugar]]
         inherit = localhost
@@ -432,10 +433,6 @@ Example platform configurations:
         hosts = hpcl1, hpcl2
         retrieve job logs = True
         batch system = pbs
-        [[[symlink dir]]]
-            run = $DATADIR
-            share/cycle = $SCRATCH
-            work = $SCRATCH
     [[hpcl1-bg]]
         inherit = hpc
         hosts = hpcl1
@@ -443,6 +440,24 @@ Example platform configurations:
     [[hpcl2-bg]]
         inherit = hpcl1-bg
         hosts = hpcl2
+[symlink dirs]
+    [[localhost]]
+        log = $DATADIR
+        share = $DATADIR
+        share/cycle = $SCRATCH
+        work = $SCRATCH
+    [[hpc]]
+        run = $DATADIR
+        share/cycle = $SCRATCH
+        work = $SCRATCH
+# Alternative if we are concerned there may be other install target properties
+[install targets]
+    [[localhost]]
+        [[[symlink dir]]]
+            log = $DATADIR
+            share = $DATADIR
+            share/cycle = $SCRATCH
+            work = $SCRATCH
 ```
 
 ## Further enhancements
