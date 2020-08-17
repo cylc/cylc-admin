@@ -283,46 +283,35 @@ suite-run functionality:
          additional items need to be installed it's better to force these to be
          configured in the suite. Note that this will require changes to some
          Cylc 7 suites in order for them to work at Cylc 8.
-       * Hopefully it should be fine to install the same files to all install
-         targets. If there are cases where this is an issue we can recommend the
-         use of install tasks as a workaround.
+       * We will only support installing the same files to all install targets
+         initially. If there are cases where this is an issue we can recommend
+         the use of install tasks as a workaround.
+         * We can add support for installing on a task or platform basis later
+           if needed.
        * `rose suite-run` currently installs everything other than a set list of
          exclusions. However, it has been known for suites to write to top level
          directories (possibly not deliberate) so this is not a good default
          behaviour (especially with the `--delete` rsync option).
        * Proposal:
          * Install the same items to all install targets.
-         * Allow the installation items to be configured at the suite level via
-           either of the following methods:
-           * A new setting `[scheduler]install` (with a default value of None)
-             where you can specify extra top level directories and files to be
-             installed, e.g. `extra-dir-to-copy/ extra-file-to-copy`
-             (directories must have a trailing slash). Patterns are allowed (as
-             defined by rsync), e.g `*/ *` would mimic the current
-             `rose suite-run` behaviour.
-           * Create an extra file in the suite directory named
-             `.rsync-filter` where you can specify rsync filter rules. For
-             example, to configure an additional directory
-             "data" to be copied you would simply create the file
-             `.rsync-filter` in the top level directory and add the line
-             `+ /data/***`. We can document a simple example but refer users who
-             want to do anything complicated to the
-             [rsync man page](https://linux.die.net/man/1/rsync). Advantages:
-             a) gives users access to the full power of rsync filters;
-             b) this file can be added to cylc 7 suites without breaking them.
+         * Allow the installation items to be configured at the workflow level
+           via a new setting `[scheduler]install` (with a default value of
+           `app/ bin/ etc/ lib/`) where you can specify which top level
+           directories and files are to be installed, e.g.
+           `dir-to-copy/ file-to-copy` (directories must have a trailing slash).
+           Patterns are allowed (as defined by rsync), e.g `*/ *` would mimic
+           the current `rose suite-run` behaviour.
          * The rsync filter options will be applied in the following order (note
            that the first matching pattern is acted on):
            * Include files required by cylc:
              `--include='/.service/' --include='/.service/server.key'`
            * Exclude directories which should never be copied:
              `--exclude='.service/***' --exclude='log' --exclude='share' --exclude='work'`
-           * Apply any rules defined in an `.rsync-filter` file:
-             `--filter=': .rsync-filter'`
-           * Add the standard set of directories:
-             `--include='/app/***' --include='/bin/***' --include='/etc/***' --include='/lib/***'`
-           * Add any extra items defined in the `[scheduler]install` suite
-             setting. Note that any items ending in `/` will have `***` added to
-             the pattern (which matches everything in the directory).
+           * Add any items defined in the `[scheduler]install` workflow setting.
+             Note that all items will have a leading slash added and any items
+             ending in `/` will have a trailing `***` added to the pattern
+             (which matches everything in the directory).
+             e.g. `--include='/dir-to-copy/***' --include='/file-to-copy'`
            * Exclude everything else: `--exclude='*'`
 
 2. Support moving some directories to different locations with symlinks to the
