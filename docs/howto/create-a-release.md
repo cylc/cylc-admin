@@ -53,6 +53,19 @@
    rm -r dist
 ```
 
+## Test the docs
+
+For any projects which are auto-documented by cylc-doc, currently:
+
+* cylc-flow
+
+Ensure the docs build against master by manually triggering the test workflow
+in cylc-doc.
+
+This will catch syntax errors, broken urls etc which need to be fixed
+prior to releasing the project.
+
+
 ## Tag the version
 
 ```bash
