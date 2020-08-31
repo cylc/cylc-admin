@@ -68,7 +68,10 @@
 
 Project meetings:
 
-- August 2020 
+- September 2020 
+  - [Agenda and Notes](meetings/vc-sep-2020.md)
+
+- August 2020
   - [Agenda and Notes](meetings/vc-aug-2020.md)
 
 - July 2020 
