@@ -17,10 +17,11 @@
 Progress:
 - SoD merged (follow-ups from proposal now Issues; priorities TBD)
 - Platforms merged
-- infinite tree not needed! (delta updates made plain tree perform well)
+- Infinite tree not needed! (delta updates made plain tree perform well)
 - UI filtering almost ready
 - CLI GraphQL almost ready
-- async scan (including stopped flows) almost ready
+- Async scan (including stopped flows) almost ready
+- Rsync files to install targets (PR up today!)
 
 Do we need another alpha release? (meh)
 
@@ -30,22 +31,23 @@ Beta release MVP October/November?
   - integrated mutations
   - scan stopped flows, and allowing starting them
 - UIS
-  - event-driven n-distance datastore (n=1 in scheduler)
+  - **event-driven n-distance datastore (n=0,1 in scheduler)**
   - load older tasks from disk
   - start stopped flows
 - Other
-  - `rose suite-run` migration (suite installation etc.)
+  - `rose suite-run` migration (file installation etc.)
   - CLI via GraphQL
   - task status naming changes (incl. xtrigger PR)
 
-- UIS subservices, cross-user functionality, etc...
-
 Nice to have (for beta release):
-- new graph view - (hierarchical layout less important now?)
+- New graph view - (hierarchical layout less important now?)
 - Cylc 8 migration guide with all breaking changes listed
-- cross-user functionality
-- delta-driven TUI (needs homemade GraphQL subscriptions at the scheduler)
+- Cross-user functionality
+- Delta-driven TUI (needs homemade GraphQL subscriptions at the scheduler)
 
+Questions:
+- What should gscan show in the post task-pool world? ("number of succeeded
+  tasks"??)
  
 ## cylc/cylc-flow
 
