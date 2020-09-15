@@ -464,7 +464,8 @@ single character label.
   needed because there aren't any waiting or finished tasks hanging around to
   be triggered.
 
-- `cylc spawn` is repurposed to spawn downstream on specified outputs. 
+- `cylc spawn` is repurposed to spawn downstream on specified outputs. (And now
+  renamed to `cylc set-outputs`).
 
 - `cylc remove` not needed?  In SoS removing a task instance from the pool
   removes the abstract task entirely from the workflow, if the next instance
@@ -729,10 +730,6 @@ graphically the consequences of their intended reflow).
 The following have been transferred to [sod-follow-up Issues in
 cylc-flow](https://github.com/cylc/cylc-flow/labels/sod-follow-up)
 
-- `cylc spawn` acts like `cylc trigger` on the children instead of the parent,
-  (unless the spawned tasks have other prerequisites that are not satisfied) so
-  it probably needs an explicit `--reflow` option.
-
 - (DM) Do we need to support reflow without continued spawning of parentless or
   absolute-parented tasks?  Example:
   ```
@@ -743,7 +740,7 @@ cylc-flow](https://github.com/cylc/cylc-flow/labels/sod-follow-up)
   then `qux.6` to run, but it will also result in `foo.7` being spawned and so
   on - is that to be expected or not? (Note we an already get restricted
   child-only reflow by triggering `foo.6` without reflow, and then `cylc spawn
-  foo.6` to spawn the children of `foo.6`).
+  foo.6` [now `cylc set-outputs`] to spawn the children of `foo.6`).
 
 - Consider allowing users to specify the first child to be spawned by a
   retriggered absolute parent rather than going back to the first cycle (use
