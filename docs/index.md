@@ -26,7 +26,10 @@
 
 ## Change Proposals
 
-- [Authentication between CLI & Scheduler](proposal-cli-wfs-authentication.md)
+- [Cylc 8 Back-end Authentication (CurveZMQ)](cylc-8-authentication.md)
+    - [cylc-8-authentication.png](img/cylc-8-authentication.png)
+    - ([image source docx](img/keys.docx))
+
 - [Platforms Config](proposal-platforms.md)
 
 - [`rose suite-run` migration](proposal-rose-suite-run.md)
@@ -134,6 +137,7 @@ Project meetings:
 ## Old Stuff
 
 [Left-over actions](meetings/left-over-actions.md)
+- [Authentication between CLI & Scheduler](proposal-cli-wfs-authentication.md)
 
 ### Cylc-8 Pre-planning
 - [GUI Replacement Options](gui-replacement-options) - OUTDATED
