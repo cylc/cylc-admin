@@ -103,75 +103,74 @@ The remaining points can happen any time after 1) is complete although note that
 
 `cylc install` - new command to install workflows.
 * By default, `cylc install` will install the workflow found in `$PWD` into
-  `~/cylc-run/$(basename $PWD)/runN` (where `runN` = `run1`, `run2` ...)
-  and then run it.
+  `~/cylc-run/$(basename $PWD)/runN` (where `runN` = `run1`, `run2` ...).
 * If `run1` already exists it will install into `run2` (and so on).
   Create a symlink `runN` pointing at the latest run.
-* `--run-name=my-run` implies install into `~/cylc-run/$(basename $PWD)/my-run`
-  (a "named" run). If the target directory already exists then fail.
+* `--run-name=my-run` implies install into `~/cylc-run/$(basename $PWD)/my-run`.
+  If the target directory already exists then fail.
 * `--no-run-name` implies install into `~/cylc-run/$(basename $PWD)`.
 * `--flow-name=my-flow` implies install into `~/cylc-run/my-flow/runN`.
-* `--directory=/path/to/flow` implies install the workflow found in
+* `--directory=/path/to/flow` (`-C ...`) implies install the workflow found in
   `/path/to/flow` (rather than `$PWD`).
-* All the options accepted by `cylc play` will be accepted by `cylc install` and
-  applied when the workflow is run. Relevant options will also apply to other
-  cylc commands when operated on the installed suite (e.g. `cylc validate`).
-* `--install-only` implies install the workflow, validate it and record what
-  options are to be used when the workflow is run but don't actually run it.
-  * This will require the creation of a new options file. Note that these
-    options will provide the defaults for subsequent commands such as
-    `cylc play` but can still be overridden.
-* Installation will involved copying over the files found in the source directory
-  * This will exclude any `.git` or `.svn` directories.
-  * Should it also exclude any `log`, share` or `work` directories?
-  * Should we configure what get copied or just copy everything else?
-  * The installation should fail if none of the files `rose-suite.conf`,
-    `suite.rc` or `cylc.flow` exist.
+* All the options accepted by `cylc play` will be accepted by `cylc install`.
+  These options will provide the defaults for when `cylc play` is run with this
+  installed workflow (but they can still be overridden). Relevant options will
+  also apply to other cylc commands when operated on the installed workflow
+  (e.g. `cylc validate`). Note that supporting this will require the creation of
+  a new options file.
+* Installation will involved copying over the files found in the source
+  directory.
+  * This will exclude any `.git`, `.svn`, `log`, share` or `work` directories.
+    Everything else will be copied.
+  * The installation should fail if neither `suite.rc` nor `cylc.flow` exist.
   * The installation should fail if the target directory is not valid.
     e.g. you cannot install into `~/cylc-run/my-flow/runN` if `~/cylc-run/my-flow`
     already contains an installed suite.
 * Version control information will be recorded where relevant (svn/git).
-* The `log,`share`, share/cycle` and `work` directories  will be created
+* The `log, `share`, share/cycle` and `work` directories  will be created
   following whatever symlink rules are defined for localhost
   (over-ridable via command line options).
-* Support Rose optional configuration via the environment variable
-  `ROSE_SUITE_OPT_CONF_KEYS` or the option `--rose-opt-conf-key=KEY`.
+  * This will continue to support "symlinked alternate run directories"
+    (see [cylc-flow #2935](https://github.com/cylc/cylc-flow/pull/2935)).
 
-`cylc play` - new command to run an installed workflow.
+`cylc play` - new command to run an installed workflow
+(replacing `cylc run|start`).
 * Will use any relevant options specified as part of the install unless
   overridden on the command line.
 * Options will look very similar to current `cylc run` command but with no
-  `[REG]` or `[START_POINT]` arguments.
+  `[START_POINT]` argument (already supported as an option).
 * Fail if the workflow is already running or has completed
   (need to be able to detect completed run).
 * Continue running the workflow if it was stopped before completion
   (replaces `cylc restart`).
-* `--rerun` implies rerun the installed workflow from the beginning.
-  * Not the normal way of working but still required for some use cases
-    (e.g. operational warm starts in cases where reflow is not considered
-    possible).
-  * Implies each new run needs to use a new timestamped log directory
-    (similar to current `rose suite-run`).
-    However, propose not to support tar gzipping of these directories.
-    Also, do not propose to provide access to the old logs via the UI.
-* `--clean[=log,share,share/cycle,work] implies clean out the relevant runtime
-  directories prior to re-running (implies `--rerun`).
-  Note: cleaning of install targets other than localhost should be done at run
-  time via remote init to avoid start up delays.
-* `--reload` - equivalent to starting the workflow and then immediately
-  performing a reload
-  * `cylc play` will always load the latest workflow definition found in the run
-    directory and will respect any command line options (which may alter the
-    workflow definition). Therefore the `--reload` option only applied to
-    workflows installed via `cylc install` and implies updating the workflow
-    definition from the source.
+* If, for some reason, you want to re-run a workflow from the beginning you will
+  be able to use `cylc clean` to clean out the log directory (and whatever other
+  directories you want removing) after which `cylc play` can be used.
+* Note that `cylc play` will always load the latest workflow definition found in
+  the run directory and will respect any command line options (which may alter
+  the workflow definition). Therefore, continuing a workflow using `cylc play`
+  effectively implies a reload.
   * The processed `cylc.flow` files will be kept as at present so there will be
     a record of any changes.
+* Support Rose optional configuration via the environment variable
+  `ROSE_SUITE_OPT_CONF_KEYS` or the option `--rose-opt-conf-key=KEY`.
 
-Note that REG / SUITE will be removed as an argument from other relevant
-commands (e.g. `cylc validate`, `cylc hold`). Instead, commands will expect to
-find the workflow in $PWD unless the workflow location is specified via a
-`-C, --directory` option (like tar).
+`cylc reinstall` - new command to re-install workflows.
+* Very similar to the `cylc install` command except that this applies to a
+  previously installed workflow (i.e. you run this command in the directory of
+  the installed workflow, not in the source directory).
+* The rsync will use `--delete` to ensure that any previously installed files
+  which have been removed from the source directory also get removed from the
+  installed workflow.
+  * Note that this will have the effect of removing any files installed via
+    `rose-suite.conf`. They will get recreated by a subsequent reload or play but
+    could affect a running workflow.
+* Any options specified as part of the original install will be retained unless
+  overridden on the command line.
+* Consider a `--dry-run` option to report what would be changed?
+  * Does this replace `rose suite-cmp-vc`?
+
+`cylc reload` - no change from existing command.
 
 `cylc validate` - as per existing command with the following changes:
 * If validating a workflow installed with `cylc install` then use any relevant
@@ -180,22 +179,50 @@ find the workflow in $PWD unless the workflow location is specified via a
 * Will work fine on source directories which include `rose-suite.conf` files.
 * No `--strict` mode
   (naked dummy tasks no longer allowed - all tasks must be declared).
+  * This one is controversial and requires further discussion!
+* Cyclic graph validation can be quite slow and is currently included as part of
+  `--strict`. Add a `--no-cyclic-graph-validation` option to disable this?
 
-`cylc reload` - as per existing command with the following changes:
-* Update the workflow source files from the source directory (if installed via
-  `cylc install`) unless `--no-source` is specified.
+Several combinations of the above commands will be commonly used.
+Propose to support these as separate commands:
+* `cylc install-play` (`cylc ip` for short?)
+* `cylc install-validate`
+* `cylc reinstall-reload`
 
-`cylc hold|release|unhold` - no change
+`cylc pause|unpause` - new commands replacing `cylc hold|release|unhold`
+* Note that `cylc stop` will be modified to unpause a workflow before stopping.
+  This means that a stopped workflow will not be paused when it is continued via
+  `cylc play`. On the other, a workflow which is continued for any other reason
+  (e.g. the server died) will retain its paused status.
 
 `cylc register` - remove: functionality should now be performed by
 `cylc install` or `cylc play` with no need for a separate command.
 
-`cylc run|start` - remove: replaced by `cylc play`
-* Should we stick with `cylc run` rather than `cylc play`?
+`cylc clean` - new command to replace `rose suite-clean`.
+* This should support options which allow you to just clean subsets of the data.
+  For example, if you clean the `log` directory this allows you to rerun a
+  workflow (keeping the existing data in `share` if that is what you want).
+  The default will be to remove everything including the top level directory.
+* Support an option to clean all install targets other than localhost?
+* We may also want an option to archive the log directory rather than remove it.
+  This could simply imply renaming the directory, perhaps with a timestamp
+  (similar to what `rose suite-run` does but without tar gzipping the
+  directory). This would allow a workflow to be warm started without completely
+  losing the previous log files (this is an operational requirement at present
+  although we hope that re-flows will reduce or remove the need for this).
+  Note that we would not provide any further support for these archived log
+  directories (e.g. no support for accessing the logs via the UI).
+* The file `log/rose-suite-run.locs` is currently required by `rose suite-clean`
+  but `cylc clean` should probably get this information from the database?
 
-`cylc restart` - remove: replaced by `cylc play`
+Note that many commands currently have REG / SUITE as a required argument
+(e.g. `cylc validate`). Where possible these will be changed to be optional
+arguments with the default being `$PWD`.
+* We could also consider using an option rather than an argument.
 
-`cylc clean` - new command to replace `rose suite-clean`
+For all commands which have been replaced (run, restart, hold, register,etc) we
+will replace them with (hidden, not listed in CLI help) commands which simply
+report what commands should be used in their place.
 
 Once the main CLI changes are in place we should do a complete review of the
 entire cylc command set to see whether there are further commands which should
@@ -204,7 +231,7 @@ be retired or altered.
 [Rose commands](https://metomi.github.io/rose/doc/html/api/command-reference.html#rose-commands):
 * Propose to retire (i.e. no backwards compatibility support):
   * `rose suite-clean`
-  * `rose suite-cmp-vc` - not proposing a replacement for this at the moment
+  * `rose suite-cmp-vc` - check whether we have a replacement for this in cylc first
   * `rose suite-gcontrol`
   * `rose suite-hook` - has been deprecated for some time now
   * `rose suite-log` - need to check whether it is still in use with the `--update` or `--archive` options
@@ -212,18 +239,18 @@ be retired or altered.
   * `rose suite-run`
   * `rose suite-scan`
   * `rose suite-shutdown`
-* Assume we will still need to support `rose stem`
+* As with cylc, we will provide hidden commands which simply report what
+  commands should be used in their place.
+* Assume we will still need to support `rose stem`.
 
 Related issues / notes:
 * [cylc-flow #1030](https://github.com/cylc/cylc-flow/issues/1030)
 * [Workshop notes](https://cylc.github.io/cylc-admin/feb2020-workshop-notes#wednesday).
   Note that this proposal differs in a number of ways from what was discussed at the workshop:
-
   * no git version control of run dir (future enhancement?)
-  * can't use play to unhold (a held suite should restart in held mode)
-  * no numbered run dirs for named runs?
-  * warm starts continue in same run dir?
-  * proposing to remove old commands rather than deprecate (hard to do safely)
+  * "in place warm start" now effectively supported via `cylc clean`
+  * proposing to make old commands obsolete rather than deprecated (too hard to do safely)
+  * probably several other differences as well
 
 ### Log file changes
 
@@ -232,15 +259,8 @@ Proposed contents of the `log` directory in the run directory.
 * `db` - no change
 * `job/` - no change
 * `scheduler/` - replaces `suite/`
-* `conf/` - replaces `suiterc/`
-
-  * or put in `scheduler/` ?
-  * move suite.rc.processed here as well
-
+* `conf/` - replaces `suiterc/` and `rose-conf/*.conf`
+  * see also [cylc-flow #3763](https://github.com/cylc/cylc-flow/issues/3763)
 * `install/<timestamp>-install.log` (replaces `rose-suite-run.log`)
 * `install/<timestamp>-reload.log` (currently appended to `rose-suite-run.log`)
 * `install/<timestamp>-vc.log` (replaces rose-conf/*.version)
-* Items to remove:
-
-  * `rose-suite-run.locs` - not required/useful
-  * `rose-conf/*.conf` - recorded in the workflow config so not needed?
