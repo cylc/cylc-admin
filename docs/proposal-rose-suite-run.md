@@ -62,11 +62,8 @@ The remaining points can happen any time after 1) is complete although note that
    * Hopefully this can become a standard part of suite start-up rather than a
      separate step. This was difficult previously because cylc loads the suite
      after it has been detached?
-   * Consider making all validation strict?
-     * If we really want to allow naked dummy tasks in some circumstances then
-       we would be better to add a suite configuration for this?
-     * Note: we don't allow you to inherit from an undeclared ("naked") family
-       so why do we allow you to run an undeclared task?
+   * Consider making all validation strict? See
+     [cylc-flow #3866](https://github.com/cylc/cylc-flow/issues/3866).
 
 5. Handle
    [rose-suite.conf](https://metomi.github.io/rose/doc/html/api/configuration/suite.html#rose:file:rose-suite.conf)
@@ -116,10 +113,12 @@ The remaining points can happen any time after 1) is complete although note that
   `/path/to/flow` (rather than `$PWD`).
 * Installation will involved copying over the files found in the source
   directory.
-  * This will exclude any `.git`, `.svn`, `log`, share` or `work` directories.
+  * This will exclude any `.git` or `.svn` directories.
     Everything else will be copied.
     * If needed we could make this configurable via a `.cylcignore` file (future
-      enhancement). Note that `log`, share` & `work` would always be excluded.
+      enhancement).
+  * The installation should fail if `log`, share` or `work` exist in the source
+    directory.
   * The installation should fail if neither `suite.rc` nor `cylc.flow` exist.
   * The installation should fail if the target directory is not valid.
     e.g. you cannot install into `~/cylc-run/my-flow/runN` if `~/cylc-run/my-flow`
@@ -182,16 +181,13 @@ The remaining points can happen any time after 1) is complete although note that
   command line options specified as part of the install unless overridden on the
   command line.
 * Will work fine on source directories which include `rose-suite.conf` files.
-* No `--strict` mode
-  (naked dummy tasks no longer allowed - all tasks must be declared).
-  * This one is controversial and requires further discussion!
 * Cyclic graph validation can be quite slow and is currently included as part of
-  `--strict`. Add a `--no-cyclic-graph-validation` option to disable this?
+  `--strict`. Consider a new `--cyclic-graph-validation` option to enable this?
+  See [cylc-flow #3869](https://github.com/cylc/cylc-flow/issues/3869).
 
 Several combinations of the above commands will be commonly used.
 Propose to support these as separate commands:
 * `cylc install-play` (`cylc ip` for short?)
-* `cylc install-validate`
 * `cylc reinstall-reload`
 
 `cylc pause|unpause` - new commands replacing `cylc hold|release|unhold`
