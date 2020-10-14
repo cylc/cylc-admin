@@ -13,7 +13,7 @@ This is really the only well-founded, easily comprehended, and scalable way to
 display large Cylc-style cycling workflows. Only in smaller cases is it
 reasonable to show all the tasks in active cycles.
 
-## The Datastores
+## Datastores
 
 Windowing will be managed by similar datastores in the scheduler and UI Server
 - the scheduler only needs `n = 0` for scheduling
@@ -30,7 +30,7 @@ PROPOSE: stop at `n = 1` in the future direction
 
 ## Disappearing waiting tasks?
 
-### non-task prerequisites
+### 1. non-task prerequisites
 
 Tasks may be held back from becoming active even though their graph/task
 prerequisites are all satisfied, by runahead limit, queues, xtriggers,
@@ -61,7 +61,7 @@ foo => bar
 @queue => bar
 ```
 
-### parent gaps
+### 2. parent gaps
 
 A task with multiple parents will look like it is "coming next" (`n = 1`) with
 respect to each active parent, even though that won't really be true until 
@@ -76,7 +76,7 @@ active, `C` will be visible in `n = 1` when `A` is active, then it will
 disappear from the UI in the gap between `A` and `B`, and finally appear again
 when `B` is active.
  
-### Possible solutions
+**Solutions?**
 
 1. live with it? It probably won't happen very often, and it's easy to explain
      to users (strict `n = 1` edge from active tasks)
