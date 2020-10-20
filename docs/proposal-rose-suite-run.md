@@ -190,7 +190,8 @@ Propose to support these as separate commands:
 * `cylc install-play` (`cylc ip` for short?)
 * `cylc reinstall-reload`
 
-`cylc pause|unpause` - new commands replacing `cylc hold|release|unhold`
+`cylc pause|release` - new commands with aliases `pause` = `hold` and
+`release` = `unpause` = `unhold`.
 * Note that when you use `cylc stop` the scheduler will be modified to unpause
   the workflow before stopping.
   This means that a stopped workflow will not be paused when it is continued via
@@ -225,7 +226,7 @@ Note that many commands currently have REG / SUITE as a required argument
 arguments with the default being `$PWD`.
 * We could also consider using an option rather than an argument.
 
-For all commands which have been replaced (run, restart, hold, register,etc) we
+For all commands which have been replaced (run, restart, register,etc) we
 will replace them with (hidden, not listed in CLI help) commands which simply
 report what commands should be used in their place.
 
