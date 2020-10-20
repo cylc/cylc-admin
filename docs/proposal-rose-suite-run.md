@@ -127,7 +127,7 @@ The remaining points can happen any time after 1) is complete although note that
 * The `log, `share`, share/cycle` and `work` directories  will be created
   following whatever symlink rules are defined for localhost
   (over-ridable via command line options).
-  * This will continue to support "symlinked alternate run directories"
+  * This will replace the "symlinked alternate run directories" functionality
     (see [cylc-flow #2935](https://github.com/cylc/cylc-flow/pull/2935)).
 
 `cylc play` - new command to run an installed workflow
