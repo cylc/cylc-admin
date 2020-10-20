@@ -134,10 +134,9 @@ The remaining points can happen any time after 1) is complete although note that
 (replacing `cylc run|start`).
 * Options will look very similar to current `cylc run` command but with no
   `[START_POINT]` argument (already supported as an option).
-* Fail if the workflow is already running or has completed
-  (need to be able to detect completed run).
-  * If the workflow is already running the alternative is to treat this as an
-    alias to `cylc unpause`.
+* Fail if the workflow has already completed (need to be able to detect this).
+* To do: agree behaviour if the workflow is already running.
+  Either fail or treat this as an alias to `cylc release`.
 * Continue running the workflow if it was stopped before completion
   (replaces `cylc restart`).
 * If, for some reason, you want to re-run a workflow from the beginning you will
