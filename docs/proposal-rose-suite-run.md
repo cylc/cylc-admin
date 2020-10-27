@@ -102,11 +102,17 @@ The remaining points can happen any time after 1) is complete although note that
 `cylc install` - new command to install workflows.
 * By default, `cylc install` will install the workflow found in `$PWD` into
   `~/cylc-run/$(basename $PWD)/runN` (where `runN` = `run1`, `run2` ...).
+* This will create a directory in `~/cylc-run/<flow_name>` with a
+  `_cylc-install` diretory containing a `source` symlink to the source dir.
+* This will fail if the specified source directory does not match the
+  `~/cylc-run/<flow_name>/source` symlink. Otherwise it would be possible
+  for `run1` to come from a different source dir to `run2`.
 * If `--run-name` is not specified and `run1` already exists it will install
   into `run2` (and so on).
   Create a symlink `runN` pointing at the latest run.
 * `--run-name=my-run` implies install into `~/cylc-run/$(basename $PWD)/my-run`.
   If the target directory already exists then fail.
+  Note that `--run-name=_cylc-install` is an error.
 * `--no-run-name` implies install into `~/cylc-run/$(basename $PWD)`.
 * `--flow-name=my-flow` implies install into `~/cylc-run/my-flow/runN`.
 * `--directory=/path/to/flow` (`-C ...`) implies install the workflow found in
@@ -117,8 +123,8 @@ The remaining points can happen any time after 1) is complete although note that
     Everything else will be copied.
     * If needed we could make this configurable via a `.cylcignore` file (future
       enhancement).
-  * The installation should fail if `log`, share` or `work` exist in the source
-    directory.
+  * The installation should fail if `log`, `share`, `work` or `_cylc-install`
+    exist in the source directory.
   * The installation should fail if neither `suite.rc` nor `cylc.flow` exist.
   * The installation should fail if the target directory is not valid.
     e.g. you cannot install into `~/cylc-run/my-flow/runN` if `~/cylc-run/my-flow`
