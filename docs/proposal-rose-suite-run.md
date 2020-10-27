@@ -220,11 +220,6 @@ Propose to support these as separate commands:
 * The file `log/rose-suite-run.locs` is currently required by `rose suite-clean`
   but `cylc clean` should probably get this information from the database?
 
-Note that many commands currently have REG / SUITE as a required argument
-(e.g. `cylc validate`). Where possible these will be changed to be optional
-arguments with the default being `$PWD`.
-* We could also consider using an option rather than an argument.
-
 For all commands which have been replaced (run, restart, register,etc) we
 will replace them with (hidden, not listed in CLI help) commands which simply
 report what commands should be used in their place.
