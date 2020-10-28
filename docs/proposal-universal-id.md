@@ -41,7 +41,6 @@ which added yet another format:
    for mutations
 5) The CLI is now implemented via GraphQL anyway meaning that the CLI arguments
    are provided as GraphQL arguments and transformed as required.
-6) We should expose users to the concept of the identifier in the UI.
 
 ## Proposed Universal Identifier
 
@@ -246,6 +245,37 @@ Motivations:
 * We need to rewrite the completions anyway.
 * Typing cycle points is hard.
 
+## Back Compat
+
+We should be able to support the old legacy interface for the time being.
+Propose:
+
+* Logging a deprecation warning when the old syntax is used which provides a
+  translation to the new syntax.
+* Withdrawing the old syntax in Cylc9.
+
+The following commands currently use the argument pattern `REG [TASK_GLOB ...]`:
+
+* `cylc [control] hold [OPTIONS] REG [TASK_GLOB ...]`
+* `cylc [control] kill [OPTIONS] REG [TASK_GLOB ...]`
+* `cylc [control] poll [OPTIONS] REG [TASK_GLOB ...]`
+* `cylc [control] release|unhold [OPTIONS] REG [TASK_GLOB ...]`
+* `cylc [control] remove [OPTIONS] REG TASK_GLOB [...]`
+* `cylc [info] show [OPTIONS] REG [TASK_NAME or TASK_GLOB ...]`
+* `cylc [control] trigger [OPTIONS] REG [TASK_GLOB ...]`
+
+These would change to `ID [ID ...]`, however, we can continue to support the
+old syntax easily enough. If the first argument contains only user/workflow
+information and more arguments are provided, assume we are in back-compat mode.
+
+That leaves us with:
+
+* `cylc [discovery] ping [OPTIONS] REG [TASK]`
+  * Can handle the same way as the above commands.
+* `cylc [task] message [OPTIONS] -- [REG] [TASK-JOB] [[SEVERITY:]MESSAGE ...]`
+  * Will require some more bespoke logic to maintain this interface, but it
+    should be do-able.
+
 ## Proposed Implementation Timeline
 
 * 8.0b0 - `cylc install`
@@ -259,7 +289,7 @@ Motivations:
   - Conversion simple in the code thanks to the conversion of the CLI to
     GraphQL.
   - Upgrading the tests and docs more time consuming.
-* 8.0.0 - bash autocompletion
+* 8.0.0 - tidy
   - Remove all remaining `task.cycle`, `cycle/task` references.
 * 8.0.0 - bash autocompletion
   - Not required for functionality
