@@ -278,6 +278,7 @@ That leaves us with:
 
 ## Proposed Implementation Timeline
 
+* 7.x - Promote `cycle/task` syntax to ease transition.
 * 8.0b0 - `cylc install`
 * 8.0b1 - CLI via the UIS (if running)
   - Route commands via the UIS where available as per previous proposals.
