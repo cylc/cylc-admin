@@ -98,29 +98,53 @@ flow//*/*:running
 
 Reference regex:
 
-https://regex101.com/r/XOOpUW/2
+https://regex101.com/r/XOOpUW/3
 
 ```regex
-^
+# don't match an empty string
+(?=.)
+# either match a user or the start of the line
 (?:
-  ~(?P<user>)[^\/]+
-  \/?
-)?
+  (?:
+    ~
+    (?P<user>[^\/:\n]+)
+    # allow the match to end here
+    (\/|$)
+  )
+  |^
+)
 (?:
-  (?P<flow>.*?(?=(?:\/\/|$|:)))
-  (?P<flow_sel>.*?(?=(?:\/\/|$)))
-  (?:\/\/
-    (?:  
-      (?P<cycle>[^\/:]+)
-      (?::(?P<cycle_sel>[^\/]+))?
+  (?P<flow>[^\/:\n~]+)
+  (?:
+    :
+    (?P<flow_sel>[^\/:\n]+)
+  )?
+  (?:
+    //
+    (?:
+      (?P<cycle>[^\/:\n]+)
       (?:
-        \/
-        (?P<namespace>[^\/:]+)
-        (?::(?P<namespace_sel>[^\/]+))?
+        :
+        (?P<cycle_sel>[^\/:\n]+)
         (?:
-          \/
-          (?P<job>[^\/:]+)
-          (?::(?P<job_sel>[^\/]+))?
+          /
+          (?:
+            (?P<task>[^\/:\n]+)
+            (?:
+              :
+              (?P<task_sel>[^\/:\n]+)
+            )?
+            (?:
+              /
+              (?:
+                (?P<job>[^\/:\n]+)
+                (?:
+                  :
+                  (?P<job_sel>[^\/:\n]+)
+                )?
+              )?
+            )?
+          )?
         )?
       )?
     )?
