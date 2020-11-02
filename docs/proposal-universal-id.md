@@ -269,6 +269,33 @@ Motivations:
 * We need to rewrite the completions anyway.
 * Typing cycle points is hard.
 
+### CLI
+
+Propose the following interface for all commands which take `REG` as an
+argument:
+
+```
+cylc sub-commands ID [ID ...]
+```
+
+E.G:
+
+```console
+$ cylc trigger flow//cycle
+$ cylc trigger flow//cycle/*
+$ cylc trigger flow//cycle flow2//cycle2 flow3//cycle3
+```
+
+If the first argument stops at the `//` and the following arguments start
+with `//` then they should be implicitly joined e.g:
+
+```console
+# trigger cycles1, cycle2 and cycle3 in flow
+$ cylc trigger flow// //cycle1 //cycle2 //cycle3
+```
+
+The `//` serving as the marker to the bash completion to glob cycle points.
+
 ## Back Compat
 
 We should be able to support the old legacy interface for the time being.
