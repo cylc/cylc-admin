@@ -1,4 +1,4 @@
-# Cylc-Rose - Installing Rose Configs
+# Cylc-Rose - Installation of Rose Configs
 
 ## Rose2019 & Cylc7
 
@@ -6,8 +6,8 @@ The `rose suite-run` command loads in the `rose-suite.conf` file and performs
 certain actions based on its configuration.
 
 There are various ways to meddle with the configuration as it is written. Here
-are the different methods for defining the Rose configuration along with their
-order or precedence:
+are the different methods for defining the Rose configuration in the order
+in which they are applied:
 
 1. The "base" `rose-suite.conf` configuration.
 2. Optional configurations defined by:
@@ -91,107 +91,7 @@ Meddling with the Rose configuration during re-installation is likely to be
 a rare occurrence and what follows is somewhat overblown for purpose, however,
 should reduce to far less code than text in this proposal.
 
-### Optional Conf Keys
-
-#### 1. Any specified opt confs should be appended to `rose-suite.conf|opts`
-
-Example:
-
-```
-# ~/roses/FLOW/rose-suite.conf
-opts=bar
-```
-
-```
-$ cylc install -o baz
-```
-
-```
-# ~/cylc-run/FLOW/rose-suite.conf
-opts=bar baz
-```
-
-> **Note:** Be aware that the `opts` config may have to be altered by
-> string manipulation as the Rose code will
-> [fight your changes](https://github.com/metomi/rose/blob/99ad9e766571212c6c3afdbe3915c75ba05e6c68/metomi/rose/config.py#L1280).
-
-#### 2. The `cylc re-install` command should prepend the source `rose-suite.conf|opts` to the run configuration
-
-This is the nastiest bit, necessary as the alternative would require
-recording which opts were defined in which places at which times then. This
-approach still wouldn't be perfect as there is no way to know the order the
-user intended (if indeed they know themselves).
-
-Since changing `rose-suite.conf|opts` should be rare this should be an
-acceptable hack (because of the `--rebuild-opt-conf` option in [3]).
-
-Example:
-
-```
-# ~/roses/FLOW/rose-suite.conf
-opts=foo bar
-```
-
-```
-$ cylc reinstall
-```
-
-```
-# ~/cylc-run/FLOW/rose-suite.conf
-opts=foo bar baz
-```
-
-Or to put it in other words, reinstallation can only add optional configs, or
-reorder them, but not remove them without (3)...
-
-#### 3. The `cylc re-install` command should support options for adding, removing and rebuilding optional configuration lists
-
-> **Note:** If an opt conf key occurs more than once then the earlier
-> occurrence(s) should be removed.
-
-Example:
-
-```
-# ~/roses/FLOW/rose-suite.conf
-opts=foo bar baz
-```
-
-```
-$ cylc install
-$ cylc reinstall --remove-opt-conf=foo --add-opt-conf=pub --add-opt-conf=bar
-```
-
-```
-# ~/cylc-run/FLOW/rose-suite.conf
-
-# new opt confs get appended onto the end of the list
-# pre-existing opt confs (bar in this case) are moved to the end of the list
-# see (4)
-opts=baz pub bar
-```
-
-The rebuild option ignores the run directory and functions as `cylc install`
-would if it were installing the flow for the first time:
-
-```
-$ cylc reinstall --rebuild-opt-conf --add-opt-conf=qux
-```
-
-```
-# ~/cylc-run/FLOW/rose-suite.conf
-
-# forget about baz,bar,pub and start from scratch
-opts=foo qux
-```
-
-This would be the recommended way to handle complex opt conf key changes.
-
-### Defines
-
-#### 4. Any new "defines" should be written to a new optional configuration with a special protected name
-
-Defines (`-S`, `-D`) cannot be treated in the same way as opt confs (`-O`)
-because they must take Precedence over optional configurations.
+### 1. Any new "defines" should be written to a new optional configuration with a special protected name
 
 Using an optional configuration makes good sense as it would work natively with
 `cylc ui` and `rose config` with no extra work required whilst making this
@@ -204,7 +104,7 @@ Configuration would be written to an optional configuration called
 Example:
 
 ```
-# ~/roses/FLOW/rose-suite.conf
+# ~/roses/FLOW/rose-suite.conf
 opts=foo
 ```
 
@@ -213,13 +113,13 @@ $ cylc install -D '[env]FOO=1' -S 'X=Y'
 ```
 
 ```
-# ~/cylc-run/FLOW/rose-suite.conf
+# ~/cylc-run/FLOW/rose-suite.conf
 
 opts=foo (cylc-install)
 
 # NOTE: (opt) means an "optional" opt conf
 # (i.e. if the cylc-install conf isn't there it doesn't cause an error)
-# this means we can apply this opt conf by default, even if no overrides
+# this means we can apply this opt conf by default, even if no overrides
 # are provided on the CLI
 ```
 
@@ -232,18 +132,18 @@ FOO=1
 X=Y
 ```
 
-#### 5. The `cylc reinstall` command should always move the `cylc-install` opt conf to the end of the list
+### 2. The `cylc reinstall` command should always move the `cylc-install` opt conf to the end of the list
 
 Example:
 
 ```
-# ~/roses/FLOW/rose-suite.conf
+# ~/roses/FLOW/rose-suite.conf
 opts=foo
 ```
 
 ```
 $ cylc install
-$ cylc reinstall --add-opt-conf bar
+$ cylc reinstall --opt-conf-key bar
 ```
 
 ```
@@ -251,28 +151,107 @@ $ cylc reinstall --add-opt-conf bar
 opts=foo bar (cylc-install)
 ```
 
-#### 6. The `cylc reinstall` command should have an option to delete the `cylc-install` opt conf
+> **Note:** Be aware that the `opts` config may have to be altered by
+> string manipulation as the Rose code will
+> [fight your changes](https://github.com/metomi/rose/blob/99ad9e766571212c6c3afdbe3915c75ba05e6c68/metomi/rose/config.py#L1280).
+
+### 3. The `cylc reinstall` command should have an option to delete the `cylc-install` opt conf
 
 Example:
 
 ```
-# ~/roses/FLOW/rose-suite.conf
+# ~/roses/FLOW/rose-suite.conf
 opts=foo
 ```
 
 ```
-$ cylc install -D '[env]FOO=1
-$ cylc reinstall --rebuild-defines -D '[env]BAR=2'
+$ cylc install -O bar -D '[env]FOO=1'
+$ cylc reinstall --clear-rose-install-options -O baz -D '[env]BAR=2'
 ```
 
 ```
 # ~/cylc-run/FLOW/opt/rose-suite-cylc-install.conf
+!opts=baz
+
 [env]
 BAR=2
 ```
 
+### 4. `cylc install` should record optional configs to the `cylc-install` optional config
 
-### Proposed Interfaces
+Any optional configurations specified via the command line option or
+environment variable should be recorded in the optional configuration
+using the `opts` setting.
+
+This setting should be ignored (`!`) as it is not "functional", that is to
+say, editing this value will make no difference to `cylc validate`,
+`cylc play`, etc.
+
+However, `cylc reinstall` will read this value (ignored vars can still be
+read) and append it to `rose-suite.conf|opts` so as to preserve the memory
+of previously specified opt confs.
+
+`cylc reinstall` may also append any newly specified opt confs to the end of
+this list.
+
+Example:
+
+```
+# ~/roses/flow/rose-suite.conf
+opts=a
+```
+
+```
+$ ROSE_SUITE_OPT_CONF_KEYS=b cylc install -O c
+```
+
+```
+# ~/cylc-run/FLOW/rose-suite.conf
+opts=a b c
+```
+
+```
+# ~/cylc-run/FLOW/opt/rose-suite-cylc-install.conf
+!opts=b c
+```
+
+```
+$ cylc reinstall -O d
+```
+
+```
+# ~/cylc-run/FLOW/opt/rose-suite-cylc-install.conf
+!opts=b c d
+```
+
+```
+# ~/roses/FLOW/rose-suite.conf
+# with each reinstall the cylc-install|opts are appended to the end
+# of the rose-suite.conf|opts setting
+opts=a b c d
+```
+
+Because the `cylc-install|opts` are appended to the `rose-suite.conf|opts`
+setting with each reinstallation the base `rose-suite.conf|opts` setting
+is permitted to change:
+
+```
+# ~/roses/flow/rose-suite.conf
+opts=z
+```
+
+```
+$ cylc reinstall
+```
+
+```
+# ~/roses/FLOW/rose-suite.conf
+# NOTE: opt a has been "removed"
+# NOTE: opts b c d have been "remembered"
+opts=z b c d
+```
+
+## Proposed Interfaces
 
 ```
 usage: cylc install [opts]
@@ -285,7 +264,7 @@ Plugins:
       -D, --define
         Define a Rose configuration.
       -O, --opt-conf-key
-        Define a Rose optional configuration key.
+        Add a Rose optional configuration key.
     Env:
       ROSE_SUITE_OPT_CONF_KEYS
         Define a set of Rose optional configuration keys to append to the list.
@@ -301,15 +280,11 @@ Plugins:
         Define a Cylc Jinja2/EmPy template variable.
       -D, --define
         Define a Rose configuration.
-      --rebuild-defines
-        Ignore all defines previously specified to `cylc install`.
-        (i.e. delete the `cylc-install` optional configuration).
-      -O, --opt-conf-key, --add-opt-conf-key
-        Define a Rose optional configuration key.
-      --remove-opt-conf-key
-        Remove a previously defined opt conf key.
-      --rebuild-opt-conf-keys
-        Ignore all opt conf keys previously specified to `cylc install`.
+      -O, --opt-conf-key
+        Add a Rose optional configuration key.
+      --clear-rose-install-options
+        Delete the cylc-install optional configuration which preserves
+        Rose options previously specified to cylc (re)install.
     Env:
       ROSE_SUITE_OPT_CONF_KEYS
         Define a set of Rose optional configuration keys to append to the list.
