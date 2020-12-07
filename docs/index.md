@@ -26,12 +26,16 @@
 
 ## Change Proposals
 
+Proposals for more involved changes, note that these are relevant at the time
+of approval but implementation may differ moving forward to meet
+evolving requirements:
+
+- [Installation of Rose Configs](proposal-cylc-rose-installing-rose-configs.md)
+- [Cylc Universal Identifier](proposal-universal-id.md)
 - [Cylc 8 Back-end Authentication (CurveZMQ)](cylc-8-authentication.md)
     - [cylc-8-authentication.png](img/cylc-8-authentication.png)
     - ([image source docx](img/keys.docx))
-
 - [Platforms Config](proposal-platforms.md)
-
 - [`rose suite-run` migration](proposal-rose-suite-run.md)
   More detail on rose-suite-run migration:
   - [Specification for new combined config file](rose-suite-run-proposal/cylc-flow-rc.md)
