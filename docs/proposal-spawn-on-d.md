@@ -65,6 +65,8 @@ of task proxies with no graph computation at run time.
 ### Advantages
 
 - A dramatically smaller task pool; size independent of spread over cycle points
+  - queues provide real task pool size limiting without risk of stall, not just
+    active task limiting, because the SoD task pool only contains active tasks
 - No dynamic dependency matching (parents updates child prerequisites directly)
 - No (or much less, at least) iteration over the task pool
 - An easily-understood graph-based "window on the workflow"
@@ -830,6 +832,12 @@ Follow-on changes that may or may not be worthwhile before Cylc 9:
 - Extend SoD to clock- and external-triggers: tasks could be spawned in
   response to trigger events (depends on xtriggers as main-loop coroutines)
 - (Consider all "possible" Appendix items above)
+
+- The default (global) queue provides real task pool size limiting without risk
+  of stall, not just active task limiting, because the task pool only contains
+  active tasks. Consequently cycle-point-priority queue release may be much
+  better than our traditional runhead limiting (which only works across, not
+  within, cycle points)
 
 ### Terminology
 
