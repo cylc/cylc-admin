@@ -24,6 +24,7 @@ Windowing will be managed by similar datastores in the scheduler and UI Server
 ## Future Tasks
 
 PROPOSE: stop at `n = 1` in the future direction
+- *(assuming this makes conceptual sense, in terms of the graph)*
 - `n = 1` shows what comes next in the flow; beyond that nothing has happened
   yet and showing it will unnecessarily reduce screen space for active tasks
 - (plus, Cylc 9 changes may make the future graph less predictable)
@@ -87,8 +88,8 @@ when `B` is active.
        be foreshadowed by visible inactive parents before it does disappear
 
 PROPOSE: implement (1) initially, and later consider (2) and (3) as
-enhancements. (2) looks best but it may be tricky avoid wrongly excluding a
-child from `n = 1` in alternate path graphs?
+enhancements. (2) looks best but it may be difficult to avoid wrongly excluding
+a child from `n = 1` in alternate path graphs?
 
 ## Graph Isolates
 
