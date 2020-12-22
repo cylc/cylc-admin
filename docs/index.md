@@ -50,6 +50,9 @@ evolving requirements:
 - [Multi-user and cylc-flow](proposal-multi-user-approach.md)
 - [Subscription Model](proposal-subscriptions.md)
 - [Cylc UI Data Model](proposal-cylc-ui-data-model.md)
+- [cli-wfs-authentication](proposal-cli-wfs-authentication.md)
+- [n-distance windowing](proposal-n-distance-window.md)
+
 
 ## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)
@@ -74,6 +77,8 @@ evolving requirements:
 ## Video Conferences
 
 Project meetings:
+
+- FROM OCTOBER 2020 ON: see the [cylc-admin wiki](https://github.com/cylc/cylc-admin/wiki)
 
 - September 2020 
   - [Agenda and Notes](meetings/vc-sep-2020.md)
