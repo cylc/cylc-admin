@@ -65,8 +65,8 @@ of task proxies with no graph computation at run time.
 ### Advantages
 
 - A dramatically smaller task pool; size independent of spread over cycle points
-  - queues provide real task pool size limiting without risk of stall, not just
-    active task limiting, because the SoD task pool only contains active tasks
+- real task pool size limiting without risk of stall: the SoD task pool only
+  contains active tasks, so the global queue limits task pool size 
 - No dynamic dependency matching (parents updates child prerequisites directly)
 - No (or much less, at least) iteration over the task pool
 - An easily-understood graph-based "window on the workflow"
@@ -136,6 +136,11 @@ also have to be stored in the DB for restarts.
 
 For completeness, see also [can we use the database or datastore to satisfy
 prerequisites?](#can-we-use-the-database-or-datastore-to-satisfy-prerequisites)
+
+**UPDATE: DONE** [cylc/cylc-flow#3823](https://github.com/cylc/cylc-flow/pull/3823)
+(Current implementation just keeps partially satisfied task proxies in the
+runahead pool until satisfied).
+
 
 ### Preventing conditional reflow
 
@@ -285,6 +290,9 @@ graph and what transpired at run time)
 
 This works fine but I think we could do better - see [better workflow
 completion handling.](#better-workflow-completion-handling)
+
+**UPDATE: DONE** [cylc/cylc-flow#3823](https://github.com/cylc/cylc-flow/pull/3823)
+
 
 #### Task pool content at shutdown
 
@@ -466,8 +474,8 @@ single character label.
   needed because there aren't any waiting or finished tasks hanging around to
   be triggered.
 
-- `cylc spawn` is repurposed to spawn downstream on specified outputs. (And now
-  renamed to `cylc set-outputs`).
+- `cylc spawn` is repurposed to spawn downstream on specified outputs.
+   - *now renamed to `cylc set-outputs`*
 
 - `cylc remove` not needed?  In SoS removing a task instance from the pool
   removes the abstract task entirely from the workflow, if the next instance
@@ -625,7 +633,7 @@ if their parent tasks are all finished, and perhaps also if the rest of the
 workflow has moved on beyond them, because at that point nothing could satisfy
 them automatically.
 
-Stuck prerquisites are not an immediate problem, it only matters if they 
+Stuck prerequisites are not an immediate problem, it only matters if they 
 accumulate over time. We don't have to let them stall the workflow either
 (although they are often the result of a failure that causes it to stall). So
 housekeeping could be done by checking the status of the relevant parent tasks
@@ -652,6 +660,8 @@ Handling all failed tasks equally would also make for simpler and more
 consistent workflow completion handling (below).
 
 ### Better workflow completion handling?
+
+**UPDATE: DONE** [cylc/cylc-flow#3823](https://github.com/cylc/cylc-flow/pull/3823)
 
 Completion and shutdown handling as described ([above](#workflow-stop))
 leaves a bit to be desired.
@@ -709,6 +719,9 @@ did not intend that? But unfortunately in SoS we may end up with a bunch of
 off-piste waiting tasks to deal with, and we use those to infer an intention to
 follow a different path. 
 
+**UPDATE: DONE** [cylc/cylc-flow#3823](https://github.com/cylc/cylc-flow/pull/3823)
+
+
 ### Automatic use of off-flow outputs?
 
 This is possible in principle but we have decided against it as difficult and
@@ -762,6 +775,7 @@ cylc-flow](https://github.com/cylc/cylc-flow/labels/sod-follow-up)
 - Event-driven triggering: easy (see TODO at the end of
   `task_pool:spawn_on_ouput`) but need to consider the effect on batched job
   submission.
+  - **UPDATE: DONE** [cylc/cylc-flow#3898](https://github.com/cylc/cylc-flow/pull/3938)
 
 - Consider re-instating (most of?) the pre-SoD `cylc insert` functional tests
   as `cylc trigger` tests.
@@ -821,23 +835,28 @@ cylc-flow](https://github.com/cylc/cylc-flow/labels/sod-follow-up)
   happy that "the keys to a JSON dictionary are themselves JSON" and suggests
   "This should be converted into its own DB table pre-8.0.0." - search for
   "satisfied" in `cylc/flow/suite_db_mgr.py` and `cylc/flow/task_pool.py`. 
+  - **UPDATE: DONE**  
+  [cylc/cylc-flow#3863](https://github.com/cylc/cylc-flow/issues/3863)
 
-### Possible Future Enhancements
+- Rethink runahead limiting. A global queue with cycle-point priority release
+  would be better because it limits activity within a cycle point as well as
+  across cycle points
+  [cylc/cylc-flow#3874](https://github.com/cylc/cylc-flow/issues/3874)
+  Note also the global queue provides real task pool size limiting without risk
+  of stall, not just active task limiting, because the task pool only contains
+  active tasks.
 
-Follow-on changes that may or may not be worthwhile before Cylc 9:
 - Go to spawn-when-ready instead of spawn-on-outputs, as discussed above
+  - **UPDATE: DONE** [cylc/cylc-flow#3823](https://github.com/cylc/cylc-flow/pull/3823)
+
 - Try to avoid all remaining iteration over task proxies
+
 - Can we make prerequisite updates more efficient (it uses the old dependencies
   matching methods)
+
 - Extend SoD to clock- and external-triggers: tasks could be spawned in
   response to trigger events (depends on xtriggers as main-loop coroutines)
 - (Consider all "possible" Appendix items above)
-
-- The default (global) queue provides real task pool size limiting without risk
-  of stall, not just active task limiting, because the task pool only contains
-  active tasks. Consequently cycle-point-priority queue release may be much
-  better than our traditional runhead limiting (which only works across, not
-  within, cycle points)
 
 ### Terminology
 
