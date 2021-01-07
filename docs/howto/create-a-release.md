@@ -1,57 +1,21 @@
 # Creating a release for Cylc
 
+**Note:** The release process has been substantially automated. For reference,
+the old release process is documented at [create-a-release-old.md](create-a-release-old.md).
+
 ## Before you start (First time)
-
-- Create a GPG key for verification on Github:
-  [Instructions](https://help.github.com/en/articles/generating-a-new-gpg-key)
-  At step 3 I had to use `gpg --default-key rsa4096 --gen-key`.
-
-- [Share this key locally with git, as well as
-  Github](https://help.github.com/en/articles/telling-git-about-your-signing-key)
 
 - Create a PyPI account for yourself if you don't already have one.
   [Sign up page](https://pypi.org/account/register/).
   Get an owner to add you as a maintainer or owner.
-
-
-## Create pre-release Pull requests
-
-- Ensure that version numbers are consistent. These are likely to be set in
-  files such as  `cylc-flow/cylc/flow/__init__` or `__version__.py` and
-  `setup.py` files, usually at the top level of a repository.
-- Examine Pull Requests made since the last release for:
-  - cylc-flow
-  - cylc-conda
-  - cylc-ui
-  - cylc-uiserver
-- Add to `CHANGES.md` text in each repository.
-- Check the `CONTRIBUTING.md`. Ensure that all contributors are listed.
-  You can do this using Github, or locally with `git shortlog -sn`
-- Create PRs for any changes you have made and have these reviewed and merged
-  to master.
-- Make sure any other Pending PR's for the milestone are merged or closed.
-
-## Test the build
-
-- Check locally that you have the updated version of master. Ensure that you
-  local copy is up to date, and that it has the correct tags attached.
-- Use `git log` to ensure that you have the correct version and tag.
-- Check that you can build your distribution locally:
-
-```bash
-
-   cd my/repository/
-
-   # This may seem slow as this will build the wheel as well as the source
-   # distributions
-   python3 setup.py bdist_wheel sdist
-
-   # check that you've successfully created wheel and source files
-   ls dist/
-
-   # Tidy up
-   rm -r dist
-```
+- Go to the [repository secrets](https://github.com/cylc/cylc-flow/settings/secrets)
+  (Settings tab of the repo on GitHub and choose "Secrets" on the left).
+  Check for the presence of the `PYPI_TOKEN` secret.
+  - If it doesn't exist,
+    [create an API token](https://pypi.org/help/#apitoken), **making sure to
+    limit the scope to the project**. Copy the token, including the `pypi-`
+    prefix, and add it to the repo as a secret called `PYPI_TOKEN`. (Don't
+    worry about the PyPI instructions for using the token.)
 
 ## Test the docs
 
@@ -62,56 +26,42 @@ For any projects which are auto-documented by cylc-doc, currently:
 Ensure the docs build against master by manually triggering the test workflow
 in cylc-doc.
 
-This will catch syntax errors, broken urls etc which need to be fixed
+This will catch syntax errors, broken URLs etc which need to be fixed
 prior to releasing the project.
 
+## Stage 1: trigger the GitHub Actions workflow
 
-## Tag the version
+- Go to the [Actions tab](https://github.com/cylc/cylc-flow/actions) of the
+  repo on GitHub and choose the "Release stage 1 - create release PR" workflow.
+- Click the "Run workflow" dropdown and enter the version number in the input
+  field (also the base branch to open the PR against, defaults to master).
 
-```bash
+  ![screenshot](/docs/img/automated_release.png)
 
-    # Examine previous tags using
-    git tag -ln
+- The workflow will automatically create a pull request with a change to the
+  version number in `__init__.py`. It will also give a checklist to follow on
+  the pull request.
 
-    # Create a new tag  "tag_name" is usually a version number.
-    git tag -a -s <tag_name>
+## Stage 2: merge the release PR
 
-    # Push tags:
-    git push --tags upstream <tag_name>
-```
+- After completing the checklist on the pull request, and having had the
+  pull_request approved and merged, a second GitHub Actions workflow will
+  publish the release to PyPI.org and publish a GitHub release.
+- It will then comment on the pull request with a link to edit the description
+  of the GitHub release to add any information.
 
-## Create a release on Github
+### Notes
 
-- On Github navigate to the repository for which you are creating a release
-  for and click on the releases tab. You should see your tag at the top.
-- [Optional] You may wish to open the edit page of a previous release in a
-  new tab so that you can copy and paste its data.
-- Click "Draft a new release" button.
-- Add your tag to the release. Edit the other fields to give appropriate
-  information.
+It is also possible to manually create a release PR with the conditions:
+- The branch name must be of the format `prepare-<version_number>`, e.g.
+  `prepare-1.0.1` or `prepare-5.0a2`.
+- Add the `release` label to the PR. **Warning:** any PR you create with the
+  `release` label will trigger publishing to PyPI when merged.
 
+If anything goes wrong, you can also do the whole process manually by
+following the [old instructions](create-a-release-old.md).
 
-## Upload build to PyPI
-
-```bash
-
-    # Build your distribution inside the repository folder this time
-    cd my/repository
-
-    # Create your build
-    python3 setup.py bdist_wheel sdist
-
-    # Check that the dist folder contains the right artifacts:
-    ls dist/
-
-    # Upload your build to PyPI. n.b. This will not work if your build has the
-    # same version number as one already on PyPI.
-    twine upload dist/*
-```
-
-Check PyPI for your upload.
-
-## Upload to Conda
+## Stage 3: upload to Conda
 
 NOTE: the GitHub and PYPI releases are prerequisites for releasing to
 Conda Forge!
@@ -221,7 +171,7 @@ with a workflow and the UI or tui, and check if there is nothing wrong.
 
 ### Troubleshooting Conda Forge issues
 
-#### Issues building or installing the package locally with `conda-build` and `conda install
+#### Issues building or installing the package locally with `conda-build` and `conda install`
 
 If you found problems while testing locally, try troubleshooting locally,
 and either mark the pull request as draft, and close it. Merging the pull
@@ -242,13 +192,13 @@ Question to conda Gitter channel: (@hjoliver Jul 21 17:23):
 > I have a conda metapackage just published to conda-forge, which (on conda install) does not install the latest build numbers of several of our component packages. The conda docs cite bug fixes as a primary use case for incrementing build numbers, in which case I would have thought the environment solver should never select older builds? If I install the component packages directly, I do get the latest builds, but not via the metapackage. Anyone know what's going on here?
 
 Replies:
-> @wolfv:  
+> @wolfv:
 @hjoliver this article describes how the conda solver works: https://www.anaconda.com/blog/understanding-and-improving-condas-performance. It specifically says that build numbers are only maximized for explicit specs
 
-> @jjhelmus: 
+> @jjhelmus:
 @hjoliver changes to the build number can also occur when a package is built against a different version of a library which is incompatible with earlier version. For example, one build of python 3.7.7 might be compiled against libffi 3.2 while the next build number against libffi 3.3. Depending on what other packages are installed in the environment it may not be possible to install the package with the largest built number. In the example if cffi is only available as a package built against libffi 3.2 then the older build of python 3.7.7 would be required.
 
-Interpretation: build number is treated much like version number, if not pinned down exactly conda can choose an older build if that works best for solving all the dependencies in the system. Conda would presumably(?) choose the newest build if it does not affect dependencies; we may just need to check what happens if dependencies get changed by a new build. 
+Interpretation: build number is treated much like version number, if not pinned down exactly conda can choose an older build if that works best for solving all the dependencies in the system. Conda would presumably(?) choose the newest build if it does not affect dependencies; we may just need to check what happens if dependencies get changed by a new build.
 
 If you are sure that you have your new version or build available from
 Anaconda.org, and that `conda install --dry-run $package` should
@@ -275,7 +225,7 @@ Basically, there are three parts, where the last one is optional.
 So you will have to specify the exact version, and use a glob expression
 for the build number. For example, from our alpha2 release:
 
-```yarml
+```yaml
 run:
   - python
   - cylc-flow 8.0a2 *_3
@@ -284,7 +234,7 @@ run:
 
 In the example above, we are specifying the packages and versions we want.
 Plus, we also give it a pattern to the build string, so conda will match
-`cylc-flow-8.0a2-py37_2`, or ``cylc-flow-8.0a2-py38_2`, or
+`cylc-flow-8.0a2-py37_2`, or `cylc-flow-8.0a2-py38_2`, or
 `cylc-flow-8.0a2-py37h2387c_2` (all valid build strings).
 
 ## Announce on Element and Discourse?
