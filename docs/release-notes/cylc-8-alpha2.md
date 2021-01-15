@@ -49,6 +49,9 @@ The Cylc 8 complete system includes:
 Use Conda to install the whole Cylc 8 system, including the web UI.
 
 ```bash
+# Make sure conda-forge is in your channels.
+conda config --add channels conda-forge
+
 # optional conda environment
 conda create -n cylc1
 conda activate cylc1
@@ -67,7 +70,7 @@ Cylc UI Server, and Cylc UI.
 You can use `pip` to install just the Python parts of Cylc 8.
 
 - `pip install cylc-flow==8.0a2`
-- `pip install cylc-uiserver=0.2`
+- `pip install cylc-uiserver==0.2`
 
 Workflows can be executed using just the scheduler and CLI or terminal UI, but
 if you want to try to web UI and can't use `conda` (above), you can now install
