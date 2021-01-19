@@ -265,8 +265,8 @@ Proposed contents of the `log` directory in the run directory.
 * `db` - no change
 * `job/` - no change
 * `scheduler/` - replaces `suite/`
-* `conf/` - replaces `suiterc/` and `rose-conf/*.conf`
+* `conf/` - replaces `suiterc/` and `rose-conf/*.conf` (contains Cylc + Rose confs)
   * see also [cylc-flow #3763](https://github.com/cylc/cylc-flow/issues/3763)
-* `install/<timestamp>-install.log` (replaces `rose-suite-run.log`)
-* `install/<timestamp>-reload.log` (currently appended to `rose-suite-run.log`)
-* `install/<timestamp>-vc.log` (replaces rose-conf/*.version)
+* `-install/` - installation logs
+  * `install/<timestamp>-install.log` (replaces `rose-suite-run.log`)
+  * `install/<timestamp>-vc.log` (replaces rose-conf/*.version)
