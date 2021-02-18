@@ -207,7 +207,7 @@ $ ROSE_SUITE_OPT_CONF_KEYS=b cylc install -O c
 
 ```
 # ~/cylc-run/FLOW/rose-suite.conf
-opts=a b c
+opts=a (cylc install)
 ```
 
 ```
@@ -228,7 +228,7 @@ $ cylc reinstall -O d
 # ~/roses/FLOW/rose-suite.conf
 # with each reinstall the cylc-install|opts are appended to the end
 # of the rose-suite.conf|opts setting
-opts=a b c d
+opts=a (cylc-install)
 ```
 
 Because the `cylc-install|opts` are appended to the `rose-suite.conf|opts`
@@ -248,7 +248,7 @@ $ cylc reinstall
 # ~/roses/FLOW/rose-suite.conf
 # NOTE: opt a has been "removed"
 # NOTE: opts b c d have been "remembered"
-opts=z b c d
+opts=z (cylc-install)
 ```
 
 ## Proposed Interfaces
