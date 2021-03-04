@@ -51,20 +51,29 @@
    Where `${DEVDIR}/cylc-ui` is the location
    of your local (git) worktree of the project.
 
-5. Run `jupyterhub`.
+5. Point Cylc Hub at your UI build
+
+   You may need to hardcode the path to your UI build in the Cylc Hub config:
+
+   ```python
+   #  ~/.cylc/hub/config.py
+   c.Spawner.cmd = ['cylc', 'uiserver', '-s', '<path/to/dist>']
+   ```
+
+6. Run `jupyterhub`.
 
    ```bash
    conda activate my-example-env
-   jupyterhub -f ${DEVDIR}/cylc-uiserver/jupyterhub_config.py
+   cylc hub
    ```
 
-6. Run UI.
+7. Run UI.
    ```bash
    conda activate my-example-env
    yarn run build:watch
    ```
 
-7. Open a browser and navigate to `http://localhost:8000/`.
+8. Open a browser and navigate to `http://localhost:8000/`.
 
    You will be asked to log in with your desktop credentials if you have not
    done so before.
