@@ -122,7 +122,7 @@ cylc clean myflow --tar log/job/<cycle>/foo --cycle-range=2021/-P1Y
 # tar job logs for "foo" for the year before $CYLC_TASK_CYCLE_POINT inclusive
 cylc clean myflow --tar log/job/<cycle>/foo --cycle-range=<cycle>/-P1Y
 
-# delete the work dor for the task being run
+# delete the work dir for the task being run
 cylc clean myflow --rm work/<cycle>/<task>
 ```
 
