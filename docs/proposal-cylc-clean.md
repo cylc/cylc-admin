@@ -221,7 +221,7 @@ Build into a trivial main-loop plugin:
 ```
 
 ```python
-# to illistrate how trivial this plugin would be ...
+# to illustrate how trivial this plugin would be ...
 
 from cylc.flow.clean import clean
 from cylc.flow.scripts.clean import get_option_parser
