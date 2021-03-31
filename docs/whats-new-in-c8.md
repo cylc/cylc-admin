@@ -9,6 +9,7 @@ warnings).
 
 - *Suite* is now **workflow** - a more widely understood term
 - *suite daemon* (or *suite server program*) is now **scheduler**
+- *batch system* is now *job runner*
 
 ## New Workflow Config Filename
 
@@ -20,7 +21,7 @@ Cylc 7 was a simple client-server system where everything ran as the user,
 including local desktop GUIs.
 
 Cylc 8 has been re-architected to support a remote web UI:
-- a new privileged Hub component, where you authenticate
+- a new Hub component, where you authenticate (can be run by a regular user or privileged user)
 - a new UI Server component that runs as the user
 - a new UI that runs in your web browser
 - new network layers to efficiently feed data from schedulers and
@@ -71,7 +72,7 @@ automatic retries or manual re-triggering.
 
 In Cylc 7 the GUI showed tasks, with data from only the latest task job.
 
-In Cylc 8 the UI shows both task and jobs, at once.
+In Cylc 8 the UI shows both task and jobs, at once. Tasks are circles, jobs are squares.
 
 ## Fewer Task States
 
