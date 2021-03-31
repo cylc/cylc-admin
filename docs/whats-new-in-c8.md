@@ -118,20 +118,17 @@ TBD...
 
 # Appendices
 
-## Scheduling Algorithm Deficiencies Fixed by Cylc 8
+## Long-standing Scheduling Deficiencies Fixed by Cylc 8
 
-The Cylc 7 scheduler:
-- had to maintain an awareness of at least one active and one waiting cycle
-  point instance of every task in the workflow, and all succeeded tasks within
-  the current active task window
-  - Cylc 8 only has to be aware of current active task instances
+- every task had an implicit depedence on the job submission event of its
+  own previous-instance (i.e. same task, previous cycle point)
+- the scheduler had to be aware of at least one active and one waiting instance
+  of every task in the workflow, plus all succeeded tasks in the current
+  active task window
 - to fully understand what tasks the GUI showed (e.g. why particular *waiting*
-  or *succeeded* tasks appeared in some cycles but not in others) others you
-  had to understand the scheduling algorithm
-  - Cylc 8 users will see a window based sensibly on active tasks
-- for alternate path branching, *suicide triggers* were needed to clear the
-  unused graph path, to avoid stalling the scheduler
-  - Cylc 8 path branching doesn't require suicide triggers
+  or *succeeded* tasks appeared in some cycles but not in others) you had to
+  understand the scheduling algorithm
+- *suicide triggers* were needed to clear unused graph paths to avoid stalling
+  the scheduler
 - tasks could not run out of cycle point order, and workflows could stall
   due to next-cycle-point tasks not being spawned downstream of failed tasks
-  - Cylc 8 tasks can run out of cycle point order
