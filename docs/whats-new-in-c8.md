@@ -104,13 +104,13 @@ The functionality of `rose suite-run` has been migrated into Cylc 8.
 ## New Safe Run Semantics
 
 In Cylc 7 the default workflow run semantics were dangerous. If you
-accidentally typed `cylc run` instead of `cylc restart`, a new cold-start run
+accidentally typed `cylc run` instead of `cylc restart`, a new from-scratch run
 would blithely overwrite your existing run directory and destroy your workflow
 state so that the desired restart was no longer possible.
 
-In Cylc 8, we use `cylc play` to start, restart, or unpause a workflow. If you
-want to do a new run from scratch (a "cold start") do a fresh install and run
-it safely in the new incremented run directory.
+In Cylc 8, `cylc play` is used to start, restart, or unpause a workflow. To
+do a new run from scratch, do a fresh install and run it safely in its new
+run directory.
 
 ## Better Security
 
@@ -125,6 +125,9 @@ TBD...
 - the scheduler had to be aware of at least one active and one waiting instance
   of every task in the workflow, plus all succeeded tasks in the current
   active task window
+- the indiscriminate process of matching completed task outputs with
+  unsatisfied prerequisites was costly and - since Cylc 2 - technically
+  unnecessary because the graph defines exactly who satisifies who 
 - to fully understand what tasks the GUI showed (e.g. why particular *waiting*
   or *succeeded* tasks appeared in some cycles but not in others) you had to
   understand the scheduling algorithm
