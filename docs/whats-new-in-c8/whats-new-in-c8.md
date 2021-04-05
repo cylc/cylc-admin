@@ -52,7 +52,7 @@ To make the transition easier, Cylc 8 can run Cylc 7 workflows out of the box.
 ## Architecture
 [TOP](#whats-new-in-cylc-8)
 
-Cylc has been re-architectured to support a remote web UI:
+Cylc has been re-architected to support a remote web UI:
 - a new Hub component, where you authenticate
   - (can run as a regular user or privileged user)
 - a new UI Server component that runs as the user
@@ -88,9 +88,9 @@ Cylc 8 has a new *"spawn-on-demand"* scheduler to more efficiently manage
 infinite workflows of repeating tasks.
 - it only needs to be aware of current active tasks, and what comes next (very
   efficient)
-- it does alternate path branching without the need for suicide triggers
+- it handles alternate path branching without the need for suicide triggers
 - it can run tasks out of cycle point order
-- it enables a sensible active task-based window on the evolving workflow
+- it enables a sensible active-task based window on the evolving workflow
 - users no longer need to know about the "scheduler task pool" or "insertion"
   of task proxy objects into it
   - the `cylc insert` and `cylc reset` commands no longer exist
@@ -122,11 +122,11 @@ instance.
 
 ![](./img/n-window.png)
 
-The Cylc 8 UI can't show "all the tasks" at once (the graph may be infinite
-in extent, after all, in cycling systems). It shows (in all views):
-- current **active tasks**
-  -  (tasks that are ready to run but waiting on queues, runahead
-    limit, clock-triggers, or xtriggers, are also considered "active")
+The Cylc UI can't show "all the tasks" at once - the graph may be infinite
+in extent, after all, in cycling systems. The Cylc 8 UI shows:
+- current **active tasks** (submitted, running, unhandled-failed)
+  - plus waiting tasks that are only waiting on non-task dependencies:
+    queues, runahead limit, clock-triggers, or xtriggers
 - tasks up `n` (default `1`) graph edges away from active tasks
 
 ## Platform Awareness
@@ -158,7 +158,7 @@ other hosts on the same platform to interact with task jobs.
 ## Graph Syntax
 [TOP](#whats-new-in-cylc-8)
 
-Cylc 7 had unnecessarily deep nesting of graph section headings:
+Cylc 7 had unnecessarily deep nesting of graph config sections:
 
 ```ini
 [scheduling]
@@ -221,14 +221,14 @@ INSTALLED democ8 from /home/oliverh/cylc-src/democ8 -> /home/oliverh/cylc-run/de
 ## Safe Run Semantics: `cylc play`
 [TOP](#whats-new-in-cylc-8)
 
-The Cylc 7 default workflow run semantics were dangerous: if you accidentally
-typed `cylc run` instead of `cylc restart` a new from-scratch run would
-overwrite your existing run directory, including the run database, so that you
-could not go back and do the intended restart.
+Cylc 7 run semantics were dangerous: if you accidentally typed `cylc run`
+instead of `cylc restart` a new from-scratch run would overwrite the existing
+run directory, including the run database, so that you could not go back and do
+the intended restart.
 
-In Cylc 8, `cylc play` is used to *start*, *restart*, or *unpause* a workflow,
-so "restart" is now the safe default behaviour. For a new run from scratch,
-do a fresh install and `cylc play` it safely in the new run directory.
+Cylc 8 has `cylc play` to *start*, *restart*, or *unpause* a workflow, so
+"restart" is now the safe default behaviour. For a new run from scratch,
+do a fresh install and run it safely in the new run directory.
 
 ## Security
 [TOP](#whats-new-in-cylc-8)
