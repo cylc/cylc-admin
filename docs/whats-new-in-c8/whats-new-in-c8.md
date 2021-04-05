@@ -25,18 +25,17 @@ algorithm, security, UIs, and working practices, and more.
 - [Safe Run Semantics](#safe-run-semantics)
 - [Security](#security)
 - [Packaging](#packaging)
-- [](#)
 
 Appendices:
 - [What's Still Missing From Cylc 8](#whats-still-missing-from-cylc-8)
 - [Cylc 7 Scheduling Deficiencies Fixed by Cylc 8
 ](#cylc-7-scheduling-deficiencies-fixed-by-cylc-8)
-- [](#)
 
 ## Backward Compatibility
 [TOP](#whats-new-in-cylc-8)
 
 To make the transition easier, Cylc 8 can run Cylc 7 workflows out of the box.
+
 *Please take action on any deprecation warnings though.*
 
 ## Terminology and Config File Name
@@ -53,7 +52,7 @@ To make the transition easier, Cylc 8 can run Cylc 7 workflows out of the box.
 ## Architecture
 [TOP](#whats-new-in-cylc-8)
 
-Cylc has been re-architected to support a remote web UI:
+Cylc has been re-architectured to support a remote web UI:
 - a new Hub component, where you authenticate
   - (can run as a regular user or privileged user)
 - a new UI Server component that runs as the user
@@ -68,10 +67,17 @@ Cylc has been re-architected to support a remote web UI:
   - command integration, for interacting with task, jobs, and schedulers
 - a new terminal UI (TUI) as part of the CLI
 
-![Cylc Hub](./img/hub.png)
-![Cylc UI dash](./img/cylc-ui-dash.png)
-![Cylc UI tree](./img/cylc-ui-tree.png)
-![Cylc TUI](./img/cylc-tui.png)
+![title Cylc Hub](./img/hub.png)
+<figcaption>Cylc8 WebUI login screen.</figcaption>
+
+![title Cylc UI dash](./img/cylc-ui-dash.png)
+<figcaption>Cylc 8 Web UI home screen.</figcaption>
+
+![title Cylc UI tree](./img/cylc-ui-tree.png)
+<figcaption>Cylc 8 Web UI tree view.</figcaption>
+
+![title Cylc TUI](./img/cylc-tui.png)
+<figcaption>Cylc 8 TUI (Text User Interface).</figcaption>
 
 ## Scheduling Algorithm
 [TOP](#whats-new-in-cylc-8)
@@ -132,18 +138,21 @@ Cylc 7 was aware of individual job hosts.
 [runtime]
    [[model]]
        [[[remote]]]  # Deprecated Cylc 7
-           host = hpc1.login.1 
+           host = hpc1.login.1
 ```
 
-Cylc 8 is aware of host groups, specified as *platforms* in global
-configuration, that are treated equally in job management terms. E.g.
-if the job submission host goes down Cylc 8 can use other hosts on the
-same platform to interact with its jobs.
+Cylc 8 is aware of sets of host settings, specified as *platforms*
+in global configuration. By definition platform hosts share a file
+system and job runner: If one host is unavailable Cylc 8 can use
+other hosts on the same platform to interact with task jobs.
 
 ```ini
 [runtime]
    [[model]]
        platform = hpc1  # Cylc 8
+   [[model_cleanup]]
+       # Platforms can have the same hosts with different job runners.
+       platform = hpc1_background
 ```
 
 ## Graph Syntax
@@ -191,14 +200,14 @@ workflow files into the run directory at start-up
 INSTALLED democ8 from /home/oliverh/cylc-src/democ8 -> /home/oliverh/cylc-run/democ8/run1
 
 (venv) $ cylc play democ8/run1
-                ._.                                                     
-                | |                                                     
-    ._____._. ._| |_____.                                               
-    | .___| | | | | .___|       The Cylc Workflow Engine [8.0b0]    
-    | !___| !_! | | !___.           Copyright (C) 2008-2021 NIWA        
+                ._.
+                | |
+    ._____._. ._| |_____.
+    | .___| | | | | .___|       The Cylc Workflow Engine [8.0b0]
+    | !___| !_! | | !___.           Copyright (C) 2008-2021 NIWA
     !_____!___. |_!_____!   & British Crown (Met Office) & Contributors.
-          .___! |                                                       
-          !_____!                                                       
+          .___! |
+          !_____!
 
 ...
 
@@ -206,7 +215,7 @@ INSTALLED democ8 from /home/oliverh/cylc-src/democ8 -> /home/oliverh/cylc-run/de
 INSTALLED democ8 from /home/oliverh/cylc-src/democ8 -> /home/oliverh/cylc-run/democ8/run2
 
 (venv) $ cylc play democ8/run2
-# etc. 
+# etc.
 ```
 
 ## Safe Run Semantics: `cylc play`
@@ -262,13 +271,12 @@ cylc-8.0b0
 [TOP](#whats-new-in-cylc-8)
 
 - UI dependency graph view, table view, dot view
-- Cross-user functionality and fine-grained authorization 
+- Cross-user functionality and fine-grained authorization
 - Cylc Review, workflow and job log viewer
   - for the moment you can access job logs directly in the workflow run
     directory, or use Cylc Review from cylc-7.9.3 or 7.8.8 to view Cylc 8 logs.
 - Documentation on various aspects of the system, such as how to spawn remote
   UI Servers from the Hub
--
 
 ## Cylc 7 Scheduling Deficiencies Fixed by Cylc 8
 [TOP](#whats-new-in-cylc-8)
