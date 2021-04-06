@@ -233,7 +233,16 @@ do a fresh install and run it safely in the new run directory.
 ## Security
 [TOP](#whats-new-in-cylc-8)
 
-TBD...
+Cylc 8 has good security:
+- Users authenticate at the Hub, with site-appropriate authentication plugins
+- The Hub spawns a UI Server as the target user, which interacts with its own
+  schedulers and authorizes access to them according to the authenticated
+  user's privileges 
+  - (the UI Server and Schedulers run as the workflow-owner user)
+- Jobs authenticate to their parent scheduler using [CurveZMQ](http://curvezmq.org/)
+
+**NOTE the authorization system is still in development; for the moment you can
+only interact with your own workflows.**
 
 ## Packaging
 [TOP](#whats-new-in-cylc-8)
