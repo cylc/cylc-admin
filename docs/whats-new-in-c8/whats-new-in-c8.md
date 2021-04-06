@@ -41,13 +41,11 @@ To make the transition easier, Cylc 8 can run Cylc 7 workflows out of the box.
 ## Terminology and Config File Name
 [TOP](#whats-new-in-cylc-8)
 
-- *Suite* is now **workflow**
-  - (a more widely used and understood term)
-- *suite daemon* (or *suite server program*) is now **scheduler**
-  - (ditto)
+- *suite* is now **workflow** - a more widely understood term
+  - the `suite.rc` config file is now `flow.cylc`
+  - *suite daemon* (or *suite server program*) is now **scheduler**
 - *batch system* is now **job runner**
   - (our job runners are not all "batch systems")
-- the `suite.rc` config file is now called `flow.cylc`
 
 ## Architecture
 [TOP](#whats-new-in-cylc-8)
@@ -77,25 +75,30 @@ Cylc has been re-architected to support a remote web UI:
 <figcaption>Cylc 8 Web UI tree view.</figcaption>
 
 ![title Cylc TUI](./img/cylc-tui.png)
-<figcaption>Cylc 8 TUI (Text User Interface).</figcaption>
+<figcaption>Cylc 8 TUI (Terminal User Interface).</figcaption>
 
 ## Scheduling Algorithm
 [TOP](#whats-new-in-cylc-8)
 
+Cylc has to be able to manage infinite workflows of repeating tasks:
+
 ![Cylc Scheduling](./img/cycling.png)
 
-Cylc 8 has a new *"spawn-on-demand"* scheduler to more efficiently manage
-infinite workflows of repeating tasks.
-- it only needs to be aware of current active tasks, and what comes next (very
-  efficient)
-- it handles alternate path branching without the need for suicide triggers
-- it can run tasks out of cycle point order
-- it enables a sensible active-task based window on the evolving workflow
-- users no longer need to know about the "scheduler task pool" or "insertion"
-  of task proxy objects into it
-  - the `cylc insert` and `cylc reset` commands no longer exist
-- **reflow:** you can trigger multiple "wavefronts" of activity at once, in the
-  workflow graph.
+Cylc 8 fixes many [deficiencies of the original scheduling
+algorithm](#cylc-7-scheduling-deficiencies-fixed-by-cylc-8).
+
+An efficient new **Spawn on Demand scheduler**,
+- only needs to be aware of current active tasks, and what comes next
+- no implicit dependence on previous-instance job submit
+- handles alternate path branching without the need for suicide triggers
+- can run tasks out of cycle point order
+- enables a sensible active-task based window on the evolving workflow
+
+It also supports a powerful new capability called **reflow** (you can trigger
+multiple "wavefronts" of activity at once, in the same workflow graph). And
+users no longer need to know about the "scheduler task pool" or "insertion"
+of task proxy objects into it (the `cylc insert` and `cylc reset` commands are
+gone).
 
 ## Task/Job Separation and Task States
 [TOP](#whats-new-in-cylc-8)
@@ -113,21 +116,21 @@ task icon incorporates a radial progress indicator.
 
 ![](./img/task-job.png)
 
-The missing Cylc 7 states are now just plain old *waiting*, but you can see
-what the task is waiting on (e.g. queue, xtrigger, or retry). A waiting task
-that already has a failed job associated with it must be about to retry, for
-instance.
+Most of the missing Cylc 7 task states are now just plain old *waiting*, but
+you can now see or infer what the task is waiting on: a queue, xtrigger, or
+retry timer. For instance, a waiting task that already has one or more jobs
+must be about to retry.
 
 ## Window on the Workflow
 
 ![](./img/n-window.png)
 
-The Cylc UI can't show "all the tasks" at once - the graph may be infinite
-in extent, after all, in cycling systems. The Cylc 8 UI shows:
+The Cylc UI can't show "all the tasks" at once because the graph may be huge,
+or even infinite in extent in cycling systems. The Cylc 8 UI shows:
 - current **active tasks** (submitted, running, unhandled-failed)
   - plus waiting tasks that are only waiting on non-task dependencies:
     queues, runahead limit, clock-triggers, or xtriggers
-- tasks up `n` (default `1`) graph edges away from active tasks
+- tasks up to `n` graph edges away from active tasks (default `1` edge) 
 
 ## Platform Awareness
 [TOP](#whats-new-in-cylc-8)
@@ -183,6 +186,8 @@ Cylc 8 cleans this up:
 ## Workflow Installation
 [TOP](#whats-new-in-cylc-8)
 
+(For installation of Cylc 8 itself, see [Packaging](#packaging))
+
 The functionality of `rose suite-run` has been migrated into Cylc 8. This
 cleanly separates workflow source directory from run directory, and installs
 workflow files into the run directory at start-up
@@ -228,16 +233,16 @@ the intended restart.
 
 Cylc 8 has `cylc play` to *start*, *restart*, or *unpause* a workflow, so
 "restart" is now the safe default behaviour. For a new run from scratch,
-do a fresh install and run it safely in the new run directory.
+do a fresh `cylc install` and run it safely in the new run directory.
 
 ## Security
 [TOP](#whats-new-in-cylc-8)
 
 Cylc 8 has good security:
 - Users authenticate at the Hub, with site-appropriate authentication plugins
-- The Hub spawns a UI Server as the target user, which interacts with its own
-  schedulers and authorizes access to them according to the authenticated
-  user's privileges 
+- The Hub spawns a UI Server as the target user (workflow owner). This UI
+  Server interacts with its own schedulers and authorizes access to them
+  according to the privileges granted to the authenticated user
   - (the UI Server and Schedulers run as the workflow-owner user)
 - Jobs authenticate to their parent scheduler using [CurveZMQ](http://curvezmq.org/)
 
@@ -247,24 +252,10 @@ only interact with your own workflows.**
 ## Packaging
 [TOP](#whats-new-in-cylc-8)
 
-Cylc 7 had to be installed by manually unpacking a release tarball and ensuring
-that all software dependencies were installed on the system.
+Cylc 7 had to be installed by unpacking a release tarball and ensuring
+that many software dependencies were also installed on the system.
 
-The Python components of Cylc 8 can be installed from PyPI into a Python 3 virtual
-environment, using `pip`:
-
-```bash
-$ python3 -m venv venv
-$ . venv/bin/activate
-(venv) $ pip install cylc-flow
-(venv) $ cylc --version
-cylc-8.0b0
-
-# ... and similarly for cylc-uiserver
-```
-
-The full Cylc 8 system, including the web UI, can be installed from Conda
-Forge:
+Cylc 8 can be installed from **Conda Forge**, into a conda environment:
 
 ```bash
 $ conda create -n cylc8 python=3.8
@@ -274,32 +265,69 @@ $ conda activate cylc8
 cylc-8.0b0
 ```
 
+Or from **PyPI**, into a Python 3 virtual environment, by `pip`-installing the
+UI Server component, which pulls in cylc-flow (Scheduler and CLI) as a
+dependency, and includes a built copy of cylc-ui (Javascript UI):
+
+```bash
+$ python3 -m venv venv
+$ . venv/bin/activate
+(venv) $ pip install cylc-uiserver
+(venv) $ cylc --version
+cylc-8.0b0
+```
+
+The following dependencies are installed by Conda but not by pip:
+
+- configurable-http-proxy (used by the Hub)
+- Python
+
+The following dependencies are not installed by Conda or pip:
+
+- `bash`
+- GNU `coreutils`
+- `mail` (for automated email functionality)
+
+
 # Appendices
 
 ## What's Still Missing From Cylc 8
 [TOP](#whats-new-in-cylc-8)
 
-- UI dependency graph view, table view, dot view
-- Cross-user functionality and fine-grained authorization
-- Cylc Review, workflow and job log viewer
-  - for the moment you can access job logs directly in the workflow run
-    directory, or use Cylc Review from cylc-7.9.3 or 7.8.8 to view Cylc 8 logs.
-- Documentation on various aspects of the system, such as how to spawn remote
-  UI Servers from the Hub
+Some major features still in progress or yet to be started:
+
+- Other UI workflow views:
+  - graph view
+  - table view
+  - dot view
+- Static graph visualization
+- UI view workflow and job logs
+  - for the moment, go to the job log directories or use 
+   cylc-7.9.3/7.8.8 Cylc Review to view Cylc 8 logs
+- UI "edit run"
+- Cross-user functionality
+- UI Server fine-grained authorization
+- The User Guide has not been completely overhauled yet
+- UI Server services to:
+  - Install new workflows
+  - Start stopped workflows
+- UI Server to populate historic task data from run DBs
+- Efficient delta-driven TUI
 
 ## Cylc 7 Scheduling Deficiencies Fixed by Cylc 8
 [TOP](#whats-new-in-cylc-8)
 
-- every task had an implicit depedence on the job submission event of its
-  own previous-instance (i.e. same task, previous cycle point)
-- the scheduler had to be aware of at least one active and one waiting instance
+- Every task implicitly depedended on previous-instance (same task, previous
+  cycle point) job submission
+- The scheduler had to be aware of at least one active and one waiting instance
   of every task in the workflow, plus all succeeded tasks in the current
   active task window
-- the indiscriminate dependency matching process was costly
-- to fully understand what tasks appeared in the GUI (why particular
+- The indiscriminate dependency matching process was costly
+- To fully understand what tasks appeared in the GUI (why particular
   *waiting* or *succeeded* tasks appeared in some cycles but not in others, for
   instance) you had to understand the scheduling algorithm
-- *suicide triggers* were needed to clear unused graph paths and avoid stalling
+- *Suicide triggers* were needed to clear unused graph paths and avoid stalling
   the scheduler
-- tasks could not run out of cycle point order, and workflows could stall
-  due to next-cycle-point successors not being spawned downstream of failed tasks
+- Tasks could not run out of cycle point order
+- The scheduler could stall with next-cycle-point successors not spawned
+  downstream of failed tasks
