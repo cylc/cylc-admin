@@ -131,22 +131,36 @@ Also included in that PR is the beginnings of the user config work.
 
 Still to be completed, once authorisation fine detail has been agreed upon...
 
-* Config fine tuning
-* Auth group inheritance
+* Clear logging of user interaction.
+* Config fine tuning.
+* Auth group inheritance.
 * UI error handling for 403 - e.g. handle read only users getting 403 on write attempt.
 * Ramp up / ramp down logic for site vs. user config.
 * UI to display greyed out buttons for mutations without authorisation.
 * UI to display currently authenticated user and editable buttons for navigation to another UI Server.
 * Documentation for Authorisation
-* Set up GH Actions to test multi-user access using docker (still at the investigation stage).
+* Set up GH Actions to incorporate multi-user access testing using docker (still at the investigation stage).
 
 ## Enhancements
 
 * Other possible configured attributes such as time-based authorisation. e.g. limit access to UI Server to User_A for 30 minutes.
 
-Whilst this would be useful to help users debug their workflows, screen sharing through Teams, for example, can currently provide access to a users UI Server and workflows. The control of the workflow in this case, remains with the user as they can remove access control at any time.
+Whilst this would be useful to help users debug their workflows, screen sharing through Teams, for example, can currently provide access to a users UI Server and workflows. The control can be handed over to another user but the owner/user can remove access control at any time.
 
 * Workflow level granularity
 
 Initially this authorisation work will be implemented on an all workflow basis, i.e. grant User_A access to all my workflows.
 Future work could implement authorisation configuration on a per-workflow basis.
+
+* Access on the command line
+
+e.g.
+
+```console
+$ # stop myflow locally
+$ cylc stop myflow
+$ # stop alice's flow via the UIS
+$ cylc stop ~alice/theirflow
+$ # stop all flows via the UIS
+$ cylc stop '*'
+```
