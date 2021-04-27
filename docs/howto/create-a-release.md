@@ -61,14 +61,22 @@ It is also possible to manually create a release PR with the conditions:
 If anything goes wrong, you can also do the whole process manually by
 following the [old instructions](create-a-release-old.md).
 
-## Stage 3: upload to Conda
+## Stage 3: release on Conda
 
-NOTE: the GitHub and PYPI releases are prerequisites for releasing to
-Conda Forge!
+> **Note:** The GitHub and PYPI releases are prerequisites for releasing to
+> Conda Forge!
 
-The Conda Forge release process is mostly automated by bots. These bots
-are set up during the initial project bootstrap, which has been done for
-all the projects that are part of Cylc 8.
+> **Note:** The Conda Forge release process is mostly automated by bots. These
+> bots are set up during the initial project bootstrap, which has been done for
+> all the projects that are part of Cylc 8.
+
+After a Python project has been pushed to PyPi a new PR should be
+automatically created on the conda-forge feedstock.
+
+- Follow the instructions on the PR.
+- Check the dependencies are upto date, some projects e.g. cylc-flow have
+  a Conda environment file in the reop.
+- Once approved merge the PR to make the release.
 
 As there are inter-dependencies amongst the Cylc 8 parts, you should
 know the dependency tree, and start by the leaf nodes (i.e. a module
@@ -81,11 +89,13 @@ releasing only Cylc UI Server, you should release Cylc Flow first.
 
 On GitHub, navigate to the project repository on GitHub, e.g.
 
-- https://github.com/conda-forge/metomi-isodatetime-feedstock
-- https://github.com/conda-forge/cylc-uiserver-feedstock
-- https://github.com/conda-forge/cylc-ui-feedstock
-- https://github.com/conda-forge/cylc-flow-feedstock
 - https://github.com/conda-forge/cylc-feedstock
+- https://github.com/conda-forge/cylc-flow-feedstock
+- https://github.com/conda-forge/cylc-rose-feedstock
+- https://github.com/conda-forge/cylc-ui-feedstock
+- https://github.com/conda-forge/cylc-uiserver-feedstock
+- https://github.com/conda-forge/metomi-isodatetime-feedstock
+- https://github.com/conda-forge/metomi-rose-feedstock
 
 On each of these repositories, the release process should be pretty
 much the same. Your work will be mainly (if not exclusive) on
