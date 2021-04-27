@@ -74,8 +74,8 @@ After a Python project has been pushed to PyPi a new PR should be
 automatically created on the conda-forge feedstock.
 
 - Follow the instructions on the PR.
-- Check the dependencies are upto date, some projects e.g. cylc-flow have
-  a Conda environment file in the reop.
+- Check the dependencies are up to date, some projects e.g. cylc-flow have
+  a Conda environment file in the repo.
 - Once approved merge the PR to make the release.
 
 As there are inter-dependencies amongst the Cylc 8 parts, you should
