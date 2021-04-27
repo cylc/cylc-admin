@@ -47,7 +47,7 @@ c.UIServer.authorisation = {
         "write": ["mut1", "mut2", ...],   # Interactions allowed with tasks
         "execute": True                   # Play and Stop at workflow level
     },
-    "group:<group1>": {                 # Read is implied by Write
+    "group:<group1>": {                   # Read is implied by Write
         "write": True                     # All mutations except Play and Stop
     }
     "<user2>": {
@@ -123,6 +123,12 @@ Testing this works on users' systems might present some challenges - this would 
 
 If an organisation has a level of nesting in their groups, investigation is still needed - does the command pull the nested groups too? If not, we need to document this limitation for users.
 
+## Ongoing Investigation: Reading Config Behaviour
+
+If a user changes their config, for example, to reduce permissions, we would expect them to restart their UI Server for those changes to take effect. Restarts are currently required for UI updates.
+
+Having a regular interval reload of the config may be an option, depending on other/future configuration requirements. However this interval time could pose a security risk and effects on performance would need to be considered.
+
 ## Work Breakdown
 
 The beginnings of the authorisation work have been started [Proof of Concept PR](https://github.com/cylc/cylc-uiserver/pull/204), this is not production ready but a fair chunk of the work has been completed.
@@ -164,3 +170,7 @@ $ cylc stop ~alice/theirflow
 $ # stop all flows via the UIS
 $ cylc stop '*'
 ```
+
+* Access level change requiring re-authentication
+
+A change in access level interactions with a workflow could require the user to have to re-authenticate. For example, User A accessing User B's workflows, on an attempted execute operation for a workflow would require User A to login again to re-authenticate themselves.
