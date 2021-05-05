@@ -43,16 +43,14 @@ Two configuration files will be needed, one for site and one for users, which co
 ```python
 c.UIServer.authorisation = {
     "<user1>": {
-        "read": True,                     # View only with no interaction allowed
-        "write": ["mut1", "mut2", ...],   # Interactions allowed with tasks
-        "execute": True                   # Play and Stop at workflow level
+        "read": True,  # View only with no interaction allowed
+        "write": ["pause", "trigger", "message"],  # Specified interactions allowed
+        # No execute permissions
     },
-    "group:<group1>": {                   # Read is implied by Write
-        "write": True                     # All mutations except Play and Stop
-    }
-    "<user2>": {
-        "execute": True                   # Read and Write implied by Execute
-    },    
+    "group:<group1>": {  # Denote a group with `group:`
+        "write": True  # Read is implied by Write
+    },
+    "<user2>": {"execute": True},  # Read and Write implied by Execute
 }
 ```
 
@@ -60,28 +58,26 @@ c.UIServer.authorisation = {
 
 ```python
 c.UIServer.authorisation = {
-    { 
-        "<server_user1>": {         # User who owns a given UI Server
-            "<user1>": {
-                "execute": True                   
-            },
-            "group:<group1>": {              
-                "write": True                  
-            }
-            "*": {                  # Glob for all authenticated users
-                "read": True                  
+    {
+        "<*>": {                    # For all ui-server owners,
+            "<*>": {                # Any authenticated user
+                "default": "read",  # Will have default read-only access
+                "limit": "execute"  # All server owners are allowed to raise access up to
+                                    # a maximum of execute.
             }
         },
-         "group:<group_of_server_users1>": {  # Group of users who own UI Servers  
-             ...
-         }
-    }    
+        "<server_owner1>": {        # Specific UI Owner
+            "<user1>": {            # Specific user1
+                "limit": "write"    # Can only be granted a maximum of write by
+                                    # server_owner1
+            },
+            "group:<groupA>": {"default": "write"},  # Denote a group with `group:`
+        },
+        "group:<group_of_server_users>":{
+            "group: groupB": {"limit": "write"},  # Group of users who own UI Servers
+    }
 }
 ```
-
-With mutation-level granularity `play` and `stop` could be added under the `write` mutations list instead of having an execute role.
-
-We should set a recommended permissions level for the user config file. It will be created with the default umask, which could pose a security risk. Perhaps we could have a warning in the log if the file permissions are not strict enough.  
 
 ### Site vs. User Config Precedence
 
@@ -89,11 +85,87 @@ At CylcCon2020 is was agreed that a:
 
 > user can ramp up authorization levels as far as the site allows
 
-Currently this will be taken to mean that the site config takes precedence - users cannot raise access levels in their UI Server config for a given user or group, higher than those set in site config.
+Site config will takes precedence in the form of an upper boundary set, a maximum `limit`, it will also set a `default` access level. Users cannot raise access levels in their UI Server config for a given user or group, higher than those set in site config.
 
 If the site config does not set access for a given user or group then a UI Server will **not** be limited by site config.
 
 The development team should discuss this to refine it further.
+
+## Defaults and Limits
+
+Unset defaults for both the `limit` and `default` will need consideration, I suggest that, in keeping with the deny by default principle:
+
+* if a limit is not set but a default is, then the default level is used as the limit.
+* if a default is not set but a limit is, then the default should be no access.
+
+We will need to consider the desired behaviour if a user appears twice with different defaults and limits set, this is probably most likely to occur when a user appears in either multiple groups or in a group and as a user.
+
+With mutation-level granularity `play` and `stop` could be added under the `write` mutations list instead of having an execute role. Alternatively we provide a well-documented mapping system:
+
+## Possible Access Assignment of Mutations
+
+If running with the read/write/execute configuration, initial assignments will be needed, for the case when users set e.g. `'write' = True`.
+
+Some of the below are not currently available to users but including them here for consideration. This is also a fairly substantial list, which makes the case for read, write, execute pre-set access groups which would be easier for users and sites to configure, rather than defining a long list of mutations per user/group.
+
+As a springboard for discussion, defaults could be assigned as follows:
+
+| Mutation | Read | Write | Exectute |
+| :---     |:---: |:---:  |---:
+Broadcast|||x|
+Cat-log||x|x|
+Check-versions||x|x|
+Clean||x|x|
+Compare||x|x|
+Config||x|x|
+Diff||x|x|
+Dump||x|x|
+Edit|||x|
+Ext-trigger||x|x|
+Get-cylc-version||x|x|
+Get-workflow-version||x|x|
+Graph||x|x|
+Hold||x|x|
+Install||x|x|
+Kill||x|x|
+List||x|x|
+Message||x|x|
+Pause||x|x|
+Ping||x|x|
+Play|||x|
+Poll||x|x|
+Read|x|x|x|
+Reinstall||x|x|
+Release||x|x|
+Reload||x|x|
+Remove||x|x|
+Report-timings||x|x|
+Resume||x|x|
+Scan||x|x|
+Search||x|x|
+SetOutputs||x|x|
+SetVerbosity||x|x|
+Show||x|x|
+Stop|||x|
+Terminal Access||x|x|
+Trigger||x|x|
+Tui||x|x|
+Workflow-state||x|x|
+Validate||x|x|
+View||x|x|
+
+Any mutation without a specified access assignment will be denied by default.
+As future features are added, they will also need to be categorised.
+
+The associated arguments for the mutations may need consideration.
+
+We should set a recommended write permissions level for the user config file. It could pose a security risk to have users config files writable by others. Perhaps we could have a warning in the log if the file permissions are not strict enough.  
+
+## Open Config Questions
+
+* Config design - read/write/exectute vs mutation granularity. `read`, `write` and `execute` mutations could be rolled into one configuration: e.g. `user permissions`
+* If running with the read/write/execute defaults (suggested in table above) need confirmation/agreement
+* It may be sufficient to have site config set permissions as suggested above (with implied `True`), without mutation granularity. If it is preferential for this mutation level granularity to be set at site level, lists of mutations could be configured as an alternative.
 
 ### Access Group Inheritance
 
@@ -123,6 +195,10 @@ Testing this works on users' systems might present some challenges - this would 
 
 If an organisation has a level of nesting in their groups, investigation is still needed - does the command pull the nested groups too? If not, we need to document this limitation for users.
 
+The implementation of groups could be computationally expensive, so these should be cached after first call.
+
+![Cylc-8 Authorisation High-Level Diagram](img/cylc-8-auth-high-level.png "Cylc-8 Authorisation HLD")
+
 ## Ongoing Investigation: Reading Config Behaviour
 
 If a user changes their config, for example, to reduce permissions, we would expect them to restart their UI Server for those changes to take effect. Restarts are currently required for UI updates.
@@ -147,7 +223,7 @@ Still to be completed, once authorisation fine detail has been agreed upon...
 * Documentation for Authorisation
 * Set up GH Actions to incorporate multi-user access testing using docker (still at the investigation stage).
 
-## Enhancements
+## Not supported in this proposal
 
 * Other possible configured attributes such as time-based authorisation. e.g. limit access to UI Server to User_A for 30 minutes.
 
@@ -158,8 +234,14 @@ Whilst this would be useful to help users debug their workflows, screen sharing 
 Initially this authorisation work will be implemented on an all workflow basis, i.e. grant User_A access to all my workflows.
 Future work could implement authorisation configuration on a per-workflow basis.
 
-* Access on the command line
+* Access level change requiring re-authentication
 
+A change in access level interactions with a workflow could require the user to have to re-authenticate. For example, User A accessing User B's workflows, on an attempted execute operation for a workflow would require User A to login again to re-authenticate themselves. This would need further investigation as may be difficult to implement due to the current reliance on Jupyterhub authentication.
+Perhaps a confirmation box may be worth implementing, e.g. You have selected to Pause Workflow_A of User1. Click OK to proceed.
+
+### Command Line
+
+Not directly related to this proposal, although perhaps worth bearing in mind is access on the command line.
 e.g.
 
 ```console
@@ -170,7 +252,3 @@ $ cylc stop ~alice/theirflow
 $ # stop all flows via the UIS
 $ cylc stop '*'
 ```
-
-* Access level change requiring re-authentication
-
-A change in access level interactions with a workflow could require the user to have to re-authenticate. For example, User A accessing User B's workflows, on an attempted execute operation for a workflow would require User A to login again to re-authenticate themselves.
