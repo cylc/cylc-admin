@@ -159,7 +159,22 @@ As future features are added, they will also need to be categorised.
 
 The associated arguments for the mutations may need consideration.
 
-We should set a recommended write permissions level for the user config file. It could pose a security risk to have users config files writable by others. Perhaps we could have a warning in the log if the file permissions are not strict enough.  
+We should set a recommended write permissions level for the user config file. It could pose a security risk to have users config files writable by others. Perhaps we could have a warning in the log if the file permissions are not strict enough.
+
+## Specific Use Case for Authorisation
+
+Having a site config that can give users who are members of a group with the same name as the UI server owner write permissions, would be desirable. With the above config, this could be achieved as follows:
+
+```python
+c.UIServer.authorisation = {
+    {
+        "<account*>": {                     # User UI Server
+            "<group:account*>": {           # Members in group of same name as UIS owner
+                "default": "write"          # Default write permissions
+            }
+        },
+
+```
 
 ## Open Config Questions
 
