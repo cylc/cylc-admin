@@ -36,21 +36,24 @@ UI Server back-end code should prevent users manipulating client-side code to by
 
 ## Configuration
 
-Two configuration files will be needed, one for site and one for users, which could take the form as discussed in CylcCon2020. This authorisation configuration can be added to the existing UI Server config files.
+Two configuration files will be needed, one for site and one for users. This authorisation configuration can be added to the existing UI Server config files, although this may prove a technical challenge. Authorisation configurations should be loaded at start up and stored as a dictionary. This means any changes to config will require the UI Server to be restarted before they are applied.
+
+### Config Design
+
+The config discussed at [CylcCon2020](https://github.com/cylc/cylc-uiserver/issues/10#issuecomment-773752542) suggests admin levels of `read`, `write` and `execute`. Reducing the number of access groups is another suggestion, especially since write and execute are not very meaningful to users (in terms of Cylc) and to ensure users do not accidentally give away more privileges than intended, a simpler system, as outlined below, may be preferential. Proposal: `READ` and `ADMIN` permission groups.
+
+### READ and ADMIN
+
+For the purposes of clarity for users, and since we have operation (mutation) level granularity, the simpler method of having two groups, `READ` and `ADMIN`, rather than three. Access groups should be entered in caps to avoid confusing e.g. READ with read mutation.
 
 ### Example UI Server User Configuration
 
 ```python
 c.UIServer.authorisation = {
-    "<user1>": {
-        "read": True,  # View only with no interaction allowed
-        "write": ["pause", "trigger", "message"],  # Specified interactions allowed
-        # No execute permissions
-    },
-    "group:<group1>": {  # Denote a group with `group:`
-        "write": True  # Read is implied by Write
-    },
-    "<user2>": {"execute": True},  # Read and Write implied by Execute
+    "<user1>": ["READ", "pause", "trigger", "message"], # Specified interactions allowed
+    "group:<group1>": ["ADMIN"],                # All access to workflows granted
+    "<user2>": ["ADMIN", "!trigger", "!edit"],  # All Admin, not trigger, or edit
+    "<user3>": ["!ADMIN"]                       # No privileges (incl READ)
 }
 ```
 
@@ -58,40 +61,55 @@ c.UIServer.authorisation = {
 
 ```python
 c.UIServer.authorisation = {
-    {
-        "<*>": {                    # For all ui-server owners,
-            "<*>": {                # Any authenticated user
-                "default": "read",  # Will have default read-only access
-                "limit": "execute"  # All server owners are allowed to raise access up to
-                                    # a maximum of execute.
-            }
+    "<*>": {                    # For all ui-server owners,
+        "<*>": {                # Any authenticated user
+            "default": "READ",  # Will have default read-only access
+            "limit": "READ"     # All server owners default to being able to give away
+        },                      # a maximum of read privileges.
+        "<user1>": {            # user1
+            "default": "!ADMIN" # No privileges for all ui-server owners
+        },                      # No limit set, default level used as limit i.e. all
+    },                          # ui server owners default to be able to give away a
+                                # maximum of no privileges to user1
+
+    "<server_owner_1>": {       # For specific UI Server owner,
+        "<*>": {                # Any authenticated user
+            "default": "READ",  # Will have default read-only access
+            "limit": "ADMIN"    # server_owner_1 is able to give away
+        },                      # a maximum of admin privileges.
+    },
+    "<server_owner_2>": {       # Specific UI Owner
+        "<user2>": {            # Specific user2
+           "limit": "ADMIN"     # Can only be granted a maximum of Admin by
+        },                      # server_owner1, default access for user2 falls back to
+                                # standard READ only (if server_owner_2/user2 are
+                                # included in other auth config e.g. the top example),
+                                # or none if not in any other auth config sections.
+
+        "group:<groupA>": {     # group denoted with a `group:`
+            "default": "ADMIN"  # groupA has default ADMIN access to server_owner_2's
+        },                      # workflows
+    },
+    "group:<grp_of_svr_owners>":{         # Group of users who own UI Servers
+        "group: groupB": {
+            "default": "READ",            # can grant groupB users up to Admin
+            "limit": [                    # privileges, without stop and kill
+                "ADMIN", "!stop", "!kill" # operations
+            ]
         },
-        "<server_owner1>": {        # Specific UI Owner
-            "<user1>": {            # Specific user1
-                "limit": "write"    # Can only be granted a maximum of write by
-                                    # server_owner1
-            },
-            "group:<groupA>": {"default": "write"},  # Denote a group with `group:`
-        },
-        "group:<group_of_server_users>":{
-            "group: groupB": {"limit": "write"},  # Group of users who own UI Servers
     }
 }
 ```
 
-### Site vs. User Config Precedence
+### Site vs. User Config Precedence, Defaults and Limits
 
 At CylcCon2020 is was agreed that a:
 
 > user can ramp up authorization levels as far as the site allows
 
-Site config will takes precedence in the form of an upper boundary set, a maximum `limit`, it will also set a `default` access level. Users cannot raise access levels in their UI Server config for a given user or group, higher than those set in site config.
+Site config `limit` will determine if a user has the privileges to give away access to their workflows. It will  it will also set a `default` access level. Users cannot raise access levels in their UI Server config for a given user or group, higher than those set in site config `limit`.
 
 If the site config does not set access for a given user or group then a UI Server will **not** be limited by site config.
-
-The development team should discuss this to refine it further.
-
-## Defaults and Limits
 
 Unset defaults for both the `limit` and `default` will need consideration, I suggest that, in keeping with the deny by default principle:
 
@@ -100,77 +118,82 @@ Unset defaults for both the `limit` and `default` will need consideration, I sug
 
 We will need to consider the desired behaviour if a user appears twice with different defaults and limits set, this is probably most likely to occur when a user appears in either multiple groups or in a group and as a user.
 
-With mutation-level granularity `play` and `stop` could be added under the `write` mutations list instead of having an execute role. Alternatively we provide a well-documented mapping system:
+Proposal: all permissions are additive, if user appears elsewhere in config, the permission level should be taken as the greatest possible.
+
+## Negating permissions
+
+`!` before an operation or permission group will remove those permissions. Negated permissions will take precedence, applied last in the logic to ensure they trump any other assigned permissions.
 
 ## Possible Access Assignment of Mutations
 
-If running with the read/write/execute configuration, initial assignments will be needed, for the case when users set e.g. `'write' = True`.
+If running with the read/admin configuration, initial assignments will be needed, for the case when users set e.g. when users assign: `READ`, `ADMIN`
 
-Some of the below are not currently available to users but including them here for consideration. This is also a fairly substantial list, which makes the case for read, write, execute pre-set access groups which would be easier for users and sites to configure, rather than defining a long list of mutations per user/group.
+Some of the below are not currently available to users but including them here for consideration. This is also a fairly substantial list, which makes the case for read and admin pre-set access groups which would be easier for users and sites to configure, rather than defining a long list of mutations per user/group.
 
 As a springboard for discussion, defaults could be assigned as follows:
 
-| Mutation | Read | Write | Exectute |
-| :---     |:---: |:---:  |---:
-Broadcast|||x|
-Cat-log||x|x|
-Check-versions||x|x|
-Clean||x|x|
-Compare||x|x|
-Config||x|x|
-Diff||x|x|
-Dump||x|x|
-Edit|||x|
-Ext-trigger||x|x|
-Get-cylc-version||x|x|
-Get-workflow-version||x|x|
-Graph||x|x|
-Hold||x|x|
-Install||x|x|
-Kill||x|x|
-List||x|x|
-Message||x|x|
-Pause||x|x|
-Ping||x|x|
-Play|||x|
-Poll||x|x|
-Read|x|x|x|
-Reinstall||x|x|
-Release||x|x|
-Reload||x|x|
-Remove||x|x|
-Report-timings||x|x|
-Resume||x|x|
-Scan||x|x|
-Search||x|x|
-SetOutputs||x|x|
-SetVerbosity||x|x|
-Show||x|x|
-Stop|||x|
-Terminal Access||x|x|
-Trigger||x|x|
-Tui||x|x|
-Workflow-state||x|x|
-Validate||x|x|
-View||x|x|
+| Operation | Read | Admin |
+| :---     |:---: |---: |
+Broadcast| |x|
+Cat-log|x|x|
+Check-versions|x|x|
+Clean| |x|
+Compare| |x|
+Config| |x|
+Diff| |x|
+Dump| |x|
+Edit| |x|
+Ext-trigger| |x|
+Get-cylc-version|x|x|
+Get-workflow-version|x|x|
+Graph| |x|
+Hold| |x|
+Install| |x|
+Kill| |x|
+List|x|x|
+Message| |x|
+Pause| |x|
+Ping|x|x|
+Play| |x|
+Poll| |x|
+Read|x|x|
+Reinstall| |x|
+Release| |x|
+Reload| |x|
+Remove| |x|
+Report-timings|x|x|
+Resume| |x|
+Scan|x|x|
+Search|x|x|
+SetOutputs| |x|
+SetVerbosity| |x|
+Show|x|x|
+Stop| |x|
+Terminal Access| |x|
+Trigger| |x|
+Workflow-state|x|x|
+Validate|x|x|
+View|x|x|
 
 Any mutation without a specified access assignment will be denied by default.
 As future features are added, they will also need to be categorised.
 
 The associated arguments for the mutations may need consideration.
 
+### Security Check for Permission Level on Config Files
+
 We should set a recommended write permissions level for the user config file. It could pose a security risk to have users config files writable by others. Perhaps we could have a warning in the log if the file permissions are not strict enough.
 
 ## Specific Use Case for Authorisation
 
-Having a site config that can give users who are members of a group with the same name as the UI server owner write permissions, would be desirable. With the above config, this could be achieved as follows:
+Having a site config that can give users who are members of a group with the same name as the UI server owner admin permissions, would be desirable. We could have a namespace check; this could be achieved as follows:
 
 ```python
 c.UIServer.authorisation = {
     {
-        "<account*>": {                     # User UI Server
-            "<group:account*>": {           # Members in group of same name as UIS owner
-                "default": "write"          # Default write permissions
+        "<*account*>": {                     # User UI Server
+            "group:<*account*>": {           # Members in group of same name as UIS owner
+                "default": "ADMIN"           # Default admin permissions
             }
         },
 
@@ -178,14 +201,9 @@ c.UIServer.authorisation = {
 
 ## Open Config Questions
 
-* Config design - read/write/exectute vs mutation granularity. `read`, `write` and `execute` mutations could be rolled into one configuration: e.g. `user permissions`
-* If running with the read/write/execute defaults (suggested in table above) need confirmation/agreement
-* It may be sufficient to have site config set permissions as suggested above (with implied `True`), without mutation granularity. If it is preferential for this mutation level granularity to be set at site level, lists of mutations could be configured as an alternative.
+* Config design model: CylcCon read/write/execute vs READ/ADMIN.
 
-### Access Group Inheritance
-
-A user/group with `execute: True` should be assumed to have `read: True` and `write: True`, similarly, a `write: True` user/group should have `read:True` access.
-This would need to be documented for sites and users.
+* Access group defaults (suggested in table above) need confirmation/agreement of mapping operations/mutations to correct groups. This is something, that although technically can be changed with ease, would potentially be very confusing for users if changed at a later date.
 
 ## Ongoing Investigation: Fetching User Groups
 
@@ -228,12 +246,12 @@ Also included in that PR is the beginnings of the user config work.
 
 Still to be completed, once authorisation fine detail has been agreed upon...
 
-* Clear logging of user interaction.
+* Clear logging of user interaction - important to log which user has executed which operations.
 * Config fine tuning.
 * Auth group inheritance.
-* UI error handling for 403 - e.g. handle read only users getting 403 on write attempt.
+* UI error handling for 403 - e.g. handle read only users getting 403 on admin attempt.
 * Ramp up / ramp down logic for site vs. user config.
-* UI to display greyed out buttons for mutations without authorisation.
+* UI to display greyed out (unavailable) buttons for mutations without authorisation.
 * UI to display currently authenticated user and editable buttons for navigation to another UI Server.
 * Documentation for Authorisation
 * Set up GH Actions to incorporate multi-user access testing using docker (still at the investigation stage).
