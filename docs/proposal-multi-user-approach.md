@@ -50,27 +50,31 @@ For the purposes of clarity for users, and since we have operation (mutation) le
 
 ```python
 c.UIServer.authorisation = {
-    "<user1>": ["READ", "pause", "trigger", "message"], # Specified interactions allowed
-    "group:<group1>": ["ADMIN"],                # All access to workflows granted
-    "<user2>": ["ADMIN", "!trigger", "!edit"],  # All Admin, not trigger, or edit
-    "<user3>": ["!ADMIN"]                       # No privileges (incl READ)
+    "<user1>": ["READ", "pause", "trigger", "message"], # Specified interactions granted to user1
+    "group:<group1>": ["ADMIN"],                        # Both READ and ADMIN access to workflows
+                                                        # granted to users in group1
+    "<user2>": ["ADMIN", "!trigger", "!edit"],          # All Admin, except trigger and edit
+                                                        # granted to user2
+    "<user3>": ["!ADMIN"]                               # No ADMIN privileges (same as granting
+                                                        # READ)
+    "<user4>": ["!READ", "!ADMIN"]                      # user4 has no access to workflows
 }
 ```
 
 ### Example Site Configuration
 
 ```python
-c.UIServer.authorisation = {
+c.UIServer.site-authorisation = {
     "<*>": {                    # For all ui-server owners,
         "<*>": {                # Any authenticated user
             "default": "READ",  # Will have default read-only access
-            "limit": "READ"     # All server owners default to being able to give away
-        },                      # a maximum of read privileges.
-        "<user1>": {            # user1
-            "default": "!ADMIN" # No privileges for all ui-server owners
-        },                      # No limit set, default level used as limit i.e. all
-    },                          # ui server owners default to be able to give away a
-                                # maximum of no privileges to user1
+        },
+        "<user1>": {              # user1
+            "default": [
+                "!READ", "!ADMIN" # No privileges for all ui-servers
+            ],                    # owners
+        },
+    },
 
     "<server_owner_1>": {       # For specific UI Server owner,
         "<*>": {                # Any authenticated user
@@ -78,28 +82,33 @@ c.UIServer.authorisation = {
             "limit": "ADMIN"    # server_owner_1 is able to give away
         },                      # a maximum of admin privileges.
     },
-    "<server_owner_2>": {       # Specific UI Owner
+    "<server_owner_2>": {       # For specific UI Server owner,
         "<user2>": {            # Specific user2
            "limit": "ADMIN"     # Can only be granted a maximum of Admin by
-        },                      # server_owner1, default access for user2 falls back to
+        },                      # server_owner2, default access for user2 falls back to
                                 # standard READ only (if server_owner_2/user2 are
                                 # included in other auth config e.g. the top example),
                                 # or none if not in any other auth config sections.
 
-        "group:<groupA>": {     # group denoted with a `group:`
-            "default": "ADMIN"  # groupA has default ADMIN access to server_owner_2's
-        },                      # workflows
+        "group:<groupA>": {                # group denoted with a `group:`
+            "default": "ADMIN"             # groupA has default ADMIN access to server_owner_2's
+        },                                 # workflows
     },
-    "group:<grp_of_svr_owners>":{         # Group of users who own UI Servers
+    "group:<grp_of_svr_owners>":{          # Group of users who own UI Servers
         "group: groupB": {
-            "default": "READ",            # can grant groupB users up to Admin
-            "limit": [                    # privileges, without stop and kill
-                "ADMIN", "!stop", "!kill" # operations
+            "default": "READ",             # can grant groupB users up to Admin
+            "limit": [                     # privileges, without stop and kill
+                "ADMIN", "!stop", "!kill"  # operations
             ]
         },
     }
 }
 ```
+
+### READ ADMIN Inheritance
+
+On granting ADMIN access in the site or user config file, that implies ADMIN and READ access (since the mutations associated with READ are non-interactive).
+When removing ADMIN access, i.e `!ADMIN`, the access falls back to READ.
 
 ### Site vs. User Config Precedence, Defaults and Limits
 
@@ -107,9 +116,9 @@ At CylcCon2020 is was agreed that a:
 
 > user can ramp up authorization levels as far as the site allows
 
-Site config `limit` will determine if a user has the privileges to give away access to their workflows. It will  it will also set a `default` access level. Users cannot raise access levels in their UI Server config for a given user or group, higher than those set in site config `limit`.
+Site config `limit` will determine if a user has the privileges to give away access to their workflows. It will also set a `default` access level. Users cannot raise access levels in their UI Server config for a given user or group, higher than those set in site config `limit`.
 
-If the site config does not set access for a given user or group then a UI Server will **not** be limited by site config.
+If the site config does not set access for a given user or group but a UI Server owner grants access, access will be blocked.
 
 Unset defaults for both the `limit` and `default` will need consideration, I suggest that, in keeping with the deny by default principle:
 
@@ -124,6 +133,8 @@ Proposal: all permissions are additive, if user appears elsewhere in config, the
 
 `!` before an operation or permission group will remove those permissions. Negated permissions will take precedence, applied last in the logic to ensure they trump any other assigned permissions.
 
+`!ADMIN` will mean no admin access, but `READ` access will still apply. This will need to be documented.
+
 ## Possible Access Assignment of Mutations
 
 If running with the read/admin configuration, initial assignments will be needed, for the case when users set e.g. when users assign: `READ`, `ADMIN`
@@ -132,45 +143,55 @@ Some of the below are not currently available to users but including them here f
 
 As a springboard for discussion, defaults could be assigned as follows:
 
+### Current Mutations
+
 | Operation | Read | Admin |
 | :---     |:---: |---: |
 Broadcast| |x|
-Cat-log|x|x|
-Check-versions|x|x|
-Clean| |x|
-Compare| |x|
-Config| |x|
-Diff| |x|
-Dump| |x|
-Edit| |x|
 Ext-trigger| |x|
-Get-cylc-version|x|x|
-Get-workflow-version|x|x|
-Graph| |x|
 Hold| |x|
-Install| |x|
 Kill| |x|
-List|x|x|
 Message| |x|
 Pause| |x|
 Ping|x|x|
 Play| |x|
 Poll| |x|
 Read|x|x|
-Reinstall| |x|
 Release| |x|
+ReleaseHoldPoint| |x|
 Reload| |x|
 Remove| |x|
-Report-timings|x|x|
 Resume| |x|
-Scan|x|x|
-Search|x|x|
+SetGraphWindowExtent| |x|
+SetHoldPoint| |x|
 SetOutputs| |x|
 SetVerbosity| |x|
-Show|x|x|
 Stop| |x|
-Terminal Access| |x|
 Trigger| |x|
+
+### Future Mutations
+
+| Operation | Read | Admin |
+| :---     |:---: |---: |
+Cat-log|x|x|
+Check-versions|x|x|
+Clean| |x|
+Compare| |x|
+Config|x|x|
+Diff| |x|
+Dump| |x|
+Edit| |x|
+Get-cylc-version|x|x|
+Get-workflow-version|x|x|
+Graph|x|x|
+Install| |x|
+List|x|x|
+Reinstall| |x|
+Report-timings|x|x|
+Scan|x|x|
+Search|x|x|
+Show|x|x|
+Terminal Access| |x|
 Workflow-state|x|x|
 Validate|x|x|
 View|x|x|
@@ -186,14 +207,14 @@ We should set a recommended write permissions level for the user config file. It
 
 ## Specific Use Case for Authorisation
 
-Having a site config that can give users who are members of a group with the same name as the UI server owner admin permissions, would be desirable. We could have a namespace check; this could be achieved as follows:
+Having a site config that can give users who are members of a group with the same name as the UI server owner admin permissions, would be desirable. We could have a namespace `UISOWNER` to achieve this as follows:
 
 ```python
-c.UIServer.authorisation = {
+c.UIServer.site-authorisation = {
     {
-        "<*account*>": {                     # User UI Server
-            "group:<*account*>": {           # Members in group of same name as UIS owner
-                "default": "ADMIN"           # Default admin permissions
+        "<user1>": {                       # User UI Server
+            "group:UISOWNER": {            # Members in group of same name as UIS owner i.e. user1
+                "default": "ADMIN"         # Default admin permissions
             }
         },
 
