@@ -30,6 +30,7 @@ Proposals for more involved changes, note that these are relevant at the time
 of approval but implementation may differ moving forward to meet
 evolving requirements:
 
+- [cylc clean as a replacement for rose_prune and rose_arch](proposal-cylc-clean.md)
 - [Installation of Rose Configs](proposal-cylc-rose-installing-rose-configs.md)
 - [Cylc Universal Identifier](proposal-universal-id.md)
 - [Cylc 8 Back-end Authentication (CurveZMQ)](cylc-8-authentication.md)
