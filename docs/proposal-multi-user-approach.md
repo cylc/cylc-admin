@@ -44,27 +44,26 @@ The config discussed at [CylcCon2020](https://github.com/cylc/cylc-uiserver/issu
 
 ### READ and ADMIN
 
-For the purposes of clarity for users, and since we have operation (mutation) level granularity, the simpler method of having two groups, `READ` and `ADMIN`, rather than three. Access groups should be entered in caps to avoid confusing e.g. READ with read mutation.
+For the purposes of clarity for users, and since we have operation (mutation) level granularity, the simpler method of having two groups, `READ` and `ADMIN`, rather than three. These two access groups can be combined for ease of configuration with `ALL`. Access groups should be entered in caps to avoid confusing e.g. READ with read mutation.
 
 ### Example UI Server User Configuration
 
 ```python
 c.UIServer.authorisation = {
     "<user1>": ["READ", "pause", "trigger", "message"], # Specified interactions granted to user1
-    "group:<group1>": ["ADMIN"],                        # Both READ and ADMIN access to workflows
+    "group:<group1>": ["ALL"],                          # Both READ and ADMIN access to workflows
                                                         # granted to users in group1
-    "<user2>": ["ADMIN", "!trigger", "!edit"],          # All Admin, except trigger and edit
+    "<user2>": ["READ", "ADMIN", "!trigger", "!edit"],  # All READ and ADMIN, except trigger and edit
                                                         # granted to user2
-    "<user3>": ["!ADMIN"]                               # No ADMIN privileges (same as granting
-                                                        # READ)
-    "<user4>": ["!READ", "!ADMIN"]                      # user4 has no access to workflows
+    "<user3>": ["READ"]                                 # READ only access
+    "<user4>": ["!READ", "!ADMIN"]                      # user4 has no access to workflows (same as !ALL)
 }
 ```
 
 ### Example Site Configuration
 
 ```python
-c.UIServer.site-authorisation = {
+c.UIServer.site_authorisation = {
     "<*>": {                    # For all ui-server owners,
         "<*>": {                # Any authenticated user
             "default": "READ",  # Will have default read-only access
@@ -72,43 +71,41 @@ c.UIServer.site-authorisation = {
         "<user1>": {              # user1
             "default": [
                 "!READ", "!ADMIN" # No privileges for all ui-servers
-            ],                    # owners
-        },
-    },
+            ],                    # owners. Note, could also have configured as !ALL
+        },                        # No limit set, so all ui-server owners
+    },                            # limit is also "!READ", "!ADMIN" for user1
 
-    "<server_owner_1>": {       # For specific UI Server owner,
-        "<*>": {                # Any authenticated user
-            "default": "READ",  # Will have default read-only access
-            "limit": "ADMIN"    # server_owner_1 is able to give away
-        },                      # a maximum of admin privileges.
+    "<server_owner_1>": {                 # For specific UI Server owner,
+        "<*>": {                          # Any authenticated user
+            "default": "READ",            # Will have default read-only access
+            "limit": ["READ", "ADMIN"]    # server_owner_1 is able to give away
+        },                                # all privileges.
     },
     "<server_owner_2>": {       # For specific UI Server owner,
         "<user2>": {            # Specific user2
-           "limit": "ADMIN"     # Can only be granted a maximum of Admin by
+           "limit": "ALL"       # Can only be granted a maximum of ALL (READ and ADMIN) by
         },                      # server_owner2, default access for user2 falls back to
                                 # standard READ only (if server_owner_2/user2 are
                                 # included in other auth config e.g. the top example),
                                 # or none if not in any other auth config sections.
 
         "group:<groupA>": {                # group denoted with a `group:`
-            "default": "ADMIN"             # groupA has default ADMIN access to server_owner_2's
+            "default": ["READ", "ADMIN"]   # groupA has default READ, ADMIN access to server_owner_2's
         },                                 # workflows
     },
     "group:<grp_of_svr_owners>":{          # Group of users who own UI Servers
         "group: groupB": {
             "default": "READ",             # can grant groupB users up to Admin
             "limit": [                     # privileges, without stop and kill
-                "ADMIN", "!stop", "!kill"  # operations
+                "READ", "ADMIN", "!stop",  # operations
+                "!kill"
             ]
         },
     }
 }
 ```
 
-### READ ADMIN Inheritance
-
-On granting ADMIN access in the site or user config file, that implies ADMIN and READ access (since the mutations associated with READ are non-interactive).
-When removing ADMIN access, i.e `!ADMIN`, the access falls back to READ.
+Whilst most sites and user configs will likely be simpler than this, the above config shows the flexibility available to users with the proposed system.
 
 ### Site vs. User Config Precedence, Defaults and Limits
 
@@ -125,17 +122,65 @@ Unset defaults for both the `limit` and `default` will need consideration, I sug
 * if a limit is not set but a default is, then the default level is used as the limit.
 * if a default is not set but a limit is, then the default should be no access.
 
+If a user does not appear in a ui-server owners config, then the default access from site config will apply. Otherwise, defaults will not impact upon access.
+
 We will need to consider the desired behaviour if a user appears twice with different defaults and limits set, this is probably most likely to occur when a user appears in either multiple groups or in a group and as a user.
 
-Proposal: all permissions are additive, if user appears elsewhere in config, the permission level should be taken as the greatest possible.
+Proposal: all permissions are additive, if user appears elsewhere in config, the permission level should be taken as the greatest possible. Note, default in site config does not contribute to permissions, unless user does not appear in ui server owner's config.
 
 ## Negating permissions
 
 `!` before an operation or permission group will remove those permissions. Negated permissions will take precedence, applied last in the logic to ensure they trump any other assigned permissions.
 
-`!ADMIN` will mean no admin access, but `READ` access will still apply. This will need to be documented.
+`!ADMIN` will only remove `ADMIN` operations. To remove `READ` operations, `!READ` will need to be added to the configuration. `!ALL` will also be available as a more concise way to remove all operations. This will need to be documented.
 
-## Possible Access Assignment of Mutations
+### Examples of additive nature of permissions with negations
+
+For illustrative purposes (configurations here are perhaps unlikely), the following examples demonstrate negations and the cumulative nature of the proposed config.
+
+E.g.  Suppose User1 is a member of Group1
+
+```python
+c.UIServer.authorisation = {
+    "User1": "play","pause","!ping"       
+    "group:Group1": ["READ"]
+
+}
+```
+
+User1 has operations `READ`, `play`,`pause` added but `ping` removed from the list of allowed operations.
+
+E.g.  Suppose User2 is a member of Group2:
+
+```python
+c.UIServer.authorisation = {
+    "User2": ["!ADMIN"],                              # ADMIN rights removed from User2
+    "group:Group2": ["READ","ADMIN"],                 # Both READ and ADMIN access to workflows
+                                                      # granted to users in group2
+}
+```
+
+User2 has operations `READ` and `ADMIN` added through membership of Group2 and then `ADMIN` operations are removed by specific User2 config, resulting in User2 having only `READ` access. This is due to negations taking preference.
+
+E.g.  Suppose User3 is a member of Group3:
+
+```python
+c.UIServer.authorisation = {
+    "User3": ["READ","!ADMIN", "poll"],               # Specified interactions granted to user3
+    "group:Group3": ["READ","ADMIN"],                 # Both READ and ADMIN access to workflows
+                                                      # granted to users in group1
+}
+```
+
+User3 has operations `READ`,`ADMIN` added through membership of Group3 and then `ADMIN` operations are removed by specific User3 config, resulting in User3 having only `READ` access. The addition of `poll` will have no effect. This is due to negations taking preference, and will need to be documented.
+
+## Possible Access Assignment of Mutations and Queries
+
+### Queries
+
+Proposal: All queries can be executed if the user has `Read` access.
+
+### Mutations
 
 If running with the read/admin configuration, initial assignments will be needed, for the case when users set e.g. when users assign: `READ`, `ADMIN`
 
@@ -145,56 +190,58 @@ As a springboard for discussion, defaults could be assigned as follows:
 
 ### Current Mutations
 
-| Operation | Read | Admin |
-| :---     |:---: |---: |
-Broadcast| |x|
-Ext-trigger| |x|
-Hold| |x|
-Kill| |x|
-Message| |x|
-Pause| |x|
-Ping|x|x|
-Play| |x|
-Poll| |x|
-Read|x|x|
-Release| |x|
-ReleaseHoldPoint| |x|
-Reload| |x|
-Remove| |x|
-Resume| |x|
-SetGraphWindowExtent| |x|
-SetHoldPoint| |x|
-SetOutputs| |x|
-SetVerbosity| |x|
-Stop| |x|
-Trigger| |x|
+| Operation | READ | ADMIN | ALL |
+| :---     |:---: |:---: |---: |
+Broadcast| |x|x|
+Ext-trigger| |x|x|
+Hold| |x|x|
+Kill| |x|x|
+Message| |x|x|
+Pause| |x|x|
+Ping|x| |x|
+Play| |x|x|
+Poll| |x|x|
+Read|x| |x|
+Release| |x|x|
+ReleaseHoldPoint| |x|x|
+Reload| |x|x|
+Remove| |x|x|
+Resume| |x|x|
+SetGraphWindowExtent| |x|x|
+SetHoldPoint| |x|x|
+SetOutputs| |x|x|
+SetVerbosity| |x|x|
+Stop| |x|x|
+Trigger| |x|x|
 
 ### Future Mutations
 
-| Operation | Read | Admin |
-| :---     |:---: |---: |
-Cat-log|x|x|
-Check-versions|x|x|
-Clean| |x|
-Compare| |x|
-Config|x|x|
-Diff| |x|
-Dump| |x|
-Edit| |x|
-Get-cylc-version|x|x|
-Get-workflow-version|x|x|
-Graph|x|x|
-Install| |x|
-List|x|x|
-Reinstall| |x|
-Report-timings|x|x|
-Scan|x|x|
-Search|x|x|
-Show|x|x|
-Terminal Access| |x|
-Workflow-state|x|x|
-Validate|x|x|
-View|x|x|
+| Operation | READ | ADMIN | ALL |
+| :---     |:---: |:---: |---: |
+Cat-log|x| |x|
+Check-versions|x| |x|
+Clean| |x|x|
+Compare| |x|x|
+Config|x| |x|
+Diff| |x|x|
+Dump| |x|x|
+Edit| |x|x|
+Get-cylc-version|x| |x|
+Get-workflow-version|x| |x|
+Graph|x| |x|
+Install| |x|x|
+List|x| |x|
+Reinstall| |x|x|
+Report-timings|x| |x|
+Scan|x| |x|
+Search|x| |x|
+Show|x| |x|
+Terminal Access| |x|x|
+Workflow-state|x| |x|
+Validate|x| |x|
+View|x| |x|
+
+In code, `READ`, `ADMIN` and `ALL` will expand to the assigned operations.
 
 Any mutation without a specified access assignment will be denied by default.
 As future features are added, they will also need to be categorised.
@@ -210,7 +257,7 @@ We should set a recommended write permissions level for the user config file. It
 Having a site config that can give users who are members of a group with the same name as the UI server owner admin permissions, would be desirable. We could have a namespace `UISOWNER` to achieve this as follows:
 
 ```python
-c.UIServer.site-authorisation = {
+c.UIServer.site_authorisation = {
     {
         "<user1>": {                       # User UI Server
             "group:UISOWNER": {            # Members in group of same name as UIS owner i.e. user1
