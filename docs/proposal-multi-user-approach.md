@@ -40,23 +40,23 @@ Two configuration files will be needed, one for site and one for users. This aut
 
 ### Config Design
 
-The config discussed at [CylcCon2020](https://github.com/cylc/cylc-uiserver/issues/10#issuecomment-773752542) suggests admin levels of `read`, `write` and `execute`. Reducing the number of access groups is another suggestion, especially since write and execute are not very meaningful to users (in terms of Cylc) and to ensure users do not accidentally give away more privileges than intended, a simpler system, as outlined below, may be preferential. Proposal: `READ` and `ADMIN` permission groups.
+The config discussed at [CylcCon2020](https://github.com/cylc/cylc-uiserver/issues/10#issuecomment-773752542) suggests admin levels of `read`, `write` and `execute`. Reducing the number of access groups is another suggestion, especially since write and execute are not very meaningful to users (in terms of Cylc) and to ensure users do not accidentally give away more privileges than intended, a simpler system, as outlined below, may be preferential. Proposal: `READ` and `CONTROL` permission groups.
 
-### READ and ADMIN
+### READ and CONTROL
 
-For the purposes of clarity for users, and since we have operation (mutation) level granularity, the simpler method of having two groups, `READ` and `ADMIN`, rather than three. These two access groups can be combined for ease of configuration with `ALL`. Access groups should be entered in caps to avoid confusing e.g. READ with read mutation.
+For the purposes of clarity for users, and since we have operation (mutation) level granularity, the simpler method of having two groups, `READ` and `CONTROL`, rather than three. These two access groups can be combined for ease of configuration with `ALL`. Access groups should be entered in caps to avoid confusing e.g. READ with read mutation.
 
 ### Example UI Server User Configuration
 
 ```python
 c.UIServer.authorisation = {
     "<user1>": ["READ", "pause", "trigger", "message"], # Specified interactions granted to user1
-    "group:<group1>": ["ALL"],                          # Both READ and ADMIN access to workflows
+    "group:<group1>": ["ALL"],                          # Both READ and CONTROL access to workflows
                                                         # granted to users in group1
-    "<user2>": ["READ", "ADMIN", "!trigger", "!edit"],  # All READ and ADMIN, except trigger and edit
+    "<user2>": ["READ", "CONTROL", "!trigger", "!edit"],  # All READ and CONTROL, except trigger and edit
                                                         # granted to user2
     "<user3>": ["READ"]                                 # READ only access
-    "<user4>": ["!READ", "!ADMIN"]                      # user4 has no access to workflows (same as !ALL)
+    "<user4>": ["!READ", "!CONTROL"]                      # user4 has no access to workflows (same as !ALL)
 }
 ```
 
@@ -70,34 +70,34 @@ c.UIServer.site_authorisation = {
         },
         "<user1>": {              # user1
             "default": [
-                "!READ", "!ADMIN" # No privileges for all ui-servers
+                "!READ", "!CONTROL" # No privileges for all ui-servers
             ],                    # owners. Note, could also have configured as !ALL
         },                        # No limit set, so all ui-server owners
-    },                            # limit is also "!READ", "!ADMIN" for user1
+    },                            # limit is also "!READ", "!CONTROL" for user1
 
     "<server_owner_1>": {                 # For specific UI Server owner,
         "<*>": {                          # Any authenticated user
             "default": "READ",            # Will have default read-only access
-            "limit": ["READ", "ADMIN"]    # server_owner_1 is able to give away
+            "limit": ["READ", "CONTROL"]    # server_owner_1 is able to give away
         },                                # all privileges.
     },
     "<server_owner_2>": {       # For specific UI Server owner,
         "<user2>": {            # Specific user2
-           "limit": "ALL"       # Can only be granted a maximum of ALL (READ and ADMIN) by
+           "limit": "ALL"       # Can only be granted a maximum of ALL (READ and CONTROL) by
         },                      # server_owner2, default access for user2 falls back to
                                 # standard READ only (if server_owner_2/user2 are
                                 # included in other auth config e.g. the top example),
                                 # or none if not in any other auth config sections.
 
         "group:<groupA>": {                # group denoted with a `group:`
-            "default": ["READ", "ADMIN"]   # groupA has default READ, ADMIN access to server_owner_2's
+            "default": ["READ", "CONTROL"]   # groupA has default READ, CONTROL access to server_owner_2's
         },                                 # workflows
     },
     "group:<grp_of_svr_owners>":{          # Group of users who own UI Servers
         "group: groupB": {
             "default": "READ",             # can grant groupB users up to Admin
             "limit": [                     # privileges, without stop and kill
-                "READ", "ADMIN", "!stop",  # operations
+                "READ", "CONTROL", "!stop",  # operations
                 "!kill"
             ]
         },
@@ -132,7 +132,7 @@ Proposal: all permissions are additive, if user appears elsewhere in config, the
 
 `!` before an operation or permission group will remove those permissions. Negated permissions will take precedence, applied last in the logic to ensure they trump any other assigned permissions.
 
-`!ADMIN` will only remove `ADMIN` operations. To remove `READ` operations, `!READ` will need to be added to the configuration. `!ALL` will also be available as a more concise way to remove all operations. This will need to be documented.
+`!CONTROL` will only remove `CONTROL` operations. To remove `READ` operations, `!READ` will need to be added to the configuration. `!ALL` will also be available as a more concise way to remove all operations. This will need to be documented.
 
 ### Examples of additive nature of permissions with negations
 
@@ -154,25 +154,25 @@ E.g.  Suppose User2 is a member of Group2:
 
 ```python
 c.UIServer.authorisation = {
-    "User2": ["!ADMIN"],                              # ADMIN rights removed from User2
-    "group:Group2": ["READ","ADMIN"],                 # Both READ and ADMIN access to workflows
+    "User2": ["!CONTROL"],                              # CONTROL rights removed from User2
+    "group:Group2": ["READ","CONTROL"],                 # Both READ and CONTROL access to workflows
                                                       # granted to users in group2
 }
 ```
 
-User2 has operations `READ` and `ADMIN` added through membership of Group2 and then `ADMIN` operations are removed by specific User2 config, resulting in User2 having only `READ` access. This is due to negations taking preference.
+User2 has operations `READ` and `CONTROL` added through membership of Group2 and then `CONTROL` operations are removed by specific User2 config, resulting in User2 having only `READ` access. This is due to negations taking preference.
 
 E.g.  Suppose User3 is a member of Group3:
 
 ```python
 c.UIServer.authorisation = {
-    "User3": ["READ","!ADMIN", "poll"],               # Specified interactions granted to user3
-    "group:Group3": ["READ","ADMIN"],                 # Both READ and ADMIN access to workflows
+    "User3": ["READ","!CONTROL", "poll"],               # Specified interactions granted to user3
+    "group:Group3": ["READ","CONTROL"],                 # Both READ and CONTROL access to workflows
                                                       # granted to users in group1
 }
 ```
 
-User3 has operations `READ`,`ADMIN` added through membership of Group3 and then `ADMIN` operations are removed by specific User3 config, resulting in User3 having only `READ` access. The addition of `poll` will have no effect. This is due to negations taking preference, and will need to be documented.
+User3 has operations `READ`,`CONTROL` added through membership of Group3 and then `CONTROL` operations are removed by specific User3 config, resulting in User3 having only `READ` access. The addition of `poll` will have no effect. This is due to negations taking preference, and will need to be documented.
 
 ## Possible Access Assignment of Mutations and Queries
 
@@ -182,7 +182,7 @@ Proposal: All queries can be executed if the user has `Read` access.
 
 ### Mutations
 
-If running with the read/admin configuration, initial assignments will be needed, for the case when users set e.g. when users assign: `READ`, `ADMIN`
+If running with the read/admin configuration, initial assignments will be needed, for the case when users set e.g. `READ`, `CONTROL`
 
 Some of the below are not currently available to users but including them here for consideration. This is also a fairly substantial list, which makes the case for read and admin pre-set access groups which would be easier for users and sites to configure, rather than defining a long list of mutations per user/group.
 
@@ -190,7 +190,7 @@ As a springboard for discussion, defaults could be assigned as follows:
 
 ### Current Mutations
 
-| Operation | READ | ADMIN | ALL |
+| Operation | READ | CONTROL | ALL |
 | :---     |:---: |:---: |---: |
 Broadcast| |x|x|
 Ext-trigger| |x|x|
@@ -216,7 +216,7 @@ Trigger| |x|x|
 
 ### Future Mutations
 
-| Operation | READ | ADMIN | ALL |
+| Operation | READ | CONTROL | ALL |
 | :---     |:---: |:---: |---: |
 Cat-log|x| |x|
 Check-versions|x| |x|
@@ -241,7 +241,7 @@ Workflow-state|x| |x|
 Validate|x| |x|
 View|x| |x|
 
-In code, `READ`, `ADMIN` and `ALL` will expand to the assigned operations.
+In code, `READ`, `CONTROL` and `ALL` will expand to the assigned operations.
 
 Any mutation without a specified access assignment will be denied by default.
 As future features are added, they will also need to be categorised.
@@ -250,7 +250,7 @@ The associated arguments for the mutations may need consideration.
 
 ### Security Check for Permission Level on Config Files
 
-We should set a recommended write permissions level for the user config file. It could pose a security risk to have users config files writable by others. Perhaps we could have a warning in the log if the file permissions are not strict enough.
+We should set a recommended write permissions level for the user config file. It could pose a security risk to have users config files writable by others. We have a warning in the log if the file permissions are not strict enough, and fall back to locked down permissions (owner only).
 
 ## Specific Use Case for Authorisation
 
@@ -261,7 +261,7 @@ c.UIServer.site_authorisation = {
     {
         "<user1>": {                       # User UI Server
             "group:UISOWNER": {            # Members in group of same name as UIS owner i.e. user1
-                "default": "ADMIN"         # Default admin permissions
+                "default": "CONTROL"         # Default admin permissions
             }
         },
 
@@ -269,7 +269,7 @@ c.UIServer.site_authorisation = {
 
 ## Open Config Questions
 
-* Config design model: CylcCon read/write/execute vs READ/ADMIN.
+* Config design model: CylcCon read/write/execute vs READ/CONTROL. Decision: READ/CONTROL
 
 * Access group defaults (suggested in table above) need confirmation/agreement of mapping operations/mutations to correct groups. This is something, that although technically can be changed with ease, would potentially be very confusing for users if changed at a later date.
 
@@ -332,8 +332,10 @@ Whilst this would be useful to help users debug their workflows, screen sharing 
 
 * Workflow level granularity
 
-Initially this authorisation work will be implemented on an all workflow basis, i.e. grant User_A access to all my workflows.
-Future work could implement authorisation configuration on a per-workflow basis.
+Initially this authorisation work will be implemented on an all workflow basis, i.e. grant User_A access to all my workflows. This was discussed in detail but rejected because:
+
+* giving away CONTROL access to one workflow, could potentially compromise all workflows.
+* implementation of filtering gscan would pose a challenge.
 
 * Access level change requiring re-authentication
 
