@@ -128,6 +128,8 @@ We will need to consider the desired behaviour if a user appears twice with diff
 
 Proposal: all permissions are additive, if user appears elsewhere in config, the permission level should be taken as the greatest possible. Note, default in site config does not contribute to permissions, unless user does not appear in ui server owner's config.
 
+Note that `limit` implements site policy.
+
 ## Negating permissions
 
 `!` before an operation or permission group will remove those permissions. Negated permissions will take precedence, applied last in the logic to ensure they trump any other assigned permissions.
@@ -192,7 +194,7 @@ As a springboard for discussion, defaults could be assigned as follows:
 
 | Operation | READ | CONTROL | ALL |
 | :---     |:---: |:---: |---: |
-Broadcast| |x|x|
+Broadcast| | |x|
 Ext-trigger| |x|x|
 Hold| |x|x|
 Kill| |x|x|
@@ -225,7 +227,7 @@ Compare| |x|x|
 Config|x| |x|
 Diff| |x|x|
 Dump| |x|x|
-Edit| |x|x|
+Edit| | |x|
 Get-cylc-version|x| |x|
 Get-workflow-version|x| |x|
 Graph|x| |x|
@@ -236,12 +238,14 @@ Report-timings|x| |x|
 Scan|x| |x|
 Search|x| |x|
 Show|x| |x|
-Terminal Access| |x|x|
+Terminal Access| | |x|
 Workflow-state|x| |x|
 Validate|x| |x|
 View|x| |x|
 
 In code, `READ`, `CONTROL` and `ALL` will expand to the assigned operations.
+
+Note `broadcast`, `edit` and `terminal access` are high risk operations and are not assigned to `READ` or `CONTROL`.
 
 Any mutation without a specified access assignment will be denied by default.
 As future features are added, they will also need to be categorised.
