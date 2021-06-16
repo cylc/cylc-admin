@@ -44,19 +44,19 @@ The config discussed at [CylcCon2020](https://github.com/cylc/cylc-uiserver/issu
 
 ### READ and CONTROL
 
-For the purposes of clarity for users, and since we have operation (mutation) level granularity, the simpler method of having two groups, `READ` and `CONTROL`, rather than three. These two access groups can be combined for ease of configuration with `ALL`. Access groups should be entered in caps to avoid confusing e.g. READ with read mutation.
+For the purposes of clarity for users, and since we have operation (mutation) level granularity, the simpler method of having two groups, `READ` and `CONTROL`, rather than three. A further group, `ALL`, can be used to provide full access (`READ` + `CONTROL` + high risk operations). Access groups should be entered in caps to avoid confusing e.g. `READ` with read mutation.
 
 ### Example UI Server User Configuration
 
 ```python
 c.UIServer.authorisation = {
-    "<user1>": ["READ", "pause", "trigger", "message"], # Specified interactions granted to user1
-    "group:<group1>": ["ALL"],                          # Both READ and CONTROL access to workflows
-                                                        # granted to users in group1
-    "<user2>": ["READ", "CONTROL", "!trigger", "!edit"],  # All READ and CONTROL, except trigger and edit
-                                                        # granted to user2
-    "<user3>": ["READ"]                                 # READ only access
-    "<user4>": ["!READ", "!CONTROL"]                      # user4 has no access to workflows (same as !ALL)
+    "<user1>": ["READ", "pause", "trigger", "message"],     # Specified interactions granted to user1
+    "group:<group1>": ["ALL"],                              # Access to all operations workflows
+                                                            # granted to users in group1
+    "<user2>": ["READ", "CONTROL", "!trigger", "!edit"],    # All READ and CONTROL, except trigger and edit
+                                                            # granted to user2
+    "<user3>": ["READ"]                                     # READ only access
+    "<user4>": ["!ALL"]                                     # user4 has no access to workflows
 }
 ```
 
@@ -70,32 +70,32 @@ c.UIServer.site_authorisation = {
         },
         "<user1>": {              # user1
             "default": [
-                "!READ", "!CONTROL" # No privileges for all ui-servers
-            ],                    # owners. Note, could also have configured as !ALL
+                "!ALL"            # No privileges for all ui-servers
+            ],                    # owners.
         },                        # No limit set, so all ui-server owners
-    },                            # limit is also "!READ", "!CONTROL" for user1
+    },                            # limit is also "!ALL" for user1
 
     "<server_owner_1>": {                 # For specific UI Server owner,
         "<*>": {                          # Any authenticated user
             "default": "READ",            # Will have default read-only access
-            "limit": ["READ", "CONTROL"]    # server_owner_1 is able to give away
-        },                                # all privileges.
+            "limit": ["READ", "CONTROL"]  # server_owner_1 is able to give away
+        },                                # READ and CONTROL privileges.
     },
     "<server_owner_2>": {       # For specific UI Server owner,
         "<user2>": {            # Specific user2
-           "limit": "ALL"       # Can only be granted a maximum of ALL (READ and CONTROL) by
+           "limit": "ALL"       # Can only be granted a maximum of ALL by
         },                      # server_owner2, default access for user2 falls back to
                                 # standard READ only (if server_owner_2/user2 are
                                 # included in other auth config e.g. the top example),
                                 # or none if not in any other auth config sections.
 
-        "group:<groupA>": {                # group denoted with a `group:`
-            "default": ["READ", "CONTROL"]   # groupA has default READ, CONTROL access to server_owner_2's
-        },                                 # workflows
+        "group:<groupA>": {                     # group denoted with a `group:`
+            "default": ["READ", "CONTROL"]      # groupA has default READ, CONTROL access to server_owner_2's
+        },                                      # workflows
     },
     "group:<grp_of_svr_owners>":{          # Group of users who own UI Servers
         "group: groupB": {
-            "default": "READ",             # can grant groupB users up to Admin
+            "default": "READ",             # can grant groupB users up to READ and CONTROL
             "limit": [                     # privileges, without stop and kill
                 "READ", "CONTROL", "!stop",  # operations
                 "!kill"
@@ -134,7 +134,7 @@ Note that `limit` implements site policy.
 
 `!` before an operation or permission group will remove those permissions. Negated permissions will take precedence, applied last in the logic to ensure they trump any other assigned permissions.
 
-`!CONTROL` will only remove `CONTROL` operations. To remove `READ` operations, `!READ` will need to be added to the configuration. `!ALL` will also be available as a more concise way to remove all operations. This will need to be documented.
+`!CONTROL` will only remove `CONTROL` operations. To remove `READ` operations, `!READ` will need to be added to the configuration. `!ALL` will also be available to remove all operations, including high risk operations. This will need to be documented.
 
 ### Examples of additive nature of permissions with negations
 
@@ -170,7 +170,7 @@ E.g.  Suppose User3 is a member of Group3:
 c.UIServer.authorisation = {
     "User3": ["READ","!CONTROL", "poll"],               # Specified interactions granted to user3
     "group:Group3": ["READ","CONTROL"],                 # Both READ and CONTROL access to workflows
-                                                      # granted to users in group1
+                                                        # granted to users in group1
 }
 ```
 
@@ -265,7 +265,7 @@ c.UIServer.site_authorisation = {
     {
         "<user1>": {                       # User UI Server
             "group:UISOWNER": {            # Members in group of same name as UIS owner i.e. user1
-                "default": "CONTROL"         # Default admin permissions
+                "default": "ALL"           # Default ALL permissions
             }
         },
 
@@ -273,7 +273,8 @@ c.UIServer.site_authorisation = {
 
 ## Open Config Questions
 
-* Config design model: CylcCon read/write/execute vs READ/CONTROL. Decision: READ/CONTROL
+* Config design model: CylcCon read/write/execute vs READ/CONTROL.
+Decision: READ/CONTROL, high risk operations added to ALL
 
 * Access group defaults (suggested in table above) need confirmation/agreement of mapping operations/mutations to correct groups. This is something, that although technically can be changed with ease, would potentially be very confusing for users if changed at a later date.
 
