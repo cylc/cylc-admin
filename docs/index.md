@@ -53,7 +53,7 @@ evolving requirements:
 - [Cylc UI Data Model](proposal-cylc-ui-data-model.md)
 - [cli-wfs-authentication](proposal-cli-wfs-authentication.md)
 - [n-distance windowing](proposal-n-distance-window.md)
-
+- [Handling of partially satisfied prerequisites](proposal-partially-satisfied-prerequisites.md)
 
 ## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)
