@@ -6,58 +6,42 @@ See https://github.com/cylc/cylc-flow/issues/4256
 
 A new trigger syntax is proposed which (it is hoped) will resolve many issues:
 
-* `a:x ?=> b` is an "optional dependency" (pure spawn-on-demand): if `a:x` does not get generated, `b` does not get spawned.
+* `a:x ?=> b` is an "optional trigger": `b` is optionally triggered by `a`.
   Even if `a:x` does get generated it does not necessarily imply that `b` is expected to run.
+  Note: this is how Cylc 8 currently behaves with the `=>` trigger.
 
-* `a:x => b` is a "required dependency": when `a` finishes, `b` will be spawned whether or not `a:x` was generated.
-  Furthermore, it implies that once `b` is spawned it is "required" - it is expected to run eventually (once all its prerequisites are met).
-  If none of a tasks prerequisites are required dependencies then the task is "optional".
+* `a:x => b` is a "required trigger": `b` is required if `a` is run.
+  Regardless of whether or not `a:x` was generated, `b` is expected to run eventually (once all its prerequisites are met).
+  When `a` finishes, `b` will be spawned whether or not `a:x` was generated.
 
-There are a number of possible conditions for tasks once they have been spawned.
+Note that this discussion will assume that tasks which are are optionally triggered do not get spawned until all their prerequsisites are met.
+It may still make sense for them to be spawned but, if they are, we will assume it is into a hidden pool (which would require housekeeping).
 
-* If all the task prerequisities are met then the task is ready to run (`waiting` -> `preparing`).
+A required task will remain in the task pool as `waiting` until all its prerequisities are met.
+If it is not possible for the task prerequisities to be met then the task becomes "blocked" (but still `waiting`?).
+i.e. it is not possible for the workflow to complete.
+Blocked tasks should be highlighted to the user.
+We should also add a new "blocked" event handler.
+Note that unhandled failures will also be treated as blocked.
 
-* If it is not possible for the task prerequisities to be met then:
-
-  * If the task is "optional" it is simply removed from the task pool.
-
-  * If the task is "required" then it is considered "blocked" (but still `waiting`?).
-    i.e. it is not possible for the workflow to complete.
-    Blocked tasks should be highlighted to the user.
-    Note that unhandled failures will also be treated as blocked.
-
-* If neither of the previous conditions apply the task simply remains in the task pool (`waiting`).
-
-**Question**: are `waiting` tasks n=0, n=1 or hidden?
-We probably want "required" tasks to be visible but not "optional" tasks?
-
-**Question**: does it ever make sense for a task to have a mixture of optional and required prerequisites?
-Can we think of a sensible use case?
-If not, could we check for this at validation?
+**Question**: are `waiting` tasks n=0, or n=1?
 
 ## Stalling / Shutdown
 
-If there is nothing left to run yet there are still `waiting` tasks in the task pool then:
-
-* If any of the tasks are "required" then the workflow should stall.
-
-* If all of the tasks are "optional" then the workflow is complete and should shutdown normally.
+If there is nothing left to run yet there are still `waiting` tasks in the task pool then the workflow should stall (otherwise it is complete and should shutdown).
+Note that this means that a task can have had some of its prerequisites met via optional triggers without this causing a stall.
 
 ## Runahead limit
 
 See https://github.com/cylc/cylc-flow/issues/4258.
 Some users understand runahead limiting as *preventing the fastest tasks from getting too far ahead of the slowest*.
 
-Any `waiting` tasks which are "required" are expected to run and could easily trigger further tasks at the same cycle.
+Any `waiting` tasks are expected to run and could easily trigger further tasks at the same cycle.
 Therefore these tasks need to count towards the runahead limit.
 The same is true for "unhandled" failed tasks.
 
-On the other hand, `waiting` tasks which are "optional" should not affect the runahead limit.
-There is no expectation that they will ever run and, if they are going to run then it is reasonable to expect that there are other "required" tasks in the pool at the same cycle or earlier
-(not true with [future triggers](https://cylc.github.io/doc/build/7.8.7/html/suite-config.html#future-triggers)?).
-
-In the future we should encourage users to add appropriate dependencies in the graph rather than relying on the runahead limit.
-We should consider deprecating runahead limit in its current form and/or changing its default value.
+Note that [future triggers](https://cylc.github.io/doc/build/7.8.7/html/suite-config.html#future-triggers) have the potential to cause complications with the runahead limit by spawning tasks at old cycles.
+This kind of issue would have been obvious at Cylc 7 because the task waiting for the future trigger would already have been in the task pool.
 
 ## Partially satisfied prerequisites
 
@@ -78,7 +62,7 @@ Consider the following workflow:
 ```
 
 The user intended `qux` to run but has made a mistake in the graph (should have been `bar | baz => qux`).
-This workflow will now stall due to `qux` being "required" and in the `waiting` state with nothing left to run.
+This workflow will now stall due to `qux` being in the `waiting` state with nothing left to run.
 
 Another example:
 
@@ -90,7 +74,7 @@ Another example:
     [[graph]]
         P1 = """
              model[-P1] => model => archive
-             archive[-P1] ?=> archive
+             archive[-P1] => archive
              archive:fail ?=> recover
              """
 [runtime]
@@ -124,18 +108,20 @@ For example:
              """
 ```
 
-If you run this with `cylc play --starttask=bar.2` then `baz` will remain stuck `waiting` and the workflow will eventually stall due to hitting the runahead limit.
+If you run this with `cylc play --starttask=bar.2` then `baz.3` will remain stuck `waiting` and the workflow will eventually stall due to hitting the runahead limit.
 
 The new trigger syntax also deals with this example:
 
 ```
         a | r1 => b ?=> r2
-        a:fail ?=> r1 ?=> r2
+        a:fail ?=> r1 => r2
 ```
 
 In this case, recovering from the failure of `a` involves running `r1` before running `b` and then running `r2` once `b1` has succeeded.
-If `a` succeeds then `r2` will get spawned when `b` succeeds and get stuck `waiting`.
-However, since it is "optional" this is not a problem - it will not cause a stall.
+If `a` succeeds then `r2` will have partially satisified dependencies but this is not a problem since it is optionally triggered.
+Note that this is an example of where a task is optionally triggered by one task but required by another.
+This is not a problem.
+`r2` only becomes required if `r1` is run.
 
 ## Optional outputs
 
@@ -153,7 +139,7 @@ Consider this workflow.
             x = x
 ```
 
-This workflow will now stall with `b` "blocked.
+This workflow will stall with `b` "blocked because `a:x` is not generated.
 If that's not what is wanted (`x` is an optional output) you simply change the graph to
 
 ```
@@ -175,7 +161,8 @@ Change the default for `abort on timeout` to `True` and set the default for the 
 We should also improve the visibility of stalled workflows and blocked tasks.
 *  `cylc scan` and the UI gscan panel should clearly indicate if a running workflow is stalled or has blocked tasks.
 * Similarly for stopped workflows (also other states: "not started", "run to completion", "died"?, etc).
-* Stopped workflows need to be ordered by last activity time (as they are in cylc review) so that any workflows which have stopped unexpectedly don't get missed.
+* We need a mechanism to ensure that any workflows which have stopped unexpectedly don't get missed and that users can easily find their most recent workflows
+  (e.g. cylc review orders by last activity).
 
 ## Unhandled task failures
 
@@ -185,22 +172,11 @@ In the simple case of `foo => bar`, if `foo` fails we'll be able to identify the
 However, keeping it in the pool (n=0) is likely to be more convenient and consistent.
 In any case, what happens if `bar` fails - we certainly need to keep that in the pool.
 
-Note that we can't use optional dependencies as an indicator that failure is acceptable.
-Consider this earlier example:
-
-```
-        a | r1 => b ?=> r2
-        a:fail ?=> r1 ?=> r2
-```
-
-In this case, `b` only has an optional success dependency but that doesn't mean we're happy for it to fail.
-
 So, we need to continue to keep any failed tasks in the pool (and consider them "blocked") unless they have a failure trigger.
 
 **Question**:
-
 How do we cater for cases where task failure is accepted and does not require any action?
-We will need to contine to support sucide triggers for Cylc 7 compatibility so we can simply use:
+We will need to contine to support suicide triggers for Cylc 7 compatibility so we can simply use:
 
 ```
         foo:fail => !foo
@@ -210,18 +186,13 @@ Alternatively we could introduce a special syntax for this such as:
 
 ```
         foo:fail => NULL
-        foo:fail => OK
-        foo:fail => -
-        # It's not a real trigger so maybe better to avoid =>?
-        foo:fail =-
-        foo:fail =<
 ```
 
 Note that a special syntax makes it easier to deal with this case:
 
 ```
         a | b => c
-        a:fail | b:fail => OK
+        a:fail | b:fail => NULL
 ```
 
 In this case we need `a` or ` b` to succeed but we don't mind if one of them fails.
@@ -234,41 +205,23 @@ However, what happens if some of those tasks never run.
 Consider this example again:
 
 ```
-        a | r1 => b ?=> r2
-        a:fail ?=> r1 ?=> r2
+        foo ?=> bar => qux
+        foo:fail ?=> baz => qux
 ```
 
-If `a` succeeds then `r2` will get spawned when `b` succeeds and get stuck `waiting`.
-In theory we can tell that `r1` cannot run.
-However, this would require graph traversal which could be complicated.
+If, for example, `foo` succeeds then `qux` becomes stuck waiting for `baz` to run.
+In theory we can tell that `baz` cannot run but this would require graph traversal which could be complicated.
 For the moment we will not attempt this.
 
 One problem with this is that, even with required tasks, the workflow may never stall (depending on how the runahead limit is set).
-For required tasks they should at least be visible to the user and there should also be another visible cause (blocked or failed tasks) unless there is an error in the graph.
-However, the example above shows how there can be `waiting` "optional" tasks which will never get run.
-This means they could build up to a large number in a long running cycling workflow.
-
-**Question**:
-Do we need to housekeep these tasks?
-(Presumably yes!)
-Once there are no other "required" tasks or preparing/running/failed in the pool at any of the cycles referenced by the incomplete prerequisites or earlier can we remove them?
-Do [future triggers](https://cylc.github.io/doc/build/7.8.7/html/suite-config.html#future-triggers) complicate this?
-
-Note that when a task is spawned then, if it has optional prerequisites, we don't know whether these prerequisites have already completed (and not generated the required output).
-A database query will be required to determine this.
-The same is not true for required prerequisites (the task is always spawned at completion).
-
-An alternative approach for optional tasks would be to only spawn them once their prerequisites have been met.
-This would avoid any need to housekeep them.
-For tasks with multiple prerequisites it would require additional database queries.
-However, this may not be a big deal given that not many workflows are likely to have large numbers of optional tasks.
+However the `waiting` tasks should at least be visible to the user and there should also be another visible cause (blocked or failed tasks) unless there is an error in the graph.
 
 ## Cylc 7 compatibility
 
-Cylc 7 workflows will not be taking advantage of the new syntax which means that Cylc 8 will consider all tasks are required.
-However there should always be corresponding suicide triggers.
+Cylc 7 workflows will not be taking advantage of the new syntax which means there will only be required triggers.
+However there should always be corresponding suicide triggers where needed.
 
-Suicide triggers were required at Cylc 7 to deal with 2 cases:
+Suicide triggers were required at Cylc 7 to deal with 2 main cases:
 
 1. Tasks that were waiting but would never run.
 2. Tasks that had failed but the failure had been handled.
@@ -296,9 +249,9 @@ So, for backwards compatibility, we still need suicide triggers to work at Cylc 
 It is not possible to work out appropriate graph changes in advance so we need suicide triggers to apply at runtime as follows:
 * If the suicided task is present in the task pool in the `waiting`, `submit-failed` or `run-failed` state then remove it.
 * If the suicided task is present in the task pool in the `preparing`, `submitted` or `running` state then remove it from all flows (to prevent further tasks being spawned) and log a warning (since it doesn't make sense for a task in these states to be suicided).
-* If the suicided task is not present in the task pool then no action is required.
 * If the suicided task is triggered by any task present in the task pool then convert that trigger into a null trigger (can't simply remove it in case it is a failure trigger?).
   This attempts to deal with cases where a task is suicided before all its prerequisites have completed.
+* If none of the above apply then no action is required.
 
 Note that any workflows which rely on suicide triggers are likely to have tasks which become "blocked" for a period before they get cleared by a suicide trigger.
 How do we handle this?
@@ -329,10 +282,12 @@ The only obvious way to avoid this is to maintain a list of suicided tasks which
 However, that involves extra checks and another list to maintain and housekeep to handle a very obsure case.
 Perhaps we should accept that obscure uses of suicide triggers are not guaranteed to work as intended and document this in the migration guide?
 
-## Suicide triggers
+## Suicide triggers at Cylc 8
 
 So far, we have not thought of any cases where suicide triggers will be needed with the new syntax.
-Therefore, suicide triggers will only needed for backwards compatibility and can be flagged as deprecated.
+Therefore, suicide triggers will only needed for backwards compatibility.
+
+**Proposal**: Suicide triggers should be flagged as deprecated!
 
 Here is an example where care is needed when replacing suicide triggers:
 
@@ -381,5 +336,12 @@ In this case both `late` and `finish` need to be clock expired.
 Note that the current documentation says
 "Triggering off an expired task typically requires suicide triggers to remove the workflow that runs if the task has not expired".
 Why didn't we just recommend using the same clock expire trigger for these tasks?
-One downside is that this would trigger multiple "late" events rather than one.
-Is this something we are happy to live with at Cylc 8?
+
+**Question**: Why don't we have an "expired" event?
+This seems a rather strange omission.
+
+**Question**: How are clock expire triggers going to work at Cylc 8?
+Presumably they suffer from the issue with have with late events (see [cylc-flow#4045](https://github.com/cylc/cylc-flow/issues/4045)) - they won't expire until they are spawned.
+
+**Question**: Does [cylc-flow#3293](https://github.com/cylc/cylc-flow/issues/3293) still make sense?
+Also, can we close [cylc-flow#3282](https://github.com/cylc/cylc-flow/issues/3282)?
