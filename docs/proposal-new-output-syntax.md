@@ -148,12 +148,12 @@ dummy task) is used to deliberately spawn an unsatisfied prerequisite in order
 to ensure that at least one of the alternate paths gets taken. However, that is
 not an ideal way to alert users to a problem:
 - the need to use an artificial dependency won't be obvious to users
-- an satisfied prerequisite can't be definitively identified as an error
+- an unsatisfied prerequisite can't be definitively identified as an error
   until/unless the workflow stalls
 - and it is an indirect indicator: it does not highlight the actual task
   that caused the problem
 
-An incomplete task is a direct and instant indicator. So maybe we can allow
+An incomplete task is a direct and immediate indicator. So maybe we can allow
 users to say exactly when a task can be considered complete:
 
 ```
@@ -252,7 +252,7 @@ Partially satisfied prerequisites should be made visible as an indication of a
   task.
 
 Note **output completion expressions** above will eliminate one source of
-partially satisfied prerequites.
+partially satisfied prerequisites.
 
 ### Can we tell if it is not possible for task prerequisities to be met?
 
