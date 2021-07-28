@@ -387,8 +387,8 @@ The Cylc 8 version still needs a suicide trigger to avoid an unsatisfied prerequ
 [runtime]
    ...
 ```
-This is actually a simple case of the "different dependencies on difference
-branches" problem. Cylc 9 will be able to handle it properly:
+This is actually a simple case of the "same task with different dependencies on
+difference branches" problem. Cylc 9 will be able to handle it properly:
 ```
 # Cylc 9
 [scheduling]
