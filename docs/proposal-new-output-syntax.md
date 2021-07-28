@@ -1,107 +1,93 @@
-# Proposal: Optional Output Syntax
+# Proposal: Required and Optional Outputs
 
 Spawn-on-demand solves many problems but in its pure form it can't tell if the
-workflow has followed the "intended path" - to completion of the whole graph
-(say) vs going down a dead-end side branch. This is because all task outputs 
+workflow has followed the "intended path" - to completion of the whole graph,
+say, vs going down a dead-end side branch. This is because all task outputs 
 are effectively *optional*, and the scheduler just follows the flow wherever it
 leads at runtime.
 
 Cylc 7 could tell (albeit imperfectly!) if the intended path was followed 
-because all task outputs were effectively *required*. All possible paths are
+because all task outputs were effectively *required*: all paths were
 pre-spawned (to the next cycle point instance of each active task, roughly
-speaking). Users had to explicitly remove unused alternate paths with suicide
-triggers, and any remaining unsatisfied waiting tasks would indicate a problem
+speaking) and users had to explicitly remove unused paths with suicide
+triggers, so any remaining unsatisfied waiting tasks would indicate a problem
 by stalling the workflow.
 
 This document proposes a way to convey the intended path of execution to the
-Cylc 8 spawn-on-demand scheduler by making all task outputs **expected** by
+Cylc 8 spawn-on-demand scheduler by making all task outputs **required** by
 default and giving a new syntax to explicitly mark **optional** outputs. If a
-task finishes without completing all of its expected outputs it will be
-retained in the n=0 task pool and flagged as an **incomplete task** (if the
-task did not fail unexpectedly then this represents an error against the
-workflow configuration that was not recognized by the task job itself).
+task finishes without completing all of its required outputs it will be
+retained in the n=0 task pool and flagged as an **incomplete task** (often
+this will coincide with unexpected task failure; otherwise it implies that the
+task did not behave as the workflow configuration expected despite reporting
+success).
 
 *Note: optional triggers were considered and rejected as another way of
 potentially handling this problem - see cylc-admin#128*
 
-## The New Output Syntax
+## Output Syntax
 
-`foo:x` means `x` is an *expected output* of task `foo`. If a task finishes
-without completing all of its expected outputs, we will retain it in the task
-pool as an *incomplete task*.
+- `foo:x` means `x` is a *required output* of task `foo`
+  - if a task finishes without completing any required outputs, retain it in
+    the task pool as an *incomplete task*
 
-`foo?y` means `y` is an *optional output* of task `foo`. It is OK for a task to
-finish without completing its optional outputs.
+- `foo?y` means `y` is an *optional output* of task `foo`
+  - it is OK for a task to finish without completing optional outputs
 
 Abbreviated syntax for the success case:
+- `foo:` mean `foo:succeed` (success is required)
 - `foo?` means `foo?succeed` (success is optional)
-- `foo` and `foo:` mean `foo:succeed` (success is expected)
+- `foo` means `foo:succeed` UNLESS success is made optional elsewhere in the
+  graph with `foo?` or `foo?succeed` or `foo?fail`
   - this supports Cylc 7 graphs as well as being a sensible default
+  - we should probably give a validation warning here in case the user is
+    actually presuming contradictory success requirements for the same task
+    in different parts of the graph. For complete safety, if success is
+    optional use explicit syntax throughout.
 
-## Syntax Errors
-
-### succeed and fail
-
-The `succeed` and `fail` outputs are mutually exclusive opposites, therefore:
-
-- `succeed` and `fail` can't both be expected (or the task would be flagged as
-  incomplete no matter what)
-```
-# ERROR
-a
-a:fail
-```
-
-- `succeed` and `fail` can both be optional though (at a success/fail alternate
-  branching point)
-```
-# OK
-a?
-a?fail
-```
-
-- however it is OK to have one of `succeed` and `fail` expected and one
-  optional. This allows triggering off of the not-expected output at the same
-  time as the task is flagged as incomplete
-```
-# OK
-a
-a?fail => call_the_police
-```
-(Note this means we can't have *"`a` means `a:succeed` unless declared optional
-elsewhere"*.)
-
-### Custom Outputs
-
-Custom outputs must be either expected or optional, they can't be both
-```
-# ERROR
-a:x
-a?x
-```
-
-### QUESTION: submit-fail, submit, and start?
-
-It makes some sense to allow the `fail` output to be expected, but allowing
-`submit-fail` to be expected means treating a task as incomplete if it
-successfully submits. The only use case I've thought of
-is to make it somewhat easier (less cleanup before shutdown) to write
-functional tests that deliberately submit to a fake platform.
-
-Similarly, allowing `submit` and `start` to be optional equates to calling a
-task complete even though it didn't run at all, which seems equally perverse.
+### Interpretation in Trigger Expressions
 
 ```
-a:submit-fail  # ERROR or OK?
-a?submit  # ERROR or OK?
-a?start  # ERROR or OK?
+foo:x => bar
 ```
+... means trigger `bar` if `foo` completes output `x`; otherwise
+don't trigger `bar`, and flag `foo` as an incomplete task.
+
+```
+foo?x => bar
+```
+... means trigger `bar` if `foo` completes output `x`; otherwise
+don't trigger `bar`, but don't flag `foo` as an incomplete task either.
+
+### Caveats
+
+An output can't be both required and optional.
+
+Success should normally be required.
+
+Failure can be optional, in which case success must also be optional, because
+you might need alternate branches to handle:
+- a platform that isn't always available: `foo?submit-fail`
+- a task that you expect to fail sometimes: `foo?fail`
+
+Failure can't be required. Expecting a task to fail every time and treating
+it as incomplete if it succeeds would essentially amount to reversing normal 
+success and failure symantics. If you really have an executable that returns
+non-`0` whilst still doing what you need in the workflow, provide a wrapper
+that correctly returns success status.
+- `foo:fail  # ERROR`
+- `foo:submit-fail  # ERROR`
+
+Finally, optional `start` doesn't really make sense. At best it would be
+equivalent to `foo?submit`, so use that instead.
+- `foo?start  # ERROR`
+
 
 ## Path Branching
 
 ### Concurrent Paths 
 
-Concurrent paths can trigger off of expected outputs:
+Concurrent paths can trigger off of required outputs:
 ```
 a:x => b1
 a:y => b2
@@ -118,8 +104,8 @@ a?x => b1
 a?y => b2
 b1 | b2 => c  # join
 ```
-Note joining can trigger off of expected outputs, because the output is
-only "expected" if the task actually runs.
+Note joining can trigger off of required outputs, because the output is
+only "required" if the task actually runs.
 
 **Failure recovery** is a common example of this:
 ```
@@ -128,65 +114,32 @@ a?fail => b2  # failure path
 b1 | b2 => c  # join
 ```
 
-Note that an artificial dependency can be used to **ensure that at least one
-of the alternate paths gets taken**:
+Note that an artificial dependency can be used to *ensure that at least one
+of the alternate paths gets taken*:
 ```
 a?x => b1
 a?y => b2
 b1 | b2 => c  # join
 a => c # ARTIFICIAL DEPENDENCY
 ```
-The artificial trigger forces the unsatisfied prerequisites of `c` to be
-spawned, as waiting on `b1` or `b2` even if neither of the optional outputs 
-get completed. If the alternate paths don't actually need to join, `c` could be
-a dummy task.
+This forces `c` to be spawned as an unsatisfied prerequisite waiting on `b1` or
+`b2` even if neither branch runs. If the alternate paths don't actually need to
+join, `c` can be a dummy task.
 
-### QUESTION: Output Completion Expressions?
-
-In the previous example, an artificial dependency (possibly triggering a
-dummy task) is used to deliberately spawn an unsatisfied prerequisite in order
-to ensure that at least one of the alternate paths gets taken. However, that is
-not an ideal way to alert users to a problem:
-- the need to use an artificial dependency won't be obvious to users
-- an unsatisfied prerequisite can't be definitively identified as an error
-  until/unless the workflow stalls
-- and it is an indirect indicator: it does not highlight the actual task
-  that caused the problem
-
-An incomplete task is a direct and immediate indicator. So maybe we can allow
-users to say exactly when a task can be considered complete:
-
-```
-a:succeed(x|y) => c
-
-# or in abbreviated success form:
-a(x|y) => c
-
-# or if direct triggering of c is not needed:
-a(x|y)
-```
-This (or some variation on the suggested syntax) says that `a` is expected to
-succeed with at least one of `x` and `y` completed; otherwise it is incomplete
-even if it reports success.
+*See Appendix Output Completion Expressions for a possible follow-up that
+would allow us to flag `a` as incomplete here and avoid the artificial
+dependency.*
 
 ## Failed Tasks
 
 No special handling of failed tasks is required.
-```
-a => b  # success expected
-```
-If `a` fails it automatically gets retained in the `n=0` pool as an incomplete
-task (and will show as failed too).
+- if success is required, a failed task automatically gets retained in the task
+  pool as incomplete.
+- if success is optional (which would usually imply that optional failure is
+  explicitly handled), a failed task can be removed as complete
 
-Handled failed case:
-```
-a? => b
-a?fail => c
-```
-If `a` fails no problem, success is optional.
-
-No special syntax (e.g. `c:fail => NULL`) or suicide trigger (`c:fail => !c`)
-is needed for leaf tasks:
+No special syntax (e.g. `c:fail => NULL`) or suicide triggers (e.g. `c:fail =>
+!c`) are needed for leaf tasks either, if we don't care if they succeed or fail:
 ```
 a => b => c?  # success of c is optional
 ```
@@ -206,7 +159,7 @@ completed (i.e. keep them in n=0 as incomplete, or forget them).
 ```
 A:succeed-all => b
 ```
-- trigger b only if all members succeed; and all members are expected to
+- trigger b only if all members succeed; and all members are required to
   succeed
 
 ```
@@ -218,7 +171,7 @@ A?succeed-all => b
 ```
 A:succeed-any => b
 ```
-- trigger b if any member succeeds; but any member that runs is expected to
+- trigger b if any member succeeds; but any member that runs is required to
   succeed
 
 ```
@@ -231,7 +184,7 @@ A?succeed-any => b
 
 Incomplete tasks should be flagged immediately as a critical error.
 
-Most of the time they will be failed tasks that were expected to succeed.
+Most of the time they will be failed tasks that were required to succeed.
 Otherwise they represent an error against the workflow configuration that was
 not recognized by the task job itself. That could indicate a bug in the task
 (it reported success when it shouldn't have), or it could mean the workflow
@@ -247,7 +200,7 @@ Partially satisfied prerequisites should be made visible as an indication of a
 - Or they can result from a subtle workflow design error, where a task
   depends on several *alternate* branches at once:
   (e.g. when `a & b => c` should be `a | b = c`).
-- Or they can result from an upstream path being blocked when an expected
+- Or they can result from an upstream path being blocked when a required
   output doesn't get completed - which will now also result in an incomplete
   task.
 
@@ -291,7 +244,7 @@ We should also improve the visibility of stalled workflows and incomplete tasks
 ## New Event Handler
 
 We should add a new **incomplete task** event that is triggered whenever a task
-finishes without completing all of its expected outputs.
+finishes without completing all of its required outputs.
 
 ## Runahead limit
 
@@ -314,7 +267,7 @@ already have been in the task pool.
 ## Cylc 7 compatibility
 
 Cylc 7 workflows will not be using the new syntax which means they will only
-have expected outputs (but that's OK - Cylc 7 outputs **are** "expected" as
+have required outputs (but that's OK - Cylc 7 outputs **are** "required" as
 explained above).
 
 They also use suicide triggers to remove:
@@ -430,7 +383,7 @@ a?y => y1
 a?z => z1
 x1 | y1 | z1 => b
 
-a(x|y|z)  # a is expected to succeed with at least one of x, y, z
+a(x|y|z)  # a is required to succeed with at least one of x, y, z
   # OR
 a => b  # spawn b as a prerequisite that needs at least one branch to be satisfied
 ```
@@ -703,3 +656,65 @@ a?fail => r1 => b2 => r2
    [[b1, b2]]
        inherit = B
 ```
+
+# Appendix: Output Completion Expressions?
+
+A possible follow-up to this proposal.
+
+In an example above we used an artificial dependency (possibly triggering a
+dummy task) to deliberately generate a problem that can stall the workflow
+if neither branch runs in an alternate branch case:
+```
+a?x => b1
+a?y => b2
+b1 | b2 => c  # join
+a => c # ARTIFICIAL DEPENDENCY
+```
+
+The artificial dependency causes an unsatisfied `c` to be spawned even if
+neither branch runs.
+
+However, this isn't an ideal way to alert users to the problem
+- it might not occur to users to use an artificial dependency like this
+- unsatisfied prerequisites can't be definitively identified as errors
+  until/unless the workflow stalls
+- unsatisfied prerequisites are an indirect problem indicator: they do not
+  single out the task that actually caused the problem (which is that `a`
+should have generated either `x` or `y`)
+
+So maybe we can (correctly) identify `a` as incomplete instead:
+
+```
+a:succeed(x|y) => c
+
+# or in abbreviated success form:
+a(x|y) => c
+
+# or if direct triggering of c is not needed:
+a(x|y)
+```
+This (or some variation on the suggested syntax) says that `a` is required to
+succeed with at least one of `x` and `y` completed; otherwise it is incomplete
+even if it reports success.
+
+## Caveat?
+
+What if the optional outputs are not from the same task?
+```
+a => b1? & b2?
+b1? | b2? => c  # join
+a => c # ARTIFICIAL DEPENDENCY
+```
+In this case the artificial dependency is still needed to ensure that either
+`b1` or `b2` succeed.
+
+However, this example is arguably a workflow design error.
+
+If a task generates multiple outputs it is possible to say whether or not at
+least one output is expected - that is down to the internal functioning of the
+task. And if at least one is expected but it doesn't happen, then the task is
+incomplete.
+
+But if `b1` and `b2` above are both success-optional independent tasks, then
+surely two failures at once is a perfectly possible normal outcome, in which
+case it would make sense for the joining dependency to not be triggered.
