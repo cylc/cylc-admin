@@ -361,7 +361,7 @@ This example also works on master already:
 # Cylc 7
 [scheduling]
     [[dependencies]]
-        # If check-d fails, skip d even if c has finished yet.
+        # If check-d fails, skip d even if c has not finished yet.
         graph = """
             a => b => c => d
             a => check-d => d
@@ -373,12 +373,13 @@ This example also works on master already:
     [[check-d]]
         script = false
 ```
-The Cylc 8 version still needs a suicide trigger to avoid an unsatisfied prerequisite:
+The Cylc 8 version still needs a suicide trigger to remove an unsatisfied
+prerequisite:
 ```
 # Cylc 8
 [scheduling]
     [[graph]]
-        # If check-d fails, skip d even if c has finished yet.
+        # If check-d fails, skip d even if c has not finished yet.
         R1 = """
             a => b => c => d
             a => check-d? => d
@@ -388,15 +389,17 @@ The Cylc 8 version still needs a suicide trigger to avoid an unsatisfied prerequ
    ...
 ```
 This is actually a simple case of the "same task with different dependencies on
-difference branches" problem. Cylc 9 will be able to handle it properly:
+difference branches" problem (see the Appendix below). Cylc 9 will be able to
+handle this properly:
 ```
 # Cylc 9
 [scheduling]
     [[graph]]
-        # If check-d fails, skip d even if c has finished yet.
+        # If check-d fails, skip d even if c has not finished yet.
         R1 = """
             a => b => c
             a => check-d
+            check-d?fail => { }  # or just "check-d?fail"
             check-d? & c => { d }
         """
 [runtime]
