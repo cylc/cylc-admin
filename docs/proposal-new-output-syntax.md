@@ -497,6 +497,11 @@ Result: `baz.3` stuck as partially satisfied waiting on `bar.2`
 
 # Appendix: Same Task on Multiple Branches
 
+*This is a more in-depth explanation of how our graph syntax works,
+which should go into the user guide. I went through the exercise while
+investigating the pipeline example for optional outputs, on the PR page,
+but it's largely off-topic now.*
+
 Cylc assumes that exactly one instance of each task exists at a given cycle
 point (as reflected by the unique task ID being only [name].[cycle-point]). So
 in graph parsing, we can add all separately-defined dependencies for a given
@@ -599,10 +604,10 @@ we need to deal with these extra prerequisites and outputs acquired from the
 ```
 a1 => b1
 a1:fail | b1 => c => d1
-a1:fail & c => !a1 & !b1 & !d1
+a1:fail => !a1 & !b1 & !d1
 a2 => b2
 a2:fail | b2 => c => d2
-a2:fail & c => !a2 & !b2 & !d2
+a2:fail => !a2 & !b2 & !d2
 ```
 - `a1:fail? | b1 => c` and `a2:fail? | b2 => c` are artificial dependencies
 designed to ensure that `c` triggers even if either of its parent tasks fail -
