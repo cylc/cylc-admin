@@ -31,14 +31,14 @@ potentially handling this problem - see cylc-admin#128*
   - if a task finishes without completing any required outputs, retain it in
     the task pool as an *incomplete task*
 
-- `foo?y` means `y` is an *optional output* of task `foo`
+- `foo:y?` means `y` is an *optional output* of task `foo`
   - it is OK for a task to finish without completing optional outputs
 
 Abbreviated syntax for the success case:
 - `foo:` mean `foo:succeed` (success is required)
-- `foo?` means `foo?succeed` (success is optional)
+- `foo?` and `foo:?` mean `foo:succeed?` (success is optional)
 - `foo` means `foo:succeed` UNLESS success is made optional elsewhere in the
-  graph with `foo?` or `foo?succeed` or `foo?fail`
+  graph via `foo:succeed?` or `foo:fail?`
   - this supports Cylc 7 graphs as well as being a sensible default
   - we should probably give a validation warning here in case the user is
     actually presuming contradictory success requirements for the same task
@@ -54,7 +54,7 @@ foo:x => bar
 don't trigger `bar`, and flag `foo` as an incomplete task.
 
 ```
-foo?x => bar
+foo:x? => bar
 ```
 ... means trigger `bar` if `foo` completes output `x`; otherwise
 don't trigger `bar`, but don't flag `foo` as an incomplete task either.
@@ -67,8 +67,8 @@ Success should normally be required.
 
 Failure can be optional, in which case success must also be optional, because
 you might need alternate branches to handle:
-- a platform that isn't always available: `foo?submit-fail`
-- a task that you expect to fail sometimes: `foo?fail`
+- a platform that isn't always available: `foo:submit-fail?`
+- a task that you expect to fail sometimes: `foo:fail?`
 
 Failure can't be required. Expecting a task to fail every time and treating
 it as incomplete if it succeeds would essentially amount to reversing normal 
@@ -79,7 +79,7 @@ that correctly returns success status.
 - `foo:submit-fail  # ERROR`
 
 Finally, optional `start` doesn't really make sense. At best it would be
-equivalent to `foo?submit`, so use that instead.
+equivalent to `foo:submit?`, so use that instead.
 - `foo?start  # ERROR`
 
 
@@ -100,8 +100,8 @@ Alternate paths must branch off of optional outputs, and must be joined with
 OR triggers because only one side or the other will run:
 
 ```
-a?x => b1
-a?y => b2
+a:x? => b1
+a:y? => b2
 b1 | b2 => c  # join
 ```
 Note joining can trigger off of required outputs, because the output is
@@ -110,15 +110,15 @@ only "required" if the task actually runs.
 **Failure recovery** is a common example of this:
 ```
 a? => b1  # success path
-a?fail => b2  # failure path
+a:fail? => b2  # failure path
 b1 | b2 => c  # join
 ```
 
 Note that an artificial dependency can be used to *ensure that at least one
 of the alternate paths gets taken*:
 ```
-a?x => b1
-a?y => b2
+a:x? => b1
+a:y? => b2
 b1 | b2 => c  # join
 a => c # ARTIFICIAL DEPENDENCY
 ```
@@ -163,7 +163,7 @@ A:succeed-all => b
   succeed
 
 ```
-A?succeed-all => b
+A:succeed-all? => b
 ```
 - trigger b only if all members succeed; but it's OK if they fail (maybe the
   failed path is handled elsewhere)
@@ -175,7 +175,7 @@ A:succeed-any => b
   succeed
 
 ```
-A?succeed-any => b
+A:succeed-any? => b
 ```
 - trigger b if any member succeeds; but it's OK if any or all members fail
 
@@ -279,7 +279,7 @@ For example, in this Cylc 8 graph the `c1 => c2` branch does not get spawned
 at all unless `a` fails:
 ```
 a? => b1 => b2
-a?fail => c1 => c2
+a:fail? => c1 => c2
 b2 | c2 => d
 ```
 
@@ -336,7 +336,7 @@ prerequisite:
         R1 = """
             a => b => c => d
             a => check-d? => d
-            check-d?fail => !d
+            check-d:fail? => !d
         """
 [runtime]
    ...
@@ -352,7 +352,7 @@ handle this properly:
         R1 = """
             a => b => c
             a => check-d
-            check-d?fail => { }  # or just "check-d?fail"
+            check-d:fail? => { }  # or just "check-d:fail?"
             check-d? & c => { d }
         """
 [runtime]
@@ -378,9 +378,9 @@ break the workflow if more than one completes.
 Using the new syntax this would become:
 ```
 # Cylc 8
-a?x => x1
-a?y => y1
-a?z => z1
+a:x? => x1
+a:y? => y1
+a:z? => z1
 x1 | y1 | z1 => b
 
 a(x|y|z)  # a is required to succeed with at least one of x, y, z
@@ -449,7 +449,7 @@ cylc-flow#3282?
     [[graph]]
         R1 = """
              foo? => bar => qux
-             foo?fail => baz => qux
+             foo:fail? => baz => qux
              """
 [runtime]
     [[foo,bar,baz,qux]]
@@ -469,7 +469,7 @@ partially satisfied because it also depends on the other path.
         P1 = """
              model[-P1] => model => archive
              archive[-P1]? => archive
-             archive?fail => recover
+             archive:fail? => recover
              """
 [runtime]
     [[model,archive,recover]]
@@ -536,7 +536,7 @@ z:
 
 ```
 a? => b  
-a?fail => c 
+a:fail? => c 
 b | c => z
 ```
 
@@ -545,7 +545,7 @@ each alternate branch.
 ```
 # ERROR: this does not result in separate `x`'s on each branch
 a? => b => x => m => z
-a?fail => c => x => n => z
+a:fail? => c => x => n => z
 m | n => z
 ```
 
@@ -562,7 +562,7 @@ represent the same x job content, in each branch:
 
 ```
 a? => b => x1 => m => z
-a?fail => c => x2 => n => z
+a:fail? => c => x2 => n => z
 m | n => z
 ...
 [runtime]
@@ -604,7 +604,7 @@ a2 => b2
 a2:fail | b2 => c => d2
 a2:fail & c => !a2 & !b2 & !d2
 ```
-- `a1?fail | b1 => c` and `a2?fail | b2 => c` are artificial dependencies
+- `a1:fail? | b1 => c` and `a2:fail? | b2 => c` are artificial dependencies
 designed to ensure that `c` triggers even if either of its parent tasks fail -
 because `c` is needed to trigger both `d`s
 - `!d1` etc. are suicide triggers to remove downstream tasks that won't be
@@ -615,10 +615,10 @@ needed if their pipelines are cancelled
 ```
 a1? => b1
 a2? => b2
-a1?fail | b1 => c => d1
-a2?fail | b2 => c => d2
-a1?fail => !d1
-a2?fail => !d2
+a1:fail? | b1 => c => d1
+a2:fail? | b2 => c => d2
+a1:fail? => !d1
+a2:fail? => !d2
 ```
 Note:
 - artificial OR dependencies as for the Cylc 7 case
@@ -641,7 +641,7 @@ branches contribute their `b` dependencies to the same task.
 Cylc 9 will handle this properly and intuitively, but we can't do it yet:
 ```
 a? => {b}
-a?fail => {r1 => b => r2}
+a:fail? => {r1 => b => r2}
 ```
 ...the lower sub-graph does not add its dependencies to `b` unless `a` fails.
 
@@ -649,7 +649,7 @@ Cylc 7 and 8 workaround: use different logical tasks (with different
 dependencies) for the same job in each branch:
 ```
 a? => b1
-a?fail => r1 => b2 => r2
+a:fail? => r1 => b2 => r2
 
 [runtime]
    [[B]]
@@ -665,8 +665,8 @@ In an example above we used an artificial dependency (possibly triggering a
 dummy task) to deliberately generate a problem that can stall the workflow
 if neither branch runs in an alternate branch case:
 ```
-a?x => b1
-a?y => b2
+a:x? => b1
+a:y? => b2
 b1 | b2 => c  # join
 a => c # ARTIFICIAL DEPENDENCY
 ```
