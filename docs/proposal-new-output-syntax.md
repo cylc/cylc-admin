@@ -80,7 +80,7 @@ that correctly returns success status.
 
 Finally, optional `start` doesn't really make sense. At best it would be
 equivalent to `foo:submit?`, so use that instead.
-- `foo?start  # ERROR`
+- `foo:start?  # ERROR`
 
 
 ## Path Branching
@@ -155,6 +155,9 @@ family members, for all family trigger types. That's easy to understand,
 and it makes sense because the signifier doesn't affect triggering, it only
 affects what we do with family members if the outputs in question are not
 completed (i.e. keep them in n=0 as incomplete, or forget them).
+
+If particular member outputs need special treatment they should be singled
+out in the graph - just like special member triggers.
 
 ```
 A:succeed-all => b
@@ -393,14 +396,24 @@ and z are optional outputs (the suicide triggers imply this) and add the
 completion condition. It is probably sufficient to assume the form `a(x|y|z)`
 for all optional output groups.
 
-## Suicide Triggers Still Required at Cylc 8?
+## Suicide Triggers Still Required at Cylc 8
 
-Aside from backward compatability we have identified only one remaining problem
-that still requires suicide trigger in Cylc 8: to handle the unwanted extra
-dependencies picked up by a task if it appears on multiple graph branches at
-once (see the Appendix below, and the check-d example above). This will be
-handled cleanly by the dynamic subgraphs planned for Cylc 9; in the meantime
-suicide triggers (and artificial dependencies) provide a decent workaround.
+Suicide triggers will probably be made entirely obsolete by dynamic subgraphs
+at Cylc 9. In the meantime we need to keep them for the following reasons:
+
+- primarily, backward compatibility for Cylc 7 graphs
+
+- secondarily, to allow users to housekeep partially satisfied prerequisites
+  that can occur due to partial dependence on optional outputs
+
+```
+a & b? => c
+b:fail? => !c
+```
+
+- finally, to handle the unwanted extra dependencies picked up by tasks
+  that appear on multiple graph branches at once (see the Appendix below, and
+  the check-d example above).
 
 ## Clock Expire Triggers
 
@@ -493,7 +506,7 @@ instance.
              baz[-P1] => baz
              """
 ```
-Result: `baz.3` stuck as partially satisfied waiting on `bar.2`
+Result: `baz.3` stuck as partially satisfied waiting on `baz.2`
 
 # Appendix: Same Task on Multiple Branches
 
@@ -667,8 +680,8 @@ a:fail? => r1 => b2 => r2
 A possible follow-up to this proposal.
 
 In an example above we used an artificial dependency (possibly triggering a
-dummy task) to deliberately generate a problem that can stall the workflow
-if neither branch runs in an alternate branch case:
+dummy task) to deliberately generate an unsatisfied prerequisite that (might
+eventually) stall the workflow if neither of two alternate branches run:
 ```
 a:x? => b1
 a:y? => b2
@@ -676,16 +689,21 @@ b1 | b2 => c  # join
 a => c # ARTIFICIAL DEPENDENCY
 ```
 
-The artificial dependency causes an unsatisfied `c` to be spawned even if
-neither branch runs.
+Note we're assuming here that `a` is *supposed to generate x or y*, and if it
+doesn't generate either of them something has gone wrong - either `a`
+encountered an error but did not report failure, or the workflow writer has
+not correctly understood how `a` behaves. Then, the artificial dependency
+causes an unsatisfied `c` to be spawned even if neither branch runs, to
+(eventually) stall the workflow.
 
 However, this isn't an ideal way to alert users to the problem
 - it might not occur to users to use an artificial dependency like this
 - unsatisfied prerequisites can't be definitively identified as errors
   until/unless the workflow stalls
-- unsatisfied prerequisites are an indirect problem indicator: they do not
-  single out the task that actually caused the problem (which is that `a`
-should have generated either `x` or `y`)
+- the stall might not happen for some time, or at all, if other parts of the
+  workflow can still run
+- unsatisfied prerequisites are an indirect indicator: they do not single out
+  the task (`a`) that actually caused the problem
 
 So maybe we can (correctly) identify `a` as incomplete instead:
 
@@ -702,24 +720,20 @@ This (or some variation on the suggested syntax) says that `a` is required to
 succeed with at least one of `x` and `y` completed; otherwise it is incomplete
 even if it reports success.
 
-## Caveat?
-
-What if the optional outputs are not from the same task?
+Note that the completion condition would not be appropriate if not getting
+either output is actually a possible normal outcome of `a`. Or similarly
+if the optional outputs belong to different tasks:
 ```
 a => b1? & b2?
 b1? | b2? => c  # join
-a => c # ARTIFICIAL DEPENDENCY
+a => c # artificial dependency?
 ```
-In this case the artificial dependency is still needed to ensure that either
-`b1` or `b2` succeed.
-
-However, this example is arguably a workflow design error.
-
-If a task generates multiple outputs it is possible to say whether or not at
-least one output is expected - that is down to the internal functioning of the
-task. And if at least one is expected but it doesn't happen, then the task is
-incomplete.
-
-But if `b1` and `b2` above are both success-optional independent tasks, then
-surely two failures at once is a perfectly possible normal outcome, in which
-case it would make sense for the joining dependency to not be triggered.
+If `c` really does depends only on `b1` or `b2` then presumably there is
+nothing for it to do when they both fail. There are better ways of alerting the
+user, if necessary, to that than spawning an unsatisfied prerequisite
+downstream:
+```
+a => b1? & b2?
+b1? | b2? => c
+b1:fail? & b2:fail? => alert
+```
