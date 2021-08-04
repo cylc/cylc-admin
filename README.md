@@ -7,3 +7,5 @@ in the official project documentation.
 
 Markdown documents in `docs/` are automatically published to GitHub Pages (see
 the URL in the repository description).
+
+cylc.github.io/cylc-admin/
