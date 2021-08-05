@@ -34,39 +34,16 @@ potentially handling this problem - see cylc-admin#128*
 - `foo:y?` means `y` is an *optional output* of task `foo`
   - it is OK for a task to finish without completing optional outputs
 
-Abbreviated syntax for the success case:
-- `foo:` mean `foo:succeed` (success is required)
-- `foo?` and `foo:?` mean `foo:succeed?` (success is optional)
-- `foo` means `foo:succeed` UNLESS success is made optional elsewhere in the
-  graph via `foo:succeed?` or `foo:fail?`
-  - this supports Cylc 7 graphs as well as being a sensible default
-  - we should probably give a validation warning here in case the user is
-    actually presuming contradictory success requirements for the same task
-    in different parts of the graph. For complete safety, if success is
-    optional use explicit syntax throughout.
-
-### Interpretation in Trigger Expressions
-
-```
-foo:x => bar
-```
-... means trigger `bar` if `foo` completes output `x`; otherwise
-don't trigger `bar`, and flag `foo` as an incomplete task.
-
-```
-foo:x? => bar
-```
-... means trigger `bar` if `foo` completes output `x`; otherwise
-don't trigger `bar`, but don't flag `foo` as an incomplete task either.
+Abbreviated syntax for the default success case:
+- `foo` means `foo:succeed` (success is required)
+- `foo?` means `foo:succeed?` (success is optional)
 
 ### Caveats
 
 An output can't be both required and optional.
 
-Success should normally be required.
-
-Failure can be optional, in which case success must also be optional, because
-you might need alternate branches to handle:
+Success and failure are mutually exclusive, so if one is optional they must
+both be optional. Optional branches can handle intermittent failure, e.g:
 - a platform that isn't always available: `foo:submit-fail?`
 - a task that you expect to fail sometimes: `foo:fail?`
 
@@ -82,6 +59,36 @@ Finally, optional `start` doesn't really make sense. At best it would be
 equivalent to `foo:submit?`, so use that instead.
 - `foo:start?  # ERROR`
 
+If a task's success is not referenced anywhere in the graph (i.e. only other
+outputs are referenced) then by definition other tasks do not depend on its
+success, and we can therefore safely assume that success is optional. E.g.:
+```
+# success of foo is optional:
+foo:x => bar  # x is required
+# (foo not mentioned elsewhere)
+```
+To make it required, just reference `foo:succeed` somewhere:
+```
+# success of foo required:
+foo:x => bar  # x required
+foo  # success required
+```
+
+## Interpretation in Trigger Expressions
+
+```
+foo:x => bar
+```
+... means trigger `bar` if `foo` completes output `x`; otherwise
+don't trigger `bar`, *and flag `foo` as incomplete*.
+
+```
+foo:x? => bar
+```
+... means trigger `bar` if `foo` completes output `x`; otherwise
+don't trigger `bar`, *and don't flag `foo` as incomplete*.
+
+### Caveats
 
 ## Path Branching
 
@@ -182,6 +189,25 @@ A:succeed-any? => b
 ```
 - trigger b if any member succeeds; but it's OK if any or all members fail
 
+
+## Backward Compatibility (Cylc 7)
+
+In Cylc 7 graphs, all outputs are effectively "required" in that all tasks are
+pre-spawned to the next cycle point, and users are expected to define suicide
+triggers to remove unused branches that are really optional.
+
+In Cylc 8, suicide triggers mostly aren't needed because unused branches don't
+get spawned at all, but they're still there and still if needed.
+
+So if a Cylc 7 workflow is detected (via `suite.rc` vs `flow.cylc` config
+filename):
+- instead of flagging use of both `foo:succeed` and `foo:fail` as an error,
+we can infer that success must be optional for `foo`, to avoid ending up
+with an incomplete task due to the unused output
+- similarly for `foo:submit` and `foo:submit-fail`
+- for other outputs, e.g. `foo:x` and `foo:y` we can't know if they're optional
+  or not, so assume they are required and let the existing Cylc 7 suicide
+triggers clean up any resulting incomplete tasks 
 
 ## Visibility of Incomplete Tasks
 
