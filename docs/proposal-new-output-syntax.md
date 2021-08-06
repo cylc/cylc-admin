@@ -38,41 +38,52 @@ Abbreviated syntax for the default success case:
 - `foo` means `foo:succeed` (success is required)
 - `foo?` means `foo:succeed?` (success is optional)
 
+A task is incomplete if:
+- job submission failed and `:submit/submit-fail` is not optional
+- or it finished executing and did not complete all required outputs
+
 ### Caveats
 
 An output can't be both required and optional.
+```
+foo:x => bar
+foo:x?=> baz  # ERROR
+```
 
-Success and failure are mutually exclusive, so if one is optional they must
-both be optional. Optional branches can handle intermittent failure, e.g:
-- a platform that isn't always available: `foo:submit-fail?`
-- a task that you expect to fail sometimes: `foo:fail?`
+`:succeed` and `:fail` are mutually exclusive opposites; if one is optional
+they must both be optional.
 
-Failure can't be required. Expecting a task to fail every time and treating
+*Failure can't be required.* Expecting a task to fail every time and treating
 it as incomplete if it succeeds would essentially amount to reversing normal 
-success and failure symantics. If you really have an executable that returns
-non-`0` whilst still doing what you need in the workflow, provide a wrapper
-that correctly returns success status.
-- `foo:fail  # ERROR`
-- `foo:submit-fail  # ERROR`
+success and failure symantics (and, would we need retry-on-succeed?). If you
+really have an executable that returns non-`0` whilst still doing what you need
+in the workflow, provide a wrapper that correctly returns success status.
+```
+foo:submit-fail  # ERROR
+foo:fail  # ERROR
+```
 
-Finally, optional `start` doesn't really make sense. At best it would be
-equivalent to `foo:submit?`, so use that instead.
-- `foo:start?  # ERROR`
+`:finish` is a pseudo-ouput, like a family trigger. It means "succeed or fail".
+Optional finish does not make sense. The only way for a task not to finish is
+if it gets stuck in an infinite loop (use execution timeout) or if it never
+started running (use submit-fail).
+```
+foo:finish?  # ERROR
+```
 
-If a task's success is not referenced anywhere in the graph (i.e. only other
-outputs are referenced) then by definition other tasks do not depend on its
-success, and we can therefore safely assume that success is optional. E.g.:
-```
-# success of foo is optional:
-foo:x => bar  # x is required
-# (foo not mentioned elsewhere)
-```
-To make it required, just reference `foo:succeed` somewhere:
-```
-# success of foo required:
-foo:x => bar  # x required
-foo  # success required
-```
+Optional `submit` does not imply subsequent task execution outputs have to be
+optional. You might want to handle submission failure, but require success if
+the job does submit successfully. 
+
+If `foo:succeed/fail` do not appear in the graph (i.e. if only other outputs,
+such as `foo:x` are referenced) assume that success is required.
+(We could go with success optional on grounds that nothing triggers off foo's
+success, but it's safer to assume success is required and easy to make it
+optional if that's what's wanted).
+
+**Optional `start` seems pointless at best - should we allow it?** A task can't
+succeed or fail (or complete any other outputs) if it never started.
+
 
 ## Interpretation in Trigger Expressions
 
@@ -88,7 +99,6 @@ foo:x? => bar
 ... means trigger `bar` if `foo` completes output `x`; otherwise
 don't trigger `bar`, *and don't flag `foo` as incomplete*.
 
-### Caveats
 
 ## Path Branching
 
@@ -153,6 +163,8 @@ a => b => c?  # success of c is optional
 
 ## Family Triggers
 
+**NOTE IMPLICATIONS OF FAMILY TRIGGERS STILL UNDER DISCUSSOIN**
+
 Conceivably we could try to interpret the output signifier in terms of a
 collective pseudo-output for the family as whole, but that gets really hard to
 understand.
@@ -199,8 +211,7 @@ triggers to remove unused branches that are really optional.
 In Cylc 8, suicide triggers mostly aren't needed because unused branches don't
 get spawned at all, but they're still there and still if needed.
 
-So if a Cylc 7 workflow is detected (via `suite.rc` vs `flow.cylc` config
-filename):
+So if a Cylc 7 workflow is detected:
 - instead of flagging use of both `foo:succeed` and `foo:fail` as an error,
 we can infer that success must be optional for `foo`, to avoid ending up
 with an incomplete task due to the unused output
@@ -208,6 +219,13 @@ with an incomplete task due to the unused output
 - for other outputs, e.g. `foo:x` and `foo:y` we can't know if they're optional
   or not, so assume they are required and let the existing Cylc 7 suicide
 triggers clean up any resulting incomplete tasks 
+
+### How to detect Cylc 7 workflows?
+
+- detect `suite.rc` vs `flow.cylc` config filename?
+  - users might change the filename without upgrading the syntax?
+- require users to add an explicit marker comment in the file?
+- other?
 
 ## Visibility of Incomplete Tasks
 
