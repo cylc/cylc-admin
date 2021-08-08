@@ -209,12 +209,10 @@ with an incomplete task due to the unused output
   or not, so assume they are required and let the existing Cylc 7 suicide
 triggers clean up any resulting incomplete tasks 
 
-### How to detect Cylc 7 workflows?
+### Detecting Cylc 7 Workflows
 
-- detect `suite.rc` vs `flow.cylc` config filename?
-  - users might change the filename without upgrading the syntax?
-- require users to add an explicit marker comment in the file?
-- other?
+Assume Cylc 7 if the config filename is `suite.rc`. If users change the
+filename without upgrading the syntax they will get validation errors.
 
 ## Visibility of Incomplete Tasks
 
@@ -436,17 +434,23 @@ at Cylc 9. In the meantime we need to keep them for the following reasons:
 
 - primarily, backward compatibility for Cylc 7 graphs
 
-- secondarily, to allow users to housekeep partially satisfied prerequisites
-  that can occur due to partial dependence on optional outputs
+- secondarily, to allow housekeeping of partially satisfied prerequisites
+  that can occur because of partial dependence on optional outputs:
 
 ```
 a & b? => c
 b:fail? => !c
 ```
+  or to submit failures:
+```
+a & b => c
+b:submit-fail? => !c
+```
 
 - finally, to handle the unwanted extra dependencies picked up by tasks
-  that appear on multiple graph branches at once (see the Appendix below, and
-  the check-d example above).
+  that appear on multiple graph branches at once (see [Appendix: Same Task on
+Multiple Branches](#appendix-same-task-on-multiple-branches)
+the Appendix below, and the `check-d` example above).
 
 ## Clock Expire Triggers
 
