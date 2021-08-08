@@ -6,99 +6,89 @@ say, vs going down a dead-end side branch. This is because all task outputs
 are effectively *optional*, and the scheduler just follows the flow wherever it
 leads at runtime.
 
-Cylc 7 could tell (albeit imperfectly!) if the intended path was followed 
-because all task outputs were effectively *required*: all paths were
-pre-spawned (to the next cycle point instance of each active task, roughly
-speaking) and users had to explicitly remove unused paths with suicide
-triggers, so any remaining unsatisfied waiting tasks would indicate a problem
-by stalling the workflow.
+Cylc 7 could tell (albeit imperfectly!) if the intended path was followed,
+because it pre-spawned all possible paths (to the next cycle point instance of
+each active task, roughly speaking) and expected users to remove unused paths
+with suicide triggers. Any remaining unsatisfied waiting tasks would stall 
+the workflow.
 
-This document proposes a way to convey the intended path of execution to the
-Cylc 8 spawn-on-demand scheduler by making all task outputs **required** by
-default and giving a new syntax to explicitly mark **optional** outputs. If a
-task finishes without completing all of its required outputs it will be
-retained in the n=0 task pool and flagged as an **incomplete task** (often
-this will coincide with unexpected task failure; otherwise it implies that the
-task did not behave as the workflow configuration expected despite reporting
-success).
+This proposal introduces the concept of **task completion** with **required**
+and **optional** outputs, as a way to convey the intended path of execution to
+the Cylc 8 spawn-on-demand scheduler. *A task must complete all required outputs
+in order to be considered complete.* If not, it gets retained in the n=0
+task pool as incomplete, which will be flagged as error and (like partially
+satisfied prerequisites) will stall the scheduler if it has nothing else to do.
+Optional outputs do not contribute to task completion.
 
-*Note: optional triggers were considered and rejected as another way of
-potentially handling this problem - see cylc-admin#128*
+*Note: required and optional triggers were considered and rejected as another
+way of potentially handling this problem - see cylc-admin#128*
 
 ## Output Syntax
 
 - `foo:x` means `x` is a *required output* of task `foo`
-  - if a task finishes without completing any required outputs, retain it in
-    the task pool as an *incomplete task*
+  - if `foo` finishes without completing `x`, retain it in n=0 as *incomplete*
 
 - `foo:y?` means `y` is an *optional output* of task `foo`
-  - it is OK for a task to finish without completing optional outputs
-
-Abbreviated syntax for the default success case:
-- `foo` means `foo:succeed` (success is required)
-- `foo?` means `foo:succeed?` (success is optional)
+  - it is OK for `foo` to finish without completing `x`
 
 A task is incomplete if:
-- job submission failed and `:submit/submit-fail` is not optional
+- job submission failed and `:submit/submit-fail` was not optional
 - or it finished executing and did not complete all required outputs
 
-### Caveats
+Abbreviated syntax for the default success case:
+- `foo?` means `foo:succeed?` (success optional)
+- `foo` means `foo:succeed` (success required)
+  - success required does not mean the task can't fail, just that we treat it
+    as incomplete if it fails
 
-An output can't be both required and optional.
-```
-foo:x => bar
-foo:x?=> baz  # ERROR
-```
-
-`:succeed` and `:fail` are mutually exclusive opposites; if one is optional
-they must both be optional.
-
-*Failure can't be required.* Expecting a task to fail every time and treating
-it as incomplete if it succeeds would essentially amount to reversing normal 
-success and failure symantics (and, would we need retry-on-succeed?). If you
-really have an executable that returns non-`0` whilst still doing what you need
-in the workflow, provide a wrapper that correctly returns success status.
-```
-foo:submit-fail  # ERROR
-foo:fail  # ERROR
-```
-
-`:finish` is a pseudo-ouput, like a family trigger. It means "succeed or fail".
-Optional finish does not make sense. The only way for a task not to finish is
-if it gets stuck in an infinite loop (use execution timeout) or if it never
-started running (use submit-fail).
-```
-foo:finish?  # ERROR
-```
-
-Optional `submit` does not imply subsequent task execution outputs have to be
-optional. You might want to handle submission failure, but require success if
-the job does submit successfully. 
-
-If `foo:succeed/fail` do not appear in the graph (i.e. if only other outputs,
-such as `foo:x` are referenced) assume that success is required.
-(We could go with success optional on grounds that nothing triggers off foo's
-success, but it's safer to assume success is required and easy to make it
-optional if that's what's wanted).
-
-**Optional `start` seems pointless at best - should we allow it?** A task can't
-succeed or fail (or complete any other outputs) if it never started.
-
-
-## Interpretation in Trigger Expressions
+### in Trigger Expressions
 
 ```
 foo:x => bar
 ```
-... means trigger `bar` if `foo` completes output `x`; otherwise
-don't trigger `bar`, *and flag `foo` as incomplete*.
+... means trigger `bar` if `foo` completes `x`; otherwise don't, and *flag
+`foo` as incomplete*.
 
 ```
 foo:x? => bar
 ```
-... means trigger `bar` if `foo` completes output `x`; otherwise
-don't trigger `bar`, *and don't flag `foo` as incomplete*.
+... means trigger `bar` if `foo` completes `x`; otherwise don't, but *don't
+flag `foo` as incomplete*.
 
+### Notes
+
+The same output can't be both required and optional.
+
+`foo:succeed` and `foo:fail` (like `foo:submit` and `foo:submit-fail`) are
+mutually exclusive opposites.
+- if one is required the other can't appear in the graph at all
+- if one is optional they must both be optional
+- if neither appear in the graph (i.e. only other outputs such as `foo:x`
+  appear) we assume success is required
+
+Optional `:submit?` (and `:submit-fail`) does not imply that task execution
+outputs must be optional. You might want to handle job submission failure but
+require tasks to (e.g.) succeed if they do submit successfully. 
+
+Failure can be required, but we should document that expecting a task to fail
+every time and treating it as incomplete if it succeeds essentially reverses
+normal succeed/fail symantics. A task that always "fails" whilst still doing
+what the workflow needs should probably be wrapped to return success on exit.
+And note that we don't support retry-on-succeed.
+
+Optional `:start?` is not allowed because it is meaningless. Any task that
+finishes (which is when we can check its outputs) must have started, by
+definition.
+
+The pseudo output `:finish` (which means "succeed or fail") cannot be optional.
+The only way for a task not to finish is if its job gets stuck in an infinite
+loop (use execution timeout) or if it never started running (use submit-fail).
+
+The new optional output syntax cannot be used with family collective psuedo
+output triggers because it would be difficult to interpret that in terms of
+optional/required success of each individual member, which is what we need.
+Instead we have different optional/required defaults for each collective
+pseudo-output. See [Family Triggers](#Family-Triggers) below. 
 
 ## Path Branching
 
@@ -163,44 +153,43 @@ a => b => c?  # success of c is optional
 
 ## Family Triggers
 
-**NOTE IMPLICATIONS OF FAMILY TRIGGERS STILL UNDER DISCUSSOIN**
+The new optional output syntax cannot be used with family collective psuedo
+output triggers because it would be difficult to interpret that in terms of
+optional/required success of each individual member, which is what we need.
 
-Conceivably we could try to interpret the output signifier in terms of a
-collective pseudo-output for the family as whole, but that gets really hard to
-understand.
-
-Fortunately, the output type signifier can simply be applied directly to all
-family members, for all family trigger types. That's easy to understand,
-and it makes sense because the signifier doesn't affect triggering, it only
-affects what we do with family members if the outputs in question are not
-completed (i.e. keep them in n=0 as incomplete, or forget them).
-
-If particular member outputs need special treatment they should be singled
-out in the graph - just like special member triggers.
+Instead we can set different optional/required defaults for each collective
+pseudo-output:
 
 ```
-A:succeed-all => b
-```
-- trigger b only if all members succeed; and all members are required to
-  succeed
+A:succeed-all => b  # member success required
+A:succeed-any => b  # member success/failure optional
 
-```
-A:succeed-all? => b
-```
-- trigger b only if all members succeed; but it's OK if they fail (maybe the
-  failed path is handled elsewhere)
+A:fail-all => b  # member failure required 
+A:fail-any => b  # member success/failure optional
 
-```
-A:succeed-any => b
-```
-- trigger b if any member succeeds; but any member that runs is required to
-  succeed
+A:finish-all => b  # member success optional
+A:finish-any => b  # member success optional
 
-```
-A:succeed-any? => b
-```
-- trigger b if any member succeeds; but it's OK if any or all members fail
+A:start-all => b  # N/A
+A:start-any => b  # N/A
 
+A:submit-all => b  # member submit success required
+A:submit-any => b  # member success optional
+
+A:submit-fail-all => b  # member submit-fail required
+A:submit-fail-any => b  # member submit/submit-fail optional
+
+A:x-all => b  # member x required
+A:x-any => b  # member x optional
+```
+
+To mess with the defaults you can refer to member outputs collectively without
+triggers, anywhere in the graph, e.g.:
+```
+A?  # member success optional
+A:x?  # member x optional
+a1:x?  # specific member a1 x optional
+```
 
 ## Backward Compatibility (Cylc 7)
 
