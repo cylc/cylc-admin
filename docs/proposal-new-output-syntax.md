@@ -15,7 +15,7 @@ the workflow.
 This proposal introduces the concept of **task completion** with **required**
 and **optional** outputs, as a way to convey the intended path of execution to
 the Cylc 8 spawn-on-demand scheduler. *A task must complete all required outputs
-in order to be considered complete.* If not, it gets retained in the n=0
+in order to be considered complete.* Otherwise it will be retained in the `n=0`
 task pool as incomplete, which will be flagged as error and (like partially
 satisfied prerequisites) will stall the scheduler if it has nothing else to do.
 Optional outputs do not contribute to task completion.
@@ -38,22 +38,16 @@ A task is incomplete if:
 Abbreviated syntax for the default success case:
 - `foo?` means `foo:succeed?` (success optional)
 - `foo` means `foo:succeed` (success required)
-  - success required does not mean the task can't fail, just that we treat it
-    as incomplete if it fails
+  - `foo` can still fail, but it will be treated as incomplete if it does
 
-### in Trigger Expressions
-
+Examples in trigger expressions:
 ```
+# trigger bar if foo completes x; otherwise flag foo as incomplete
 foo:x => bar
-```
-... means trigger `bar` if `foo` completes `x`; otherwise don't, and *flag
-`foo` as incomplete*.
 
-```
+# trigger bar if foo completes x; either way, don't flag foo as incomplete
 foo:x? => bar
 ```
-... means trigger `bar` if `foo` completes `x`; otherwise don't, but *don't
-flag `foo` as incomplete*.
 
 ### Notes
 
