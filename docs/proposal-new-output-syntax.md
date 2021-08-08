@@ -193,26 +193,22 @@ a1:x?  # specific member a1 x optional
 
 ## Backward Compatibility (Cylc 7)
 
-In Cylc 7 graphs, all outputs are effectively "required" in that all tasks are
+In Cylc 7 graphs, all outputs are effectively required in that all paths are
 pre-spawned to the next cycle point, and users are expected to define suicide
 triggers to remove unused branches that are really optional.
 
 In Cylc 8, suicide triggers mostly aren't needed because unused branches don't
-get spawned at all, but they're still there and still if needed.
+get spawned at all, but they still work if needed.
 
-So if a Cylc 7 workflow is detected:
-- instead of flagging use of both `foo:succeed` and `foo:fail` as an error,
-we can infer that success must be optional for `foo`, to avoid ending up
-with an incomplete task due to the unused output
+Assume we have a Cylc 7 workflow if the config filename is `suite.rc`. If users
+change the filename without upgrading syntax they will get validation errors.
+- if both `foo:succeed` and `foo:fail` appear (an error for Cylc 8) infer that
+  optional success
 - similarly for `foo:submit` and `foo:submit-fail`
-- for other outputs, e.g. `foo:x` and `foo:y` we can't know if they're optional
-  or not, so assume they are required and let the existing Cylc 7 suicide
-triggers clean up any resulting incomplete tasks 
-
-### Detecting Cylc 7 Workflows
-
-Assume Cylc 7 if the config filename is `suite.rc`. If users change the
-filename without upgrading the syntax they will get validation errors.
+- we can't know if custom outputs are optional or not (because we don't know if
+  they are mutually exclusive or concurrent) so assume they are required and
+let the Cylc 7 suicide triggers clean up incomplete tasks (we could try to use
+suicide triggers to make the correct inference but that might be difficult).
 
 ## Visibility of Incomplete Tasks
 
