@@ -60,13 +60,13 @@ mutually exclusive opposites.
 - if neither appear in the graph (i.e. only other outputs such as `foo:x`
   appear) we assume success is required
 
-Optional `:submit?` (and `:submit-fail`) does not imply that task execution
-outputs must be optional. You might want to handle job submission failure but
-require tasks to (e.g.) succeed if they do submit successfully. 
+Optional `:submit?` does not imply that task execution outputs must be
+optional. You might want to handle job submission failure but require tasks to
+(e.g.) succeed if they do submit successfully. 
 
 Failure can be required, but we should document that expecting a task to fail
 every time and treating it as incomplete if it succeeds essentially reverses
-normal succeed/fail symantics. A task that always "fails" whilst still doing
+normal succeed/fail symantics. A task that always fails whilst still doing
 what the workflow needs should probably be wrapped to return success on exit.
 And note that we don't support retry-on-succeed.
 
@@ -76,11 +76,11 @@ definition.
 
 The pseudo output `:finish` (which means "succeed or fail") cannot be optional.
 The only way for a task not to finish is if its job gets stuck in an infinite
-loop (use execution timeout) or if it never started running (use submit-fail).
+loop (use execution timeout) or if it never started running in the first place.
 
 The new optional output syntax cannot be used with family collective psuedo
-output triggers because it would be difficult to interpret that in terms of
-optional/required success of each individual member, which is what we need.
+output triggers because it is difficult to interpret that in terms of the
+success status of each individual member, which is what we need.
 Instead we have different optional/required defaults for each collective
 pseudo-output. See [Family Triggers](#Family-Triggers) below. 
 
@@ -148,11 +148,11 @@ a => b => c?  # success of c is optional
 ## Family Triggers
 
 The new optional output syntax cannot be used with family collective psuedo
-output triggers because it would be difficult to interpret that in terms of
-optional/required success of each individual member, which is what we need.
+output triggers because it is difficult to interpret that in terms of the
+success status of each individual member, which is what we need.
 
-Instead we can set different optional/required defaults for each collective
-pseudo-output:
+Instead we will set different optional/required defaults for each collective
+pseudo output:
 
 ```
 A:succeed-all => b  # member success required
@@ -177,11 +177,14 @@ A:x-all => b  # member x required
 A:x-any => b  # member x optional
 ```
 
-To mess with the defaults you can refer to member outputs collectively without
-triggers, anywhere in the graph, e.g.:
+To mess with the defaults you can refer to member outputs collectively or
+individually, anywhere in the graph, e.g.:
 ```
+# Family outputs (note these cannot be family triggers)
 A?  # member success optional
 A:x?  # member x optional
+
+# Member outputs (these can also be triggers)
 a1:x?  # specific member a1 x optional
 ```
 
