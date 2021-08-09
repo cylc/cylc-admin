@@ -434,7 +434,7 @@ at Cylc 9. In the meantime we need to keep them for the following reasons:
 a & b? => c
 b:fail? => !c
 ```
-  or to submit failures:
+  or submit failures:
 ```
 a & b => c
 b:submit-fail? => !c
