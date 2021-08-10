@@ -156,36 +156,46 @@ pseudo output:
 
 ```
 A:succeed-all => b  # member success required
-A:succeed-any => b  # member success/failure optional
+A:succeed-any => b  # member success (and hence failure) optional
 
 A:fail-all => b  # member failure required 
-A:fail-any => b  # member success/failure optional
+A:fail-any => b  # member failure (and hence success) optional
 
 A:finish-all => b  # member success optional
-A:finish-any => b  # member success optional
+A:finish-any => b  # member success (and hence fail) optional
 
 A:start-all => b  # N/A
 A:start-any => b  # N/A
 
 A:submit-all => b  # member submit success required
-A:submit-any => b  # member success optional
+A:submit-any => b  # member submit success (and hence submit-fail) optional
 
 A:submit-fail-all => b  # member submit-fail required
-A:submit-fail-any => b  # member submit/submit-fail optional
+A:submit-fail-any => b  # member submit-fail (and hence submit success) optional
 
 A:x-all => b  # member x required
 A:x-any => b  # member x optional
 ```
 
-To mess with the defaults you can refer to member outputs collectively or
-individually, anywhere in the graph, e.g.:
+If different family triggers imply both required and optional member output
+defaults for the same family, we default to optional. You can use the
+notation without a trigger to force this.  E.g.:
 ```
-# Family outputs (note these cannot be family triggers)
-A?  # member success optional
-A:x?  # member x optional
+# Trigger b only if all members of A succeed, but member success is optional:
+A:succeed-all => b  # default to member success required ...
+A:succeed-any  # ... but now member success is optional
+```
+To change individual members, just use the normal task output notation:
+```
+A:succeed-all => b  # members of A default to success required ...
+a1?  # ... but success of member a1 is optional
+```
 
-# Member outputs (these can also be triggers)
-a1:x?  # specific member a1 x optional
+**Note** alternatively we could use the task notation to set member defaults.
+This would also allow member success required with -any triggers.
+```
+A:succeed-any => b  # default to member success optional...
+A:succeed  # ... then make it required
 ```
 
 ## Backward Compatibility (Cylc 7)
