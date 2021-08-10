@@ -1,10 +1,10 @@
 # Proposal: Required and Optional Outputs
 
-Spawn-on-demand solves many problems but in its pure form it can't tell if the
-workflow has followed the "intended path" - to completion of the whole graph,
-say, vs going down a dead-end side branch. This is because all task outputs 
-are effectively *optional*, and the scheduler just follows the flow wherever it
-leads at runtime.
+Cylc 8 spawn-on-demand solves many problems but in its pure form it can't tell
+if the workflow has followed the "intended path" - to completion of the whole
+graph, say, vs going down a dead-end side branch. This is because all task
+outputs are effectively *optional*, and the scheduler just follows the flow
+wherever it leads at runtime.
 
 Cylc 7 could tell (albeit imperfectly!) if the intended path was followed,
 because it pre-spawned all possible paths (to the next cycle point instance of
@@ -12,13 +12,15 @@ each active task, roughly speaking) and expected users to remove unused paths
 with suicide triggers. Any remaining unsatisfied waiting tasks would stall 
 the workflow.
 
-This proposal introduces the concept of **task completion** with **required**
+This proposal introduces the concepts of **task completion**, and **required**
 and **optional** outputs, as a way to convey the intended path of execution to
-the Cylc 8 spawn-on-demand scheduler. *A task must complete all required outputs
-in order to be considered complete.* Otherwise it will be retained in the `n=0`
-task pool as incomplete, which will be flagged as error and (like partially
-satisfied prerequisites) will stall the scheduler if it has nothing else to do.
-Optional outputs do not contribute to task completion.
+the Cylc 8 scheduler. *Tasks that finish without completing all required
+outputs will be retained in the `n=0` task pool as incomplete tasks*, which
+can be flagged as error and (like partially satisfied prerequisites) will stall
+the scheduler if it has nothing else to do. Optional outputs do not contribute
+to task completion. Incomplete tasks will often be failed tasks that were
+required to succeed, otherwise they indicate that the task did not do what the
+graph expected despite reporting success.
 
 *Note: required and optional triggers were considered and rejected as another
 way of potentially handling this problem - see cylc-admin#128*
@@ -29,27 +31,26 @@ way of potentially handling this problem - see cylc-admin#128*
   - if `foo` finishes without completing `x`, retain it in n=0 as *incomplete*
 
 - `foo:y?` means `y` is an *optional output* of task `foo`
-  - it is OK for `foo` to finish without completing `x`
+  - it is OK for `foo` to finish without completing `y`
 
 A task is incomplete if:
-- job submission failed and `:submit/submit-fail` was not optional
-- or it finished executing and did not complete all required outputs
+- it finished executing without completing all required outputs
+- or if job submission failed and the `:submit` output was not optional
 
 Abbreviated syntax for the default success case:
 - `foo?` means `foo:succeed?` (success optional)
 - `foo` means `foo:succeed` (success required)
-  - `foo` can still fail, but it will be treated as incomplete if it does
 
 Examples in trigger expressions:
 ```
 # trigger bar if foo completes x; otherwise flag foo as incomplete
 foo:x => bar
 
-# trigger bar if foo completes x; either way, don't flag foo as incomplete
+# trigger bar if foo completes x; but either way don't flag foo as incomplete
 foo:x? => bar
 ```
 
-### Notes
+### Notes and Caveats
 
 The same output can't be both required and optional.
 
@@ -81,8 +82,8 @@ loop (use execution timeout) or if it never started running in the first place.
 The new optional output syntax cannot be used with family collective psuedo
 output triggers because it is difficult to interpret that in terms of the
 success status of each individual member, which is what we need.
-Instead we have different optional/required defaults for each collective
-pseudo-output. See [Family Triggers](#Family-Triggers) below. 
+Instead we set appropriate member defaults for each family trigger.
+See [Family Triggers](#Family-Triggers) below. 
 
 ## Path Branching
 
@@ -161,7 +162,7 @@ A:succeed-any => b  # member success (and hence failure) optional
 A:fail-all => b  # member failure required 
 A:fail-any => b  # member failure (and hence success) optional
 
-A:finish-all => b  # member success optional
+A:finish-all => b  # member success (and hence fail) ooptional
 A:finish-any => b  # member success (and hence fail) optional
 
 A:start-all => b  # N/A
