@@ -54,6 +54,7 @@ evolving requirements:
 - [Cylc UI Data Model](proposal-cylc-ui-data-model.md)
 - [cli-wfs-authentication](proposal-cli-wfs-authentication.md)
 - [n-distance windowing](proposal-n-distance-window.md)
+- [Optional Output Syntax](proposal-new-output-syntax.md)
 
 
 ## Cylc-7
