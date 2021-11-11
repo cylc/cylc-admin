@@ -228,6 +228,8 @@ conda build recipe/
 # This confirms you are installing the local build. Here $PACKAGE_NAME
 # could be something like cylc-uiserver.
 conda install --use-local $PACKAGE_NAME
+# If the last command fails, try:
+conda install -c ${CONDA_PREFIX}/conda-bld/
 ```
 
 At this point you should be good to go. Test the package with commands
