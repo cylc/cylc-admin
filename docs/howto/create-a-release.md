@@ -51,7 +51,7 @@ Misc (after the above has been completed):
 * cylc-doc
   * [ ] bump instersphinx versions if required
   * [ ] review installation instructions
-  * [ ] deploy (run deploy action, can be re-deployed if necessary)
+  * [ ] deploy (run the "deploy" workflow on GitHub Actions) (can be re-deployed later if necessary)
 * [ ] discourse post
 
 Bump Project Versions (on master):
