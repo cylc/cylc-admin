@@ -3,6 +3,63 @@
 **Note:** The release process has been substantially automated. For reference,
 the old release process is documented at [create-a-release-old.md](create-a-release-old.md).
 
+**Warning:** The release process is still in flux, these instructions will
+drift from ground truth.
+
+## Release Process
+
+Here's a template for releasing all components:
+
+> **Note:** It is not necessary to release *all* of the components to update
+> *one* of the components.
+
+```
+R1 = """
+    metomi-isodatetime => cylc-flow
+    metomi-isodatetime => metomi-rose
+    cylc-flow => cylc-uiserver
+    cylc-flow => cylc-rose
+    cylc-ui => cylc-uiserver
+    metomi-rose => cylc-rose
+"""
+```
+
+Prep:
+
+* [ ] Test cylc-doc (run a test build, perform any required fixes)
+
+PyPi:
+
+* [ ] metomi-isodatetime
+* [ ] cylc-flow
+* [ ] cylc-ui
+* [ ] cylc-uiserver (update the ui version before releasing)
+* [ ] metomi-rose
+* [ ] cylc-rose
+
+Forge (check dependencies match):
+
+* [ ] metomi-isodatetime
+* [ ] cylc-flow
+* [ ] cylc-ui
+* [ ] cylc-uiserver
+* [ ] metomi-rose
+* [ ] cylc-rose
+
+Misc (after the above has been completed):
+
+* cylc-doc
+  * [ ] bump instersphinx versions if required
+  * [ ] review installation instructions
+  * [ ] deploy (run the "deploy" workflow on GitHub Actions) (can be re-deployed later if necessary)
+* [ ] discourse post
+
+Bump Project Versions (on master):
+
+* [ ] cylc-flow
+* [ ] cylc-uiserver (pin to latest cylc-flow)
+* [ ] cylc-rose (pin to latest cylc-flow)
+
 ## Before you start (First time)
 
 - Create a PyPI account for yourself if you don't already have one.
@@ -22,6 +79,9 @@ the old release process is documented at [create-a-release-old.md](create-a-rele
 For any projects which are auto-documented by cylc-doc, currently:
 
 * cylc-flow
+* cylc-rose
+* cylc-uiserver
+* metomi-rose
 
 Ensure the docs build against master by manually triggering the test workflow
 in cylc-doc.
@@ -71,7 +131,8 @@ following the [old instructions](create-a-release-old.md).
 > all the projects that are part of Cylc 8.
 
 After a Python project has been pushed to PyPi a new PR should be
-automatically created on the conda-forge feedstock.
+automatically created on the conda-forge feedstock. If not you can DIY,
+you will need to update the checksum to the value on PyPi.
 
 - Follow the instructions on the PR.
 - Check the dependencies are up to date, some projects e.g. cylc-flow have
@@ -89,10 +150,8 @@ releasing only Cylc UI Server, you should release Cylc Flow first.
 
 On GitHub, navigate to the project repository on GitHub, e.g.
 
-- https://github.com/conda-forge/cylc-feedstock
 - https://github.com/conda-forge/cylc-flow-feedstock
 - https://github.com/conda-forge/cylc-rose-feedstock
-- https://github.com/conda-forge/cylc-ui-feedstock
 - https://github.com/conda-forge/cylc-uiserver-feedstock
 - https://github.com/conda-forge/metomi-isodatetime-feedstock
 - https://github.com/conda-forge/metomi-rose-feedstock
@@ -144,12 +203,10 @@ configured to avoid automatically upload the package. Open your `~/.condarc`
 and check that you have something similar to:
 
 ```yaml
-
-   channels:
-     - defaults
-     - conda-forge
-   ssl_verify: true
-   anaconda_upload: false
+channels:
+  - conda-forge
+ssl_verify: true
+anaconda_upload: false
 ```
 
 Now create a Conda environment for your tests, e.g.: `conda create -n cylc1`,
@@ -157,21 +214,22 @@ and then activate it `conda activate cylc1`. Then to build and install
 locally:
 
 ```bash
-
-   # Where $CONDA_FORGE_REPOSITORY could be, for example,
-   # cylc-uiserver-feedstock.
-   cd $CONDA_FORGE_REPOSITORY
-   # Your package should not be listed!
-   conda list
-   # This will take some minutes and print useful information.
-   conda build recipe/
-   # The following command will install the locally created package. Before
-   # installing it will ask you to confirm. Scroll up and search the
-   # package name. The right-side column must show a location like
-   # .../anaconda3/conda-bld/linux-64::cylc-uiserver-0.1-py37_1.
-   # This confirms you are installing the local build. Here $PACKAGE_NAME
-   # could be something like cylc-uiserver.
-   conda install --use-local $PACKAGE_NAME
+# Where $CONDA_FORGE_REPOSITORY could be, for example,
+# cylc-uiserver-feedstock.
+cd $CONDA_FORGE_REPOSITORY
+# Your package should not be listed!
+conda list
+# This will take some minutes and print useful information.
+conda build recipe/
+# The following command will install the locally created package. Before
+# installing it will ask you to confirm. Scroll up and search the
+# package name. The right-side column must show a location like
+# .../anaconda3/conda-bld/linux-64::cylc-uiserver-0.1-py37_1.
+# This confirms you are installing the local build. Here $PACKAGE_NAME
+# could be something like cylc-uiserver.
+conda install --use-local $PACKAGE_NAME
+# If the last command doesn't use the right build, try:
+conda install -c ${CONDA_PREFIX}/conda-bld/
 ```
 
 At this point you should be good to go. Test the package with commands
