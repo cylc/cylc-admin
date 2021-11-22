@@ -2,7 +2,7 @@
 name: Cylc New Release Process
 about: Steps to check off, to make a new release.
 title: ''
-labels: ''
+labels: 'release'
 assignees: ''
 
 ---
