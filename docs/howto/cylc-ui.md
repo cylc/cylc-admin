@@ -6,77 +6,78 @@
   more standard setup though if you ensure the non-python dependencies
   are installed correctly you can bypass this.
 
-1. Create a clean conda install:
+1. Install Conda Deps:
+
+   The cylc-flow Conda dependencies are in the cylc-flow repository
+   https://github.com/cylc/cylc-flow/blob/master/conda-environment.yml
+
+   (note optional dependencies are commented out)
+
+   Create a new Conda environment containing the cylc-flow deps
+   (and `configurable-http-proxy` if working with JupyterHub):
 
    ```bash
-   conda create -n my-example-env python=3.7 configurable-http-proxy --yes
-   conda activate my-example-env
+   conda create -n cylc-8-dev python=3.7 configurable-http-proxy -f conda-environment.yml
    ```
 
-2. Ensure that you install `nodejs` using conda first.
+2. Install Python Projects
 
-   If you allow pip to
-   install it as a dependency of cylc & cylc-uiserver it you will end up with
-   a very old version.
+   Install [cylc/cylc-flow](https://github.com/cylc/cylc-flow/) and optionally:
+
+   * [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver/) (for UIS work)
+   * [metomi/metomi-rose](https://github.com/metomi/metomi-rose/) (for Rose work)
+   * [cylc/cylc-rose](https://github.com/cylc/cylc-rose/) (for Rose work)
 
    ```bash
-   conda install nodejs --yes
-   node --version
-   npm install yarn -g
+   # clone the git repository locally then...
+   pip install -e "path/to/repo[all]"
    ```
 
-   For comparison devs have used node at 10.13.x and 12.x.x.
-
-3. Install
-   [cylc/cylc-flow](https://github.com/cylc/cylc-flow/) and
-   [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver/):
-
-   ```bash
-   pip install -e "${DEVDIR}/cylc-flow"[all]
-   pip install -e "${DEVDIR}/cylc-uiserver"[all]
-   ```
-
-   Where `${DEVDIR}/cylc-flow` and `${DEVDIR}/cylc-uiserver` are the locations
-   of your local (git) worktrees of the two projects.
-
-4. Install [cylc/cylc-ui](https://github.com/cylc/cylc-ui/).
+3. Install [cylc/cylc-ui](https://github.com/cylc/cylc-ui/).
 
    > **Note:** We prefer `yarn`.
 
    ```bash
-   cd $DEVDIR/cylc-ui
+   cd path/to/cylc-ui
    yarn install
    ```
 
-   Where `${DEVDIR}/cylc-ui` is the location
-   of your local (git) worktree of the project.
+4. Point Cylc Hub at your UI build
 
-5. Point Cylc Hub at your UI build
+   The Cylc UI comes bundled with the UI Server.
 
-   You may need to hardcode the path to your UI build in the Cylc Hub config:
+   If you want to develop the UI you will need to point the UI Server at
+   your local UI build:
 
    ```python
-   #  ~/.cylc/hub/config.py
-   c.Spawner.cmd = ['cylc', 'uiserver', '-s', '<path/to/dist>']
+   # ~/.cylc/hub/jupyter_config.py
+   c.CylcUIServer.ui_build_dir = '~/cylc-ui/dist'  # path to build
    ```
 
-6. Run `jupyterhub`.
+   (see the cylc-uiserver README for more information)
+
+5. Build The UI
 
    ```bash
-   conda activate my-example-env
-   cylc hub
-   ```
-
-7. Run UI.
-   ```bash
-   conda activate my-example-env
    yarn run build:watch
    ```
 
-8. Open a browser and navigate to `http://localhost:8000/`.
+   (see the cylc-ui README for more information)
 
-   You will be asked to log in with your desktop credentials if you have not
-   done so before.
+6. Launch the UI
+
+   ```bash
+   # standalone
+   cylc gui
+
+   # via Jupyter Hub
+   cylc hub
+   # You will be asked to log in with your desktop credentials if you have not
+   # done so before.
+   ```
+
+   (see the cylc-uiserver README for more information)
+
 
 ## Running Your First Workflow
 
@@ -102,8 +103,7 @@
 2. Run the workflow:
 
    ```bash
-   conda activate my-example-env
-   cylc run foo
+   cylc play foo
    ```
 
 3. Watch it run on the CLI:
@@ -112,12 +112,7 @@
    cylc tui foo
    ```
 
-4. Watch it run in the UI:
-
-   Fire up jupyterhub as before, open a browser and navigate to
-   `http://localhost:8000/`.
-
-5. Stop it:
+4. Stop it:
 
    (otherwise it will just keep running forever)
 
