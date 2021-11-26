@@ -8,57 +8,8 @@ drift from ground truth.
 
 ## Release Process
 
-Here's a template for releasing all components:
+Create a new release issue on this repository, follow the instructions there.
 
-> **Note:** It is not necessary to release *all* of the components to update
-> *one* of the components.
-
-```
-R1 = """
-    metomi-isodatetime => cylc-flow
-    metomi-isodatetime => metomi-rose
-    cylc-flow => cylc-uiserver
-    cylc-flow => cylc-rose
-    cylc-ui => cylc-uiserver
-    metomi-rose => cylc-rose
-"""
-```
-
-Prep:
-
-* [ ] Test cylc-doc (run a test build, perform any required fixes)
-
-PyPi:
-
-* [ ] metomi-isodatetime
-* [ ] cylc-flow
-* [ ] cylc-ui
-* [ ] cylc-uiserver (update the ui version before releasing)
-* [ ] metomi-rose
-* [ ] cylc-rose
-
-Forge (check dependencies match):
-
-* [ ] metomi-isodatetime
-* [ ] cylc-flow
-* [ ] cylc-ui
-* [ ] cylc-uiserver
-* [ ] metomi-rose
-* [ ] cylc-rose
-
-Misc (after the above has been completed):
-
-* cylc-doc
-  * [ ] bump instersphinx versions if required
-  * [ ] review installation instructions
-  * [ ] deploy (run the "deploy" workflow on GitHub Actions) (can be re-deployed later if necessary)
-* [ ] discourse post
-
-Bump Project Versions (on master):
-
-* [ ] cylc-flow
-* [ ] cylc-uiserver (pin to latest cylc-flow)
-* [ ] cylc-rose (pin to latest cylc-flow)
 
 ## Before you start (First time)
 
