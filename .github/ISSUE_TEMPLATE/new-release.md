@@ -1,8 +1,8 @@
 ---
-name: release: <version>
-about: Steps to check off, to make a new release.
+name: 'release: <version>'
+about: Steps to check off to make a new release.
 title: ''
-labels: 'release'
+labels: ['release']
 assignees: ''
 
 ---
@@ -13,8 +13,37 @@ Issue to track the coordinated release of multiple Cylc components.
 
 **Required for all minor releases of cylc-flow.**
 
-Se [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto/create-a-release.md)
-for first time instructions and more info.
+See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto/create-a-release.md) for first time instructions and more info.
+
+#### Milestones for release:
+
+<!--
+    Replace `<number>` with the milestone for each package to release.
+    Delete lines as appropriate.
+    (you can get the milestone number from the milestone URL)
+-->
+
+- metomi-isodatetime: [![](
+  https://img.shields.io/github/milestones/issues-open/metomi/isodatetime/<number>)](
+  https://github.com/metomi/isodatetime/milestone/<number>)
+- cylc-flow: [![](
+  https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/<number>)](
+  https://github.com/cylc/cylc-flow/milestone/<number>)
+- cylc-ui: [![](
+  https://img.shields.io/github/milestones/issues-open/cylc/cylc-ui/<number>)](
+  https://github.com/cylc/cylc-ui/milestone/<number>)
+- cylc-uiserver: [![](
+  https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/<number>)](
+  https://github.com/cylc/cylc-uiserver/milestone/<number>)
+- metomi/rose: [![](
+  https://img.shields.io/github/milestones/issues-open/metomi/rose/<number>)](
+  https://github.com/metomi/rose/milestone/<number>)
+- cylc-rose: [![](
+  https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/<number>)](
+  https://github.com/cylc/cylc-rose/milestone/<number>)
+- cylc-doc: [![](
+  https://img.shields.io/github/milestones/issues-open/cylc/cylc-doc/<number>)](
+  https://github.com/cylc/cylc-doc/milestone/<number>)
 
 #### Prep:
 
