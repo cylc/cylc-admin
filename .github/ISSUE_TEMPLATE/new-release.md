@@ -15,6 +15,14 @@ Issue to track the coordinated release of multiple Cylc components.
 
 See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto/create-a-release.md) for first time instructions and more info.
 
+#### Prep:
+
+* [ ] The release lead should be assigned to this issue.
+* [ ] Ensure all milestones complete.
+* [ ] Test cylc-doc (run a test build, perform any required fixes).
+* [ ] Run cylc-flow functional tests against locally available platforms.
+* [ ] List the milestones for release below (delete entries as appropriate).
+
 #### Milestones for release:
 
 <!--
@@ -45,12 +53,6 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
   https://img.shields.io/github/milestones/issues-open/cylc/cylc-doc/<number>)](
   https://github.com/cylc/cylc-doc/milestone/<number>)
 
-#### Prep:
-
-* [ ] Ensure all milestones complete.
-* [ ] Test cylc-doc (run a test build, perform any required fixes).
-* [ ] Delete entries below for packages you are not releasing.
-
 #### PyPi / GitHub releases:
 
 > Ensure all Cylc components are pinned to the correct version of cylc-flow.
@@ -60,7 +62,7 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 * [ ] metomi-isodatetime
 * [ ] cylc-flow (bump metomi-isodatetime if required)
 * [ ] cylc-ui
-* [ ] cylc-uiserver (update the ui version before releasing)
+* [ ] cylc-uiserver ([update the ui](https://github.com/cylc/cylc-uiserver/actions/workflows/update_ui.yml) version before releasing)
 * [ ] metomi-rose (bump metomi-isodatetime if required)
 * [ ] cylc-rose
 
@@ -92,6 +94,8 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
   * [ ] bump instersphinx versions if required
   * [ ] review installation instructions
   * [ ] deploy (run the "deploy" workflow on GitHub Actions) (can be re-deployed later if necessary)
+* metomi-rose
+  * [ ] build & deploy documentation (manual process ATM)
 * [ ] discourse post
 
 #### Metadata:
