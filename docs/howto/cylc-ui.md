@@ -1,5 +1,9 @@
 # Getting Started with Cylc 8
 
+Say hi on the
+[Cylc developers chat](https://matrix.to/#/#cylc-general:matrix.org).
+
+
 ## Development Installation
 
 > **Note**: We recommend developing in a Conda environment as this provides a
@@ -17,64 +21,104 @@
    (and `configurable-http-proxy` if working with JupyterHub):
 
    ```bash
-   conda create -n cylc-8-dev python=3.7 configurable-http-proxy -f conda-environment.yml
+   conda create -n cylc-<version> python=3.7 configurable-http-proxy -f conda-environment.yml
    ```
 
-2. Install Python Projects
+   Where `<version>` is the cylc-flow version e.g. `8.0.1`.
 
-   Install [cylc/cylc-flow](https://github.com/cylc/cylc-flow/) and optionally:
+2. Fork & Clone the repos you want to develop:
 
-   * [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver/) (for UIS work)
-   * [metomi/metomi-rose](https://github.com/metomi/metomi-rose/) (for Rose work)
-   * [cylc/cylc-rose](https://github.com/cylc/cylc-rose/) (for Rose work)
+   * [cylc/cylc-flow](https://github.com/cylc/cylc-flow/)
+
+   [optional] For Isodatetime development:
+
+   * [metomi/metomi-isodatetime](https://github.com/metomi/metomi-isodatetime/)
+
+   [optional] For ui development:
+
+   * [cylc/cylc-ui](https://github.com/cylc/cylc-uiserver/)
+   * [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver/)
+
+   [optional] For Rose development:
+
+   * [metomi/metomi-rose](https://github.com/metomi/metomi-rose/)
+   * [cylc/cylc-rose](https://github.com/cylc/cylc-rose/)
+
+3. Install Python Projects
+
+   Pip-install any Python projects you want to work with in editable mode
+   in the following order:
 
    ```bash
-   # clone the git repository locally then...
-   pip install -e "path/to/repo[all]"
+   pip install -e "metomi-isodatetime[all]"
+   pip install -e "cylc-flow[all]"
+   pip install -e "cylc-uiserver[all]"
+   pip install -e "metomi-rose[all]"
+   pip install -e "cylc-rose[all]"
    ```
 
-3. Install [cylc/cylc-ui](https://github.com/cylc/cylc-ui/).
+   > **Note:** If you install the projects in the wrong order you might
+   > end up installing released versions from PyPi, use `pip list` to check.
+
+4. [optional] Configure Cylc Flow for distributed development
+
+   > Required to work with cylc-flow on multiple hosts in a network.
+
+   You need to ensure that Cylc is installed and accessible on all of the hosts
+   you want to work with.
+
+   You will need to synchronise your environments to any hosts that have an
+   independent `$HOME` filesystem.
+
+   If you are working on a site which installs Cylc for you ensure the Cylc
+   [wrapper script
+   ](https://github.com/cylc/cylc-flow/blob/master/cylc/flow/etc/cylc)
+   is in your "$PATH". Otherwise install it yourself (read comments in file).
+
+   Export the `CYLC_HOME_ROOT_ALT` varaible to point at your Conda "envs"
+   directory in your `~/.bash_profile` file e.g:
+
+   ```bash
+   # add the wrapper script to $PATH
+   export PATH="/path/to/wrapper/script:$PATH"
+   # set the path to your development environments
+   export CYLC_HOME_ROOT_ALT=/home/me/mambaforge/envs/
+   ```
+
+   The same wrapper script can be used for Rose & Isodatetime
+
+5. [optional] Install [cylc/cylc-ui](https://github.com/cylc/cylc-ui/).
+
+   > Required for cylc-ui development
 
    > **Note:** We prefer `yarn`.
+
+   > **Note:** The UI must currently be built with Node<=16 (2022-03-03)
+
+   Install Node dependencies:
 
    ```bash
    cd path/to/cylc-ui
    yarn install
    ```
 
-4. Point Cylc Hub at your UI build
-
-   The Cylc UI comes bundled with the UI Server.
-
-   If you want to develop the UI you will need to point the UI Server at
-   your local UI build:
-
-   ```python
-   # ~/.cylc/hub/jupyter_config.py
-   c.CylcUIServer.ui_build_dir = '~/cylc-ui/dist'  # path to build
-   ```
-
-   (see the cylc-uiserver README for more information)
-
-5. Build The UI
+   Build the UI with either:
 
    ```bash
+   yarn run build
    yarn run build:watch
    ```
 
-   (see the cylc-ui README for more information)
+   To use your development build point the UIS at the build directory:
 
-6. Launch the UI
-
-   ```bash
-   # standalone
-   cylc gui
-
-   # via Jupyter Hub
-   cylc hub
-   # You will be asked to log in with your desktop credentials if you have not
-   # done so before.
+   ```python
+   # ~/.cylc/uiserver/jupyter_config.py
+   # use a development UI build rather than the build bundled with the UIS
+   c.CylcUIServer.ui_build_dir = '~/cylc-ui/dist'  # path to build
    ```
+
+   The version number should appear in the bottom-right of the UI along with the
+   word development.
 
    (see the cylc-uiserver README for more information)
 
@@ -100,22 +144,59 @@
    __HERE__
    ```
 
-2. Run the workflow:
+2. Activate your environment:
+
+   ```bash
+   conda activate cylc-<version>
+   ```
+
+3. Run the workflow:
 
    ```bash
    cylc play foo
    ```
 
-3. Watch it run on the CLI:
+4. Watch it run on the CLI:
 
    ```bash
    cylc tui foo
    ```
 
-4. Stop it:
+5. Watch it run from the GUI:
+
+   ```bash
+   cylc gui
+   ```
+
+6. Stop it:
 
    (otherwise it will just keep running forever)
 
    ```bash
    cylc stop foo
    ```
+
+
+## Working On Python Projects
+
+You will need your Conda environment activated in order to run the tests.
+
+```bash
+conda activate cylc-<version>
+```
+
+The Cylc wrapper script will automatically activate your environment on other
+hosts around the network.
+
+The `CYLC_VERSION` and `CYLC_ENV_NAME` environment variables make this happen:
+
+```
+CYLC_VERSION=8.0.0 cylc version --long
+8.0.0 ...
+```
+
+We use `flake8` for linting and `pytest` for testing, check the README files in
+each repo you work with.
+
+You will need to re-pip install after any changes to packaging
+(i.e. setup.cfg files), good idea to do this out of habit.
