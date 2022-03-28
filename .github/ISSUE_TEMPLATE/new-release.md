@@ -106,6 +106,7 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 * [ ] cylc-flow
 * [ ] cylc-uiserver (pin to latest cylc-flow)
 * [ ] cylc-rose (pin to latest cylc-flow)
+* [ ] metomi-rose
 
 #### Finally:
 
