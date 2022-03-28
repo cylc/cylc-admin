@@ -91,8 +91,8 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 #### Misc (after the above has been completed):
 
 * cylc-doc
-  * [ ] bump instersphinx versions if required
-  * [ ] review installation instructions
+  * [ ] bump intersphinx versions if required (`cylc-doc/src/conf.py`)
+  * [ ] review [deployment instructions](https://github.com/cylc/cylc-doc#deploying)
   * [ ] deploy (run the "deploy" workflow on GitHub Actions) (can be re-deployed later if necessary)
 * metomi-rose
   * [ ] build & deploy documentation (manual process ATM)
