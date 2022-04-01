@@ -1,0 +1,127 @@
+# Project Issue Summary
+
+cylc-flow
+- [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc-flow)](https://github.com/cylc/cylc-flow/pulls)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-flow/question)](https://github.com/cylc/cylc-flow/labels/question)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-flow/bug)](https://github.com/cylc/cylc-flow/labels/bug)
+  [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/cylc/cylc-flow?query=is%3Aopen%20no%3Amilestone)](https://github.com/cylc/cylc-flow/issues?q=is%3Aopen+no%3Amilestone) (no milestone)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/82)](https://github.com/cylc/cylc-flow/milestone/82)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/82)](https://github.com/cylc/cylc-flow/milestone/82?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/98)](https://github.com/cylc/cylc-flow/milestone/98)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/98)](https://github.com/cylc/cylc-flow/milestone/98?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/102)](https://github.com/cylc/cylc-flow/milestone/102)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/102)](https://github.com/cylc/cylc-flow/milestone/102?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/95)](https://github.com/cylc/cylc-flow/milestone/95)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/95)](https://github.com/cylc/cylc-flow/milestone/95?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/99)](https://github.com/cylc/cylc-flow/milestone/99)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/99)](https://github.com/cylc/cylc-flow/milestone/99?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/89)](https://github.com/cylc/cylc-flow/milestone/89)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/89)](https://github.com/cylc/cylc-flow/milestone/89?closed=1)
+
+cylc-uiserver
+- [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc-uiserver)](https://github.com/cylc/cylc-uiserver/pulls)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-uiserver/question)](https://github.com/cylc/cylc-uiserver/labels/question)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-uiserver/bug)](https://github.com/cylc/cylc-uiserver/labels/bug)
+  [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/cylc/cylc-uiserver?query=is%3Aopen%20no%3Amilestone)](https://github.com/cylc/cylc-uiserver/issues?q=is%3Aopen+no%3Amilestone) (no milestone)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/11)](https://github.com/cylc/cylc-uiserver/milestone/11)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/11)](https://github.com/cylc/cylc-uiserver/milestone/11?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/9)](https://github.com/cylc/cylc-uiserver/milestone/9)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/9)](https://github.com/cylc/cylc-uiserver/milestone/9?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/12)](https://github.com/cylc/cylc-uiserver/milestone/12)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/12)](https://github.com/cylc/cylc-uiserver/milestone/12?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/8)](https://github.com/cylc/cylc-uiserver/milestone/8)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/8)](https://github.com/cylc/cylc-uiserver/milestone/8?closed=1)
+
+cylc-ui
+- [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc-ui)](https://github.com/cylc/cylc-ui/pulls)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-ui/question)](https://github.com/cylc/cylc-ui/labels/question)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-ui/bug)](https://github.com/cylc/cylc-ui/labels/bug)
+  [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/cylc/cylc-ui?query=is%3Aopen%20no%3Amilestone)](https://github.com/cylc/cylc-ui/issues?q=is%3Aopen+no%3Amilestone) (no milestone)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-ui/13)](https://github.com/cylc/cylc-ui/milestone/13)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-ui/13)](https://github.com/cylc/cylc-ui/milestone/13?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-ui/10)](https://github.com/cylc/cylc-ui/milestone/10)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-ui/10)](https://github.com/cylc/cylc-ui/milestone/10?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-ui/5)](https://github.com/cylc/cylc-ui/milestone/5)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-ui/5)](https://github.com/cylc/cylc-ui/milestone/5?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-ui/4)](https://github.com/cylc/cylc-ui/milestone/4)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-ui/4)](https://github.com/cylc/cylc-ui/milestone/4?closed=1)
+
+cylc-doc
+- [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc-doc)](https://github.com/cylc/cylc-doc/pulls)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-doc/question)](https://github.com/cylc/cylc-doc/labels/question)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-doc/bug)](https://github.com/cylc/cylc-doc/labels/bug)
+  [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/cylc/cylc-doc?query=is%3Aopen%20no%3Amilestone)](https://github.com/cylc/cylc-doc/issues?q=is%3Aopen+no%3Amilestone) (no milestone)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-doc/6)](https://github.com/cylc/cylc-doc/milestone/6)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-doc/6)](https://github.com/cylc/cylc-doc/milestone/6?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-doc/7)](https://github.com/cylc/cylc-doc/milestone/7)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-doc/7)](https://github.com/cylc/cylc-doc/milestone/7?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-doc/4)](https://github.com/cylc/cylc-doc/milestone/4)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-doc/4)](https://github.com/cylc/cylc-doc/milestone/4?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-doc/3)](https://github.com/cylc/cylc-doc/milestone/3)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-doc/3)](https://github.com/cylc/cylc-doc/milestone/3?closed=1)
+
+
+cylc-rose
+- [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc-rose)](https://github.com/cylc/cylc-rose/pulls)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-rose/question)](https://github.com/cylc/cylc-rose/labels/question)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/cylc/cylc-rose/bug)](https://github.com/cylc/cylc-rose/labels/bug)
+  [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/cylc/cylc-rose?query=is%3Aopen%20no%3Amilestone)](https://github.com/cylc/cylc-rose/issues?q=is%3Aopen+no%3Amilestone) (no milestone)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/10)](https://github.com/cylc/cylc-rose/milestone/10)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/10)](https://github.com/cylc/cylc-rose/milestone/10?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/7)](https://github.com/cylc/cylc-rose/milestone/7)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/7)](https://github.com/cylc/cylc-rose/milestone/7?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/2)](https://github.com/cylc/cylc-rose/milestone/2)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/2)](https://github.com/cylc/cylc-rose/milestone/2?closed=1)
+
+
+rose
+- [![GitHub pull requests](https://img.shields.io/github/issues-pr/metomi/rose)](https://github.com/metomi/rose/pulls)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/metomi/rose/question)](https://github.com/metomi/rose/labels/question)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/metomi/rose/bug)](https://github.com/metomi/rose/labels/bug)
+  [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/metomi/rose?query=is%3Aopen%20no%3Amilestone)](https://github.com/metomi/rose/issues?q=is%3Aopen+no%3Amilestone) (no milestone)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/metomi/rose/80)](https://github.com/metomi/rose/milestone/80)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/metomi/rose/80)](https://github.com/metomi/rose/milestone/80?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/metomi/rose/79)](https://github.com/metomi/rose/milestone/79)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/metomi/rose/79)](https://github.com/metomi/rose/milestone/79?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/metomi/rose/77)](https://github.com/metomi/rose/milestone/77)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/metomi/rose/77)](https://github.com/metomi/rose/milestone/77?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/metomi/rose/74)](https://github.com/metomi/rose/milestone/74)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/metomi/rose/74)](https://github.com/metomi/rose/milestone/74?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/metomi/rose/76)](https://github.com/metomi/rose/milestone/76)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/metomi/rose/76)](https://github.com/metomi/rose/milestone/76?closed=1)
+
+isodatetime
+- [![GitHub pull requests](https://img.shields.io/github/issues-pr/metomi/isodatetime)](https://github.com/metomi/isodatetime/pulls)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/metomi/isodatetime/question)](https://github.com/metomi/isodatetime/labels/question)
+  [![GitHub issues by-label](https://img.shields.io/github/issues/metomi/isodatetime/bug)](https://github.com/metomi/isodatetime/labels/bug)
+  [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/metomi/isodatetime?query=is%3Aopen%20no%3Amilestone)](https://github.com/metomi/isodatetime/issues?q=is%3Aopen+no%3Amilestone) (no milestone)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/metomi/isodatetime/18)](https://github.com/metomi/isodatetime/milestone/18)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/metomi/isodatetime/18)](https://github.com/metomi/isodatetime/milestone/18?closed=1)
+- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/metomi/isodatetime/2)](https://github.com/metomi/isodatetime/milestone/2)
+  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/metomi/isodatetime/2)](https://github.com/metomi/isodatetime/milestone/2?closed=1)
+
+Other repos
+- cylc-admin:
+  [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/cylc-admin)](https://github.com/cylc/cylc-admin/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc-admin)](https://github.com/cylc/cylc-admin/pulls)
+- cylc.github.io:
+  [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/cylc.github.io)](https://github.com/cylc/cylc.github.io/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc.github.io)](https://github.com/cylc/cylc.github.io/pulls)
+- cylc-sphinx-extensions:
+  [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/cylc-sphinx-extensions)](https://github.com/cylc/cylc-sphinx-extensions/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc-sphinx-extensions)](https://github.com/cylc/cylc-sphinx-extensions/pulls)
+- release-actions:
+  [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/release-actions)](https://github.com/cylc/release-actions/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/release-actions)](https://github.com/cylc/release-actions/pulls)
+- cylc-textmate-grammar:
+  [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/cylc-textmate-grammar)](https://github.com/cylc/cylc-textmate-grammar/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/cylc-textmate-grammar)](https://github.com/cylc/cylc-textmate-grammar/pulls)
+- Cylc.tmbundle:
+  [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/Cylc.tmbundle)](https://github.com/cylc/Cylc.tmbundle/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/Cylc.tmbundle)](https://github.com/cylc/Cylc.tmbundle/pulls)
+- vscode-cylc:
+  [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/vscode-cylc)](https://github.com/cylc/vscode-cylc/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/vscode-cylc)](https://github.com/cylc/vscode-cylc/pulls)
+- language-cylc:
+  [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/language-cylc)](https://github.com/cylc/language-cylc/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/cylc/language-cylc)](https://github.com/cylc/language-cylc/pulls)
