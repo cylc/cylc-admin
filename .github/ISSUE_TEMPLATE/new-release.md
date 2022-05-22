@@ -25,6 +25,8 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 
 #### Milestones for release:
 
+> The release actions close the milestones for you automatically.
+
 <!--
     Replace `<number>` with the milestone for each package to release.
     Delete lines as appropriate.
@@ -58,11 +60,28 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 > Ensure all Cylc components are pinned to the correct version of cylc-flow.
 
 > Trigger releases via GitHub actions.
+>
+> <details>
+>   <summary>(logical release order)</summary>
+> <pre>R1 = """
+>    cylc_flow & metomi_rose => cylc_rose
+>    cylc_flow & cylc_ui => cylc_uis
+> """</pre>
+> </details>
+
+> <details>
+>   <summary>Info on version pinning</summary>
+>   <br />
+>   Cylc plugins (i.e. cylc-rose and cylc-uiserver) are "pinned" to the minor version
+>   of cylc-flow. E.G. if the cylc-flow version is 8.1.2 the plugins should be pinned to 8.1.
+>   <br /><br />
+>   <a href="https://github.com/cylc/cylc-admin/issues/130">More Information</a>
+> </details>
 
 * [ ] metomi-isodatetime
 * [ ] cylc-flow (bump metomi-isodatetime if required)
 * [ ] cylc-ui
-* [ ] cylc-uiserver ([update the ui](https://github.com/cylc/cylc-uiserver/actions/workflows/update_ui.yml) version before releasing)
+* [ ] cylc-uiserver ([update the ui [via GH action](https://github.com/cylc/cylc-uiserver/actions/workflows/update_ui.yml) first)
 * [ ] metomi-rose (bump metomi-isodatetime if required)
 * [ ] cylc-rose
 
@@ -71,9 +90,12 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 > Pull requests will be automatically opened on the conda-forge feedstocks
 > after the pypi releases.
 >
-> If not, create a new branch, change the version, reset the build number and
-> update the hash from the PyPi website.
-> Finally trigger a rerender in a comment.
+> <details>
+>   <summary>If the PR doesn't get opened automatically</summary>
+>   <br />Create a new branch, change the version, reset the build number and
+>   update the hash from the PyPi website.
+>   <br />Finally trigger a rerender in a comment.
+> </details>
 
 > Ensure dependencies are up to date and follow instructions on the PR. Some
 > repos may maintain a list of conda dependencies locally.
