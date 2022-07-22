@@ -7,8 +7,6 @@ cylc-flow [![GitHub issues](https://img.shields.io/github/issues-raw/cylc/cylc-f
   [![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/cylc/cylc-flow?query=is%3Aopen%20no%3Amilestone&label=no%20milestone)](https://github.com/cylc/cylc-flow/issues?q=is%3Aopen+no%3Amilestone)
 - [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/82)](https://github.com/cylc/cylc-flow/milestone/82)
   [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/82)](https://github.com/cylc/cylc-flow/milestone/82?closed=1)
-- [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/102)](https://github.com/cylc/cylc-flow/milestone/102)
-  [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/102)](https://github.com/cylc/cylc-flow/milestone/102?closed=1)
 - [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/103)](https://github.com/cylc/cylc-flow/milestone/103)
   [![GitHub milestone](https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/103)](https://github.com/cylc/cylc-flow/milestone/103?closed=1)
 - [![GitHub milestone](https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/95)](https://github.com/cylc/cylc-flow/milestone/95)
