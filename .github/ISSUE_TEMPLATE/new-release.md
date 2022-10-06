@@ -122,14 +122,14 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 
 #### Metadata:
 
-> Update project versions to the next milestone
-> AND pin downstream components to the next cylc-flow dev release.
+GH Actions should automatically open PRs that bump the dev version of the projects. Check and merge them (can push alterations to PR branch if needed).
+    
+Pin downstream components to the next cylc-flow dev release:
 
-* [ ] cylc-flow
-* [ ] cylc-uiserver (pin to latest cylc-flow)
-* [ ] cylc-rose (pin to latest cylc-flow)
-* [ ] metomi-rose
-
+* [ ] cylc-uiserver (pin cylc-flow to next upcoming version)
+* [ ] cylc-rose (pin cylc-flow to next upcoming version)
+* [ ] cylc-doc (update versions in `.github/workflows/test.yml` "install libs to document" step(s) as appropriate)
+    
 #### Finally:
 
 * [ ] close this issue :rocket:
