@@ -56,6 +56,7 @@ evolving requirements:
 - [cli-wfs-authentication](proposal-cli-wfs-authentication.md)
 - [n-distance windowing](proposal-n-distance-window.md)
 - [Optional Output Syntax](proposal-new-output-syntax.md)
+- [cylc-set Command Proposal](proposal-cylc-set.md)
 
 
 ## Cylc-7
