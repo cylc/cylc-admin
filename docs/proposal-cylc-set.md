@@ -5,45 +5,50 @@
 
 Users need to be able to intervene and affect the progression of workflows.
 
-Currently we only have `cylc set-ouputs` which doesn't cover all requirements.
-(And note it does not actually set task outputs: it just spawns downstream
-children with corresponding prerequisites set).
+Currently we only have only `cylc trigger` and `cylc set-ouputs` which don't
+cover all requirements. (And note the latter command does not actually set task
+outputs: it just spawns downstream children with the corresponding
+prerequisites set, *as if* the outputs had been completed).
 
 
 ### Task Status Reset is Not Needed
 
 I am proposing that we do NOT support Cylc 7 style task status reset, e.g.
-resetting a task from `failed` to `succeeded`.
+resetting a `failed` task to `succeeded`.
 
-Task status is more diagnostic than prognostic in the spawn-on-demand
-scheduler. (In Cylc 7 the task status determined which tasks engaged in
-dependency matching). 
+Primarily this is for provenance reasons: the run history will be clearer if a
+task's status reflects what its last job did, followed by evidence that the user
+told the scheduler to carry on *as if* something else had happened.
 
-Run history will be clearer if a task's status reflects what happened when
-its job ran (or did not run). Users can then tell the scheduler to carry on *as
-if* something else had happened, which should be recorded in the database too.
+NOTE we *could* choose to change the task status as well as carry on *as if*
+the forced status had been achieved naturally. However, that's not needed to
+make the workflow continue in Cylc 8, so we can choose based on clarity of run
+history. Do we want (e.g.):
+- A force-succeeded task that is indistinguishable from a naturally succeeded
+  one, without looking closely at the DB
+- Or a failed task (that really failed), which the workflow nevertheless
+  continued from because the user said to carry on *as if* it had succeeded.
+
+This may be a matter of opinion, but I prefer the latter.
 
 
 ## Requirements
 
 Force set specified **prerequisites** of a target task
-  - (We might not want all children of the parent task outputs)
-  - This is not the same as setting the parent output, unless the task is an
-    only child
-  - This is not the same as triggering, unless the task has only one
-    unsatisfied prerequisite
+  - Not equivalent to setting the parent output, unless the task is an only child
+  - Not equivialent to triggering, unless the task has only one unsatisfied prerequisite
 
-Force set specified **outputs** (and **implied outputs**) of a target task
-  - Sets the corresponding prerequisites of child tasks
-  - And sets target task outputs (with any implied outputs) - contributes to
-    **completion** of incomplete tasks
-  - If the `succeeded` output gets set, disable automatic retries
+Force set specified **outputs** of a target task
+  - Set the corresponding prerequisites of child tasks
+  - Set target task outputs (with any **implied outputs** - see command help below)
+    - This contributes to **completion** of incomplete tasks
+  - If the `succeeded` or `failed` outputs gets set, disable automatic retries
 
 Force expire tasks
-  - Allows the scheduler to forget incomplete tasks without completing them 
-  - Makes `cylc remove` obsolete
-  - This *results* in a state change to expired, but we shouldn't consider it a
-    manual reset to that state [see Expired Tasks below]
+  - Allow the scheduler to forget incomplete tasks without completing them 
+  - Make `cylc remove` obsolete
+  - If `expired` remains a task state (see below) this *results* in a state
+    change, but we don't have to think of it as a manual state reset
 
 
 ## The New Command
@@ -94,17 +99,16 @@ Setting an output also results in any implied outputs being set:
 
 ### Should `expired` be a task attribute, not a state?
 
-`Expired` should really be a task attribute. That would make it easier
-to distinbuish between waiting tasks that expire without running (whether
-naturally or forced), and incomplete tasks that were force-expired without
-being re-run to achieve completion.
+If `expired` was a task attribute we could easily distinguish between waiting
+tasks that expired without running, and tasks that finished as incomplete but
+were force-expired without being re-run to achieve completion.
 
 I don't think users are deeply invested in the expired state.
 
 
 ### Un-setting prerequisites?
 
-If a task has already run, it's prerequisites have already been "used". There's
+If a task has already run, its prerequisites have already been "used". There's
 no point in unsatisfying them.
 
 Is there a case for unsatisfying prerequisites of tasks with multiple
