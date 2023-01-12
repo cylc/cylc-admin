@@ -19,6 +19,7 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 
 * [ ] The release lead should be assigned to this issue.
 * [ ] Ensure all milestones complete.
+* [ ] All bugfix branches should be merged into master.
 * [ ] Ensure major changes are listed in cylc-doc (`reference/changes`).
 * [ ] Test cylc-doc (run a test build, perform any required fixes).
 * [ ] Run cylc-flow functional tests against locally available platforms.
