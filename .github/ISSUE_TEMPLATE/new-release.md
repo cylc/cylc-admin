@@ -21,10 +21,17 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 * [ ] Ensure all milestones complete.
 * [ ] All bugfix branches should be merged into master.
 * [ ] Ensure major changes are listed in cylc-doc (`reference/changes`).
-* [ ] Test cylc-doc (run a test build, perform any required fixes).
-* [ ] Run cylc-flow functional tests against locally available platforms.
 * [ ] List the milestones for release below (delete entries as appropriate).
 
+#### Testing:
+
+> Some testing is not fully automated and must be actioned by hand.
+    
+* [ ] Run cylc-flow functional tests against locally available platforms.
+* [ ] cylc-doc (run a [test build](https://github.com/cylc/cylc-doc/actions/workflows/test.yml)).
+* [ ] cylc-rose (run the ["tests" action](https://github.com/cylc/cylc-rose/actions/workflows/tests.yml)).
+* [ ] cylc-uiserver (run the ["test" action](https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml)).
+    
 #### Milestones for release:
 
 > The release actions close the milestones for you automatically.
