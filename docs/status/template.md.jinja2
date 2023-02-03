@@ -1,3 +1,12 @@
+{#
+
+This template/markdown file is auto-generated, please do not edit it directly.
+
+Please edit `branches.json` and raise a pull request, this fille will be
+automatically regenerated on merge.
+
+#}
+
 {% macro badge(repo, branch, action) -%}
 [![{{ action }}](https://github.com/{{ repo }}/actions/workflows/{{ action }}.yml/badge.svg?branch={{ branch }})](https://github.com/{{ repo }}/actions/workflows/{{ action }}.yml)
 {%- endmacro %}
