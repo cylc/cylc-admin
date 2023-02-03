@@ -1,0 +1,28 @@
+{
+    "meta_releases": {
+        "8.0.x": {
+            "cylc/cylc-flow": "8.0.x",
+            "cylc/cylc-doc": "8.0.x",
+            "cylc/cylc-rose": "1.1.x",
+            "cylc/cylc-uiserver": "1.1.x",
+            "metomi/rose": "2.0.x"
+        },
+        "8.1.x": {
+            "cylc/cylc-flow": "master",
+            "cylc/cylc-doc": "master",
+            "cylc/cylc-rose": "master",
+            "cylc/cylc-uiserver": "master",
+            "metomi/rose": "master"
+        }
+    },
+    "branch_actions": {
+        "cylc/cylc-flow": ["test_fast", "test_functional", "build"],
+        "cylc/cylc-rose": ["tests"],
+        "cylc/cylc-uiserver": ["test", "build"],
+        "cylc/cylc-doc": ["test"],
+        "metomi/rose": ["test"]
+    },
+    "nightly_actions": {
+        "cylc/cylc-doc": ["nightly"]
+    }
+}

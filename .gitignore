@@ -1,0 +1,24 @@
+# derived files
+docs/status/status.md
+
+# python bytecode
+*.py[cod]
+__pycache__/
+
+# vim backup files
+*.swp
+
+# emacs backup files
+*~
+
+# vscode
+.vscode
+
+# mypy
+.mypy_cache/
+
+# docker stuffs
+.docker*
+
+# operating system junk
+.DS_Store
