@@ -99,11 +99,15 @@ Setting an output also results in any implied outputs being set:
 
 ### Should `expired` be a task attribute, not a state?
 
-If `expired` was a task attribute we could easily distinguish between waiting
-tasks that expired without running, and tasks that finished as incomplete but
-were force-expired without being re-run to achieve completion.
+The `expired` task state should really just be an attribute (like `held`).
 
-I don't think users are deeply invested in the expired state.
+Then we could easily distinguish between waiting tasks that expired without
+running, and tasks that finished incomplete but which were force-expired
+without being re-run to achieve completion.
+
+As a state, we have to look at run history to see how/why a task expired.
+
+I don't think anyone is deeply invested in expired as a state.
 
 
 ### Un-setting prerequisites?
@@ -111,8 +115,8 @@ I don't think users are deeply invested in the expired state.
 If a task has already run, its prerequisites have already been "used". There's
 no point in unsatisfying them.
 
-Is there a case for unsatisfying prerequisites of tasks with multiple
-prerequisites that have not run yet?
+Is there a case for unsatisfying the prerequisites of multi-prerequisite
+`n=0` waiting task that has not run yet?
 
 
 ### Un-completing outputs?
