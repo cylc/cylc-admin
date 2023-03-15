@@ -24,10 +24,10 @@ NOTE we *could* choose to change the task status as well as carry on *as if*
 the forced status had been achieved naturally. However, that's not needed to
 make the workflow continue in Cylc 8, so we can choose based on clarity of run
 history. Do we want (e.g.):
-- A force-succeeded task that is indistinguishable from a naturally succeeded
-  one, without looking closely at the DB
-- Or a failed task (that really failed), which the workflow nevertheless
-  continued from because the user said to carry on *as if* it had succeeded.
+- A force-succeeded task that actually failed but is indistinguishable from a
+  naturally succeeded one without looking at run history
+- Or a failed task that really failed, which the workflow nevertheless
+  continued on from because the user said to carry on *as if* it had succeeded.
 
 This may be a matter of opinion, but I prefer the latter.
 
@@ -46,10 +46,12 @@ prerequisites of child tasks.
   - If the `succeeded` or `failed` outputs are set, disable automatic retries
 
 3. Force expire tasks
-  - Allow the scheduler to forget incomplete tasks without completing them 
+  - Allow waiting tasks to expire without running
+  - Allow the scheduler to forget incomplete tasks without completing them
+    (whether by running them again, or force-setting their required outputs)
   - Make `cylc remove` obsolete
-  - If `expired` remains a task state (see below) this *results* in a state
-    change, but we don't have to think of it as a manual state reset
+  - This amounts to a Cylc 7 style "state reset", but - see below - `expired`
+    should really be demoted to a task attribute
 
 
 ## The New Command
@@ -115,7 +117,7 @@ I don't think anyone is deeply invested in expired as a state.
 If a task has already run, its prerequisites have already been "used". There's
 no point in unsatisfying them.
 
-Is there a case for unsatisfying the prerequisites of multi-prerequisite
+Is there a case for unsatisfying the prerequisites of a multi-prerequisite
 `n=0` waiting task that has not run yet?
 
 
