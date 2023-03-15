@@ -34,17 +34,18 @@ This may be a matter of opinion, but I prefer the latter.
 
 ## Requirements
 
-Force set specified **prerequisites** of a target task
-  - Not equivalent to setting the parent output, unless the task is an only child
-  - Not equivialent to triggering, unless the task has only one unsatisfied prerequisite
+1. Force set specified **prerequisites** of a target task. 
+This contributes to the task's readiness to run.
+  - It is not equivalent to setting the parent output, unless the task is an only child
+  - It is not equivialent to triggering, unless the task has only one unsatisfied prerequisite
 
-Force set specified **outputs** of a target task
-  - Set the corresponding prerequisites of child tasks
-  - Set target task outputs (with any **implied outputs** - see command help below)
-    - This contributes to **completion** of incomplete tasks
-  - If the `succeeded` or `failed` outputs gets set, disable automatic retries
+2. Force set specified **outputs** of a target task.
+This contributes to the task's completion, and sets the corresponding
+prerequisites of child tasks.
+  - Set any *implied outputs* as well - see command help below
+  - If the `succeeded` or `failed` outputs are set, disable automatic retries
 
-Force expire tasks
+3. Force expire tasks
   - Allow the scheduler to forget incomplete tasks without completing them 
   - Make `cylc remove` obsolete
   - If `expired` remains a task state (see below) this *results* in a state
@@ -66,8 +67,8 @@ corresponding prerequisites of child tasks.
 Setting a future waiting task to expire allows the scheduler to forget it
 without running it.
 
-Setting a finished but incomplete task to expire allows the scheduler to forget
-it without rerunning it to complete its required outputs.
+Setting a finished-but-incomplete task to expire allows the scheduler to forget
+it without completing its required outputs.
 
 Setting an output also results in any implied outputs being set:
  - started implies submitted
@@ -92,7 +93,6 @@ Setting an output also results in any implied outputs being set:
       without rerunning it if incomplete.
 
 ```
-
 
 
 ## QUESTIONS
