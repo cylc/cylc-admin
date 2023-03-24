@@ -54,5 +54,5 @@ jobs:
         run: |
           git status
           git add docs/status/status.md
-          git commit -m '-nightly build-'
+          git commit -m 'update status page'
           git push origin master
