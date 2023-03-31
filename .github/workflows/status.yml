@@ -26,6 +26,7 @@ on:
       - 'master'
     paths:
       - 'docs/status/*'
+      - '.github/workflows/status.yml'
 
 jobs:
   update:
@@ -50,7 +51,6 @@ jobs:
         uses: cylc/release-actions/configure-git@v1
 
       - name: push changes
-        working-directory: gh-pages
         run: |
           git status
           git add docs/status/status.md
