@@ -53,6 +53,6 @@ jobs:
       - name: push changes
         run: |
           git status
-          git add docs/status/status.md
-          git commit -m 'update status page'
+          git add -f docs/status/status.md
+          git commit -m 'update status page' || exit 0
           git push origin master
