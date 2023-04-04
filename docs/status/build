@@ -26,6 +26,12 @@ def render(data_file, template_file, output_file):
 
     with open(output_file, 'w') as output_fh:
         output_fh.write(
+            "<!-- This file is auto-generated, please do not edit it directly."
+            "\n\n"
+            "Please edit `branches.json` and raise a pull request, this file "
+            "will be automatically regenerated on merge. -->\n"
+        )
+        output_fh.write(
             env.render(data)
         )
 
