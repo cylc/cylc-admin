@@ -184,7 +184,7 @@ next cycle point rather than re-run the failed tasks.
 
 ### 6.?? Set jobs to failed when a job platform is known to be down
 
-I don't think this case is valid.
+I don't think this case is valid. (Unless I've misunderstood the requirement?).
 
 If jobs were submitted already they will have already failed naturally.
 Otherwise, you can prevent job submission by holding the tasks, or expiring
