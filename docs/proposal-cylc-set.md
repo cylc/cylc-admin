@@ -35,30 +35,36 @@ This may be a matter of opinion, but I prefer the latter.
 
 ## Requirements
 
-0. Force trigger a task.
+0. Force **trigger** a target task.
   - Make it run now, regardless of prerequisites.
 
 1. Force set specified **prerequisites** of a target task. 
-This contributes to the task's readiness to run.
-  - It is not equivalent to setting the parent output, unless the task is an only child
-  - It is not equivialent to triggering, unless the task has only one unsatisfied prerequisite
+  - This contributes to the task's readiness to run.
+  - It is not equivalent to setting the parent output, unless the task is an
+    only child.
+  - It is not equivialent to triggering, unless the task has only one
+    unsatisfied prerequisite.
 
 2. Force set specified **outputs** of a target task.
-This contributes to the task's completion, and sets the corresponding
-prerequisites of child tasks.
-  - Set any *implied outputs* as well - see command help below
-  - If the `succeeded` or `failed` outputs are set, disable automatic retries
+   - This contributes to the task's completion, and sets the corresponding
+    prerequisites of child tasks.
+  - Set any *implied outputs* as well (see command help below).
+  - If the `succeeded` or `failed` outputs are set, disable automatic retries.
 
-3. Force expire tasks
-  - Allow waiting tasks to expire without running
-  - Allow the scheduler to forget incomplete tasks without completing them
-    (whether by running them again, or force-setting their required outputs)
-  - Make `cylc remove` obsolete (currently incomplete tasks have to be
+3. Force expire tasks.
+  - Expire means "we don't need to run this task anymore".
+    - Can be automatic (clock-expire) or manual.
+    - Allow waiting tasks to expire without running all.
+    - Allow the scheduler to forget incomplete tasks without re-running
+      to complete them.
+  - Make `cylc remove` obsolete (currently, incomplete tasks have to be
     "removed" if not re-run to completion).
   - This amounts to a Cylc 7 style "state reset", but - see below - `expired`
     should really be demoted to a task attribute
 
-SEE [Task Expire Proposal](proposal-task-expire.md)
+Expiration is a bigger topic in its own right, due to its connection to task
+outputs and automatica triggering. See
+[Task Expire Proposal](proposal-task-expire.md)
 
 
 ## The New Command
