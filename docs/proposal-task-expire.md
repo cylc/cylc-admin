@@ -99,11 +99,10 @@ I don't think anyone is deeply invested in expired as a state.
 
 ## Is `:expire` Really a Task Output?
 
-Treating `:expire` as a task output is potentially confusing because
-it invites speculation about how it fits into the optional outputs framework.
-
-Expiration can't be required so it it must be optional, so does that imply that
-that success must be optional?
+Treating `:expire` as a task output is not actually necessary, and it invites 
+confusion about how it fits into the optional outputs framework: expiration
+can't be required so it it must be optional, but does that imply success (and
+every other output!) must be optional too?
 
 As discussed above, optional expire does NOT imply optional success - because
 expiration prevents a task from running at all, and the required nature of 
