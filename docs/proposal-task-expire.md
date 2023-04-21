@@ -1,5 +1,6 @@
 # How Task Expire Should Work
 
+(IN DISCUSSION: NOT ACCEPTED YET)
 
 ## What Expire Means
 
@@ -94,3 +95,35 @@ without running to achieve completion, and finished-but-incomplete tasks were
 force-expired without re-running to achieve completion.
 
 I don't think anyone is deeply invested in expired as a state.
+
+
+## Is `:expire` Really a Task Output?
+
+Treating `:expire` as a task output is potentially confusing because
+it invites speculation about how it fits into the optional outputs framework.
+
+Expiration can't be required so it it must be optional, so does that imply that
+that success must be optional?
+
+As discussed above, optional expire does NOT imply optional success - because
+expiration prevents a task from running at all, and the required nature of 
+real outputs is always contingent on the task running in the first place.
+
+So that's a nuance of the optional outputs system that users will have to
+understand, OR we could remove expiration from the outputs system.
+
+All the other outputs can only be generated once a job is submitted to run. 
+
+Expiration prevents a task from running in the first place. It makes more sense
+to think of expiration as something the scheduler does TO the task, not
+something done BY the task. (In fact, a task can in principle expire long
+before the active window of the workflow catches up with it).
+
+So we could use different notation to express this in the graph, e.g.:
+
+```
+foo => bar
+@expire(foo) => baz  # if the scheduler (or user) expires foo, run baz
+```
+
+Now users do not even have to wonder if `foo:expire?` implies `foo:succeed?`.

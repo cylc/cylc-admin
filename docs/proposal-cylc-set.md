@@ -1,5 +1,6 @@
 # PROPOSAL: A New Command for Manual Task Forcing
 
+(IN DISCUSSION: NOT ACCEPTED YET)
 
 ## Background
 
