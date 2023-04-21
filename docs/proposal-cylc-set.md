@@ -51,11 +51,9 @@ This may be a matter of opinion, but I prefer the latter.
 
 3. Force expire tasks.
   - Expire means "we no longer need to run (or rerun) this task".
-     - Expire can be automatic (clock-expire) or manual.
-     - Allow waiting tasks to expire without running at all.
-     - Allow the scheduler to forget incomplete tasks without re-running
-       to complete them.
-
+  - Expire can be automatic (clock-expire) or manual.
+  - Allow waiting tasks to expire without running at all.
+  - Allow the scheduler to forget incomplete tasks without re-running to complete them.
   - Make `cylc remove` obsolete (currently, incomplete tasks have to be
     "removed" if not re-run to completion).
 
