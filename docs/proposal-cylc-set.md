@@ -40,14 +40,12 @@ This may be a matter of opinion, but I prefer the latter.
 
 1. Force set specified **prerequisites** of a target task. 
   - This contributes to the task's readiness to run.
-  - It is not equivalent to setting the parent output, unless the task is an
-    only child.
+  - It is not equivalent to setting the parent output, unless the task is an only child.
   - It is not equivialent to triggering, unless the task has only one
     unsatisfied prerequisite.
 
 2. Force set specified **outputs** of a target task.
-   - This contributes to the task's completion, and sets the corresponding
-     prerequisites of child tasks.
+  - This contributes to the task's completion, and sets the corresponding prerequisites of child tasks.
   - Set *implied outputs* as well (see command help below).
   - If the `succeeded` or `failed` outputs are set, disable automatic retries.
 
@@ -57,6 +55,7 @@ This may be a matter of opinion, but I prefer the latter.
      - Allow waiting tasks to expire without running at all.
      - Allow the scheduler to forget incomplete tasks without re-running
        to complete them.
+
   - Make `cylc remove` obsolete (currently, incomplete tasks have to be
     "removed" if not re-run to completion).
 
