@@ -111,7 +111,7 @@ real outputs is always contingent on the task running in the first place.
 So that's a nuance of the optional outputs system that users will have to
 understand, OR we could remove expiration from the outputs system.
 
-All the other outputs can only be generated once a job is submitted to run. 
+All the other outputs can only be generated once a job is submitted to run. Which makes sense - how can a task that never even submits generate an output?
 
 Expiration prevents a task from running in the first place. It makes more sense
 to think of expiration as something the scheduler does TO the task, not
