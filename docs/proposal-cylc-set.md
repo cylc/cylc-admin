@@ -43,11 +43,13 @@ This may be a matter of opinion, but I prefer the latter.
   - It is not equivalent to setting the parent output, unless the task is an only child.
   - It is not equivialent to triggering, unless the task has only one
     unsatisfied prerequisite.
+  - DEFAULT: set all prerequisites (this would be equivalent to trigger)
 
 2. Force set specified **outputs** of a target task.
   - This contributes to the task's completion, and sets the corresponding prerequisites of child tasks.
   - Set *implied outputs* as well (see command help below).
   - If the `succeeded` or `failed` outputs are set, disable automatic retries.
+  - DEFAULT: set all required outputs.
 
 3. Force expire tasks.
   - Expire means "we no longer need to run (or rerun) this task".
