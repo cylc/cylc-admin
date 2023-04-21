@@ -53,7 +53,8 @@ prerequisites of child tasks.
   - Allow waiting tasks to expire without running
   - Allow the scheduler to forget incomplete tasks without completing them
     (whether by running them again, or force-setting their required outputs)
-  - Make `cylc remove` obsolete
+  - Make `cylc remove` obsolete (currently incomplete tasks have to be
+    "removed" if not re-run to completion).
   - This amounts to a Cylc 7 style "state reset", but - see below - `expired`
     should really be demoted to a task attribute
 
