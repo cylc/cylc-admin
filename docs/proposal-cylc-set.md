@@ -80,11 +80,12 @@ Setting an output contributes to the task's completion, and sets the
 corresponding prerequisites of child tasks.
 
 Setting a future waiting task to expire allows the scheduler to forget it
-without running it. WARNING: this halts the dependency graph at the task.
+without running it. WARNING: nothing downstream of the task will run
+automatically after this.
 
 Setting a finished-but-incomplete task to expire allows the scheduler to forget
-it without completing its required outputs. WARNING: this halts the dependency 
-graph downstream of any incomplete outputs.
+it without completing its required outputs. WARNING: nothing downstream of 
+of the incomplete outputs with run automatically after this.
 
 Setting an output also results in any implied outputs being set:
  - started implies submitted
