@@ -57,6 +57,7 @@ evolving requirements:
 - [n-distance windowing](proposal-n-distance-window.md)
 - [Optional Output Syntax](proposal-new-output-syntax.md)
 - [cylc-set Command Proposal](proposal-cylc-set.md)
+- [Task Expire Proposal](proposal-task-expire.md)
 
 
 ## Cylc-7

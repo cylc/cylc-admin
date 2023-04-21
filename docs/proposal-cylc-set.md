@@ -53,6 +53,8 @@ prerequisites of child tasks.
   - This amounts to a Cylc 7 style "state reset", but - see below - `expired`
     should really be demoted to a task attribute
 
+SEE [Task Expire Proposal](proposal-task-expire.md)
+
 
 ## The New Command
 
