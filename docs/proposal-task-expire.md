@@ -94,6 +94,9 @@ information: we could instantly distinguish between waiting tasks that expired
 without running to achieve completion, and finished-but-incomplete tasks were
 force-expired without re-running to achieve completion.
 
+Note this would also make sense in the context of getting rid of `:expire` as a
+task output.
+
 I don't think anyone is deeply invested in expired as a state.
 
 
@@ -118,7 +121,8 @@ to think of expiration as something the scheduler does TO the task, not
 something done BY the task. (In fact, a task can in principle expire long
 before the active window of the workflow catches up with it).
 
-So we could use different notation to express this in the graph, e.g.:
+So we could use different notation to express this in the graph and allow
+triggering off of expiration, e.g.:
 
 ```
 foo => bar
@@ -126,3 +130,6 @@ foo => bar
 ```
 
 Now users do not even have to wonder if `foo:expire?` implies `foo:succeed?`.
+
+Also, if we change expired from a state to an attribute, there is no reason to
+have an associated triggerable output (we don't have `foo:held => bar`).

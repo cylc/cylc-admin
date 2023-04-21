@@ -52,15 +52,13 @@ This may be a matter of opinion, but I prefer the latter.
   - If the `succeeded` or `failed` outputs are set, disable automatic retries.
 
 3. Force expire tasks.
-  - Expire means "we don't need to run this task anymore".
-     - Can be automatic (clock-expire) or manual.
-     - Allow waiting tasks to expire without running all.
+  - Expire means "we no longer need to run (or rerun) this task".
+     - Expire can be automatic (clock-expire) or manual.
+     - Allow waiting tasks to expire without running at all.
      - Allow the scheduler to forget incomplete tasks without re-running
        to complete them.
   - Make `cylc remove` obsolete (currently, incomplete tasks have to be
     "removed" if not re-run to completion).
-  - This amounts to a Cylc 7 style "state reset", but - see below - `expired`
-    should really be demoted to a task attribute
 
 Expiration is a bigger topic in its own right, due to its connection to task
 outputs and automatica triggering. See
