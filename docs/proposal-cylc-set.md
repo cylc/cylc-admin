@@ -47,16 +47,16 @@ This may be a matter of opinion, but I prefer the latter.
 
 2. Force set specified **outputs** of a target task.
    - This contributes to the task's completion, and sets the corresponding
-    prerequisites of child tasks.
-  - Set any *implied outputs* as well (see command help below).
+     prerequisites of child tasks.
+  - Set *implied outputs* as well (see command help below).
   - If the `succeeded` or `failed` outputs are set, disable automatic retries.
 
 3. Force expire tasks.
   - Expire means "we don't need to run this task anymore".
-    - Can be automatic (clock-expire) or manual.
-    - Allow waiting tasks to expire without running all.
-    - Allow the scheduler to forget incomplete tasks without re-running
-      to complete them.
+     - Can be automatic (clock-expire) or manual.
+     - Allow waiting tasks to expire without running all.
+     - Allow the scheduler to forget incomplete tasks without re-running
+       to complete them.
   - Make `cylc remove` obsolete (currently, incomplete tasks have to be
     "removed" if not re-run to completion).
   - This amounts to a Cylc 7 style "state reset", but - see below - `expired`
