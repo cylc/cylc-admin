@@ -35,6 +35,9 @@ This may be a matter of opinion, but I prefer the latter.
 
 ## Requirements
 
+0. Force trigger a task.
+  - Make it run now, regardless of prerequisites.
+
 1. Force set specified **prerequisites** of a target task. 
 This contributes to the task's readiness to run.
   - It is not equivalent to setting the parent output, unless the task is an only child
