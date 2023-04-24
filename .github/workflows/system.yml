@@ -1,0 +1,75 @@
+# THIS FILE IS PART OF THE CYLC WORKFLOW ENGINE.
+# Copyright (C) NIWA & British Crown (Met Office) & Contributors.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+name: System Tests
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '55 0 * * *'
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'docs/status/branches.json'
+      - '.github/workflows/system.yml'
+
+
+jobs:
+  set-meta-releases:
+    # read the meta-release versions from the branches.json file
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      meta-releases: ${{ steps.set-meta-releases.outputs.meta-releases }}
+    steps:
+      - name: install libs
+        id: set-meta-releases
+        uses: cylc/release-actions/set-meta-releases@v1
+
+  install:
+    # test that the components can be pip-installed together
+    needs: set-meta-releases
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest']
+        python-version: ['3.7', '3.8', '3.9']
+        meta_release: ${{ fromJson(needs.set-meta-releases.outputs.meta-releases) }}
+
+    steps:
+      - name: configure python
+        uses: actions/setup-python@v4
+
+      - name: install libs
+        uses: cylc/release-actions/install-cylc-components@v1
+        with:
+          meta_release: ${{ matrix.meta_release }}
+          cylc_flow: true
+          cylc_flow_opts: ''
+          cylc_uiserver: true
+          cylc_uiserver_opts: 'hub'
+          cylc_rose: true
+          cylc_rose_opts: ''
+          metomi_rose: true
+          metomi_rose_opts: ''
+
+      - name: check version
+        run: cylc version --long

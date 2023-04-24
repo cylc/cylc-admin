@@ -23,6 +23,7 @@
         "metomi/rose": ["test"]
     },
     "nightly_actions": {
-        "cylc/cylc-doc": ["nightly"]
+        "cylc/cylc-doc": ["nightly"],
+        "cylc/cylc-admin": ["system"]
     }
 }
