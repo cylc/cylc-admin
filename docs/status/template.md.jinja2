@@ -32,7 +32,7 @@ automatically regenerated on merge.
 
 | repo | actions |
 |:---|:---|
-{% for repo, actions in nightly_actions.items() -%}
+{% for repo, actions in nightly_actions.items() %}
 | {{ format_repo(repo) }} | {{ format_actions(repo, 'master', actions) }} |
 {%- endfor %}
 

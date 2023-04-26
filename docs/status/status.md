@@ -10,7 +10,9 @@
 
 | repo | actions |
 |:---|:---|
-| [**cylc/cylc-doc**](https://github.com/cylc/cylc-doc) | [![nightly](https://github.com/cylc/cylc-doc/actions/workflows/nightly.yml/badge.svg?branch=master)](https://github.com/cylc/cylc-doc/actions/workflows/nightly.yml) || [**cylc/cylc-admin**](https://github.com/cylc/cylc-admin) | [![system](https://github.com/cylc/cylc-admin/actions/workflows/system.yml/badge.svg?branch=master)](https://github.com/cylc/cylc-admin/actions/workflows/system.yml) |
+
+| [**cylc/cylc-doc**](https://github.com/cylc/cylc-doc) | [![nightly](https://github.com/cylc/cylc-doc/actions/workflows/nightly.yml/badge.svg?branch=master)](https://github.com/cylc/cylc-doc/actions/workflows/nightly.yml) |
+| [**cylc/cylc-admin**](https://github.com/cylc/cylc-admin) | [![system](https://github.com/cylc/cylc-admin/actions/workflows/system.yml/badge.svg?branch=master)](https://github.com/cylc/cylc-admin/actions/workflows/system.yml) |
 
 ## Branches
 
