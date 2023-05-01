@@ -60,11 +60,13 @@ This may be a matter of opinion, but I prefer the latter.
     "removed" if not re-run to completion).
 
 Expiration is a bigger topic in its own right, due to its connection to task
-outputs and automatica triggering. See
+outputs and automatic triggering. See
 [Task Expire Proposal](proposal-task-expire.md)
 
 
 ## The New Command
+
+(Proposed)
 
 ```
 $ cylc set [OPTIONS] [TASK(S)]
