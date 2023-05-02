@@ -118,15 +118,24 @@ Setting an output also results in any implied outputs being set:
 If a task has already run, its prerequisites have already been "used". There's
 no point in unsatisfying them.
 
-Is there a case for unsatisfying the prerequisites of a multi-prerequisite
-`n=0` waiting task that has not run yet?
+If a task has not been spawned yet, none of its prerequisites are satisfied
+anyway.
+
+Is there a case for unsatisfying the prerequisites of a waiting
+partially satisfied task that has not run yet?
+
+Use cases aren't obvious, but **we should probably support this for
+completeness.**
 
 
 ### Un-completing outputs?
 
-Normally there's no point in unsetting a completed output. Any downstream
-action will have already been triggered (on demand), except in a flow-wait
-scenario.
+There's no point in unsetting a completed output because any downstream action
+will have already been spawned (on demand).
+
+I think the only exception is in a flow-wait scenario, which is pretty niche.
+
+No need to support this?
 
 
 ## Example Use Cases
