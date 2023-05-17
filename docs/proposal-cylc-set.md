@@ -46,9 +46,11 @@ This may be a matter of opinion, but I prefer the latter.
   - DEFAULT: set all prerequisites (this would be equivalent to trigger)
 
 2. Force set specified **outputs** of a target task.
-  - This contributes to the task's completion, and sets the corresponding prerequisites of child tasks.
-  - Set *implied outputs* as well (see command help below).
-  - If the `succeeded` or `failed` outputs are set, disable automatic retries.
+  - This sets the corresponding prerequisites of child tasks.
+  - And it contributes to the completion of *incomplete tasks*.
+    - (It will not spawn a task with the specified outputs completed - that would create an incomplete task)
+    - Set *implied outputs* as well (see command help below).
+    - If the `succeeded` or `failed` outputs are set, disable automatic retries.
   - DEFAULT: set all required outputs.
 
 3. Force expire tasks.
