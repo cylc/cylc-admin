@@ -235,25 +235,50 @@ and "problem" outcomes.
    a:failed => x  # :failed must be optional
    ```
 
-6. Late delivery of expiry events to be a documented limitation.
+6. Expiry should be considered for tasks with partially satisfied prerequisites.
 
-   This is not a problem for parentless tasks as they are spawned out to the
-   runahead limit.
+   Expiry should be computed for tasks in both the "main" and "hidden" pools
+   (rather than just the "main" pool as at present) to prevent workflows from
+   stalling on tasks with partially satisfied prerequisites where expiry is
+   configured.
+
+7. Late delivery of expiry events to be a documented limitation.
 
    Cases where expiry is not a parentless task e.g:
 
    ```
-   a[-P1D] => a?
-   a:expire? => x  # can capture the expire event late
-   a:succeed? => y
+   a[-P1D]? | a[-P1D]:expire? => a?
+
+   a:succeed? => x
+   a:expire? => y  # this cannot happen until a[-P1D] has succeeded/expired
    ```
 
-   Can be translated into the parentless pattern as a workaround:
+   Could receive expire events late due to the previous cycle running behind
+   schedule.
 
+   To handle this, these cases will need to be adaped so that a parentless task
+   is a dependency of the task to be expired e.g:
+
+   ```diff
+   + dummy => a
+     a[-P1D]? | a[-P1D]:expire? => a?
+
+     a:succeed? => x
+     a:expire? => y  # this cannot happen until a[-P1D] has succeeded/expired
    ```
-   b:expire? => x  # capture the expire event early
-   a[-P1D] & b? => a => y
-   ```
+
+   In this example, the task `dummy` will run and succeed as soon as it enters
+   the runahead window which will cause `a` to be spawned with partially
+   satisfied prerequisites at which point it will be considered for expiry
+   events according to (7).
+
+8. Manually triggering a task should not cause an expiry event.
+
+   If a task has expiry configured and a user force-triggers it, it should not
+   expire in response to this trigger.
+
+   This is special to to the trigger command (which infers run), manually
+   setting prerequisites on a task should not disable expiry.
 
 
 ## Examples
