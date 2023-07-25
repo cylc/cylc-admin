@@ -1,11 +1,11 @@
 {
     "meta_releases": {
-        "8.1": {
-            "cylc/cylc-flow": "8.1.x",
-            "cylc/cylc-doc": "8.1.x",
-            "cylc/cylc-rose": "1.2.x",
-            "cylc/cylc-uiserver": "1.2.x",
-            "metomi/rose": "2.0.x"
+        "8.2": {
+            "cylc/cylc-flow": "8.2.x",
+            "cylc/cylc-doc": "8.2.x",
+            "cylc/cylc-rose": "1.3.x",
+            "cylc/cylc-uiserver": "1.3.x",
+            "metomi/rose": "2.1.x"
         },
         "8.2": {
             "cylc/cylc-flow": "master",
