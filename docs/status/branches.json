@@ -7,7 +7,7 @@
             "cylc/cylc-uiserver": "1.3.x",
             "metomi/rose": "2.1.x"
         },
-        "8.2": {
+        "8.3": {
             "cylc/cylc-flow": "master",
             "cylc/cylc-doc": "master",
             "cylc/cylc-rose": "master",
