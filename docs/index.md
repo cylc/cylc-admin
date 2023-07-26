@@ -56,9 +56,14 @@ evolving requirements:
 - [cli-wfs-authentication](proposal-cli-wfs-authentication.md)
 - [n-distance windowing](proposal-n-distance-window.md)
 - [Optional Output Syntax](proposal-new-output-syntax.md)
-- [cylc-set Command Proposal](proposal-cylc-set.md)
-- [Task Expire Proposal](proposal-task-expire.md)
 
+## Final Manual Intervention Proposals 2023 (ACCEPTED)
+
+- [Interventions](proposal-interventions.md)
+- [The "cylc set" Command](proposal-cylc-set.md)
+- [Extended Optional Outputs and Task Expiry](proposal-optional-output-extension.md)
+- [The "cylc remove" Command](proposal-remove.md)
+- [Skip Mode](proposal-skip-mode.md)
 
 ## Cylc-7
 - [Cylc-7 Architecture](cylc-7-architecture)
