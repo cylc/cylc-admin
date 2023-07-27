@@ -43,7 +43,7 @@ apply only to the pool and Cylc 7 style reset is not permitted.
    The valid configurations would be:
    * `outputs` - Define the outputs to be generated when this task runs
      in skip mode. By default, all required outputs will be generated.
-   * `disable task event handlers` - Disable the event handlers which would
+   * `enable task event handlers` - Enable the event handlers which would
      normally be called on task lifecycle events. By default event handers
      will be turned off.
 
