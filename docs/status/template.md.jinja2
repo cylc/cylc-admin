@@ -1,14 +1,5 @@
-{#
-
-This template/markdown file is auto-generated, please do not edit it directly.
-
-Please edit `branches.json` and raise a pull request, this fille will be
-automatically regenerated on merge.
-
-#}
-
-{% macro badge(repo, branch, action) -%}
-[![{{ action }}](https://github.com/{{ repo }}/actions/workflows/{{ action }}.yml/badge.svg?branch={{ branch }})](https://github.com/{{ repo }}/actions/workflows/{{ action }}.yml)
+{% macro badge(repo, branch, workflow) -%}
+[![{{ workflow }}](https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml/badge.svg?branch={{ branch }})](https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml?query=branch%3A{{ branch }})
 {%- endmacro %}
 
 {% macro format_repo(repo) -%}
@@ -19,9 +10,9 @@ automatically regenerated on merge.
 [{{ branch }}](https://github.com/{{ repo }}/tree/{{ branch }})
 {%- endmacro %}
 
-{%- macro format_actions(repo, branch, actions) -%}
-  {%- for action in actions -%}
-    {{ badge(repo, branch, action) }}
+{%- macro format_actions(repo, branch, workflows) -%}
+  {%- for workflow in workflows -%}
+    {{ badge(repo, branch, workflow) }}
     {%- if not loop.last %} {% endif -%}
   {%- endfor -%}
 {%- endmacro -%}
@@ -30,19 +21,36 @@ automatically regenerated on merge.
 
 ## Nightly Builds
 
-| repo | actions |
-|:---|:---|
-{% for repo, actions in nightly_actions.items() %}
-| {{ format_repo(repo) }} | {{ format_actions(repo, 'master', actions) }} |
+<table>
+  <tr>
+    <th>repo</th>
+    <th>workflows</th>
+  </tr>
+{% for repo, workflows in nightly_actions.items() %}
+  <tr>
+    <td>{{ format_repo(repo) }}</td>
+    <td>{{ format_actions(repo, 'master', workflows) }}</td>
+  </tr>
 {%- endfor %}
+</table>
 
 ## Branches
 
 {% for meta_release, components in meta_releases.items() %}
 ### {{ meta_release }}
-| repo | branch | actions |
-|:---|:---|:---|
+
+<table>
+  <tr>
+    <th>repo</th>
+    <th>branch</th>
+    <th>workflows</th>
+  </tr>
 {% for repo, branch in components.items() -%}
-| {{ format_repo(repo) }} | {{ format_branch(repo, branch) }} | {{ format_actions(repo, branch, branch_actions.get(repo, [])) }} |
-{% endfor %}
+  <tr>
+    <td>{{ format_repo(repo) }}</td>
+    <td>{{ format_branch(repo, branch) }}</td>
+    <td>{{ format_actions(repo, branch, branch_actions.get(repo, [])) }}</td>
+  </tr>
+{%- endfor %}
+</table>
 {% endfor %}

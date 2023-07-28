@@ -16,7 +16,7 @@
         }
     },
     "branch_actions": {
-        "cylc/cylc-flow": ["test_fast", "test_functional", "build", "test_conda-build"],
+        "cylc/cylc-flow": ["test_fast", "test_functional", "bash", "build", "test_manylinux", "test_conda-build", "test_tutorial_workflow"],
         "cylc/cylc-rose": ["tests"],
         "cylc/cylc-uiserver": ["test", "build"],
         "cylc/cylc-doc": ["test"],
