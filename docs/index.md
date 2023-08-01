@@ -9,6 +9,7 @@
 - [Running Cylc tests](howto/testing.md)
 - [Open Questions](https://github.com/issues?q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aquestion+org%3Acylc)
 - [Project Issue Summary](project-issue-summary.md)
+- [Status page](status/status.md)
 
 ## February 2020 Development Workshop (Wellington)
 - [Agenda](feb2020-workshop-agenda)
@@ -45,7 +46,7 @@ evolving requirements:
   - Specification for new CLI - [WIP]
 
 - [Config File Changes](proposal-config-changes.md)
- 
+
 - [Task State Name Rationalization](proposal-state-names.md)
 
 - [Component Naming](proposal-component-names.md)
@@ -91,25 +92,25 @@ Project meetings:
 
 - FROM OCTOBER 2020 ON: see the [cylc-admin wiki](https://github.com/cylc/cylc-admin/wiki)
 
-- September 2020 
+- September 2020
   - [Agenda and Notes](meetings/vc-sep-2020.md)
 
 - August 2020
   - [Agenda and Notes](meetings/vc-aug-2020.md)
 
-- July 2020 
+- July 2020
   - [Agenda and Notes](meetings/vc-jul-2020.md)
 
-- June 2020 
+- June 2020
   - [Agenda and Notes](meetings/vc-jun-2020.md)
 
-- May 2020 
+- May 2020
   - [Agenda and Notes](meetings/vc-may-2020.md)
 
-- April 2020 
+- April 2020
   - [Agenda and Notes](meetings/vc-april-2020.md)
 
-- March 2020 
+- March 2020
   - [Agenda and Notes](meetings/vc-march-2020-agenda.md)
 
 - February 2020 Workshop (see above)
