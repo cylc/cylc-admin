@@ -1,6 +1,6 @@
 {% macro badge(repo, branch, workflow) -%}
 <a href="https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml?query=branch%3A{{ branch }}">
-  <img src="{{ workflow }}](https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml/badge.svg?branch={{ branch }}" />
+  <img src="https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml/badge.svg?branch={{ branch }}" />
 </a>
 {%- endmacro %}
 
