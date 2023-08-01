@@ -1,16 +1,22 @@
 {% macro badge(repo, branch, workflow) -%}
-[![{{ workflow }}](https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml/badge.svg?branch={{ branch }})](https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml?query=branch%3A{{ branch }})
+<a href="https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml?query=branch%3A{{ branch }}">
+  <img src="{{ workflow }}](https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml/badge.svg?branch={{ branch }}" />
+</a>
 {%- endmacro %}
 
 {% macro format_repo(repo) -%}
-[**{{ repo }}**](https://github.com/{{ repo }})
+<a href="https://github.com/{{ repo }}">
+  <b>{{ repo }}</b>
+</a>
 {%- endmacro %}
 
 {% macro format_branch(repo, branch) -%}
-[{{ branch }}](https://github.com/{{ repo }}/tree/{{ branch }})
+<a href="https://github.com/{{ repo }}/tree/{{ branch }}">
+  {{ branch }}
+</a>
 {%- endmacro %}
 
-{%- macro format_actions(repo, branch, workflows) -%}
+{%- macro format_status(repo, branch, workflows) -%}
   {%- for workflow in workflows -%}
     {{ badge(repo, branch, workflow) }}
     {%- if not loop.last %} {% endif -%}
@@ -29,7 +35,7 @@
 {% for repo, workflows in nightly_actions.items() %}
   <tr>
     <td>{{ format_repo(repo) }}</td>
-    <td>{{ format_actions(repo, 'master', workflows) }}</td>
+    <td>{{ format_status(repo, 'master', workflows) }}</td>
   </tr>
 {%- endfor %}
 </table>
@@ -49,7 +55,7 @@
   <tr>
     <td>{{ format_repo(repo) }}</td>
     <td>{{ format_branch(repo, branch) }}</td>
-    <td>{{ format_actions(repo, branch, branch_actions.get(repo, [])) }}</td>
+    <td>{{ format_status(repo, branch, branch_actions.get(repo, [])) }}</td>
   </tr>
 {%- endfor %}
 </table>
