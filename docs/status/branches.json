@@ -4,7 +4,7 @@
             "cylc/cylc-flow": "8.2.x",
             "cylc/cylc-doc": "8.2.x",
             "cylc/cylc-rose": "1.3.x",
-            "cylc/cylc-uiserver": "master",
+            "cylc/cylc-uiserver": "1.4.x",
             "metomi/rose": "2.1.x"
         },
         "8.2-jps-v1": {
