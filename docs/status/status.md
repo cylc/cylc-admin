@@ -92,13 +92,13 @@ Please edit `branches.json` and raise a pull request, this file will be automati
     <td><a href="https://github.com/cylc/cylc-uiserver">
   <b>cylc/cylc-uiserver</b>
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-uiserver/tree/master">
-  master
+    <td><a href="https://github.com/cylc/cylc-uiserver/tree/1.4.x">
+  1.4.x
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3Amaster">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=master" />
-</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3Amaster">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml/badge.svg?branch=master" />
+    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3A1.4.x">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=1.4.x" />
+</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3A1.4.x">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml/badge.svg?branch=1.4.x" />
 </a></td>
   </tr><tr>
     <td><a href="https://github.com/metomi/rose">
