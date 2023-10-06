@@ -1,6 +1,36 @@
-{% macro badge(repo, branch, workflow) -%}
+{% macro workflow_badge(repo, branch, workflow) -%}
 <a href="https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml?query=branch%3A{{ branch }}">
   <img src="https://github.com/{{ repo }}/actions/workflows/{{ workflow }}.yml/badge.svg?branch={{ branch }}" />
+</a>
+{%- endmacro %}
+
+{% macro milestone_badge(repo, number, open=True) -%}
+<a href="https://github.com/{{ repo }}/milestone/{{ number }}?q=is%3A{{ "open" if open else "closed" }}">
+  <img src="https://img.shields.io/github/milestones/issues-{{ "open" if open else "closed" }}/{{ repo }}/{{ number }}" />
+</a>
+{%- endmacro %}
+
+{% macro no_milestone_badge(repo) -%}
+<a href="https://github.com/{{ repo }}/issues?q=is%3Aopen+no%3Amilestone">
+  <img src="https://img.shields.io/github/issues-search/{{ repo }}?query=is%3Aopen%20no%3Amilestone&label=no%20milestone" />
+</a>
+{%- endmacro %}
+
+{% macro issue_badge(repo) -%}
+<a href="https://github.com/{{ repo }}/issues/?q=is%3Aopen+is%3Aissue">
+  <img src="https://img.shields.io/github/issues-raw/{{ repo }}" />
+</a>
+{%- endmacro %}
+
+{% macro issues_by_label_badge(repo, label) -%}
+<a href="https://github.com/{{ repo }}/issues?q=is%3Aissue+is%3Aopen+label%3A{{ label }}">
+  <img src="https://img.shields.io/github/issues/{{ repo }}/{{ label }}" />
+</a>
+{%- endmacro %}
+
+{% macro prs_badge(repo) -%}
+<a href="https://github.com/{{ repo }}/pulls">
+  <img src="https://img.shields.io/github/issues-pr/{{ repo }}" />
 </a>
 {%- endmacro %}
 
@@ -18,12 +48,14 @@
 
 {%- macro format_status(repo, branch, workflows) -%}
   {%- for workflow in workflows -%}
-    {{ badge(repo, branch, workflow) }}
+    {{ workflow_badge(repo, branch, workflow) }}
     {%- if not loop.last %} {% endif -%}
   {%- endfor -%}
 {%- endmacro -%}
 
-# Status {{ badge('cylc/cylc-admin', 'master', 'status') }}
+# Status
+
+{{ workflow_badge('cylc/cylc-admin', 'master', 'status') }}
 
 ## Nightly Builds
 
@@ -59,4 +91,22 @@
   </tr>
 {%- endfor %}
 </table>
+{% endfor %}
+
+## Issues
+
+{% for repo in repos %}
+### {{ repo }}
+
+{{ issue_badge(repo) }} {{ prs_badge(repo) }} {{ issues_by_label_badge(repo, 'question') }} {{ issues_by_label_badge(repo, 'bug') }} {{ no_milestone_badge(repo) }}
+
+<table style="margin-left:20px; margin-top:10px">
+{% for milestone, number in list_milestones(repo) %}
+<tr>
+  <td>{{ milestone_badge(repo, number) }}</td>
+  <td>{{ milestone_badge(repo, number, open=False) }}</td>
+</tr>
+{% endfor %}
+</table>
+
 {% endfor %}
