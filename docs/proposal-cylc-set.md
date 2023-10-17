@@ -72,7 +72,8 @@ By default this sets all required outputs for the given task(s).
    --pre=PRE: Set a prerequisite to satisfied e.g. `foo:succeeded`
               (multiple use allowed, may be comma separated).
 
-   --pre=all: Set all prerequisites to satisfied. Equivalent to trigger.
+   --pre=all: Set all prerequisites to satisfied. Equivalent to adding the task
+              into the workflow in the waiting state.
 
    --out=OUT: Set an output e.g. `succeeded` (and implied outputs) to completed
               (multiple use allowed, may be comma separated).
