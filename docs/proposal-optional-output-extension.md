@@ -2,13 +2,11 @@
 
 A proposal which extends the
 [optional outputs model](https://cylc.github.io/cylc-admin/proposal-new-output-syntax.html)
-to solve existing limitations and support the expired state by providing more
-information to Cylc about the user's intentions for graph branching.
+to solve existing limitations and support the expired state.
 
 Supersedes:
-* [cylc-admin/task expire proposal](https://github.com/cylc/cylc-admin/blob/fc564ddb26c1476dd051b059ca9a31829a20bf30/docs/proposal-task-expire.md)
+* [cylc-admin/previous optional output extension proposal](https://github.com/cylc/cylc-admin/blob/4c5bf7f50125472a1c022ad9108ac7fd2a7ec8bf/docs/proposal-optional-output-extension.md)
 * [cylc-flow#5423](https://github.com/cylc/cylc-flow/issues/5423)
-* [cylc-flow#3294](https://github.com/cylc/cylc-flow/issues/3294)
 
 
 ## Background: Task Expiry
@@ -22,17 +20,8 @@ There are currently three problems with expiry (as of cylc-flow 8.1.4):
 
 2. **Expiry triggers don't fit in with [optional outputs](https://github.com/cylc/cylc-flow/issues/5361)**
 
-   Under the existing logic, if expiry is optional, then success must be too which means
-   that failure would go uncaught making expiry unsafe.
-
-   There are fundamentally two solutions to this problem.
-
-   1. Move expiry to a separate model.
-      * The existing
-        [proposal-task-expire](https://cylc.github.io/cylc-admin/proposal-task-expire.html).
-        follows this approach.
-   2. Modify optional output logic to allow expiry to fit.
-      * The approach this proposal follows.
+   Under the existing logic, task expiry cannot cause incomplete tasks. This makes expiry unsafe.
+   This proposal addresses this.
 
 3. **Expiry events can be detected late, or even missed due to the task pool implementation.**
 
@@ -41,52 +30,33 @@ There are currently three problems with expiry (as of cylc-flow 8.1.4):
    This proposal does not address the late event problem and recommends this
    should be a documented limitation.
 
-
-## Background: Optional Outputs
-
-The SoD model, initially had implicit graph branching. This was a neat feature, however,
-meant that non-success cases were not properly caught so was not suitable behaviour for
-real-world use.
-
-The problem was that Cylc had not been provided with the required information to tell
-the difference between and "expected" or "permitted" outcome and a "problem" outcome.
-
-Consequently, optional outputs were introduced in order to provide Cylc with enough
-information to resolve these situations and stall, where appropriate, or continue/stop
-otherwise. This turned implicit branching explicit providing the runtime safety
-required for production use.
-
-Unfortunately, the optional outputs system doesn't have enough information at
-present to adequately handle expiry as an optional output as `:expire?` would
-imply `:succeeded?` and `:failed?`. This is a limitation of the optional output
-mechanism which this proposal aims to address by providing sufficient
-information to the scheduler to allow it to differentiate between "permitted"
-and "problem" outcomes.
-
-
 ## Proposal
 
 1. Expiry should remain implemented as a task output.
 
-   If a task is clock-expired OR if `expired` output is set manually, then the
-   task status should change to expired as per
-   [cylc set proposal](https://cylc.github.io/cylc-admin/proposal-new-output-syntax.html).
+2. Expiry is considered separately from task execution in the same way that submission is already
+   considered separately. Hence `:expire?` does *not* imply `:succeed?` and `:fail?`.
 
-2. The *default* condition for task completion condition should be:
+   In this proposal users have to understand that `a => x` only means that `a` must succeed if it is
+   executed and that might not happen if expiry or submission are optional (or if the pre-requisites
+   for `a` are not met).
 
-   > If optional outputs are defined, at least one must be generated.
+3. A task is incomplete if any of the following are true:
 
-   Where outputs are considered "optional" according to their declaration in
-   the graph and `completion` expression if defined.
+   * It finished executing without satisfying the completion condition
 
-   This is a breaking change for some examples where failure is permitted, but
-   not handled in the graph (`a? => b`). These cases are relatively rare, can
-   be caught by validation and are easy to fix.
+   * If job submission failed and the `:submit` output was not optional
 
-3. The completion condition should be a configurable expression.
+   * If the task expired and the `:expire` output was not optional
+     * This is a new condition to handle expiry
 
-   The completion condition can be set to tolerate cases not handled in the graph or express
-   more complex completion criterion.
+4. `:expire` cannot be required - it can only be optional or not allowed.
+   Similarly `:submit-fail` cannot be required.
+   
+   * We currently allow `:submit-fail` to be required but this doesn't really make sense.
+
+5. The completion condition should be a configurable expression. The completion condition can be
+   set to tolerate cases not handled in the graph or express more complex completion criterion.
 
    The expression should be pure Python, evaluated in a restricted context which permits only
    `and` & `or` operators, but not:
@@ -144,105 +114,60 @@ and "problem" outcomes.
    }
    ```
 
-4. Succeeded, failed and expired are three orthogonal completion outcomes.
+   Note: the completion condition only covers outputs generated when a task is executed - it cannot
+   include `:expired`, `:submit` or `:submit-fail`. It also cannot include `started` (this has to
+   happen if a task executes) or `finished` (this isn't an output).
 
-   * `:expired` must always be optional because that's the nature of clock-expiry.
-   * If `:succeeded` or `:failed` are referenced in the graph where expiry
-     is present, then they must be optional too.
+   The default condition is complete all required outputs.
 
-   Examples:
+6. Expiry is only optional if it is explicitly referenced in the graph e.g. `a:expired? => x`.
+
+   If a task is configured to clock-expire it must be made optional via the graph - otherwise this
+   will cause a validation failure. This is designed to reduce the risk of unintended early shutdown.
+
+   For this example:
 
    ```
-   # OK
-   a:succeeded => x
-
-   # OK
-   a:succeeded? => x
-
-   # OK
-   a:succeeded? => x
-   a:failed? => y
-
-   # OK
-   a:succeeded? => x
-   a:expired? => y
-
-   # OK
-   a:succeeded? => x
-   a:failed? => y
-   a:expired? = z
-
-   # ERROR
-   a:succeeded => x  # :succeeded must be optional
-   a:expired? = z
-
-   # ERROR
-   a:failed? => x
-   a:expired = z  # :expired must be optional
-
-   # ERROR
-   a:succeeded? => x
-   a:failed? => y
-   a:expired => z  # :expired must be optional
+   clock-expire = a
+   a => b
+   a:expired?  # This does nothing but is sufficient to pass validation
+   b:submit-fail? => c
    ```
 
-5. Clock-expire should infer `expired?`:
+   Task "a" is completed in one of 2 ways:
 
-   The `:expired?` output exists if:
+   * It expires
+   * It executes and succeeds
 
-   * Explicitly referenced in the graph e.g. `a:expired? => x`.
-   * Or, if clock-expiry is configured for the task.
+   If task "a" succeeds then task "b" must complete which can happen in one of 2 ways:
 
-   Wherever expiry is configured or handled, graph branching can happen
-   as the `:succeeded` and `:failed` outputs might not happen.
+   * It fails to submit
+   * It executes and succeeds
+
+   So, the expression `a => b` in the graph can be interpreted as:
+   * If "a" executes it must succeed
+   * If "a" succeeds then "b" must complete
+   * If "b" executes it must succeed
+
+7. If neither `:succeed` nor `:fail` are specified for a task in the graph then `:succeed` should
+   be required.
 
    So for this example:
 
    ```
-   clock-expire = a
-   a? => b
+   a:x? => b
    ```
 
-   The task "a" has two optional outputs:
+   Task "a" must succeed if it executes.
 
-   * succeeded
-   * expired
+   Apparently this is already the case but is undocumented?
 
-   And the default completion expression is:
+8. Expiry should be considered for tasks with partially satisfied prerequisites.
 
-   ```
-   completion(a) = succeeded or expired
-   ```
+   This is to prevent workflows from stalling on tasks with partially satisfied
+   prerequisites where expiry is configured.
 
-   Examples:
-
-   ```
-   # OK
-   clock-expire = a
-   a? => x
-
-   # OK
-   clock-expire = a
-   a? => x
-   a:expire? => y
-
-   # ERROR
-   clock-expire = a
-   a => x  # :succeeded must be optional
-
-   # ERROR
-   clock-expire = a
-   a:failed => x  # :failed must be optional
-   ```
-
-6. Expiry should be considered for tasks with partially satisfied prerequisites.
-
-   Expiry should be computed for tasks in both the "main" and "hidden" pools
-   (rather than just the "main" pool as at present) to prevent workflows from
-   stalling on tasks with partially satisfied prerequisites where expiry is
-   configured.
-
-7. Late delivery of expiry events to be a documented limitation.
+9. Late delivery of expiry events to be a documented limitation.
 
    Cases where expiry is not a parentless task e.g:
 
@@ -256,7 +181,7 @@ and "problem" outcomes.
    Could receive expire events late due to the previous cycle running behind
    schedule.
 
-   To handle this, these cases will need to be adaped so that a parentless task
+   To handle this, these cases will need to be adapted so that a parentless task
    is a dependency of the task to be expired e.g:
 
    ```diff
@@ -270,15 +195,15 @@ and "problem" outcomes.
    In this example, the task `dummy` will run and succeed as soon as it enters
    the runahead window which will cause `a` to be spawned with partially
    satisfied prerequisites at which point it will be considered for expiry
-   events according to (7).
+   events according to (8).
 
-8. Manually triggering a task should not cause an expiry event.
+10. Manually triggering a task should not cause an expiry event.
 
-   If a task has expiry configured and a user force-triggers it, it should not
-   expire in response to this trigger.
+    If a task has expiry configured and a user force-triggers it, it should not
+    expire in response to this trigger.
 
-   This is special to to the trigger command (which infers run), manually
-   setting prerequisites on a task should not disable expiry.
+    This is special to the trigger command (which infers run), manually
+    setting prerequisites on a task should not disable expiry.
 
 
 ## Examples
@@ -292,14 +217,19 @@ a:z? => z
 x | y | z => b
 ```
 
-Optional outputs for task "a":
-
-* x
-* y
-* z
+By default we have:
 
 ```
-completion(a) = succeeded and (x or y or z)
+completion(a) = succeeded
+```
+
+This gives a reasonable level of protection. If task "a" is meant to output one of x, y or z
+then it shouldn't succeed unless it does so (and there is nothing Cylc can do if tasks succeed
+when they should fail). If you want Cylc to check this happens then you can add:
+
+```
+[a]
+  completion = succeeded and (x or y or z)
 ```
 
 ### Expire Branch
@@ -307,40 +237,24 @@ completion(a) = succeeded and (x or y or z)
 ```
 clock-expire = a
 
-a:succeed? => x
+a => x
 a:expired? => y
 x | y => z
 ```
 
-Optional outputs for task "a":
-
-* succeeded
-* expired
-
-```
-completion(a) = succeeded or expired
-```
+Succeeded is required for task "a" but only if it executes.
 
 ### Expire Halt
 
 ```
 clock-expire = a
 
-a:succeeded? => x
+a => x
+a:expired?
 ```
 
-Optional outputs for task "a":
-
-* succeeded
-* expired (inferred by `clock-expire = a`)
-
-```
-completion(a) = succeeded or expired
-```
-
-Early halt in the event of expiry now works the same as with optional outputs.
-Early halt in this example is now explicit in that it follows an optional output, making it clear
-that the `x` branch might not happen and that expiry must be handled if early halt is not desirable.
+`a:expired?` has to be included in the graph to avoid validation failure.
+This makes it clear that the halt is intentional.
 
 ### Output Groups
 
@@ -361,63 +275,36 @@ a:z? => z => z1 => ...
   completion = succeeded and ((w and x) or (y and z))
 ```
 
-Optional outputs for task "a" (defined in completion expression):
-
-* w
-* x
-* y
-* z
-
 ### Flaky Pipe
-
-<!-- * **With 2(i)** -->
 
 ```
 a? => b? => c?
-
-[a, b, c]
-# There is only one optional output here because a:failed? has not
-# been handled in the graph.
-# So we must permit failure in the completion expression to permit failure.
-completion = succeeded or failed
 ```
 
-Optional outputs for task "a" (defined in completion expression):
+This continues to work as at present with no need to define a completion condition.
 
-* succeeded
-* failed
+### Flaky Submission Pipe
 
-<!--
-* **With 2(ii)**
+```
+a:submit? => b:submit?
+```
 
-  ```
-  a? => b? => c?
-  ```
-  
-  Optional outputs for task "a":
-  
-  * succeeded
-  
-  ```
-  completion(a) = True  # This is essentially "succeeded or failed"
-  ```
--->
+This workflow will shutdown if:
+
+* `a` fails to submit
+* `a` succeeds and `b` fails to submit
+* `a` and `b` succeed
+
+If either `a` or `b` fail then they will be incomplete and the workflow will stall.
 
 ### Recovery Task
 
 ```
 a? | recover => b
-a:failed? => recover
+a:fail? => recover
 ```
 
-Optional outputs for task "a":
-
-* succeeded
-* failed
-
-```
-completion(a) = succeeded or failed
-```
+Again, no change in this case.
 
 ### Error Outputs 1
 
@@ -429,6 +316,7 @@ a? | recover => b
 a:error_x? => recover
 
 [a]
+  completion = succeeded or error_x
   script = """
     this
     that
@@ -439,15 +327,6 @@ a:error_x? => recover
   """
   [outputs]
     error_x = x
-```
-
-Optional outputs for task "a":
-
-* succeeded
-* error_x
-
-```
-completion(a) = succeeded or error_x
 ```
 
 ### Error Outputs 2
@@ -469,32 +348,6 @@ a? => b
     error_y = ...
     error_z = ...
 ```
-
-Optional outputs for task "a":
-
-* succeeded
-* failed
-* error_x
-* error_y
-* error_z
-
-### Complex Conditional
-
-Contrived example to demonstrate how brining expiry into the optional output system allows it to
-be used in combination with other triggers:
-
-```
-b?
-c?
-(a? & b:expired?) | (a:expired & c:failed?) => x
-```
-
-```
-completion(a) = succeeded or expired
-completion(b) = succeeded or expired
-completion(c) = succeeded or failed
-```
-
 
 ## Preference To The Expire Proposal
 
@@ -528,10 +381,6 @@ Arguments in favor of keeping expiry as a task state:
 6. At the moment expiry fits into the task state model in a way which is fairly intuitive. Changing
    this means that expiry will be bespoke edge-case which user's will have to learn. The ideal
    solution would be to unify expiry with the existing model rather than creating a new one.
-7. Expiry, success and failure are fundamentally orthogonal outcomes. Implementing expiry via
-   a different model causes this relationship to break down. A consequence of this is that
-   the graph branching which results from expiry becomes implicit rather than explicit.
-   This has safety implications.
 
 
 ## Footnotes
