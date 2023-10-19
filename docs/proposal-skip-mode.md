@@ -41,8 +41,13 @@ apply only to the pool and Cylc 7 style reset is not permitted.
    `[runtime][<namespace>][skip]` to separate it from
    `[runtime][<namespace>][simulation]`.
    The valid configurations would be:
+
    * `outputs` - Define the outputs to be generated when this task runs
-     in skip mode. By default, all required outputs will be generated.
+     in skip mode.
+     * By default, all required outputs will be generated plus succeeded if success is optional.
+     * The outputs submitted and started are always produced and do not need to be defined in `outputs`.
+     * If `outputs` is specified and does not include either succeeded or failed then succeeded will be produced.
+
    * `disable task event handlers` - Disable the event handlers which would
      normally be called on task lifecycle events. By default event handers
      will be turned off.
