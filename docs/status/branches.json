@@ -1,4 +1,20 @@
 {
+    "repos": [
+        "cylc/cylc-flow",
+        "cylc/cylc-doc",
+        "cylc/cylc-rose",
+        "cylc/cylc-uiserver",
+        "metomi/rose",
+        "cylc/cylc-admin",
+        "cylc/cylc.github.io",
+        "cylc/cylc-sphinx-extensions",
+        "cylc/release-actions",
+        "cylc/cylc-textmate-grammar",
+        "cylc/Cylc.tmbundle",
+        "cylc/vscode-cylc",
+        "cylc/language-cylc",
+        "cylc/cylc.vim"
+    ],
     "meta_releases": {
         "8.2": {
             "cylc/cylc-flow": "8.2.x",
