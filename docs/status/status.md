@@ -479,11 +479,11 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </tr>
 
 <tr>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/24?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/24" />
+  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/25?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/25" />
 </a></td>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/24?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/24" />
+  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/25?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/25" />
 </a></td>
 </tr>
 
