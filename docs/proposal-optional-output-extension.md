@@ -41,16 +41,16 @@ There are currently three problems with expiry (as of cylc-flow 8.1.4):
    executed and that might not happen if expiry or submission are optional (or if the pre-requisites
    for `a` are not met).
 
-3. A task is incomplete if any of the following are true:
+3. A task is incomplete if the completion condition is not satisfied and:
 
-   * It finished executing without satisfying the completion condition
+   * It finished executing
 
-   * If job submission failed and the `:submit` output was not optional
+   * OR Job submission failed and the `:submit` output was not optional
 
-   * If the task expired and the `:expire` output was not optional
+   * OR The task expired and the `:expire` output was not optional
      * This is a new condition to handle expiry
 
-4. `:expire` cannot be required - it can only be optional or not allowed.
+4. `:expire` cannot be required.
    Similarly `:submit-fail` cannot be required.
    
    * We currently allow `:submit-fail` to be required but this doesn't really make sense.
