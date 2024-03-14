@@ -305,6 +305,15 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </tr>
 
 <tr>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/126?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/126" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/126?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/126" />
+</a></td>
+</tr>
+
+<tr>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/82?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/82" />
 </a></td>
