@@ -20,8 +20,8 @@ There are currently three problems with expiry (as of cylc-flow 8.1.4):
 
 2. **Expiry triggers don't fit in with [optional outputs](https://github.com/cylc/cylc-flow/issues/5361)**
 
-   Under the existing logic, task expiry cannot cause incomplete tasks. This makes expiry unsafe.
-   This proposal addresses this.
+   Under the existing logic, task expiry cannot cause a stall (due to a task finishing with incomplete outputs).
+   This makes expiry unsafe. This proposal addresses this.
 
 3. **Expiry events can be detected late, or even missed due to the task pool implementation.**
 
@@ -41,15 +41,15 @@ There are currently three problems with expiry (as of cylc-flow 8.1.4):
    executed and that might not happen if expiry or submission are optional (or if the pre-requisites
    for `a` are not met).
 
-3. A task is complete if the completion condition is satisfied.
+3. A task's outputs are "complete" if the completion condition is satisfied.
 
    The completion condition can be defined by the user, otherwise the
    expression is automatically generated according to the rules:
 
    1. All required outputs (referenced in the graph) must be satisfied.
-   2. If success is optional, then the task is complete if it fails.
-   3. If submission is optional, then the task is complete if it submit-fails.
-   4. If expiry is optional, then the task is complete if it expires.
+   2. If success is optional, then the outputs are complete if the task fails.
+   3. If submission is optional, then the outputs are complete if the task submit-fails.
+   4. If expiry is optional, then the outputs are complete if it the task expires.
 
    I.E:
 
@@ -62,14 +62,36 @@ There are currently three problems with expiry (as of cylc-flow 8.1.4):
    )
    ```
 
-   Note, a task is *in*complete, if the completion condition is not satisfied
-   but the task has a final task status (note status not output). This is the
-   same as presently implemented (8.2.x)
+   Similarly, a task's outputs are "incomplete" or "not complete" if the completion
+   condition is not satisfied.
+
+3.5 A task is "finished" if it has final task status
+
+   Final task statuses are: expired, submit-failed, failed, and succeeded.
+
+   A finished task will not run again, complete other outputs, or change state, without manual
+   intervention (in the same flow, that is).
+
+   A task can finish with complete or incomplete outputs.
+
+
+3.6 Task pool removal depends on final status *and* output completion.
+
+   A finished task with complete outputs can be removed as "done".
+
+   A finished task with incomplete outputs is retained as "not done",
+   pending intervention to complete its outputs or to remove it manually.
+
+  N.B. giving a short name for "finished with complete outputs" is not strictly
+  necessary, but it is convenient. I propose "done": a that finishes with completed
+  outputs has done its job and can be forgotten by the scheduler. "Not done" is the
+  logical opposite of that.
+
 
 4. `:expire` cannot be required.
 
    Similarly `:submit-fail` cannot be required.
-   
+
    * We currently allow `:submit-fail` to be required but this doesn't really make sense.
 
 5. The completion condition should be a configurable expression. The completion condition can be
@@ -153,9 +175,9 @@ There are currently three problems with expiry (as of cylc-flow 8.1.4):
 
    If the `expired` output is set on both tasks `a` and `b`:
 
-   * `a` will be incomplete.
-   * `b` will be complete (permitted in graph).
-   * `c` will be complete (permitted in completion expression).
+   * `a` will finish with incomplete outputs - i.e. it is "not done"
+   * `b` will finish with complete outputs - i.e. it is "done" (permitted in graph).
+   * `c` will finish with complete outputs - i.e. it is "done" (permitted in completion expression).
 
    If a task is configured to clock-expire, but expiry is not handled in the
    graph or permitted in the completion expression, a warning should be raised
@@ -275,7 +297,7 @@ This makes it clear that the halt is intentional.
 
 A contrived example demonstrating how more complex completion conditions can be implemented.
 
-In this example, we don't consider the task complete unless one pair of outputs is generated:
+In this example, we don't consider the task's outputs complete unless one pair of outputs is generated:
 
 ```
 a:w? => w => w1 => ...
@@ -310,7 +332,7 @@ This workflow will shutdown if:
 * `a` succeeds and `b` fails to submit
 * `a` and `b` succeed
 
-If either `a` or `b` fail then they will be incomplete and the workflow will stall.
+If either `a` or `b` fail then they finish with incomplete outputs and the workflow will stall.
 
 ### Recovery Task
 
