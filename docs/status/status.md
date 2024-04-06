@@ -442,15 +442,6 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 <table style="margin-left:20px; margin-top:10px">
 
 <tr>
-  <td><a href="https://github.com/cylc/cylc-rose/milestone/20?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/20" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-rose/milestone/20?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/20" />
-</a></td>
-</tr>
-
-<tr>
   <td><a href="https://github.com/cylc/cylc-rose/milestone/18?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/18" />
 </a></td>
@@ -493,15 +484,6 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </a></td>
   <td><a href="https://github.com/cylc/cylc-uiserver/milestone/23?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/23" />
-</a></td>
-</tr>
-
-<tr>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/27?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/27" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/27?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/27" />
 </a></td>
 </tr>
 
