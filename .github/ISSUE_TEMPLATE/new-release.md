@@ -127,7 +127,10 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
   * [ ] deploy (run the "deploy" workflow on GitHub Actions) (can be re-deployed later if necessary)
 * metomi-rose
   * [ ] build & deploy documentation (manual process ATM)
-* [ ] discourse post
+* Discourse
+  * [ ] announce the release
+  * [ ] scan through the [major changes page](https://cylc.github.io/cylc-doc/stable/html/reference/changes.html)
+    and create "tip" posts (linking back to the changes page) to announce any new features.
 
 #### Metadata:
 
