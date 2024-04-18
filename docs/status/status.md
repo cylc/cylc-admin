@@ -296,6 +296,15 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 <table style="margin-left:20px; margin-top:10px">
 
 <tr>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/82?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/82" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/82?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/82" />
+</a></td>
+</tr>
+
+<tr>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/127?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/127" />
 </a></td>
@@ -314,29 +323,20 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </tr>
 
 <tr>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/126?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/126" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/126?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/126" />
-</a></td>
-</tr>
-
-<tr>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/82?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/82" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/82?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/82" />
-</a></td>
-</tr>
-
-<tr>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/117?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/117" />
 </a></td>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/117?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/117" />
+</a></td>
+</tr>
+
+<tr>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/126?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/126" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/126?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/126" />
 </a></td>
 </tr>
 
@@ -419,6 +419,15 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </a></td>
   <td><a href="https://github.com/cylc/cylc-doc/milestone/17?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-doc/17" />
+</a></td>
+</tr>
+
+<tr>
+  <td><a href="https://github.com/cylc/cylc-doc/milestone/18?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-doc/18" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-doc/milestone/18?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-doc/18" />
 </a></td>
 </tr>
 
