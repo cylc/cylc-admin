@@ -18,20 +18,22 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 #### Prep:
 
 * [ ] The release lead should be assigned to this issue.
-* [ ] Ensure all milestones complete.
-* [ ] All bugfix branches should be merged into master.
-* [ ] Ensure major changes are listed in cylc-doc (`reference/changes`).
 * [ ] List the milestones for release below (delete entries as appropriate).
+* [ ] All bugfix branches should be merged into master.
+* [ ] Ensure all milestones complete.
+* [ ] Ensure major changes are listed in cylc-doc (`reference/changes`).
 
 #### Testing:
 
-> Some testing is not fully automated and must be actioned by hand.
-    
+> Some testing is not fully automated and must be actioned by hand. Make sure
+> the tests for downstream components have been run against the latest
+> version of upstream repositories.
+
 * [ ] Run cylc-flow functional tests against locally available platforms.
-* [ ] cylc-doc (run a [test build](https://github.com/cylc/cylc-doc/actions/workflows/test.yml)).
-* [ ] cylc-rose (run the ["tests" action](https://github.com/cylc/cylc-rose/actions/workflows/tests.yml)).
-* [ ] cylc-uiserver (run the ["test" action](https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml)).
-    
+* [ ] cylc-doc (run a [test build](https://github.com/cylc/cylc-doc/actions/workflows/test.yml)) - (link workflow run).
+* [ ] cylc-rose (run the ["tests" action](https://github.com/cylc/cylc-rose/actions/workflows/tests.yml)) - (link workflow run).
+* [ ] cylc-uiserver (run the ["test" action](https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml)) - (link workflow run).
+
 #### Milestones for release:
 
 > The release actions close the milestones for you automatically.
@@ -73,7 +75,7 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 > <details>
 >   <summary>(logical release order)</summary>
 > <pre>R1 = """
->    cylc_flow & metomi_rose => cylc_rose
+>    metomi_isodatetime => cylc_flow & metomi_rose => cylc_rose
 >    cylc_flow & cylc_ui => cylc_uis
 > """</pre>
 > </details>
@@ -101,17 +103,19 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 >
 > <details>
 >   <summary>If the PR doesn't get opened automatically</summary>
->   <br />Create a new branch, change the version, reset the build number and
->   update the hash from the PyPi website.
->   <br />Finally trigger a rerender in a comment.
+>   <br />Open a new issue on the feedstock repository, select the
+>   "bot command" issue type and set the title to
+>   `@conda-forge-admin, please update version`.
 > </details>
 
 > Ensure dependencies are up to date and follow instructions on the PR. Some
 > repos may maintain a list of conda dependencies locally.
 
+> If you need to make changes, remember to re-render the feedstock
+> by commenting `@conda-forge-admin, please rerender` on the PR.
+
 * [ ] metomi-isodatetime
 * [ ] cylc-flow
-* [ ] cylc-ui
 * [ ] cylc-uiserver
 * [ ] metomi-rose
 * [ ] cylc-rose
@@ -121,12 +125,12 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 
 #### Misc (after the above has been completed):
 
+* metomi-rose
+  * [ ] build & deploy documentation (manual process ATM)
 * cylc-doc
   * [ ] bump intersphinx versions if required (`cylc-doc/src/conf.py`)
   * [ ] review [deployment instructions](https://github.com/cylc/cylc-doc#deploying)
   * [ ] deploy (run the "deploy" workflow on GitHub Actions) (can be re-deployed later if necessary)
-* metomi-rose
-  * [ ] build & deploy documentation (manual process ATM)
 * Discourse
   * [ ] announce the release
   * [ ] scan through the [major changes page](https://cylc.github.io/cylc-doc/stable/html/reference/changes.html)
@@ -135,15 +139,15 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 #### Metadata:
 
 GH Actions should automatically open PRs that bump the dev version of the projects. Check and merge them (can push alterations to PR branch if needed).
-    
+
 Pin downstream components to the next cylc-flow dev release:
 * [ ] cylc-uiserver (pin cylc-flow to next upcoming version)
 * [ ] cylc-rose (pin cylc-flow to next upcoming version)
-    
+
 Pin components in GH Actions tests:
 * [ ] cylc-doc (update versions in `.github/workflows/test.yml` "install libs to document" step(s) as appropriate)
 * [ ] metomi-rose (update versions in `.github/actions/install-libs` as appropriate)
-    
+
 #### Finally:
 
 * [ ] close this issue :rocket:
