@@ -1,49 +1,65 @@
 # PROPOSAL: Task Group Triggering
 
-Currently, `cylc trigger TASKS` makes all the TASKS trigger immediately.
+## Background: re-running a sub-graph in Cylc 7 vs Cylc 8
 
-It's very unlikely that that's what's wanted if there are any dependendencies
-between the tasks.
+For typical use cases where all affected tasks and their parents remain in the
+Cylc 7 task pool, it may be easier to rerun a past sub-graph in Cylc 7 than in
+Cylc 8.
 
-This proposal makes the case for changing the default triggering behaviour
-for multiple tasks, to:
- 1. respect any internal dependencies between them
- 2. set any off-group prerequisites 
+This is because it may require more graph knowledge to identify the
+initial task(s) and off-flow prerequisites of the sub-graph (Cylc 8) than to
+identify all of the sub-graph member tasks as a group (by family name or glob) 
+and reset them to waiting (Cylc 7).
 
-If there are no dependencies between the tasks, this makes no difference to
-the current behaviour because (2) results in immediate triggering of each task. 
+## Proposal
 
-If there are dependencies between the tasks, this makes rerunning a sub-graph
-in Cylc 8 as easy as it was in the simplest (i.e., all tasks still in the pool)
-Cylc 7 case.
+Currently, `cylc trigger TASKS` makes all the target tasks trigger immediately.
 
-## Background: Group re-run in Cylc 7 vs Cylc 8
+That's almost certainly not the desired behaviour if there is any dependence
+between the targeted tasks.
 
-Evidently some users find it easier to understand how to rerun a sub-graph
-in Cylc 7 than in Cylc 8.
+Note that *for any given group of tasks we can examine all prerequisites
+to find those that point outside of the group*. I propose changing the default
+triggering behaviour to:
+ 1. respect any internal dependencies between the target tasks
+ 2. automatically satisfy any off-group (i.e., off-flow) prerequisites 
 
-### Cylc 7 group rerun
+If there are no dependencies between the target tasks, this replicates
+current behaviour because (2) automatically satisfies all the prerequisites.
 
-#### C7_a: Cylc 7 (if group members and upstream parents still in task pool):
+If there are dependencies between the targeted tasks, this makes rerunning
+any sub-graph in Cylc 8 very easy.
+
+-----
+
+## Comparison of Cylc 7 and 8 (current) for sub-graph rerun
+
+### Cylc 7 sub-graph rerun
+
+#### C7_a group members and their upstream parents remain in the task pool
+
 1. reset all group members to waiting (e.g. by family name)
 
-#### C7_b: Cylc 7 (if any group members or parents have left the pool):
+#### C7_b (if any group members or parents have left the pool)
+
 1. insert all group members as waiting
 2. insert all off-flow parents as waiting
 3. reset all the parents to succeeded
 
 Dependency matching will then cause the sub-graph to run correctly. 
 
-### Cylc 8 group rerun
+### Cylc 8 sub-graph rerun
 
-#### C8_a: Cylc 8 (general, new flow):
-1. trigger the initial task(s) of the sub-graph with `--flow=new`
-2. set any off-flow prerequisites
+#### C8_a general, new flow
+
+1. trigger the initial task(s) of the sub-graph (with `--flow=new`)
+2. satisfy any off-flow prerequisites (with `--flow=n`)
 
 In this case, you might need to deal with flow-on downstream of the sub-graph if it
 doesn't dead-end or merge with an existing (typically failed incomplete) task.
 
-#### C8_b: Cylc 8 (general, re-flow):
+#### C8_b general, re-flow
+
 1. `cylc remove` all group members to erase the previous flow
 2. trigger the initial task(s) of the sub-graph
 3. set any off-flow prerequisites
