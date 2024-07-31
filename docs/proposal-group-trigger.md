@@ -68,6 +68,13 @@ downstream tasks beyond the group anyway.
 
 But we could make it option to not flow beyond the bounds of the task group.
 
+### Example
+
+![graph](img/rerun.png)
+
+Task `b` fails and as a result we need to rerun all the yellow tasks.
+Off-flow prerequisites and outputs are marked with target icons.
+
 -----
 
 ## Appendix: Comparison of Cylc 7 and 8 (current) sub-graph rerun
