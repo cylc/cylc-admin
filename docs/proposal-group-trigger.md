@@ -23,12 +23,12 @@ If there are no dependencies between the target tasks, this replicates current
 behaviour because (2) automatically satisfies all the prerequisites.
 
 If there are dependencies between the targeted tasks, this makes rerunning any
-sub-graph in Cylc 8 very easy.
+sub-graph in Cylc 8 (where the tasks can be identified as a group) very easy.
 
 ## Implementation
 
-For the selected group of tasks, examine all prerequisites to find any that
-point outside of the group. Satsifying these external prerequisites will:
+For the group of tasks, examine all prerequisites to find and satisfy any that
+point outside of the group, to:
 - immediately trigger the "initial tasks" of the group, and
 - satisfy any off-flow prerequisites that would cause a stall
 
