@@ -14,13 +14,11 @@ and reset them to waiting (Cylc 7).
 ## Proposal
 
 Currently, `cylc trigger TASKS` makes all the target tasks trigger immediately.
-
 That's almost certainly not the desired behaviour if there is any dependence
-between the targeted tasks.
+between them.
 
-Note that *for any given group of tasks we can examine all prerequisites
-to find those that point outside of the group*. I propose changing the default
-triggering behaviour to:
+I propose that we change the
+default triggering behaviour to:
  1. respect any internal dependencies between the target tasks
  2. automatically satisfy any off-group (i.e., off-flow) prerequisites 
 
@@ -29,6 +27,13 @@ current behaviour because (2) automatically satisfies all the prerequisites.
 
 If there are dependencies between the targeted tasks, this makes rerunning
 any sub-graph in Cylc 8 very easy.
+
+### Implementation
+
+For any group of tasks we can examine all prerequisites to find those that point
+outside of the group. Setting those prerequisites satisfied will:
+- immediately trigger the "initial tasks" of the group, and
+- satisfy any off-flow prerequisites that would cause a stall 
 
 -----
 
