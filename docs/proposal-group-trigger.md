@@ -2,12 +2,11 @@
 
 ## Background: re-running a sub-graph in Cylc 7 vs Cylc 8
 
-**If** all sub-graph tasks **and** their parents remain in the Cylc 7 task pool
-it may be easier to rerun a past sub-graph in Cylc 7 than in (current) Cylc 8.
-
-That's because it arguably requires more graph knowledge to identify initial
-task(s) and off-flow prerequisites (Cylc 8) than to identify all member tasks
-as a group (by family name or glob) and reset them to waiting (Cylc 7).
+If all affected tasks and their parents are still in the Cylc 7 task pool it may be
+easier to rerun a past sub-graph in Cylc 7 than in current Cylc 8, because
+it requires some understanding of the graph to identify initial tasks to trigger and
+off-flow prerequisites to set in Cylc 8, versus selecting and resetting affected
+tasks in the Cylc 7 GUI.
 
 ## Proposal
 
@@ -15,58 +14,56 @@ Currently, `cylc trigger TASKS` makes all of the target tasks trigger immediatel
 which is likely not the desired behaviour if there is any dependence between them
 (so, currently, we just avoid doing that).
 
-I propose that we change default manual triggering behaviour to:
+I propose that we change the default manual triggering to:
  1. respect any internal dependencies between the target tasks, and
  2. automatically satisfy any off-group (i.e., off-flow) prerequisites
 
 If there are no dependencies between the target tasks, this replicates current
 behaviour because (2) automatically satisfies all the prerequisites.
 
-If there are dependencies between the targeted tasks, this makes rerunning any
-sub-graph in Cylc 8 (where the tasks can be identified as a group) very easy.
+If there are any internal dependencies, this makes rerunning any sub-graph in
+Cylc 8 (where the tasks can be identified as a group) very easy.
 
 ## Implementation
 
-For the group of tasks, examine all prerequisites to find and satisfy any that
-point outside of the group, to:
-- immediately trigger the "initial tasks" of the group, and
-- satisfy any off-flow prerequisites that would cause a stall
+The group of tasks to trigger can be identified by family name, glob, or list.
+
+Examine all prerequisites, and set (satisfy) any that point outside of the group, to:
+- immediately trigger the initial tasks of the group, and
+- satisfy any off-flow prerequisites that would otherwise cause a stall
 
 ### Details
 
-   1. match n=0 and future tasks to command inputs and record all the task IDs
+   1. match n=0 and future tasks to command args, and record all the task IDs
    1. (if not triggering with `--flow=new` then erase the previous flow from
-       each task in the group, or perhaps require separate use of
-       `cylc remove` for that)
+      each task in the group - depends on remove extension implementation)
    1. examine the prerequisites of each task in the group
        - for n=0 tasks, just query their prerequisites
-       - for future tasks, use taskdef methods to predict their prerequisites
-   1. unsatisfy any in-flow prerequisites in existing (n=0) tasks
-       - ensures that dependencies get waited on when the tasks run
-       - (not needed for future tasks)
+       - for future tasks, use taskdef methods to compute their prerequisites
    1. satisfy any off-flow prerequisites
-       - spawns the owner tasks into n=0, and avoid future stall
-   1. `cylc set --pre=all` any parentless in-group tasks
-      (i.e. promote them to the task pool)
+       - this spawns the owner tasks into n=0, avoiding a future stall
+   1. spawn any parentless tasks in the group (i.e. `cylc set --pre=all`)
 
-### CLI
 
-Even though the implementation just sets prerequisites within the target
-task group, the trigger command is the appropriate home for this because
-it targets multiple tasks at once, and the intention is always to trigger
-the (initial tasks of) the group right away - whereas
-`cylc set` just sets individual prerequisites or outputs on a single task.
+Note this also solves the problem of how to "trigger a whole cycle" easily, because
+it will automatically identify the initial tasks of the cycle, and set any off-flow
+(inter-cycle) prerequisites.
 
-### Outputs?
+### UI
 
-In principle we could also remove or set out-of-group outputs to prevent
-downstream flow-on.
+This should become the default behaviour of the trigger command.
 
-However, we would normally want the flow to continue if the rerun is successful,
-and if `cylc remove` is used first (for a past sub-graph) then it won't re-run
-downstream tasks beyond the group anyway.
+### QUESTIONS
 
-But we could make it option to not flow beyond the bounds of the task group.
+#### Un-satisfy existing in-group preprerequisites in existing n=0 tasks?
+
+Probably not. Users might want to pre-set some prerequisites before triggering
+the group.
+
+#### Prevent flow-on downstream of the group?
+
+I don't think we should do this. Rerunning a group of tasks should behave just
+like rerunning a single task in this respect.
 
 ### Example
 
