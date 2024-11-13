@@ -155,9 +155,12 @@ run mode called "skip" which can be configured via `cylc broadcast`.
    This means prerequisites which have been satisfied by `cylc trigger` or
    `cylc set` will not be unset as the result of `cylc remove` as these
    have been manually satisfied by separate interventions.
-3. If removing a task causes all of the prerequisites on a downstream task to be
-   unset (i.e. if the downstream task was spawned as a result of outputs from
-   this task alone) then the downstream task shall be removed from the pool.
+3. If removing a task causes all of the prerequisites on a waiting downstream
+   task to be unset (i.e. if the downstream task was spawned as a result of
+   outputs from this task alone, but the task has not yet submitted) then the
+   downstream task shall be removed from the pool.
+   This navigates the SoD pre-spawning of tasks with partially satisfied
+   prerequisites.
 4. This command shall not be extended to cover the selective un-setting of
    specific prerequisites or outputs.
 5. When all flows are removed from active tasks, Cylc should first attempt to
