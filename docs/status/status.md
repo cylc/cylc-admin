@@ -230,11 +230,11 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </tr>
 
 <tr>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/135?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/135" />
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/137?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/137" />
 </a></td>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/135?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/135" />
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/137?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/137" />
 </a></td>
 </tr>
 
@@ -244,24 +244,6 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </a></td>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/129?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/129" />
-</a></td>
-</tr>
-
-<tr>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/125?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/125" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/125?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/125" />
-</a></td>
-</tr>
-
-<tr>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/137?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/137" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/137?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/137" />
 </a></td>
 </tr>
 
@@ -436,15 +418,6 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </a></td>
   <td><a href="https://github.com/cylc/cylc-uiserver/milestone/31?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/31" />
-</a></td>
-</tr>
-
-<tr>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/29?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/29" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/29?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/29" />
 </a></td>
 </tr>
 
