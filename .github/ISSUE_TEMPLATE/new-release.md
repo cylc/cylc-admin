@@ -145,6 +145,7 @@ Downstream components will need to have their dependencies bumped:
 
 * [ ] cylc-uisever (pin to next minor cylc-flow version)
 * [ ] cylc-rose (pin to next minor cylc-flow and metomi-rose versions)
+* [ ] cylc-admin (update the [meta-release config](https://github.com/cylc/cylc-admin/blob/master/docs/status/branches.json))
 
 #### Finally:
 
