@@ -16,19 +16,19 @@
         "cylc/cylc.vim"
     ],
     "meta_releases": {
-        "8.4": {
+        "8.5": {
             "cylc/cylc-flow": "master",
             "cylc/cylc-doc": "master",
             "cylc/cylc-rose": "master",
             "cylc/cylc-uiserver": "master",
             "metomi/rose": "master"
         },
-        "8.3": {
-            "cylc/cylc-flow": "8.3.x",
-            "cylc/cylc-doc": "8.3.x",
-            "cylc/cylc-rose": "1.4.x",
-            "cylc/cylc-uiserver": "1.5.x",
-            "metomi/rose": "2.3.x"
+        "8.4": {
+            "cylc/cylc-flow": "8.4.x",
+            "cylc/cylc-doc": "8.4.x",
+            "cylc/cylc-rose": "1.5.x",
+            "cylc/cylc-uiserver": "1.6.x",
+            "metomi/rose": "2.4.x"
         }
     },
     "branch_actions": {
