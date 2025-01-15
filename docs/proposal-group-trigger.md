@@ -40,13 +40,20 @@ Examine all prerequisites, and satisfy any that come from outside of the group, 
 ### Details
 
    1. match n=0 and future tasks to command args, and record all the task IDs
-   1. by default (no use of `--flow`) erase the flow history from each task
+   1. if `--flow` is not used, erase (remove) the flow history for *past* (not `n=0`) tasks
+      - triggering a group of past tasks without starting a new flow or erasing flow history
+      is pointless - only the initial tasks will run
+      - occasionally we need to not erase flow history in this way (e.g. for triggering the
+      same task with `--wait` to complete different outputs): use explicit `--flow=all`
+      - auto-removing triggered `n=0` tasks may be dangerous, require explicit `cylc remove`
+      for that
    1. examine the prerequisites of each task in the group
        - for n=0 tasks, just query their prerequisites
        - for future tasks, use taskdef methods to compute their prerequisites
    1. satisfy any off-group prerequisites
        - this spawns the owner tasks into n=0, avoiding a future stall
    1. spawn any parentless tasks in the group (i.e., `cylc set --pre=all`)
+
 
 ### UI
 
