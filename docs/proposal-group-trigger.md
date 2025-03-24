@@ -116,15 +116,18 @@ Off-group prerequisites and outputs are marked with target icons.
 Cylc 7 intervention:
 
 ```bash
-cylc reset FAMILY.1 -s waiting
+cylc reset FAMILY.1 -s waiting <workflow>
 ```
 
 Cylc 8.4.0 intervention:
 
+(Aside: as noted above, we assume here that inactive task globbing works;
+to actually run with 8.4 replace `FAMILY` with explicit member names.)
+
 ```bash
-cylc remove wflow// //1/a //1/f_m1 //1/g_m1 //1/f_m2 //1/g_m2 //1/f_m3 //1/g_m3
-cylc set wflow// //1/a //1/f_m1 --pre=1/start --pre=1/x
-cylc remove wflow// //1/b  # must be done after or workflow will shut down
+cylc pause <workflow>  # avoid shutdown on empty task pool
+cylc remove <workflow>//1/FAMILY
+cylc set <workflow>// //1/a //1/f_m1 --pre=1/start --pre=1/x
 ```
 
 Proposed intervention:
