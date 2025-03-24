@@ -119,7 +119,7 @@ Off-group prerequisites and outputs are marked with target icons.
 ### Cylc 7 intervention
 
 ```bash
-cylc reset FAMILY.1 -s waiting <workflow>
+cylc reset -s waiting <workflow> FAMILY.1
 ```
 
 ### Cylc 8.4.0 intervention
