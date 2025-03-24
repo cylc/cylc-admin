@@ -33,6 +33,10 @@ any inter-cycle (off-group) prerequisites.
 
 The group of tasks to trigger can be identified by family name, glob, or list.
 
+> [!NOTE]
+> inactive tasks can't yet be matched by glob or family name - to be
+> addressed by https://github.com/cylc/cylc-flow/issues/5827
+
 Examine all prerequisites, and satisfy any that come from outside of the group, to:
 - immediately trigger the initial tasks of the group, and
 - satisfy any off-flow prerequisites that would otherwise cause a stall
