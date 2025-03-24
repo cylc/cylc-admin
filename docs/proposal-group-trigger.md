@@ -138,7 +138,7 @@ cylc set --flow=new --pre=1/x --pre=1/start <workflow> //1/f_m1 //1/a
 Or (b) trigger initial tasks and set remaining off-flow prerequisites:
 
 ```bash
-cylc trigger --flow=2 <workflow> //1/a
+cylc trigger --flow=2 <workflow>//1/a
 cylc set --flow=2 --pre=1/x <workflow>//1/f_m1
 ```
 
@@ -158,7 +158,7 @@ cylc play <workflow>
 ### Proposed intervention
 
 ```bash
-cylc trigger //1/FAMILY
+cylc trigger <workflow>//1/FAMILY
 ```
 
 -----
