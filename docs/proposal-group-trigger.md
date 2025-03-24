@@ -5,7 +5,7 @@
 If all affected tasks and their parents are still in the Cylc 7 task pool it
 may be easier to rerun a past sub-graph in Cylc 7 than in current Cylc 8,
 because Cylc 8 requires some understanding of the graph to identify initial
-tasks to trigger and off-flow prerequisites to set to prevent a stall, versus
+tasks to trigger and off-group prerequisites to set to prevent a stall, versus
 selecting and resetting pool tasks in the Cylc 7 GUI.
 
 ## Proposal
@@ -36,12 +36,13 @@ The group of tasks to trigger can be identified by family name, glob, or list.
 
 > [!NOTE]
 > Inactive tasks can't yet be matched by glob or family name - to be
-> addressed by https://github.com/cylc/cylc-flow/issues/5827
+> addressed by https://github.com/cylc/cylc-flow/issues/582
+> For the purposes of this proposal we will assume that work has been done.
 
 Examine all prerequisites, and satisfy any that come from outside of the group, to:
 
 - immediately trigger the initial tasks of the group, and
-- satisfy any off-flow prerequisites that would otherwise cause a stall
+- satisfy any off-group prerequisites that would otherwise cause a stall
 
 ### Details
 
@@ -81,7 +82,56 @@ No: a triggered group should behave just a single task in this respect.
 ![graph](img/rerun.png)
 
 Task `b` fails and as a result we need to rerun all the yellow tasks.
-Off-flow prerequisites and outputs are marked with target icons.
+Off-group prerequisites and outputs are marked with target icons.
+
+```cylc
+# suite.rc  (Cylc 7 / 8 compatible example)
+
+[scheduling]
+  cycling mode = integer
+  initial cycle point = 1
+  [[dependencies]]
+    [[[R1]]]
+      graph = """
+        start => a
+        x => f_m1
+        a => f_m1 => g_m1 => b
+        a => f_m2 => g_m2 => b
+        a => f_m3 => g_m3 => b
+        b => end
+        g_m3 => y
+      """
+
+[runtime]
+  [[b]]
+    script = [[ "${CYLC_TASK_SUBMIT_NUMBER}" == '1' ]]
+  [[FAMILY]]
+  [[a, f_m1, f_m2, f_m3, g_m1, g_m2, g_m3, b]]
+    inherit = FAMILY
+```
+
+Task `b` fails and as a result we need to rerun all the yellow tasks.
+Off-group prerequisites and outputs are marked with target icons.
+
+Cylc 7 intervention:
+
+```bash
+cylc reset FAMILY.1 -s waiting
+```
+
+Cylc 8.4.0 intervention:
+
+```bash
+cylc remove wflow// //1/a //1/f_m1 //1/g_m1 //1/f_m2 //1/g_m2 //1/f_m3 //1/g_m3
+cylc set wflow// //1/a //1/f_m1 --pre=1/start --pre=1/x
+cylc remove wflow// //1/b  # must be done after or workflow will shut down
+```
+
+Proposed intervention:
+
+```bash
+cylc trigger //1/FAMILY
+```
 
 -----
 
@@ -96,7 +146,7 @@ Off-flow prerequisites and outputs are marked with target icons.
 #### C7_b (if any group members or parents have left the pool)
 
 1. insert all group members as waiting
-2. insert all off-flow parents as waiting
+2. insert all off-group parents as waiting
 3. reset all the parents to succeeded
 
 Dependency matching will then cause the sub-graph to run correctly.
@@ -106,7 +156,7 @@ Dependency matching will then cause the sub-graph to run correctly.
 #### C8_a general, new flow
 
 1. trigger the initial task(s) of the sub-graph (with `--flow=new`)
-2. satisfy any off-flow prerequisites (with `--flow=n`)
+2. satisfy any off-group prerequisites (with `--flow=n`)
 
 In this case, you might need to deal with flow-on downstream of the
 sub-graph if it doesn't dead-end or merge with an existing
@@ -116,7 +166,7 @@ sub-graph if it doesn't dead-end or merge with an existing
 
 1. `cylc remove` all group members to erase the previous flow
 2. trigger the initial task(s) of the sub-graph
-3. set any off-flow prerequisites
+3. set any off-group prerequisites
 
 In this case, flow-on downstream of the sub-graph is not a problem. Any
 downstream tasks that already ran won't rerun in the same flow, and otherwise
@@ -129,10 +179,10 @@ pool, but that is often the case when dealing with same-cycle problems. If so,
 users can get away without understanding the task pool.
 
 C7_b is the least intuitive of all - it requires understanding the task pool,
-task insertion, and the graph (e.g. to identify off-flow parent tasks).
+task insertion, and the graph (e.g. to identify off-group parent tasks).
 
 C8_a is conceptually clean, and general, but it does require an understanding of
-the graph structure to identify initial tasks and off-flow prerequisites, and it
+the graph structure to identify initial tasks and off-group prerequisites, and it
 might result in unwanted downstream activity.
 
 C8_b is like C8_a, but trades off unwanted downstream activity for `cylc remove`.
