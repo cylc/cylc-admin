@@ -163,7 +163,7 @@ cylc trigger <workflow>//1/FAMILY
 
 -----
 
-## Appendix: Comparison of Cylc 7 and 8 (current) sub-graph rerun
+## Appendix: Comparison of Cylc 7 and 8.4 sub-graph rerun
 
 ### Cylc 7 sub-graph rerun
 
@@ -190,11 +190,13 @@ or,
 
 1. satisfy all initial prerequisites (with --flow=new)
 
-#### C8_b general,k re-flow
+#### C8_b general, same flow
 
-1. `cylc remove` all group members to erase the previous flow
-2. trigger the initial task(s) of the sub-graph
-3. set any off-group prerequisites
+1. pause the workflow, in case `remove` empties the task pool
+2. `cylc remove` all group members to erase the previous flow
+3. trigger the initial task(s) of the sub-graph
+4. set any off-group prerequisites
+5. resume the workflow
 
 ### Comments
 
