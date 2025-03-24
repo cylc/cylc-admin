@@ -106,10 +106,11 @@ Off-group prerequisites and outputs are marked with target icons.
 
 [runtime]
   [[b]]
-    script = [[ "${CYLC_TASK_SUBMIT_NUMBER}" == '1' ]]
+    script = [[ "${CYLC_TASK_SUBMIT_NUMBER}" != '1' ]]
   [[FAMILY]]
   [[a, f_m1, f_m2, f_m3, g_m1, g_m2, g_m3, b]]
     inherit = FAMILY
+  [[start, x, end, y]]
 ```
 
 Task `b` fails and as a result we need to rerun all the yellow tasks.
