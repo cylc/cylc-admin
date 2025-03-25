@@ -69,9 +69,6 @@ This should become the default behaviour of the trigger command.
 
 ### QUESTIONS
 
-#### Un-satisfy existing in-group preprerequisites in existing n=0 tasks?
-
-No: users might want to pre-set some prerequisites before triggering the group.
 
 #### Prevent flow-on downstream of the group?
 
