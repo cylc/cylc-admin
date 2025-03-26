@@ -69,8 +69,8 @@ any inter-cycle (off-group) prerequisites.
      will trigger the group to rerun in the same flow
    - (resulting flow numbers are used throughout, below, as "the flow")
 2. Identify all off-group prerequisites (i.e., dependence on tasks outside
-   of the group) by examining each member task.
-   - Take account of any broadcasts that affect prerequisites
+   of the group) by examining each member task definition.
+   - (Do not use `n=0` task proxies for this in case they were spawned prior to a reload)
 3. Identify all group start tasks: those with only off-group prerequisites
    or which are parentless.
 4. Remove (`cylc remove`) all group tasks from the flow, except for the
