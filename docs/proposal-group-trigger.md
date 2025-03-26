@@ -2,11 +2,11 @@
 
 ## Background: re-running a sub-graph in Cylc 7 vs Cylc 8
 
-If all affected tasks and their parents are still in the Cylc 7 task pool it
-may be easier to rerun a past sub-graph in Cylc 7 than in current Cylc 8,
+It may be easier to rerun a past sub-graph in Cylc 7 than in current Cylc 8, if
+all affected Cylc 7 tasks and their parents are still present in the task pool,
 because Cylc 8 requires some understanding of the graph to identify initial
-tasks to trigger and off-group prerequisites to set to prevent a stall, versus
-selecting and resetting pool tasks in the Cylc 7 GUI.
+tasks (to trigger) and off-group prerequisites (to set to prevent a stall) versus
+selecting and resetting pool tasks  to waiting in Cylc 7.
 
 ## Proposal
 
@@ -33,46 +33,69 @@ any inter-cycle (off-group) prerequisites.
 ## Implementation
 
 > [!NOTE]
-> For this proposal we assume that inactive task globbing works
-> [TBD cylc-flow 5827](https://github.com/cylc/cylc-flow/issues/5827).
-> Replace family IDs with member IDs, to make examples here work without globbing.
+> Commands for triggering (etc.) multiple tasks look simpler when targeting a
+> family name or glob, vs a long list of individual tasks. For maximum clarity,
+> this proposal therefore assumes in a couple of places that inactive task
+> globbing works already in Cylc 8.
+> Until [that work](https://github.com/cylc/cylc-flow/issues/5827) is done just
+> replace family names with member names below to get functional commands.
+
+### Overview
 
 - Identify the group of tasks by family name, glob, or list of explicit IDs.
 - Examine the prerequisites of all group members (including inactive tasks)
 - Satisfy any off-group prerequisites.
-  - "initial tasks" with only off-group prerequisites will trigger immediately
+  - group start tasks (with only off-group prerequisites) will trigger immediately
   - others (partially satisfied) ensure that the triggered flow won't stall
 - Remaining (unsatisfied) prerequisites ensure that the flow respects the graph
 
+> [!NOTE]
+> Manually triggering an individual task causes it to run, even if it already
+> ran in the same flow. Similarly, manually triggering a group will cause the
+> whole group to run, even if all or part of it already ran in the same flow.
+>
+> If you want to trigger a sub-graph without re-running members that already
+> ran in the same flow, use flow-based methods rather than group trigger
+> (i.e., just trigger the initial tasks, and manually set off-flow
+> prerequisites to avoid a stall).
+
 ### Details
 
-   1. match n=0 and future tasks to command args, and record all the task IDs
-   1. if `--flow` is not used, erase (remove) the flow history for *past*
-      (not `n=0`) tasks
-      - triggering a group of past tasks without starting a new flow or erasing
-       flow history is pointless - only the initial tasks will run
-      - occasionally we need to not erase flow history in this way (e.g. for
-        triggering the same task with `--wait` to complete different outputs):
-        use explicit `--flow=all`
-      - auto-removing triggered `n=0` tasks may be dangerous, require
-        explicit `cylc remove` for that
-   1. examine the prerequisites of each task in the group
-       - for n=0 tasks, just query their prerequisites
-       - for future tasks, use taskdef methods to compute their prerequisites
-   1. satisfy any off-group prerequisites
-       - this spawns the owner tasks into n=0, avoiding a future stall
-   1. spawn any parentless tasks in the group (i.e., `cylc set --pre=all`)
+1. The user provides `cylc trigger` with a group of task IDs, by list or
+   (when supported) glob.
+   - with `--flow=new`, or if a new flow number is specified, this
+     will trigger the group to run as a new flow
+   - without `--flow`, or if a current flow number is specified, this
+     will trigger the group to rerun in the same flow
+   - (resulting flow numbers are used throughout, below, as "the flow")
+2. Identify all off-group prerequisites (i.e., dependence on tasks outside
+   of the group) by examining each member task.
+   - Take account of any broadcasts that affect prerequisites
+3. Identify all group start tasks: those with only off-group prerequisites
+   or which are parentless.
+4. Remove (`cylc remove`) all group tasks from the flow, except for the
+   following `n=0` tasks which don't need to be removed:
+    - `waiting` group start tasks:
+      leave these to trigger as expected if already queued
+    - `preparing`, `submitted`, and `running` group start tasks:
+      these have already been triggered
+    - Note:
+      - This erases flow history (if any) to allow rerun in the same flow
+      - Any (non group start) tasks that are `preparing`, `submitted` or
+        `running` will be killed by the removal
+      - Do not shut down here if the removal empties the task pool
+5. Spawn any parentless group tasks in the flow, as per `cylc set --pre=all`.
+6. Satisfy all off-group prerequisites in the group, per `cylc set --pre=...`
+   - Group start tasks will trigger immediately (those already in `n=0` will have
+     the flow merged in)
+   - Others will spawn with off-group prerequisites satisfied, to prevent a stall
+7. Satisfy any xtriggers within the group (consistent with current trigger behaviour).
+8. Any queued tasks in the group will be submitted (bypassing the queue, consistent
+   with current trigger behaviour).
 
 ### UI
 
 This should become the default behaviour of the trigger command.
-
-### QUESTIONS
-
-
-#### Prevent flow-on downstream of the group?
-
-No: a triggered group should behave just a single task in this respect.
 
 -----
 
