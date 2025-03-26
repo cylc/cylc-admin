@@ -63,11 +63,11 @@ any inter-cycle (off-group) prerequisites.
 
 1. The user provides `cylc trigger` with a group of task IDs, by list or
    (when supported) glob.
-   - with `--flow=new`, or if a new flow number is specified, this
+   - with `--flow=new`, or with a *new* flow number via `--flow=N`, this
      will trigger the group to run as a new flow
-   - without `--flow`, or if a current flow number is specified, this
-     will trigger the group to rerun in the same flow
-   - (resulting flow numbers are used throughout, below, as "the flow")
+   - without `--flow`, or with a *current* flow number via `--flow=N`, this
+     will erase the flow history and trigger the group to rerun in the same flow
+   - (use the resulting flow numbers wherever "the flow" is mentioned below)
 2. Identify all off-group prerequisites (i.e., dependence on tasks outside
    of the group) by examining each member task definition.
    - (Do not use `n=0` task proxies for this in case they were spawned prior to a reload)
