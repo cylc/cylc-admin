@@ -36,7 +36,7 @@
         "cylc/cylc-rose": ["tests"],
         "cylc/cylc-uiserver": ["test", "build"],
         "cylc/cylc-doc": ["test"],
-        "metomi/rose": ["test"]
+        "metomi/rose": ["test", "build"]
     },
     "nightly_actions": {
         "cylc/cylc-doc": ["nightly"],
