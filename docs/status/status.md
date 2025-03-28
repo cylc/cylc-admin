@@ -121,6 +121,8 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </a></td>
     <td><a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3Amaster">
   <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3Amaster">
+  <img src="https://github.com/metomi/rose/actions/workflows/build.yml/badge.svg?branch=master" />
 </a></td>
   </tr>
 </table>
@@ -196,6 +198,8 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </a></td>
     <td><a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3A2.4.x">
   <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=2.4.x" />
+</a> <a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3A2.4.x">
+  <img src="https://github.com/metomi/rose/actions/workflows/build.yml/badge.svg?branch=2.4.x" />
 </a></td>
   </tr>
 </table>
