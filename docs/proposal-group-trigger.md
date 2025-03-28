@@ -8,6 +8,8 @@ because Cylc 8 requires some understanding of the graph to identify initial
 tasks (to trigger) and off-group prerequisites (to set to prevent a stall) versus
 selecting and resetting pool tasks  to waiting in Cylc 7.
 
+("Off-group prerequisite" means a dependency on tasks outside of the group).
+
 ## Proposal
 
 Currently, `cylc trigger TASKS` makes all of the target tasks trigger immediately,
@@ -61,36 +63,38 @@ any inter-cycle (off-group) prerequisites.
 
 ### Details
 
-1. The user provides `cylc trigger` with a group of task IDs, by list or
-   (when supported) glob.
-   - with `--flow=new`, or with a *new* flow number via `--flow=N`, this
-     will trigger the group to run as a new flow
-   - without `--flow`, or with a *current* flow number via `--flow=N`, this
-     will erase the flow history and trigger the group to rerun in the same flow
-   - (use the resulting flow numbers wherever "the flow" is mentioned below)
-2. Identify all off-group prerequisites (i.e., dependence on tasks outside
-   of the group) by examining each member task definition.
-   - (Do not use `n=0` task proxies for this in case they were spawned prior to a reload)
-3. Identify all group start tasks: those with only off-group prerequisites
-   or which are parentless.
-4. Remove (`cylc remove`) all group tasks from the flow, except for the
-   following `n=0` tasks which don't need to be removed:
-    - `waiting` group start tasks:
-      leave these to trigger as expected if already queued
-    - `preparing`, `submitted`, and `running` group start tasks:
-      these have already been triggered
-    - Note:
-      - This erases flow history (if any) to allow rerun in the same flow
-      - Any (non group start) tasks that are `preparing`, `submitted` or
-        `running` will be killed by the removal
-      - Do not shut down here if the removal empties the task pool
-5. Spawn any parentless group tasks in the flow, as per `cylc set --pre=all`.
-6. Satisfy all off-group prerequisites in the group, per `cylc set --pre=...`
-   - Group start tasks will trigger immediately (those already in `n=0` will have
-     the flow merged in)
-   - Others will spawn with off-group prerequisites satisfied, to prevent a stall
-7. Satisfy any xtriggers within the group (consistent with current trigger behaviour).
-8. Any queued tasks in the group will be submitted (bypassing the queue, consistent
+>[!NOTE]
+>
+>- A "group start task" is parentless OR has only off-group prerequisites
+> (these need to trigger first to kick off the flow).
+>- Use the same flow numbers, as determined by the trigger command in the
+> usual way, throughout the operation (referred to as "the flow" below)
+> to run the group in a new flow or to rerun it in the same flow.
+>- For active (n=0) tasks, recompute prerequisites from the taskdef in
+> case the task proxies were spawned prior to a reload.
+
+1. Provide `cylc trigger` with task IDs, by list or (in future) glob.
+2. Match the command line to find all group members, both active (n=0) and
+   inactive.
+3. Examine all active group members:
+   - Identify group start tasks, by absence of in-group prerequisites.
+   - Satisfy the prerequisites of `waiting` group start tasks, in the flow.
+   - Merge the flow to `preparing`, `submitted`, and `running` group start
+   tasks, but otherwise leave them be (they already triggered).
+   - (*) Record all the other active tasks, for removal (next).
+4. Remove all inactive and type-(*) active group members, in the flow,
+  to allow rerun.
+   - This will kill other killable active tasks (if any).
+   - Do not shut down if removal empties the task pool (actually
+     not a problem if the entire operation is done in a single method).
+5. Examine all removed group members (both inactive and formerly active):
+   - Spawn parentless members in the flow (as per `cylc set --pre=all`).
+   - Satisfy all off-group prerequisites (as per `cylc set --pre=...`).
+   - (Group start tasks will trigger, others will spawn with off-group
+     prerequisites satisfied.)
+6. Satisfy any xtriggers in the group (consistent with current trigger
+     behaviour).
+7. Submit any queued tasks in the group (bypassing the queue, consistent
    with current trigger behaviour).
 
 ### UI
