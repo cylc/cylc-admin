@@ -73,8 +73,6 @@ Please edit `branches.json` and raise a pull request, this file will be automati
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml/badge.svg?branch=master" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/build.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/build.yml/badge.svg?branch=master" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_manylinux.yml?query=branch%3Amaster">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_manylinux.yml/badge.svg?branch=master" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml/badge.svg?branch=master" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_tutorial_workflow.yml?query=branch%3Amaster">
@@ -150,8 +148,6 @@ Please edit `branches.json` and raise a pull request, this file will be automati
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml/badge.svg?branch=8.4.x" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/build.yml?query=branch%3A8.4.x">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/build.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_manylinux.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_manylinux.yml/badge.svg?branch=8.4.x" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml?query=branch%3A8.4.x">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml/badge.svg?branch=8.4.x" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_tutorial_workflow.yml?query=branch%3A8.4.x">
