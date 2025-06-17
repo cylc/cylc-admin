@@ -1,44 +1,10 @@
 # Creating a release for Cylc
 
-**Note:** The release process has been substantially automated. For reference,
-the old release process is documented at [create-a-release-old.md](create-a-release-old.md).
+**Bugfix releases:** Please trigger the CI release process as outlined below.
 
-**Warning:** The release process is still in flux, these instructions will
-drift from ground truth.
-
-## Release Process
-
-Create a new release issue on this repository, follow the instructions there.
-
-
-## Before you start (First time)
-
-- Create a PyPI account for yourself if you don't already have one.
-  [Sign up page](https://pypi.org/account/register/).
-  Get an owner to add you as a maintainer or owner.
-- Go to the [repository secrets](https://github.com/cylc/cylc-flow/settings/secrets)
-  (Settings tab of the repo on GitHub and choose "Secrets" on the left).
-  Check for the presence of the `PYPI_TOKEN` secret.
-  - If it doesn't exist,
-    [create an API token](https://pypi.org/help/#apitoken), **making sure to
-    limit the scope to the project**. Copy the token, including the `pypi-`
-    prefix, and add it to the repo as a secret called `PYPI_TOKEN`. (Don't
-    worry about the PyPI instructions for using the token.)
-
-## Test the docs
-
-For any projects which are auto-documented by cylc-doc, currently:
-
-* cylc-flow
-* cylc-rose
-* cylc-uiserver
-* metomi-rose
-
-Ensure the docs build against master by manually triggering the test workflow
-in cylc-doc.
-
-This will catch syntax errors, broken URLs etc which need to be fixed
-prior to releasing the project.
+**Major/Minor releases:** Please
+[open a "release" issue in cylc-admin](https://github.com/cylc/cylc-admin/issues/new/choose).
+Fill out the details in the issue and refer to the instructions outlined below.
 
 ## Stage 1: trigger the GitHub Actions workflow
 

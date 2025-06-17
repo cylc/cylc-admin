@@ -1,121 +1,166 @@
-# Getting Started with Cylc 8
+# Getting Started with Cylc Development
 
-## Development Installation
+## Development Setup
 
-> **Note**: We recommend developing in a Conda environment as this provides a
-  more standard setup though if you ensure the non-python dependencies
-  are installed correctly you can bypass this.
+1. Say Hi On The [Cylc Developers Chat](https://matrix.to/#/#cylc-general:matrix.org).
 
-1. Install Conda Deps:
+2. Install System Dependencies:
 
-   The cylc-flow Conda dependencies are in the cylc-flow repository
-   https://github.com/cylc/cylc-flow/blob/master/conda-environment.yml
+   > **Note**: We recommend developing in a Conda environment, although it
+     is possible, though less flexible, to install the required system
+     dependencies and work in Python virtual environments.
 
-   (note optional dependencies are commented out)
+     Use whatever Conda client you prefer, `micromamba` is the most performant.
 
-   Create a new Conda environment containing the cylc-flow deps
-   (and `configurable-http-proxy` if working with JupyterHub):
+   This command will give you a Conda environment containing all the things you
+   might need for Cylc development:
 
    ```bash
-   conda create -n cylc-8-dev python=3.7 configurable-http-proxy -f conda-environment.yml
+   conda create -n cylc-dev python pip configurable-http-proxy graphviz nodejs yarn shellcheck
    ```
 
-2. Install Python Projects
+   To ensure your Conda environment is automatically activated across a
+   distributed network, create a pair of activate/deactivate files:
+
+   ```console
+   $ conda activate cylc-dev
+   $ echo "export CYLC_ENV_NAME=$CONDA_DEFAULT_ENV" > $CONDA_PREFIX/etc/conda/activate.d/cylc.sh
+   $ echo 'unset CYLC_ENV_NAME' > $CONDA_PREFIX/etc/conda/deactivate.d/cylc.sh
+   ```
+
+3. Fork & Clone
+
+   On GitHub, create a fork of any of the Cylc repositories you want to work
+   on and create a local clone of them
+   (i.e, `git clone git@github.com/<yourname>/<repo>.git`).
+
+   Please star https://github.com/cylc/cylc-flow and
+   https://github.com/metomi/rose/ :)
+
+4. Install Python Projects
+
+   Install any Python projects you have just cloned into your Conda
+   environment.
 
    Install [cylc/cylc-flow](https://github.com/cylc/cylc-flow/) and optionally:
 
    * [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver/) (for UIS work)
    * [metomi/metomi-rose](https://github.com/metomi/metomi-rose/) (for Rose work)
    * [cylc/cylc-rose](https://github.com/cylc/cylc-rose/) (for Rose work)
+   * [cylc/cylc-doc](https://github.com/cylc/cylc-doc/) (for docs changes)
+     * Note, this requires all above repo sorties to be installed.
 
    ```bash
-   # clone the git repository locally then...
    pip install -e "path/to/repo[all]"
    ```
 
-3. Install [cylc/cylc-ui](https://github.com/cylc/cylc-ui/).
+   You only need to repeat this `pip install` command when certain project
+   files are modified:
+   * `setup.py`
+   * `setup.cfg`
+   * `pyproject.toml`
+   * `MANIFEST.in`
 
-   > **Note:** We prefer `yarn`.
+   > Note: You can use `uv pip` as a stand-in for `pip`.
+
+5. Install and configure [cylc/cylc-ui](https://github.com/cylc/cylc-ui/) (optional)
 
    ```bash
    cd path/to/cylc-ui
+   conda activate cylc-dev
    yarn install
+   yarn run build  # create your first build
    ```
 
-4. Point Cylc Hub at your UI build
-
-   The Cylc UI comes bundled with the UI Server.
-
-   If you want to develop the UI you will need to point the UI Server at
-   your local UI build:
+   The Cylc UI Server comes with a bundled version of Cylc UI. To use your
+   personal build add the following to your Jupyter configuration:
 
    ```python
    # ~/.cylc/hub/jupyter_config.py
    c.CylcUIServer.ui_build_dir = '~/cylc-ui/dist'  # path to build
    ```
 
-   (see the cylc-uiserver README for more information)
+   * See the
+   [cylc-uiserver README](https://github.com/cylc/cylc-uiserver?tab=readme-ov-file#developing)
+   for more information on `ui_build_dir`.
+   * See the
+     [cylc-ui README](https://github.com/cylc/cylc-ui?tab=readme-ov-file#development)
+     for more information on building/developing the UI.
 
-5. Build The UI
-
-   ```bash
-   yarn run build:watch
-   ```
-
-   (see the cylc-ui README for more information)
-
-6. Launch the UI
+   Then launch the UI:
 
    ```bash
-   # standalone
+   # standalone (single-user mode, good for development)
    cylc gui
 
-   # via Jupyter Hub
+   # via Jupyter Hub (multi-user mode)
    cylc hub
    # You will be asked to log in with your desktop credentials if you have not
    # done so before.
-   ```
 
-   (see the cylc-uiserver README for more information)
+6. Contributor License Agreement
+
+   Read the `CONTRIBUTING.md` file and add your name to it with your first
+   commit.
+
+   You will have to do this for each Cylc / Rose repository. Note
+   repositories may use different licenses.
+   ```
 
 
 ## Running Your First Workflow
 
-1. Create a basic Cylc workflow:
+```bash
+# clone the workflow into ~/cylc-src
+cylc get-resources tutorial/cylc-forecasting-workflow
 
-   ```bash
-   mkdir -p ~/cylc-run/foo
-   cat > ~/cylc-run/foo/flow.cylc <<__HERE__
-   [scheduling]
-       # a cycling workflow where the cycles are numbered as integers
-       cycling mode = integer
-       initial cycle point = 1
-       [[graph]]
-           # tasks which run in each cycle until you stop the workflow
-           P1 = """
-               # a => b means "b should wait until a has run"
-               # [-P1] means "from the previous cycle"
-               b[-P1] => a => b => c
-           """
-   __HERE__
-   ```
+# install the workflow into ~/cylc-run and start it
+cylc vip cylc-forecasting-workflow
 
-2. Run the workflow:
+# watch it run
+cylc tui  # in-terminal
+# OR
+cylc gui  # in-browser
 
-   ```bash
-   cylc play foo
-   ```
+# stop it
+cylc stop cylc-forecasting-workflow
 
-3. Watch it run on the CLI:
+# uninstall it from ~/cylc-run
+cylc clean cylc-forecasting-workflow
+```
 
-   ```bash
-   cylc tui foo
-   ```
 
-4. Stop it:
+## Versions & Branches
 
-   (otherwise it will just keep running forever)
+Cylc projects use semantic versioning, e.g: for the version 8.1.2:
 
-   ```bash
-   cylc stop foo
-   ```
+* 8 = **major** release (implies breaking changes)
+* 1 = **minor** release (no breaking changes permitted unless forewarning provided)
+* 2 = **bugfix** release (bugfixes and UI/UX issues only, no features or refactors)
+
+Cylc projects are all pinned to the minor version of cylc-flow, e.g:
+
+* cylc-uiserver 1.6.x goes with cylc-flow 8.4.x
+* cylc-uiserver 1.7.x goes with cylc-flow 8.5.x
+* cylc-rose 1.5.x goes with cylc-flow 8.4.x
+* etc
+
+This tight coupling prevents unintended combinations of Cylc components being
+installed into the same environment whilst allowing them to be installed in
+a modular fashion.
+
+### Bugfixes
+
+When we make a minor release, we create a branch with a `.x` suffix for
+bugfixes.
+
+E.g. `8.1.x` was for bugfixes to `8.1.0`. We merge these `.x` branches back
+into master.
+
+Raise any bugfixes against the `.x` branch, the "sync" PR will be automatically
+created after it is merged.
+
+### Supported Versions
+
+The currently supported (i.e. actively developed) versions are documented
+[here](https://cylc.github.io/cylc-admin/status/status.html).
