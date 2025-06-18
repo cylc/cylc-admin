@@ -7,11 +7,11 @@ All tests are in the folder `cylc-flow/tests`. Instructions here, unless
 stated otherwise assume that you are working from your cylc-flow repo
 dir.
 
-| Test Type | Command |
-|---|---|
-| Unit Tests | `pytest` |
-| Integration tests | `pytest tests/integration` |
-| Functional Tests | `etc/bin/run-functional-tests` |
+| Test Type | Command | Docs |
+|---|---|---|
+| Unit Tests | `pytest` | [README](https://github.com/cylc/cylc-flow/blob/master/tests/unit/README.md) |
+| Integration tests | `pytest tests/integration` | [README](https://github.com/cylc/cylc-flow/blob/master/tests/integration/README.md) |
+| Functional Tests | `etc/bin/run-functional-tests` | [README](https://github.com/cylc/cylc-flow/blob/master/tests/functional/README.md) |
 
 
 ## flow-test.rc
@@ -29,31 +29,9 @@ skipped if the correct remote settings have not been included in
 
 You may find the following idiom useful in a `flow-test.rc` file:
 
-<!-- note added raw tags to prevent Jinja2 being interpreted by Jekyll: -->
-
-```
-{% raw %}
-#!jinja2
-# You only have to change 1 line:
-{% set MYTESTBRANCH = False %}
-
-{% if MYTESTBRANCH == True %}
-   [settings]
-      [[for]]
-         your = test branch
-{% elif %}
-   [settings]
-      [[for]]
-         master = branch
-{% endif %}
-{% endraw %}
-```
-
 
 Debugging Pytests
 =================
-
-You should first run tests in verbose mode using ``-vv``.
 
 If you wish to use ``breakpoint()`` to investigate failures then you will need
 to add the following to your pytest command ``pytest <path> --dist=no -n0`` to
@@ -61,7 +39,6 @@ turn off the test distribution mode.
 
 >  Pytest's own documetation is well worth a read:
 >  https://docs.pytest.org/en/stable/usage.html
-
 
 
 A brief guide to debugging Rose & Cylc (functional) tests
@@ -176,16 +153,10 @@ exit 0
 This will dump all the test setup in a temporary directory for you to play with.
 If you want to debug a python program you can add
 [Python debug statements](https://docs.python.org/3/library/pdb.html) to
-the code and run it:
-
-These are:
+the code and run it, e.g:
 
 ```python
-# Python ≥ 3.7:
 breakpoint()
-
-# or Python < 3.7:
-import pdb; pdb.set_trace()
 ```
 
 Alternatively you may find that you can run the suite from your test.
