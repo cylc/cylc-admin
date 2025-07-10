@@ -257,6 +257,15 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </tr>
 
 <tr>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/144?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/144" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/144?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/144" />
+</a></td>
+</tr>
+
+<tr>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/143?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/143" />
 </a></td>
@@ -394,6 +403,15 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </tr>
 
 <tr>
+  <td><a href="https://github.com/cylc/cylc-rose/milestone/30?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/30" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-rose/milestone/30?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/30" />
+</a></td>
+</tr>
+
+<tr>
   <td><a href="https://github.com/cylc/cylc-rose/milestone/2?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/2" />
 </a></td>
@@ -509,6 +527,15 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </a></td>
   <td><a href="https://github.com/metomi/rose/milestone/100?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/100" />
+</a></td>
+</tr>
+
+<tr>
+  <td><a href="https://github.com/metomi/rose/milestone/104?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/metomi/rose/104" />
+</a></td>
+  <td><a href="https://github.com/metomi/rose/milestone/104?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/104" />
 </a></td>
 </tr>
 
