@@ -81,8 +81,8 @@
    ```
 
    * See the
-   [cylc-uiserver README](https://github.com/cylc/cylc-uiserver?tab=readme-ov-file#developing)
-   for more information on `ui_build_dir`.
+     [cylc-uiserver README](https://github.com/cylc/cylc-uiserver?tab=readme-ov-file#developing)
+     for more information on `ui_build_dir`.
    * See the
      [cylc-ui README](https://github.com/cylc/cylc-ui?tab=readme-ov-file#development)
      for more information on building/developing the UI.
