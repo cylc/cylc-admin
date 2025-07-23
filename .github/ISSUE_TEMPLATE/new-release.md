@@ -1,6 +1,6 @@
 ---
 name: 'release: <version>'
-about: Steps to check off to make a new release.
+about: Steps to check off to make a new minor release.
 title: ''
 labels: ['release']
 assignees: ''
@@ -108,8 +108,20 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 >   `@conda-forge-admin, please update version`.
 > </details>
 
-> Ensure dependencies are up to date and follow instructions on the PR. Some
-> repos may maintain a list of conda dependencies locally.
+> Ensure dependencies are up to date by running:
+> ```
+> $ git diff <previous-release> <new-release> setup.cfg setup.py pyproject.toml conda-environment.yml
+> ```
+> And checking these changes against the `recipe/meta.yaml` file.
+>
+> <details>
+>   <summary>Info on outputs:</summary>
+>   <br />Some repositories have multiple "outputs", e.g. `cylc-flow-base`
+>   is a cut-down release (or output in Conda speak), whereas `cylc-flow` is
+>   the full release including optional dependnecies. You will need to check
+>   the dependencies in all of the places they appear, including each of the
+>   outputs.
+> </details>
 
 > If you need to make changes, remember to re-render the feedstock
 > by commenting `@conda-forge-admin, please rerender` on the PR.
