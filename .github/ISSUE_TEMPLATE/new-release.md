@@ -110,7 +110,7 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 
 > Ensure dependencies are up to date by running:
 > ```
-> $ git diff <previous-release> <new-release> setup.cfg setup.py pyproject.toml conda-environment.yml
+> $ git diff <previous-release> <new-release> -- setup.cfg setup.py pyproject.toml conda-environment.yml
 > ```
 > And checking these changes against the `recipe/meta.yaml` file.
 >
