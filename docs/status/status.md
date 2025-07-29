@@ -86,16 +86,18 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-flow/tree/master">
   master
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml?query=branch%3Amaster">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml/badge.svg?branch=master" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml?query=branch%3Amaster">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml/badge.svg?branch=master" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml?query=branch%3Amaster">
+    <td><a href="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml/badge.svg?branch=master" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/build.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/build.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/shortlog.yml?query=branch%3Amaster">
+  <img src="https://github.com/cylc/cylc-flow/actions/workflows/shortlog.yml/badge.svg?branch=master" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml?query=branch%3Amaster">
+  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml?query=branch%3Amaster">
+  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml/badge.svg?branch=master" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_tutorial_workflow.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_tutorial_workflow.yml/badge.svg?branch=master" />
 </a></td>
@@ -106,7 +108,9 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-doc/tree/master">
   master
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-doc/actions/workflows/test.yml?query=branch%3Amaster">
+    <td><a href="https://github.com/cylc/cylc-doc/actions/workflows/shortlog.yml?query=branch%3Amaster">
+  <img src="https://github.com/cylc/cylc-doc/actions/workflows/shortlog.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/cylc/cylc-doc/actions/workflows/test.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-doc/actions/workflows/test.yml/badge.svg?branch=master" />
 </a></td>
   </tr><tr>
@@ -116,7 +120,9 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-rose/tree/master">
   master
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml?query=branch%3Amaster">
+    <td><a href="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml?query=branch%3Amaster">
+  <img src="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml/badge.svg?branch=master" />
 </a></td>
   </tr><tr>
@@ -126,10 +132,12 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-uiserver/tree/master">
   master
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3Amaster">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=master" />
-</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3Amaster">
+    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml?query=branch%3Amaster">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3Amaster">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=master" />
 </a></td>
   </tr><tr>
     <td><a href="https://github.com/metomi/rose">
@@ -138,10 +146,12 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/metomi/rose/tree/master">
   master
 </a></td>
-    <td><a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3Amaster">
-  <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=master" />
-</a> <a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3Amaster">
+    <td><a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3Amaster">
   <img src="https://github.com/metomi/rose/actions/workflows/build.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/metomi/rose/actions/workflows/shortlog.yml?query=branch%3Amaster">
+  <img src="https://github.com/metomi/rose/actions/workflows/shortlog.yml/badge.svg?branch=master" />
+</a> <a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3Amaster">
+  <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=master" />
 </a></td>
   </tr>
 </table>
@@ -161,16 +171,18 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-flow/tree/8.4.x">
   8.4.x
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml?query=branch%3A8.4.x">
+    <td><a href="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml?query=branch%3A8.4.x">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml/badge.svg?branch=8.4.x" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/build.yml?query=branch%3A8.4.x">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/build.yml/badge.svg?branch=8.4.x" />
+</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/shortlog.yml?query=branch%3A8.4.x">
+  <img src="https://github.com/cylc/cylc-flow/actions/workflows/shortlog.yml/badge.svg?branch=8.4.x" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml?query=branch%3A8.4.x">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml/badge.svg?branch=8.4.x" />
+</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml?query=branch%3A8.4.x">
+  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml/badge.svg?branch=8.4.x" />
+</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml?query=branch%3A8.4.x">
+  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml/badge.svg?branch=8.4.x" />
 </a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_tutorial_workflow.yml?query=branch%3A8.4.x">
   <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_tutorial_workflow.yml/badge.svg?branch=8.4.x" />
 </a></td>
@@ -181,7 +193,9 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-doc/tree/8.4.x">
   8.4.x
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-doc/actions/workflows/test.yml?query=branch%3A8.4.x">
+    <td><a href="https://github.com/cylc/cylc-doc/actions/workflows/shortlog.yml?query=branch%3A8.4.x">
+  <img src="https://github.com/cylc/cylc-doc/actions/workflows/shortlog.yml/badge.svg?branch=8.4.x" />
+</a> <a href="https://github.com/cylc/cylc-doc/actions/workflows/test.yml?query=branch%3A8.4.x">
   <img src="https://github.com/cylc/cylc-doc/actions/workflows/test.yml/badge.svg?branch=8.4.x" />
 </a></td>
   </tr><tr>
@@ -191,7 +205,9 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-rose/tree/1.5.x">
   1.5.x
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml?query=branch%3A1.5.x">
+    <td><a href="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml?query=branch%3A1.5.x">
+  <img src="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml/badge.svg?branch=1.5.x" />
+</a> <a href="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml?query=branch%3A1.5.x">
   <img src="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml/badge.svg?branch=1.5.x" />
 </a></td>
   </tr><tr>
@@ -201,10 +217,12 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-uiserver/tree/1.6.x">
   1.6.x
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3A1.6.x">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=1.6.x" />
-</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3A1.6.x">
+    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3A1.6.x">
   <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml/badge.svg?branch=1.6.x" />
+</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml?query=branch%3A1.6.x">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml/badge.svg?branch=1.6.x" />
+</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3A1.6.x">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=1.6.x" />
 </a></td>
   </tr><tr>
     <td><a href="https://github.com/metomi/rose">
@@ -213,10 +231,12 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/metomi/rose/tree/2.4.x">
   2.4.x
 </a></td>
-    <td><a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3A2.4.x">
-  <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=2.4.x" />
-</a> <a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3A2.4.x">
+    <td><a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3A2.4.x">
   <img src="https://github.com/metomi/rose/actions/workflows/build.yml/badge.svg?branch=2.4.x" />
+</a> <a href="https://github.com/metomi/rose/actions/workflows/shortlog.yml?query=branch%3A2.4.x">
+  <img src="https://github.com/metomi/rose/actions/workflows/shortlog.yml/badge.svg?branch=2.4.x" />
+</a> <a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3A2.4.x">
+  <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=2.4.x" />
 </a></td>
   </tr>
 </table>
