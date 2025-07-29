@@ -32,11 +32,11 @@
         }
     },
     "branch_actions": {
-        "cylc/cylc-flow": ["test_fast", "test_functional", "bash", "build", "test_conda-build", "test_tutorial_workflow"],
-        "cylc/cylc-rose": ["tests"],
-        "cylc/cylc-uiserver": ["test", "build"],
-        "cylc/cylc-doc": ["test"],
-        "metomi/rose": ["test", "build"]
+        "cylc/cylc-flow": ["bash", "build", "shortlog", "test_conda-build", "test_fast", "test_functional", "test_tutorial_workflow"],
+        "cylc/cylc-rose": ["shortlog", "tests"],
+        "cylc/cylc-uiserver": [ "build", "shortlog", "test"],
+        "cylc/cylc-doc": ["shortlog", "test"],
+        "metomi/rose": ["build", "shortlog", "test"]
     },
     "nightly_actions": {
         "cylc/cylc-doc": ["nightly"],
