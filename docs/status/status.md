@@ -17,6 +17,18 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 
 # Status
 
+Cylc is a federated project made up of multiple separate components each
+developed in its own repository. This page provides an overview dashboard to
+make it easier to track the status of branches/releases/issues across these
+repositories.
+
+> [!NOTE]
+> This file is auto-generated, to update the releases, branches or workflows
+> edit the [branches.json file](https://github.com/cylc/cylc-admin/blob/master/docs/status/branches.json)
+> and the page will be automatically rebuilt.
+
+#https://github.com/cylc/cylc-admin/blob/master/docs/status/branches.json
+
 <a href="https://github.com/cylc/cylc-admin/actions/workflows/status.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-admin/actions/workflows/status.yml/badge.svg?branch=master" />
 </a>
@@ -48,6 +60,15 @@ Please edit `branches.json` and raise a pull request, this file will be automati
 </table>
 
 ## Branches
+
+This section lists the Cylc meta releases (8.0, 8.1, 8.2, etc) that are
+currently under active development (including bugfixes), and which branches
+this development takes place on in their respective repositories.
+
+The `branches.json` file that this page is built from is used in our CI to
+determine which branch to install. For example, the cylc-uiserver CI tests need
+to install cylc-flow (because it is a dependency of cylc-uiserver), it uses
+the `branches.json` file to work out which cylc-flow branch to use.
 
 
 ### 8.5
