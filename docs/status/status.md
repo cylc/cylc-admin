@@ -435,11 +435,11 @@ the `branches.json` file to work out which cylc-flow branch to use.
 <table style="margin-left:20px; margin-top:10px">
 
 <tr>
-  <td><a href="https://github.com/cylc/cylc-rose/milestone/29?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/29" />
+  <td><a href="https://github.com/cylc/cylc-rose/milestone/31?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/31" />
 </a></td>
-  <td><a href="https://github.com/cylc/cylc-rose/milestone/29?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/29" />
+  <td><a href="https://github.com/cylc/cylc-rose/milestone/31?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/31" />
 </a></td>
 </tr>
 
