@@ -3,9 +3,8 @@
 ## Cylc 8 Developer Docs
 
 - [Getting Started](howto/cylc-ui)
-- [Cylc-8.0a2 Release Notes](release-notes/cylc-8-alpha2)
 - [Cylc 8 Conda and PYPI Release Instructions](howto/create-a-release)
-- [Inspecting a suite database](howto/inspect_suite_database.ipynb) (ipynb Python notebook format)
+- [Inspecting a workflow database](howto/inspect_suite_database.ipynb) (ipynb Python notebook format)
 - [Running Cylc tests](howto/testing.md)
 - [Open Questions](https://github.com/issues?q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aquestion+org%3Acylc)
 - [Project Issue Summary](project-issue-summary.md)
