@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-### Release Progress
+## Release Progress
 
 Issue to track the coordinated release of multiple Cylc components.
 
@@ -15,7 +15,11 @@ Issue to track the coordinated release of multiple Cylc components.
 
 See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto/create-a-release.md) for first time instructions and more info.
 
-#### Prep:
+
+### Prep:
+
+The list of branches / milestones for the new release should be listed on
+the [cylc-admin/status](https://cylc.github.io/cylc-admin/status/status.html#branches) page.
 
 * [ ] The release lead should be assigned to this issue.
 * [ ] List the milestones for release below (delete entries as appropriate).
@@ -23,7 +27,8 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 * [ ] Ensure all milestones complete.
 * [ ] Ensure major changes are listed in cylc-doc (`reference/changes`).
 
-#### Testing:
+
+### Testing:
 
 > Some testing is not fully automated and must be actioned by hand. Make sure
 > the tests for downstream components have been run against the latest
@@ -34,7 +39,8 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 * [ ] cylc-rose (run the ["tests" action](https://github.com/cylc/cylc-rose/actions/workflows/tests.yml)) - (link workflow run).
 * [ ] cylc-uiserver (run the ["test" action](https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml)) - (link workflow run).
 
-#### Milestones for release:
+
+### Milestones for release:
 
 > The release actions close the milestones for you automatically.
 
@@ -66,14 +72,39 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
   https://img.shields.io/github/milestones/issues-open/cylc/cylc-doc/<number>)](
   https://github.com/cylc/cylc-doc/milestone/<number>)
 
-#### PyPi / GitHub releases:
+
+### PyPi / GitHub releases:
 
 > Ensure all Cylc components are pinned to the correct version of cylc-flow.
 
 > Trigger releases via GitHub actions.
 >
 > <details>
->   <summary>(logical release order)</summary>
+>   <summary>How to trigger a new release:</summary>
+>
+>   1. Open the release PR
+>      * Go to the "Actions" tab of the relevant repo [e.g](https://github.com/cylc/cylc-flow/actions).
+>      * Choose the "Release stage 1 - create release PR" workflow.
+>      * Click the "Run workflow dropdown" and enter the version you want to release
+>        and the branch that the code you want to release is on
+>        - [help](https://cylc.github.io/cylc-admin/status/status.html#branches).
+>      * This will just open a PR, nothing scary will happen at this stage!
+>  2. Review and merge the release PR
+>     * A PR will be opened.
+>     * On this PR the version number will be set and the changelog rendered.
+>     * Follow the instructions on the PR, ensure it is reviewed, then merge.
+>     * Once you push the merge button, the release will happen automatically.
+>
+> Note, It is also possible to manually create a release PR with the conditions:
+> * The branch name must be of the format prepare-<version_number>, e.g. prepare-1.0.1 or prepare-5.0a2.
+> * Add the release label to the PR. Warning: any PR you create with the release label will trigger publishing to PyPI when merged.
+>
+> If anything goes wrong, it is possible to cut the release manually, however,
+> we don't have any up to date instructions for this :(
+> </details>
+
+> <details>
+>   <summary>Logical release order:</summary>
 > <pre>R1 = """
 >    metomi_isodatetime => cylc_flow & metomi_rose => cylc_rose
 >    cylc_flow & cylc_ui => cylc_uis
@@ -81,7 +112,7 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 > </details>
 
 > <details>
->   <summary>Info on version pinning</summary>
+>   <summary>Info on version pinning:</summary>
 >   <br />
 >   Cylc plugins (i.e. cylc-rose and cylc-uiserver) are "pinned" to the minor version
 >   of cylc-flow. E.G. if the cylc-flow version is 8.1.2 the plugins should be pinned to 8.1.
@@ -96,11 +127,20 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 * [ ] metomi-rose (bump metomi-isodatetime if required)
 * [ ] cylc-rose
 
-#### Forge (check dependencies match):
+
+### Conda Forge:
 
 > Pull requests will be automatically opened on the conda-forge feedstocks
 > after the pypi releases.
+
+> <details>
+> <summary>Where do I find the "feedstocks"?</summary
 >
+> Each package we release on Conda Forge has a corresponding "feedstock"
+> repository in `https://github.com/conda-forge/<package>-feedstock`, e.g
+> [cylc-flow-feedstock](https://github.com/conda-forge/cylc-flow-feedstock).
+> </details>
+
 > <details>
 >   <summary>If the PR doesn't get opened automatically</summary>
 >   <br />Open a new issue on the feedstock repository, select the
@@ -135,7 +175,8 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
 > It make take a couple of hours for a release to become available.
 > Use `conda search <package>` to determine when it's ready.
 
-#### Misc (after the above has been completed):
+
+### Misc (after the above has been completed):
 
 * metomi-rose
   * [ ] build & deploy documentation (manual process ATM)
@@ -148,7 +189,8 @@ See [the release docs](https://github.com/cylc/cylc-admin/blob/master/docs/howto
   * [ ] scan through the [major changes page](https://cylc.github.io/cylc-doc/stable/html/reference/changes.html)
     and create "tip" posts (linking back to the changes page) to announce any new features.
 
-#### Metadata:
+
+### Metadata:
 
 GH Actions should automatically open PRs that bump the dev version of the
 projects. Check and merge them (can push alterations to PR branch if needed).
@@ -159,6 +201,7 @@ Downstream components will need to have their dependencies bumped:
 * [ ] cylc-rose (pin to next minor cylc-flow and metomi-rose versions)
 * [ ] cylc-admin (update the [meta-release config](https://github.com/cylc/cylc-admin/blob/master/docs/status/branches.json))
 
-#### Finally:
+
+### Finally:
 
 * [ ] close this issue :rocket:
