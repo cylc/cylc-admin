@@ -374,6 +374,15 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </tr>
 
 <tr>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/148?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/148" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-flow/milestone/148?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/148" />
+</a></td>
+</tr>
+
+<tr>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/144?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/144" />
 </a></td>
@@ -571,15 +580,6 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </a></td>
   <td><a href="https://github.com/cylc/cylc-uiserver/milestone/34?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/34" />
-</a></td>
-</tr>
-
-<tr>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/31?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/31" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/31?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/31" />
 </a></td>
 </tr>
 
