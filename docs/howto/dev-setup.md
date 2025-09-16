@@ -42,7 +42,7 @@
 
    Install any Python projects you have just cloned into your Conda
    environment.
-   > Note: `cylc-ui` is installed separately below via a different process.  
+   > Note: `cylc-ui` is installed separately below via a different process.
 
    Install [cylc/cylc-flow](https://github.com/cylc/cylc-flow/) and optionally:
 
