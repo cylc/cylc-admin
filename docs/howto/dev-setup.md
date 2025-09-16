@@ -50,7 +50,7 @@
    * [metomi/rose](https://github.com/metomi/rose/) (for Rose work)
    * [cylc/cylc-rose](https://github.com/cylc/cylc-rose/) (for Rose work)
    * [cylc/cylc-doc](https://github.com/cylc/cylc-doc/) (for docs changes)
-   > Note: This requires all above repo sorties to be installed via:  
+   > Note: This requires all above repo sorties to be installed via:
 
    ```bash
    pip install -e "path/to/repo[all]"
@@ -60,15 +60,14 @@
    * cylc-uiserver
    * cylc-flow
    * rose
-   * cylc-doc  
+   * cylc-doc
 
    You only need to repeat this `pip install` command when certain project
-   files are modified:  
+   files are modified:
    * `setup.py`
    * `setup.cfg`
    * `pyproject.toml`
    * `MANIFEST.in`
- 
    > Note: You can use `uv pip` as a stand-in for `pip`.
 
 5. Install and configure [cylc/cylc-ui](https://github.com/cylc/cylc-ui/) (optional)
