@@ -612,11 +612,11 @@ the `branches.json` file to work out which cylc-flow branch to use.
 <table style="margin-left:20px; margin-top:10px">
 
 <tr>
-  <td><a href="https://github.com/metomi/rose/milestone/101?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/metomi/rose/101" />
+  <td><a href="https://github.com/metomi/rose/milestone/105?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/metomi/rose/105" />
 </a></td>
-  <td><a href="https://github.com/metomi/rose/milestone/101?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/101" />
+  <td><a href="https://github.com/metomi/rose/milestone/105?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/105" />
 </a></td>
 </tr>
 
