@@ -241,91 +241,6 @@ the `branches.json` file to work out which cylc-flow branch to use.
   </tr>
 </table>
 
-### 8.4
-
-<table>
-  <tr>
-    <th>repo</th>
-    <th>branch</th>
-    <th>workflows</th>
-  </tr>
-<tr>
-    <td><a href="https://github.com/cylc/cylc-flow">
-  <b>cylc/cylc-flow</b>
-</a></td>
-    <td><a href="https://github.com/cylc/cylc-flow/tree/8.4.x">
-  8.4.x
-</a></td>
-    <td><a href="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/bash.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/build.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/build.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/shortlog.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/shortlog.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_conda-build.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_fast.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_functional.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-flow/actions/workflows/test_tutorial_workflow.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-flow/actions/workflows/test_tutorial_workflow.yml/badge.svg?branch=8.4.x" />
-</a></td>
-  </tr><tr>
-    <td><a href="https://github.com/cylc/cylc-doc">
-  <b>cylc/cylc-doc</b>
-</a></td>
-    <td><a href="https://github.com/cylc/cylc-doc/tree/8.4.x">
-  8.4.x
-</a></td>
-    <td><a href="https://github.com/cylc/cylc-doc/actions/workflows/shortlog.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-doc/actions/workflows/shortlog.yml/badge.svg?branch=8.4.x" />
-</a> <a href="https://github.com/cylc/cylc-doc/actions/workflows/test.yml?query=branch%3A8.4.x">
-  <img src="https://github.com/cylc/cylc-doc/actions/workflows/test.yml/badge.svg?branch=8.4.x" />
-</a></td>
-  </tr><tr>
-    <td><a href="https://github.com/cylc/cylc-rose">
-  <b>cylc/cylc-rose</b>
-</a></td>
-    <td><a href="https://github.com/cylc/cylc-rose/tree/1.5.x">
-  1.5.x
-</a></td>
-    <td><a href="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml?query=branch%3A1.5.x">
-  <img src="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml/badge.svg?branch=1.5.x" />
-</a> <a href="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml?query=branch%3A1.5.x">
-  <img src="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml/badge.svg?branch=1.5.x" />
-</a></td>
-  </tr><tr>
-    <td><a href="https://github.com/cylc/cylc-uiserver">
-  <b>cylc/cylc-uiserver</b>
-</a></td>
-    <td><a href="https://github.com/cylc/cylc-uiserver/tree/1.6.x">
-  1.6.x
-</a></td>
-    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3A1.6.x">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml/badge.svg?branch=1.6.x" />
-</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml?query=branch%3A1.6.x">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml/badge.svg?branch=1.6.x" />
-</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3A1.6.x">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=1.6.x" />
-</a></td>
-  </tr><tr>
-    <td><a href="https://github.com/metomi/rose">
-  <b>metomi/rose</b>
-</a></td>
-    <td><a href="https://github.com/metomi/rose/tree/2.4.x">
-  2.4.x
-</a></td>
-    <td><a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3A2.4.x">
-  <img src="https://github.com/metomi/rose/actions/workflows/build.yml/badge.svg?branch=2.4.x" />
-</a> <a href="https://github.com/metomi/rose/actions/workflows/shortlog.yml?query=branch%3A2.4.x">
-  <img src="https://github.com/metomi/rose/actions/workflows/shortlog.yml/badge.svg?branch=2.4.x" />
-</a> <a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3A2.4.x">
-  <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=2.4.x" />
-</a></td>
-  </tr>
-</table>
-
 
 ## Issues
 
@@ -538,6 +453,15 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </tr>
 
 <tr>
+  <td><a href="https://github.com/cylc/cylc-rose/milestone/32?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/32" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-rose/milestone/32?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/32" />
+</a></td>
+</tr>
+
+<tr>
   <td><a href="https://github.com/cylc/cylc-rose/milestone/2?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/2" />
 </a></td>
@@ -584,6 +508,15 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </tr>
 
 <tr>
+  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/37?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/37" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/37?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/37" />
+</a></td>
+</tr>
+
+<tr>
   <td><a href="https://github.com/cylc/cylc-uiserver/milestone/8?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/8" />
 </a></td>
@@ -626,6 +559,15 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </a></td>
   <td><a href="https://github.com/metomi/rose/milestone/104?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/104" />
+</a></td>
+</tr>
+
+<tr>
+  <td><a href="https://github.com/metomi/rose/milestone/106?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/metomi/rose/106" />
+</a></td>
+  <td><a href="https://github.com/metomi/rose/milestone/106?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/106" />
 </a></td>
 </tr>
 
