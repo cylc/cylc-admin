@@ -61,6 +61,8 @@
    * cylc-flow
    * rose
    * cylc-doc
+  
+   > Note: For a fuller description see [project dependencies](#project-dependencies)
 
    You only need to repeat this `pip install` command when certain project
    files are modified:
@@ -171,3 +173,19 @@ created after it is merged.
 
 The currently supported (i.e. actively developed) versions are documented
 [here](https://cylc.github.io/cylc-admin/status/status.html).
+
+### Project Dependencies
+
+```mermaid
+---
+config:
+    look: handDrawn
+---
+flowchart RL
+    rose -->|requires| isodatetime["metomi/isodatetime"]
+    CR[cylc-rose] -->|requires| CF[cylc-flow]
+    CR -->|requires| rose["metomi/rose"]
+    uis[cylc uiserver] -->|requires| CF
+    uis .->|bundles| ui["cylc ui (JavaScript)"]
+
+```
