@@ -1,3 +1,10 @@
+<script type="module">
+	import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+	mermaid.initialize({
+		startOnLoad: true,
+	});
+</script>
+
 # Getting Started with Cylc Development
 
 ## Development Setup
@@ -176,7 +183,7 @@ The currently supported (i.e. actively developed) versions are documented
 
 ### Project Dependencies
 
-```mermaid
+<pre class="mermaid">
 ---
 config:
     look: handDrawn
@@ -188,4 +195,4 @@ flowchart RL
     uis[cylc uiserver] -->|requires| CF
     uis .->|bundles| ui["cylc ui (JavaScript)"]
 
-```
+</pre>
