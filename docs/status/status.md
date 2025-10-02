@@ -22,12 +22,10 @@ developed in its own repository. This page provides an overview dashboard to
 make it easier to track the status of branches/releases/issues across these
 repositories.
 
-> [!NOTE]
+> **Note:**
 > This file is auto-generated, to update the releases, branches or workflows
 > edit the [branches.json file](https://github.com/cylc/cylc-admin/blob/master/docs/status/branches.json)
 > and the page will be automatically rebuilt.
-
-#https://github.com/cylc/cylc-admin/blob/master/docs/status/branches.json
 
 <a href="https://github.com/cylc/cylc-admin/actions/workflows/status.yml?query=branch%3Amaster">
   <img src="https://github.com/cylc/cylc-admin/actions/workflows/status.yml/badge.svg?branch=master" />
