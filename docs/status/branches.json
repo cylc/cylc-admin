@@ -21,6 +21,7 @@
             "cylc/cylc-doc": "master",
             "cylc/cylc-rose": "master",
             "cylc/cylc-uiserver": "master",
+            "cylc/cylc-ui": "master",
             "metomi/rose": "master"
         },
         "8.6": {
@@ -28,6 +29,7 @@
             "cylc/cylc-doc": "8.6.x",
             "cylc/cylc-rose": "1.7.x",
             "cylc/cylc-uiserver": "1.8.x",
+            "cylc/cylc-ui": "2.x",
             "metomi/rose": "2.6.x"
         }
     },
@@ -35,6 +37,7 @@
         "cylc/cylc-flow": ["bash", "build", "shortlog", "test_conda-build", "test_fast", "test_functional", "test_tutorial_workflow"],
         "cylc/cylc-rose": ["shortlog", "tests"],
         "cylc/cylc-uiserver": [ "build", "shortlog", "test"],
+        "cylc/cylc-ui": ["main", "shortlog"],
         "cylc/cylc-doc": ["shortlog", "test"],
         "metomi/rose": ["build", "shortlog", "test"]
     },
