@@ -27,6 +27,15 @@ on:
     paths:
       - 'docs/status/branches.json'
       - '.github/workflows/system.yml'
+  pull_request:
+    paths:
+      - 'docs/status/branches.json'
+      - '.github/workflows/system.yml'
+
+
+defaults:
+  run:
+    shell: bash -c "exec $CONDA_PREFIX/bin/bash -elo pipefail {0}"
 
 
 jobs:
@@ -51,12 +60,20 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu-latest']
-        python-version: ['3.7', '3.8', '3.9']
+        python-version: ['3.12', '3.13', '3.14']
         meta_release: ${{ fromJson(needs.set-meta-releases.outputs.meta-releases) }}
 
     steps:
-      - name: configure python
-        uses: actions/setup-python@v4
+      - name: Configure Python
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          cache-environment: true
+          post-cleanup: 'all'
+          environment-name: cylc-functional-test
+          create-args: >-
+            python=${{ matrix.python-version }}
+            pip
+            bash
 
       - name: install libs
         uses: cylc/release-actions/install-cylc-components@v1
