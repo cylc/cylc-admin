@@ -30,7 +30,7 @@
             "cylc/cylc-rose": "1.7.x",
             "cylc/cylc-uiserver": "1.8.x",
             "cylc/cylc-ui": "2.x",
-            "metomi/rose": "2.6.x"
+            "metomi/rose": "2.7.x"
         }
     },
     "branch_actions": {
