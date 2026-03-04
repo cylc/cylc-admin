@@ -250,15 +250,15 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/metomi/rose">
   <b>metomi/rose</b>
 </a></td>
-    <td><a href="https://github.com/metomi/rose/tree/2.6.x">
-  2.6.x
+    <td><a href="https://github.com/metomi/rose/tree/2.7.x">
+  2.7.x
 </a></td>
-    <td><a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3A2.6.x">
-  <img src="https://github.com/metomi/rose/actions/workflows/build.yml/badge.svg?branch=2.6.x" />
-</a> <a href="https://github.com/metomi/rose/actions/workflows/shortlog.yml?query=branch%3A2.6.x">
-  <img src="https://github.com/metomi/rose/actions/workflows/shortlog.yml/badge.svg?branch=2.6.x" />
-</a> <a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3A2.6.x">
-  <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=2.6.x" />
+    <td><a href="https://github.com/metomi/rose/actions/workflows/build.yml?query=branch%3A2.7.x">
+  <img src="https://github.com/metomi/rose/actions/workflows/build.yml/badge.svg?branch=2.7.x" />
+</a> <a href="https://github.com/metomi/rose/actions/workflows/shortlog.yml?query=branch%3A2.7.x">
+  <img src="https://github.com/metomi/rose/actions/workflows/shortlog.yml/badge.svg?branch=2.7.x" />
+</a> <a href="https://github.com/metomi/rose/actions/workflows/test.yml?query=branch%3A2.7.x">
+  <img src="https://github.com/metomi/rose/actions/workflows/test.yml/badge.svg?branch=2.7.x" />
 </a></td>
   </tr>
 </table>
