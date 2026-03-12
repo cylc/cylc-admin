@@ -246,10 +246,10 @@ config:
     look: handDrawn
 ---
 flowchart RL
-    isodatetime -> rose
-    isodatetime -> cylc-flow
-    rose -> cylc-rose
-    cylc-flow -> cylc-rose
-    cylc-flow -> cylc-uiserver
-    cylc-ui ->|bundled| cylc-uiserver
+    isodatetime --> rose
+    isodatetime --> cylc-flow
+    rose --> cylc-rose
+    cylc-flow --> cylc-rose
+    cylc-flow --> cylc-uiserver
+    cylc-ui -->|bundled| cylc-uiserver
 </pre>
