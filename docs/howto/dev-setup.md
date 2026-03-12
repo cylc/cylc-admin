@@ -245,7 +245,7 @@ There are dependencies between our projects, here's a summary:
 config:
     look: handDrawn
 ---
-flowchart RL
+flowchart LR
     isodatetime --> rose
     isodatetime --> cylc-flow
     rose --> cylc-rose
