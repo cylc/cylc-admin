@@ -9,25 +9,63 @@
 
 ## Development Setup
 
-1. Say Hi On The [Cylc Developers Chat](https://matrix.to/#/#cylc-general:matrix.org).
+#. **Say Hi On The [Cylc Developers Chat](https://matrix.to/#/#cylc-general:matrix.org)!**
 
-2. Install System Dependencies:
 
-   > **Note**: We recommend developing in a Conda environment, although it
-     is possible, though less flexible, to install the required system
-     dependencies and work in Python virtual environments.
+#. **Install System Dependencies**
 
-     Use whatever Conda client you prefer, `micromamba` is the most performant.
+   > [!NOTE]
+   > We recommend developing in a Conda environment, although it
+   > is possible, though less flexible, to install the required system
+   > dependencies and work in Python virtual environments.
+   >
+   > Use whatever Conda client you prefer, `micromamba` is the most performant.
 
    This command will give you a Conda environment containing all the things you
-   might need for Cylc development:
+   might need for Cylc/Rose development:
 
    ```bash
-   conda create -n cylc-dev python pip configurable-http-proxy graphviz nodejs yarn shellcheck
+   conda create -y -n cylc-dev \
+      python \
+      pip \
+      configurable-http-proxy \
+      graphviz \
+      nodejs \
+      yarn \
+      shellcheck \
+      pygraphviz \
+      pygobject \
+      gtk3
    ```
 
-   To ensure your Conda environment is automatically activated across a
-   distributed network, create a pair of activate/deactivate files:
+
+#. **Configure For Distributed Development**
+
+   Follow these steps if you're running on a network with a shared filesystem.
+
+   [Install the Cylc wrapper script](https://cylc.github.io/cylc-doc/stable/html/installation.html#managing-environments).
+
+   > [!NOTE]
+   > Your site may have already done this for you.
+
+   Then configure the path to your Conda environment directory in your shell
+   profile file (e.g, `.bash_profile`), e.g:
+
+   ```bash
+   # ~/.bash_profile
+   export CYLC_HOME_ROOT_ALT="/path/to/conda/environment/directory"
+   ```
+
+   To locate your environment directory, run:
+
+   ```bash
+   conda activate cylc-dev
+   dirname $CONDA_PREFIX
+   ```
+
+   Then get Conda to set the `CYLC_ENV_NAME` environment variable automatically
+   when you active the environment (this tells the wrapper script which Conda
+   environment to use for remote command invocations):
 
    ```console
    $ conda activate cylc-dev
@@ -35,57 +73,70 @@
    $ echo 'unset CYLC_ENV_NAME' > $CONDA_PREFIX/etc/conda/deactivate.d/cylc.sh
    ```
 
-3. Fork & Clone
+
+#. **Fork & Clone**
 
    On GitHub, create a fork of any of the Cylc repositories you want to work
    on and create a local clone of them
    (i.e, `git clone git@github.com/<yourname>/<repo>.git`).
 
-   Please star https://github.com/cylc/cylc-flow and
-   https://github.com/metomi/rose/ :)
+   Please star [cylc-flow](https://github.com/cylc/cylc-flow) and
+   [metomi-rose](https://github.com/metomi/rose/) :)
 
 
-4. Install Python Projects
+#. **Install Python Projects**
 
    Install any Python projects you have just cloned into your Conda
    environment.
-   > Note: `cylc-ui` is installed separately below via a different process.
 
    Install [cylc/cylc-flow](https://github.com/cylc/cylc-flow/) and optionally:
 
-   * [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver/) (for UIS work)
+   * [cylc/cylc-uiserver](https://github.com/cylc/cylc-uiserver/) (for web server work)
    * [metomi/rose](https://github.com/metomi/rose/) (for Rose work)
-   * [cylc/cylc-rose](https://github.com/cylc/cylc-rose/) (for Rose work)
-   * [cylc/cylc-doc](https://github.com/cylc/cylc-doc/) (for docs changes)
-   > Note: This requires all above repo sorties to be installed via:
+   * [cylc/cylc-rose](https://github.com/cylc/cylc-rose/) (for Cylc / Rose integration)
+   * [cylc/cylc-doc](https://github.com/cylc/cylc-doc/) (for Cylc docs changes)
+
+   Install the `[all]` optional dependency to pick up test, developer and
+   documentation extras, i.e:
 
    ```bash
    pip install -e "path/to/repo[all]"
    ```
-   Dependencies are best installed in this order to avoid conflicts:
-   * cylc-rose
-   * cylc-uiserver
-   * cylc-flow
-   * rose
-   * cylc-doc
-  
-   > Note: For a fuller description see [project dependencies](#project-dependencies)
 
-   You only need to repeat this `pip install` command when certain project
-   files are modified:
-   * `setup.py`
-   * `setup.cfg`
-   * `pyproject.toml`
-   * `MANIFEST.in`
-   > Note: You can use `uv pip` as a stand-in for `pip`.
+   When doing this for the first time it's better to install them all in one
+   go, e.g:
 
-5. Install and configure [cylc/cylc-ui](https://github.com/cylc/cylc-ui/) (optional)
+   ```bash
+   pip install -e ./cylc-flow[all] \
+               -e ./cylc-uiserver[all] \
+               -e ./rose[all] \
+               -e ./cylc-rose[all] \
+               -e ./cylc-doc[all]
+   ```
+
+   > [!NOTE]
+   > There are dependencies between projects, so they may need to be installed
+   > in order, see [project dependencies](#project-dependencies)
+
+   > [!NOTE]
+   > Installing in "editable" mode (the `-e` above) means you only need to
+   > repeat this `pip install` command when certain project files are modified:
+   > * `setup.py`
+   > * `setup.cfg`
+   > * `pyproject.toml`
+   > * `MANIFEST.in`
+
+   > [!NOTE]
+   > You can use `uv pip` as a stand-in for `pip`.
+
+
+#. **Install and configure [cylc/cylc-ui](https://github.com/cylc/cylc-ui/) (optional)**
 
    ```bash
    cd path/to/cylc-ui
    conda activate cylc-dev
    yarn install
-   yarn run build  # create your first build
+   yarn run build  # create your first production build
    ```
 
    The Cylc UI Server comes with a bundled version of Cylc UI. To use your
@@ -93,6 +144,7 @@
 
    ```python
    # ~/.cylc/hub/jupyter_config.py
+   # NOTE: some of us use an environment variable to toggle this on/off
    c.CylcUIServer.ui_build_dir = '~/cylc-ui/dist'  # path to build
    ```
 
@@ -115,7 +167,8 @@
    # done so before.
    ```
 
-6. Contributor License Agreement
+
+#. **Contributor License Agreement**
 
    Read the `CONTRIBUTING.md` file and add your name to it with your first
    commit.
@@ -127,6 +180,8 @@
 ## Running Your First Workflow
 
 ```bash
+conda acitvate cylc-dev
+
 # clone the workflow into ~/cylc-src
 cylc get-resources tutorial/cylc-forecasting-workflow
 
@@ -183,16 +238,18 @@ The currently supported (i.e. actively developed) versions are documented
 
 ### Project Dependencies
 
+There are dependencies between our projects, here's a summary:
+
 <pre class="mermaid">
 ---
 config:
     look: handDrawn
 ---
-flowchart RL
-    rose -->|requires| isodatetime["metomi/isodatetime"]
-    CR[cylc-rose] -->|requires| CF[cylc-flow]
-    CR -->|requires| rose["metomi/rose"]
-    uis[cylc uiserver] -->|requires| CF
-    uis .->|bundles| ui["cylc ui (JavaScript)"]
-
+flowchart LR
+    isodatetime --> rose
+    isodatetime --> cylc-flow
+    rose --> cylc-rose
+    cylc-flow --> cylc-rose
+    cylc-flow --> cylc-uiserver
+    cylc-ui -->|bundled| cylc-uiserver
 </pre>
