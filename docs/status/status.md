@@ -224,15 +224,15 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-uiserver">
   <b>cylc/cylc-uiserver</b>
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-uiserver/tree/1.8.x">
-  1.8.x
+    <td><a href="https://github.com/cylc/cylc-uiserver/tree/1.9.x">
+  1.9.x
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3A1.8.x">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml/badge.svg?branch=1.8.x" />
-</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml?query=branch%3A1.8.x">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml/badge.svg?branch=1.8.x" />
-</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3A1.8.x">
-  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=1.8.x" />
+    <td><a href="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml?query=branch%3A1.9.x">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/build.yml/badge.svg?branch=1.9.x" />
+</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml?query=branch%3A1.9.x">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/shortlog.yml/badge.svg?branch=1.9.x" />
+</a> <a href="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml?query=branch%3A1.9.x">
+  <img src="https://github.com/cylc/cylc-uiserver/actions/workflows/test.yml/badge.svg?branch=1.9.x" />
 </a></td>
   </tr><tr>
     <td><a href="https://github.com/cylc/cylc-ui">
@@ -334,15 +334,6 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </a></td>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/89?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/89" />
-</a></td>
-</tr>
-
-<tr>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/139?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/139" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/139?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/139" />
 </a></td>
 </tr>
 
