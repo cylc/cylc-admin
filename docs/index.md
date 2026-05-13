@@ -1,11 +1,12 @@
-
-
 ## Cylc 8 Developer Docs
 
-- [Getting Started](howto/dev-setup)
+[![chat](https://img.shields.io/matrix/cylc-general:matrix.org)](https://matrix.to/#/#cylc-general:matrix.org)
+| [![forum](https://img.shields.io/discourse/https/cylc.discourse.group/posts.svg)](https://cylc.discourse.group/)
+
+- [Developer Setup](howto/dev-setup)
+- [Releases, Versions and Branches](howto/releases-versions-branches)
 - [Inspecting a workflow database](howto/inspect_suite_database.ipynb) (ipynb Python notebook format)
 - [Open Questions](https://github.com/issues?q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aquestion+org%3Acylc)
-- [Project Issue Summary](project-issue-summary.md)
 - [Status page](status/status.md)
 
 
