@@ -143,7 +143,7 @@
    personal build add the following to your Jupyter configuration:
 
    ```python
-   # ~/.cylc/hub/jupyter_config.py
+   # ~/.cylc/uiserver/jupyter_config.py
    # NOTE: some of us use an environment variable to toggle this on/off
    c.CylcUIServer.ui_build_dir = '~/cylc-ui/dist'  # path to build
    ```
