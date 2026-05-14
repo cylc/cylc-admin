@@ -9,10 +9,10 @@
 
 ## Development Setup
 
-#. **Say Hi On The [Cylc Developers Chat](https://matrix.to/#/#cylc-general:matrix.org)!**
+1. **Say Hi On The [Cylc Developers Chat](https://matrix.to/#/#cylc-general:matrix.org)!**
 
 
-#. **Install System Dependencies**
+1. **Install System Dependencies**
 
    > [!NOTE]
    > We recommend developing in a Conda environment, although it
@@ -39,7 +39,7 @@
    ```
 
 
-#. **Configure For Distributed Development**
+1. **Configure For Distributed Development**
 
    Follow these steps if you're running on a network with a shared filesystem.
 
@@ -74,7 +74,7 @@
    ```
 
 
-#. **Fork & Clone**
+1. **Fork & Clone**
 
    On GitHub, create a fork of any of the Cylc repositories you want to work
    on and create a local clone of them
@@ -84,7 +84,7 @@
    [metomi-rose](https://github.com/metomi/rose/) :)
 
 
-#. **Install Python Projects**
+1. **Install Python Projects**
 
    Install any Python projects you have just cloned into your Conda
    environment.
@@ -130,7 +130,7 @@
    > You can use `uv pip` as a stand-in for `pip`.
 
 
-#. **Install and configure [cylc/cylc-ui](https://github.com/cylc/cylc-ui/) (optional)**
+1. **Install and configure [cylc/cylc-ui](https://github.com/cylc/cylc-ui/) (optional)**
 
    ```bash
    cd path/to/cylc-ui
@@ -168,7 +168,7 @@
    ```
 
 
-#. **Contributor License Agreement**
+1. **Contributor License Agreement**
 
    Read the `CONTRIBUTING.md` file and add your name to it with your first
    commit.
@@ -199,57 +199,3 @@ cylc stop cylc-forecasting-workflow
 # uninstall it from ~/cylc-run
 cylc clean cylc-forecasting-workflow
 ```
-
-
-## Versions & Branches
-
-Cylc projects use semantic versioning, e.g: for the version 8.1.2:
-
-* 8 = **major** release (implies breaking changes)
-* 1 = **minor** release (no breaking changes permitted unless forewarning provided)
-* 2 = **bugfix** release (bugfixes and UI/UX issues only, no features or refactors)
-
-Cylc projects are all pinned to the minor version of cylc-flow, e.g:
-
-* cylc-uiserver 1.6.x goes with cylc-flow 8.4.x
-* cylc-uiserver 1.7.x goes with cylc-flow 8.5.x
-* cylc-rose 1.5.x goes with cylc-flow 8.4.x
-* etc
-
-This tight coupling prevents unintended combinations of Cylc components being
-installed into the same environment whilst allowing them to be installed in
-a modular fashion.
-
-### Bugfixes
-
-When we make a minor release, we create a branch with a `.x` suffix for
-bugfixes.
-
-E.g. `8.1.x` was for bugfixes to `8.1.0`. We merge these `.x` branches back
-into master.
-
-Raise any bugfixes against the `.x` branch, the "sync" PR will be automatically
-created after it is merged.
-
-### Supported Versions
-
-The currently supported (i.e. actively developed) versions are documented
-[here](https://cylc.github.io/cylc-admin/status/status.html).
-
-### Project Dependencies
-
-There are dependencies between our projects, here's a summary:
-
-<pre class="mermaid">
----
-config:
-    look: handDrawn
----
-flowchart LR
-    isodatetime --> rose
-    isodatetime --> cylc-flow
-    rose --> cylc-rose
-    cylc-flow --> cylc-rose
-    cylc-flow --> cylc-uiserver
-    cylc-ui -->|bundled| cylc-uiserver
-</pre>
