@@ -126,7 +126,7 @@ Create a new releases by running the "Release stage 1" action. Provide this
 action with the version number of the release you would like to make, along
 with the release branch to use:
 
-<img width="50%" src="docs/make-a-release.png" />
+<img width="50%" src="howto/make-a-release.png" />
 
 The action will run and create a release pull request:
 
