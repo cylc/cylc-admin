@@ -1,3 +1,10 @@
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+        startOnLoad: true,
+    });
+</script>
+
 # Releases, Versions and Branches
 
 ## Versions & Branches
@@ -122,7 +129,7 @@ For bugfix releases, no release issue is required.
 
 https://cylc.github.io/cylc-admin/status/status.html#branches
 
-Create a new releases by running the "Release stage 1" action. Provide this
+Create a new release by running the "Release stage 1" action. Provide this
 action with the version number of the release you would like to make, along
 with the release branch to use:
 
