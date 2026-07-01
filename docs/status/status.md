@@ -458,11 +458,11 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </tr>
 
 <tr>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/47?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/47" />
+  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/48?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-uiserver/48" />
 </a></td>
-  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/47?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/47" />
+  <td><a href="https://github.com/cylc/cylc-uiserver/milestone/48?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-uiserver/48" />
 </a></td>
 </tr>
 
