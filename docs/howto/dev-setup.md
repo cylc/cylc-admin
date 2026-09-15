@@ -28,7 +28,7 @@
       shellcheck \
       pygraphviz \
       pygobject \
-      gtk3
+      gtk4
    ```
 
 
