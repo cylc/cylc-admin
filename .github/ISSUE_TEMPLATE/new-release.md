@@ -48,11 +48,11 @@ the [cylc-admin/status](https://cylc.github.io/cylc-admin/status/status.html#bra
     Replace `<number>` with the milestone for each package to release.
     Delete lines as appropriate.
     (you can get the milestone number from the milestone URL)
+
+    Note: metomi_isodatetime is *not* a part of the meta-release process,
+    if an update is required, do this first.
 -->
 
-- metomi-isodatetime: [![](
-  https://img.shields.io/github/milestones/issues-open/metomi/isodatetime/<number>)](
-  https://github.com/metomi/isodatetime/milestone/<number>)
 - cylc-flow: [![](
   https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/<number>)](
   https://github.com/cylc/cylc-flow/milestone/<number>)
@@ -120,11 +120,10 @@ the [cylc-admin/status](https://cylc.github.io/cylc-admin/status/status.html#bra
 >   <a href="https://github.com/cylc/cylc-admin/issues/130">More Information</a>
 > </details>
 
-* [ ] metomi-isodatetime
-* [ ] cylc-flow (bump metomi-isodatetime if required)
+* [ ] cylc-flow
 * [ ] cylc-ui
 * [ ] cylc-uiserver ([update the ui [via GH action](https://github.com/cylc/cylc-uiserver/actions/workflows/update_ui.yml) first)
-* [ ] metomi-rose (bump metomi-isodatetime if required)
+* [ ] metomi-rose
 * [ ] cylc-rose
 
 
@@ -166,7 +165,6 @@ the [cylc-admin/status](https://cylc.github.io/cylc-admin/status/status.html#bra
 > If you need to make changes, remember to re-render the feedstock
 > by commenting `@conda-forge-admin, please rerender` on the PR.
 
-* [ ] metomi-isodatetime
 * [ ] cylc-flow
 * [ ] cylc-uiserver
 * [ ] metomi-rose
