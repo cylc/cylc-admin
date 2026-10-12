@@ -20,7 +20,7 @@ name: System Tests
 on:
   workflow_dispatch:
   schedule:
-    - cron: '55 0 * * *'
+    - cron: '55 0 * * 1-5'
   push:
     branches:
       - 'master'
@@ -46,7 +46,7 @@ jobs:
     outputs:
       meta-releases: ${{ steps.set-meta-releases.outputs.meta-releases }}
     steps:
-      - name: install libs
+      - name: Meta release info
         id: set-meta-releases
         uses: cylc/release-actions/set-meta-releases@v1
 
@@ -60,7 +60,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu-latest']
-        python-version: ['3.12', '3.13', '3.14']
+        python-version: ['3.12', '3.13', '3.14', '3.15']
         meta_release: ${{ fromJson(needs.set-meta-releases.outputs.meta-releases) }}
 
     steps:
