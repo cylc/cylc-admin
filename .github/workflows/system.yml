@@ -21,12 +21,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '55 0 * * 1-5'
-  push:
-    branches:
-      - 'master'
-    paths:
-      - 'docs/status/branches.json'
-      - '.github/workflows/system.yml'
   pull_request:
     paths:
       - 'docs/status/branches.json'
