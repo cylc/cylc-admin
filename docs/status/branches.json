@@ -26,8 +26,8 @@
         },
         "8.7": {
             "cylc/cylc-flow": "8.7.x",
-            "cylc/cylc-doc": "master",
-            "cylc/cylc-rose": "master",
+            "cylc/cylc-doc": "8.7.x",
+            "cylc/cylc-rose": "1.8.x",
             "cylc/cylc-uiserver": "1.10.x",
             "cylc/cylc-ui": "2.x",
             "metomi/rose": "2.8.x"
