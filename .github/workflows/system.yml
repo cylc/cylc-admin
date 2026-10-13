@@ -45,10 +45,16 @@ jobs:
     timeout-minutes: 2
     outputs:
       meta-releases: ${{ steps.set-meta-releases.outputs.meta-releases }}
+      dict: ${{ steps.set-meta-releases.outputs.meta-releases-dict }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
       - name: Meta release info
         id: set-meta-releases
         uses: cylc/release-actions/set-meta-releases@v1
+        with:
+          branches-file: docs/status/branches.json
 
   install:
     # test that the components can be pip-installed together
@@ -61,7 +67,7 @@ jobs:
       matrix:
         os: ['ubuntu-latest']
         python-version: ['3.12', '3.13', '3.14', '3.15']
-        meta_release: ${{ fromJson(needs.set-meta-releases.outputs.meta-releases) }}
+        meta-release: ${{ fromJson(needs.set-meta-releases.outputs.meta-releases) }}
 
     steps:
       - name: Configure Python
@@ -78,14 +84,18 @@ jobs:
       - name: install libs
         uses: cylc/release-actions/install-cylc-components@v1
         with:
-          meta_release: ${{ matrix.meta_release }}
+          meta_release: ${{ matrix.meta-release }}
           cylc_flow: true
+          cylc_flow_tag: ${{ fromJson(needs.set-meta-releases.outputs.dict)[matrix.meta-release]['cylc/cylc-flow'] }}
           cylc_flow_opts: ''
           cylc_uiserver: true
+          cylc_uiserver_tag: ${{ fromJson(needs.set-meta-releases.outputs.dict)[matrix.meta-release]['cylc/cylc-uiserver'] }}
           cylc_uiserver_opts: 'hub'
           cylc_rose: true
+          cylc_rose_tag: ${{ fromJson(needs.set-meta-releases.outputs.dict)[matrix.meta-release]['cylc/cylc-rose'] }}
           cylc_rose_opts: ''
           metomi_rose: true
+          metomi_rose_tag: ${{ fromJson(needs.set-meta-releases.outputs.dict)[matrix.meta-release]['metomi/rose'] }}
           metomi_rose_opts: ''
 
       - name: check version
