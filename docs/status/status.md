@@ -311,15 +311,6 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </tr>
 
 <tr>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/145?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/145" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-flow/milestone/145?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-flow/145" />
-</a></td>
-</tr>
-
-<tr>
   <td><a href="https://github.com/cylc/cylc-flow/milestone/159?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-flow/159" />
 </a></td>
@@ -563,6 +554,15 @@ the `branches.json` file to work out which cylc-flow branch to use.
 </a></td>
   <td><a href="https://github.com/metomi/rose/milestone/113?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/113" />
+</a></td>
+</tr>
+
+<tr>
+  <td><a href="https://github.com/metomi/rose/milestone/118?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/metomi/rose/118" />
+</a></td>
+  <td><a href="https://github.com/metomi/rose/milestone/118?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/118" />
 </a></td>
 </tr>
 
