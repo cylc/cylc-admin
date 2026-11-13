@@ -212,13 +212,13 @@ the `branches.json` file to work out which cylc-flow branch to use.
     <td><a href="https://github.com/cylc/cylc-rose">
   <b>cylc/cylc-rose</b>
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-rose/tree/1.8.x">
-  1.8.x
+    <td><a href="https://github.com/cylc/cylc-rose/tree/1.9.x">
+  1.9.x
 </a></td>
-    <td><a href="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml?query=branch%3A1.8.x">
-  <img src="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml/badge.svg?branch=1.8.x" />
-</a> <a href="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml?query=branch%3A1.8.x">
-  <img src="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml/badge.svg?branch=1.8.x" />
+    <td><a href="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml?query=branch%3A1.9.x">
+  <img src="https://github.com/cylc/cylc-rose/actions/workflows/shortlog.yml/badge.svg?branch=1.9.x" />
+</a> <a href="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml?query=branch%3A1.9.x">
+  <img src="https://github.com/cylc/cylc-rose/actions/workflows/tests.yml/badge.svg?branch=1.9.x" />
 </a></td>
   </tr><tr>
     <td><a href="https://github.com/cylc/cylc-uiserver">
@@ -527,20 +527,20 @@ the `branches.json` file to work out which cylc-flow branch to use.
 <table style="margin-left:20px; margin-top:10px">
 
 <tr>
+  <td><a href="https://github.com/cylc/cylc-rose/milestone/38?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/38" />
+</a></td>
+  <td><a href="https://github.com/cylc/cylc-rose/milestone/38?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/38" />
+</a></td>
+</tr>
+
+<tr>
   <td><a href="https://github.com/cylc/cylc-rose/milestone/36?q=is%3Aopen">
   <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/36" />
 </a></td>
   <td><a href="https://github.com/cylc/cylc-rose/milestone/36?q=is%3Aclosed">
   <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/36" />
-</a></td>
-</tr>
-
-<tr>
-  <td><a href="https://github.com/cylc/cylc-rose/milestone/37?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/cylc/cylc-rose/37" />
-</a></td>
-  <td><a href="https://github.com/cylc/cylc-rose/milestone/37?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/cylc/cylc-rose/37" />
 </a></td>
 </tr>
 
@@ -628,11 +628,11 @@ the `branches.json` file to work out which cylc-flow branch to use.
 <table style="margin-left:20px; margin-top:10px">
 
 <tr>
-  <td><a href="https://github.com/metomi/rose/milestone/121?q=is%3Aopen">
-  <img src="https://img.shields.io/github/milestones/issues-open/metomi/rose/121" />
+  <td><a href="https://github.com/metomi/rose/milestone/122?q=is%3Aopen">
+  <img src="https://img.shields.io/github/milestones/issues-open/metomi/rose/122" />
 </a></td>
-  <td><a href="https://github.com/metomi/rose/milestone/121?q=is%3Aclosed">
-  <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/121" />
+  <td><a href="https://github.com/metomi/rose/milestone/122?q=is%3Aclosed">
+  <img src="https://img.shields.io/github/milestones/issues-closed/metomi/rose/122" />
 </a></td>
 </tr>
 
